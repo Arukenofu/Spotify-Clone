@@ -23,14 +23,20 @@ export const useMusicStore = defineStore('musicStore', () => {
     ]);
     const currentMusicId = ref<number>(2);
 
+    const currentMusicIndex = computed(() => {
+        return currentQueue.value.findIndex(value => value.id === currentMusicId.value);
+    })
+
     const currentMusicData = computed(() => {
         return currentQueue.value.find(value => value.id === currentMusicId.value)!
     });
+
 
     return {
         isPlaying,
         currentQueue,
         currentMusicId,
-        currentMusicData
+        currentMusicData,
+        currentMusicIndex
     }
 })

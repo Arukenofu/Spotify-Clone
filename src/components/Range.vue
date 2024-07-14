@@ -34,7 +34,6 @@ function updateCurrentValue(event: Event) {
 .range-outer {
   height: 4px;
   background-color: #484848;
-  cursor: pointer;
   border-radius: 2px;
   position: relative;
 
@@ -55,9 +54,10 @@ function updateCurrentValue(event: Event) {
     width: 100%;
     height: 7px;
 
+    z-index: 2;
+
     &::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
+      opacity: 0;
     }
 
     &::-moz-range-thumb {
@@ -98,8 +98,9 @@ function updateCurrentValue(event: Event) {
 
   .range-progress {
     height: 100%;
-    background-color: #45dc60;
+    background-color: var(--main-color);
     border-radius: 2px;
+    width: 100%;
   }
 }
 

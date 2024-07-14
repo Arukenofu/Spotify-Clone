@@ -15,6 +15,7 @@ coverage
 *.local
 typed-router.d.ts
 public/*
+.env
 
 /cypress/videos/
 /cypress/screenshots/

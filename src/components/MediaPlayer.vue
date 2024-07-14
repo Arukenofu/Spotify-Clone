@@ -6,10 +6,12 @@ import Range from "@/components/Range.vue";
 import {useMusicStore} from "@/store/useMusicStore";
 import {storeToRefs} from "pinia";
 import useMusic from "@/composables/useMusic";
-import {toggleAudioPlayingState} from "@/utils/audioUtils";
+import {decrementMusicId, incrementMusicId, toggleAudioPlayingState} from "@/utils/audioUtils";
+import usePlayerControls from "@/composables/usePlayerControls";
+import getActiveColor from "@/utils/getActiveColor";
 
 const musicStore = useMusicStore();
-let {currentMusicData, currentMusicId, currentQueue} = storeToRefs(musicStore);
+let {currentMusicData, currentMusicId} = storeToRefs(musicStore);
 
 const {playing, currentTime, duration, volume} = useMusic({
   src: ref(currentMusicData.value.url)
@@ -30,25 +32,15 @@ function formatTime(time: number): string {
   return minutes.padStart(2, '0') + ':' + seconds.padStart(2, '0')
 }
 
-function incrementMusicId() {
-  const currentIndex = currentQueue.value.findIndex(value => value.id === currentMusicId.value);
+const {currentRepeatMode, nextRepeatMode, isShuffle} = usePlayerControls();
 
-  if (currentIndex + 1 === currentQueue.value.length) {
-    return;
+const getRepeatModeIcon = computed(() => {
+  if (currentRepeatMode.value === "repeatOnlyCurrentMusic") {
+    return "repeat_one"
   }
 
-  currentMusicId.value = currentQueue.value[currentIndex + 1].id
-}
-
-function decrementMusicId() {
-  const currentIndex = currentQueue.value.findIndex(value => value.id === currentMusicId.value);
-
-  if (currentIndex === 0) {
-    return;
-  }
-
-  currentMusicId.value = currentQueue.value[currentIndex - 1].id
-}
+  return "repeat"
+})
 
 </script>
 
@@ -96,13 +88,21 @@ function decrementMusicId() {
       </div>
 
       <div class="options">
-        <Icon tag="button" class="material-symbols-outlined">
+        <Icon tag="button">
           favorite
         </Icon>
-        <Icon tag="button" class="material-symbols-outlined">
-          repeat
+        <Icon
+            tag="button"
+            @click="nextRepeatMode()"
+            :style="getActiveColor(currentRepeatMode !== 'onlyCurrentMusic')"
+        >
+          {{ getRepeatModeIcon }}
         </Icon>
-        <Icon tag="button" class="material-symbols-outlined">
+        <Icon
+            tag="button"
+            @click="isShuffle =! isShuffle"
+            :style="getActiveColor(isShuffle)"
+        >
           shuffle
         </Icon>
         <Icon tag="button">
