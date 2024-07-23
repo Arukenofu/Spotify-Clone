@@ -1,12 +1,24 @@
 import {defineStore} from "pinia";
 import useCachedRef from "@/composables/useCachedRef";
 
+type repeatModes = 'onlyCurrentMusic' | 'repeatCurrentMusic' | 'repeatCurrentPlaylist'
+
 export const useUserConfigStore = defineStore('useUserConfigStore', () => {
-    const currentRepeatModeIndex = useCachedRef<number>(0, 'repeatMode');
-    const isShuffle = useCachedRef<boolean>(false, 'isShuffle');
+    const currentRepeatMode = useCachedRef<repeatModes>('repeatMode', 'onlyCurrentMusic');
+    const isShuffle = useCachedRef<boolean>('isShuffle', false);
+
+    function toggleRepeatMode() {
+        const repeatModes: repeatModes[] = ['onlyCurrentMusic', 'repeatCurrentPlaylist', 'repeatCurrentMusic'];
+
+        const currentIndex = repeatModes.indexOf(currentRepeatMode.value!);
+        const nextIndex = (currentIndex + 1) % repeatModes.length;
+
+        currentRepeatMode.value = repeatModes[nextIndex];
+    }
 
     return {
-        currentRepeatModeIndex,
-        isShuffle
+        currentRepeatMode,
+        isShuffle,
+        toggleRepeatMode
     }
 })

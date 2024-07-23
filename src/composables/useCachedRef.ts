@@ -1,7 +1,7 @@
 import {ref, watch} from "vue";
 
-export default function<T>(defer: T, key: string) {
-    const innerRef = ref<T>(defer);
+export default function<T>(key: string, initialValue?: T) {
+    const innerRef = ref<T | null>(initialValue ?? null);
     const cachedValue = localStorage.getItem(key);
 
     if (cachedValue) {

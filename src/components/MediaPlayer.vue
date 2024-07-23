@@ -1,303 +1,294 @@
 <script setup lang="ts">
-import Icon from "@/components/Icon.vue";
-import getPlayPauseIcon from "../utils/getPlayPauseIcon";
-import {computed, ref} from "vue";
-import Range from "@/components/Range.vue";
+import {onMounted, ref, watch} from "vue";
+import {useUserConfigStore} from "@/store/useUserConfigStore";
 import {useMusicStore} from "@/store/useMusicStore";
 import {storeToRefs} from "pinia";
-import useMusic from "@/composables/useMusic";
-import {decrementMusicId, incrementMusicId, toggleAudioPlayingState} from "@/utils/audioUtils";
-import usePlayerControls from "@/composables/usePlayerControls";
+
+import Repeat from "@/UI/MediaPlayer/Repeat.vue";
+import Previous from "@/UI/MediaPlayer/Previous.vue";
+import Next from "@/UI/MediaPlayer/Next.vue";
+import RandomOrder from "@/UI/MediaPlayer/RandomOrder.vue";
+import PlayingState from "@/UI/MediaPlayer/PlayingState.vue";
+import Range from "@/components/Range.vue";
+
+import formatTime from "../utils/formatTime";
 import getActiveColor from "@/utils/getActiveColor";
+import getRandomNumber from "@/utils/getRandomNumber";
 
 const musicStore = useMusicStore();
-let {currentMusicData, currentMusicId} = storeToRefs(musicStore);
 
-const {playing, currentTime, duration, volume} = useMusic({
-  src: ref(currentMusicData.value.url)
+const {audio, isPlaying, currentAudioData, currentQueue, currentAudioIndexInQueue} = storeToRefs(musicStore);
+const {toggleTrackPlaying, nextTrack, previousTrack, loadSong} = musicStore;
+
+const userConfig = useUserConfigStore();
+const {isShuffle, currentRepeatMode} = storeToRefs(userConfig);
+
+const currentTime = ref<number>(0);
+const duration = ref<number>(0);
+
+onMounted(() => {
+  setInterval(() => {
+    loadMetaData();
+    autoTimeUpdate();
+  }, 1500)
 });
 
-const getAvatarPlayingAnimation = computed(() => {
-  if (playing.value) {
-    return `animation-play-state: running;`
+async function onMusicEnded() {
+  if (currentRepeatMode.value === 'repeatCurrentMusic') {
+    return audio.value?.play();
   }
 
-  return `animation-play-state: paused;`
-});
+  if (isShuffle.value) {
+    return loadSong(currentQueue.value[getRandomNumber(currentQueue.value.length - 1, currentAudioIndexInQueue.value)]);
+  }
 
-function formatTime(time: number): string {
-  let minutes = Math.trunc(time / 60) + '';
-  let seconds = (time % 60).toFixed(0) + '';
+  if (currentRepeatMode.value === 'repeatCurrentPlaylist') {
+    return nextTrack();
+  }
 
-  return minutes.padStart(2, '0') + ':' + seconds.padStart(2, '0')
+  isPlaying.value = false;
 }
 
-const {currentRepeatMode, nextRepeatMode, isShuffle} = usePlayerControls();
+function autoTimeUpdate() {
+  audio.value?.addEventListener('timeupdate', () => {
+    currentTime.value = audio.value!.currentTime;
+  });
 
-const getRepeatModeIcon = computed(() => {
-  if (currentRepeatMode.value === "repeatOnlyCurrentMusic") {
-    return "repeat_one"
+  if (currentTime.value === duration.value) {
+    onMusicEnded();
   }
+}
 
-  return "repeat"
-})
+function timeUpdate(time: number) {
+  audio.value!.currentTime = time;
+}
+
+function loadMetaData() {
+  audio.value?.addEventListener("loadedmetadata", () => {
+    duration.value = audio.value!.duration;
+  })
+}
+
+watch(audio, () => {
+  loadMetaData();
+});
+
 
 </script>
 
 <template>
-  <div class="media-player">
-    <div class="musicBar">
-      <div class="song-info">
-        <div
-            class="singer-logo"
-            :style="[getAvatarPlayingAnimation, `background-image: url('${currentMusicData.avatar}');`]"
-        />
-        <div class="song-content">
-          <h3>{{currentMusicData.name}}</h3>
-          <p>{{currentMusicData.artist}}</p>
+  <div class="player" v-if="audio">
+    <div class="track-details">
+      <div class="track-image-outer">
+        <img :src="currentAudioData.avatar" alt="">
+      </div>
+
+      <div class="track-text-info">
+        <a class="track-name">
+          {{currentAudioData.name}}
+        </a>
+        <div class="track-artists">
+          <RouterLink
+              class="artist"
+              v-for="(artist, index) in currentAudioData.artists"
+              :key="artist.id"
+              :to="`/artists/${artist.url}`"
+          >
+            <span>
+              {{artist.name}}
+            </span>
+            <template v-if="index !== currentAudioData.artists.length - 1">, </template>
+          </RouterLink>
         </div>
       </div>
-      <div class="controls">
-        <Icon tag="button" @click="decrementMusicId()">
-          skip_previous
-        </Icon>
-        <Icon tag="button" @click="toggleAudioPlayingState()">
-          {{getPlayPauseIcon(playing as boolean)}}
-        </Icon>
-        <Icon tag="button" @click="incrementMusicId()">
-          skip_next
-        </Icon>
-      </div>
+    </div>
 
-      <div class="music-status">
-        <span>
-          {{formatTime(currentTime as number)}}
-        </span>
-        <Range class="range" v-model:current="currentTime" :max="duration" :step="0.1" />
-        <span>
-          {{formatTime(duration as number)}}
-        </span>
-      </div>
-
-      <div class="music-volume">
-        <Icon tag="button" >
-          {{ volume > 0 ? "volume_up" : "volume_off"}}
-        </Icon>
-
-        <Range class="range" v-model:current="volume" :max="1" :step="0.01" />
-      </div>
-
+    <div class="track-controls">
       <div class="options">
-        <Icon tag="button">
-          favorite
-        </Icon>
-        <Icon
-            tag="button"
-            @click="nextRepeatMode()"
-            :style="getActiveColor(currentRepeatMode !== 'onlyCurrentMusic')"
-        >
-          {{ getRepeatModeIcon }}
-        </Icon>
-        <Icon
-            tag="button"
+        <RandomOrder
+            class="icon"
+            :style="getActiveColor(isShuffle, 'fill')"
             @click="isShuffle =! isShuffle"
-            :style="getActiveColor(isShuffle)"
-        >
-          shuffle
-        </Icon>
-        <Icon tag="button">
-          download
-        </Icon>
+        />
+        <Previous
+            @click="previousTrack()"
+            class="icon pointerable"
+        />
+        <PlayingState
+            :state="isPlaying"
+            @click="toggleTrackPlaying()"
+            class="icon musicState pointerable"
+        />
+        <Next
+            @click="nextTrack()"
+            class="icon pointerable"
+        />
+        <Repeat
+            :style="getActiveColor(currentRepeatMode !== 'onlyCurrentMusic', 'fill')"
+            @click="userConfig.toggleRepeatMode()"
+            :state="currentRepeatMode!"
+            class="icon"
+        />
       </div>
+
+      <div class="progress">
+        <div class="currentTime">
+          {{formatTime(currentTime)}}
+        </div>
+
+        <Range
+            class="range"
+            :max="duration"
+            :current="currentTime"
+            @onValueChange="timeUpdate"
+            @mousedown="audio.pause()"
+            @mouseup="audio.play()"
+        />
+
+        <div class="duration">
+          {{formatTime(duration)}}
+        </div>
+      </div>
+    </div>
+
+    <div class="additional-controls">
+
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.media-player {
-  border-top: 1px #333333 solid;
-  z-index: 2;
-  font-family: 'Open Sans', sans-serif;
-  position: fixed;
-  bottom: 0;
-  width: 100vw;
-  max-width: 100vw;
-  background-color: #0D0D0D;
-  display: flex;
+.player {
+  height: var(--player-height);
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1fr;
+  grid-gap: var(--border-radius);
+  align-items: center;
+  padding: 0 14px;
 
-  .musicBar {
-    height: 80px;
+  .track-details {
     display: flex;
-    align-items: center;
-    padding: 0 24px;
-    width: 100%;
+    gap: 16px;
 
-    & > div {
-      height: 70%;
-    }
+    .track-image-outer {
+      --image-size: 54px;
+      height: calc(var(--image-size));
+      width: var(--image-size);
+      position: relative;
 
-    .song-info {
-      display: flex;
-      align-items: center;
-      min-width: clamp(120px, 17vw, 270px);
-
-      .singer-logo {
-        display: flex;
-        background-size: cover;
-        background-position: center;
-        height: 90%;
-        aspect-ratio: 1/1;
-        border-radius: 50%;
-        animation: rotate 7s infinite linear;
-      }
-
-      .song-content {
-        margin-left: 0.7rem;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        justify-content: center;
-
-        h3 {
-          font-size: 1.1rem;
-          font-weight: 600;
-        }
-
-        p {
-          font-size: 0.8rem;
-          color: #bcbcbc;
-        }
+      img {
+        position: absolute;
+        top: 0;
+        object-fit: contain;
+        height: var(--image-size);
+        width: var(--image-size);
+        border-radius: 3px;
       }
     }
 
-    .controls {
+    .track-text-info {
       display: flex;
-      align-items: center;
-      width: 150px;
-      justify-content: space-between;
-      gap: 10px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      line-height: 1;
+      font-size: 1.05rem;
 
-      button {
-        font-size: 2rem;
+      .track-name {
+        font-size: .85em;
         cursor: pointer;
-        border: none;
-        background-color: inherit;
-      }
-
-      button:nth-child(2) {
-        font-size: 1.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #FFFFFF;
-        border-radius: 50%;
-        height: 100%;
-        aspect-ratio: 1/1;
-        color: #0D0D0D;
-      }
-    }
-
-    .music-status {
-      margin-left: clamp(30px, 30vw, 45px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 13px;
-      flex: 1;
-
-      span {
-        width: 41px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #d2d2d2;
-      }
-
-      .range {
-        width: 100%;
-      }
-
-    }
-
-    .music-volume {
-      margin-left: 40px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      width: 180px;
-
-      button {
-        background-color: initial;
-        border: none;
-      }
-
-      .range {
-        width: 100%;
-      }
-    }
-
-    .options {
-      display: flex;
-      align-items: center;
-
-      @media (max-width: 1500px) {
-        & button:not(:last-child) {
-          display: none;
-        }
-        & button:last-child {
-          margin: 0 30px;
-        }
-      }
-
-      button {
-        border: none;
-        background-color: inherit;
-        cursor: pointer;
-        margin-left: 35px;
-        color: #858585;
+        font-weight: 700;
 
         &:hover {
-          color: #FFFFFF;
+          text-decoration: underline;
         }
+      }
 
-        &:last-child {
-          margin-right: 15px;
-          color: #ee82ee;
-          font-variation-settings:
-              'FILL' 0,
-              'wght' 900,
-              'GRAD' 0,
-              'opsz' 48;
+      .track-artists {
+        font-size: .65em;
 
-          &:disabled {
-            color: #858585;
+        a span {
+          color: var(--text-soft);
+          font-weight: 500;
+
+          &:hover {
+            color: var(--white);
+            text-decoration: underline;
           }
         }
       }
     }
+
+  }
+
+  .track-controls {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .options {
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+
+      .icon {
+        height: 100%;
+        aspect-ratio: 1/1;
+        display: grid;
+        place-items: center;
+        background: none;
+        border: none;
+        fill: var(--text-soft);
+
+        &:hover, &:active {
+          fill: var(--white);
+        }
+
+        svg {
+          height: 16px;
+          aspect-ratio: 1/1;
+        }
+      }
+      .musicState {
+        background-color: var(--white);
+        fill: var(--black);
+        border-radius: 50%;
+        margin: 0 9px;
+
+        &:hover, &:active {
+          fill: var(--black);
+          scale: 1.1;
+        }
+      }
+
+      .pointerable {
+        cursor: pointer;
+      }
+    }
+
+    .progress {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .range {
+        flex: 1;
+      }
+
+      .currentTime, .duration {
+        position: relative;
+        top: 1px;
+        line-height: 0;
+        color: var(--text-soft);
+        font-size: 1rem;
+        font-weight: 500;
+        font-family: "Zain", sans-serif;
+      }
+    }
   }
 }
 
-
-.bodyActive {
-  overflow: hidden;
-}
-
-
-@keyframes rotate {
-  0% {
-    rotate: 0deg;
-  }
-  25% {
-    rotate: 90deg;
-  }
-  50% {
-    rotate: 180deg;
-  }
-  75% {
-    rotate: 270deg;
-  }
-  100% {
-    rotate: 360deg;
-  }
-}
 </style>

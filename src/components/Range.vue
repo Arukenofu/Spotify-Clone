@@ -17,8 +17,13 @@ const progress = computed(() => {
 
 function updateCurrentValue(event: Event) {
   const target = event.target as HTMLInputElement;
-  current.value = parseFloat(target.value);
+
+  emit('onValueChange', parseFloat(target.value));
 }
+
+const emit = defineEmits<{
+  onValueChange: [value: number]
+}>()
 
 </script>
 
@@ -26,6 +31,8 @@ function updateCurrentValue(event: Event) {
   <div class="range-outer">
     <input :max="max" :step="step ?? 1" type="range" @input="updateCurrentValue($event)">
     <div class="range-progress" :style="`width: ${progress}%`" />
+
+    <div class="thumb" :style="`left: ${progress - 1}%`" />
   </div>
 </template>
 
@@ -33,15 +40,23 @@ function updateCurrentValue(event: Event) {
 
 .range-outer {
   height: 4px;
-  background-color: #484848;
+  background-color: #4d4d4d;
   border-radius: 2px;
   position: relative;
+
+  &:hover, &:active, &:focus {
+    .range-progress {
+      background-color: var(--main-color);
+    }
+    .thumb {
+      opacity: 1;
+    }
+  }
 
   input {
     top: 0;
     left: 0;
     position: absolute;
-    cursor: pointer;
 
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -98,9 +113,22 @@ function updateCurrentValue(event: Event) {
 
   .range-progress {
     height: 100%;
-    background-color: var(--main-color);
+    background-color: var(--white);
     border-radius: 2px;
     width: 100%;
+  }
+
+  .thumb {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    height: 12px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    background-color: var(--white);
+
   }
 }
 
