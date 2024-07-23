@@ -111,15 +111,18 @@ watch(audio, () => {
             @click="isShuffle =! isShuffle"
         />
         <Previous
+            v-tooltip="'Назад'"
             @click="previousTrack()"
             class="icon pointerable"
         />
         <PlayingState
+            v-tooltip="'Слушать'"
             :state="isPlaying"
             @click="toggleTrackPlaying()"
             class="icon musicState pointerable"
         />
         <Next
+            v-tooltip="'Далее'"
             @click="nextTrack()"
             class="icon pointerable"
         />

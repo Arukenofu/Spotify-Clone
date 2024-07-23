@@ -3,7 +3,7 @@ import type {FetchOptions, FetchRequest} from "ofetch"
 import {ref} from "vue";
 
 export async function $api<T>(request: FetchRequest, options: FetchOptions<"json"> = {}) {
-    return await ofetch<T>(request, options)
+    return await ofetch<T>(request, options);
 }
 
 export function $apiLazy<T>(request: FetchRequest, options: FetchOptions<"json"> = {}) {
