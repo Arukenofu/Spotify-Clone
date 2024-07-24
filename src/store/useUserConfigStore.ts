@@ -6,6 +6,7 @@ type repeatModes = 'onlyCurrentMusic' | 'repeatCurrentMusic' | 'repeatCurrentPla
 export const useUserConfigStore = defineStore('useUserConfigStore', () => {
     const currentRepeatMode = useCachedRef<repeatModes>('repeatMode', 'onlyCurrentMusic');
     const isShuffle = useCachedRef<boolean>('isShuffle', false);
+    const volume = useCachedRef<number>('volume', 0.75);
 
     function toggleRepeatMode() {
         const repeatModes: repeatModes[] = ['onlyCurrentMusic', 'repeatCurrentPlaylist', 'repeatCurrentMusic'];
@@ -19,6 +20,7 @@ export const useUserConfigStore = defineStore('useUserConfigStore', () => {
     return {
         currentRepeatMode,
         isShuffle,
-        toggleRepeatMode
+        toggleRepeatMode,
+        volume
     }
 })

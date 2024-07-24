@@ -4,24 +4,31 @@ import {useUserConfigStore} from "@/store/useUserConfigStore";
 import {useMusicStore} from "@/store/useMusicStore";
 import {storeToRefs} from "pinia";
 
-import Repeat from "@/UI/MediaPlayer/Repeat.vue";
-import Previous from "@/UI/MediaPlayer/Previous.vue";
-import Next from "@/UI/MediaPlayer/Next.vue";
-import RandomOrder from "@/UI/MediaPlayer/RandomOrder.vue";
-import PlayingState from "@/UI/MediaPlayer/PlayingState.vue";
+import Repeat from "@/UI/Icons/MediaPlayer/Repeat.vue";
+import Previous from "@/UI/Icons/MediaPlayer/Previous.vue";
+import Next from "@/UI/Icons/MediaPlayer/Next.vue";
+import RandomOrder from "@/UI/Icons/MediaPlayer/RandomOrder.vue";
+import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import Range from "@/components/Range.vue";
 
 import formatTime from "../utils/formatTime";
 import getActiveColor from "@/utils/getActiveColor";
 import getRandomNumber from "@/utils/getRandomNumber";
+import useMusicUtils from "@/composables/useMusicUtils";
+import NowPlaying from "@/UI/Icons/MediaPlayerControls/NowPlaying.vue";
+import ShowText from "@/UI/Icons/MediaPlayerControls/ShowText.vue";
+import ShowQueue from "@/UI/Icons/MediaPlayerControls/ShowQueue.vue";
+import ConnectToDevice from "@/UI/Icons/MediaPlayerControls/ConnectToDevice.vue";
+import Volume from "@/UI/Icons/MediaPlayerControls/Volume.vue";
+import FullScreen from "@/UI/Icons/MediaPlayerControls/FullScreen.vue";
 
 const musicStore = useMusicStore();
 
 const {audio, isPlaying, currentAudioData, currentQueue, currentAudioIndexInQueue} = storeToRefs(musicStore);
-const {toggleTrackPlaying, nextTrack, previousTrack, loadSong} = musicStore;
+const {toggleTrackPlaying, nextTrack, previousTrack, loadSong} = useMusicUtils();
 
 const userConfig = useUserConfigStore();
-const {isShuffle, currentRepeatMode} = storeToRefs(userConfig);
+const {isShuffle, currentRepeatMode, volume} = storeToRefs(userConfig);
 
 const currentTime = ref<number>(0);
 const duration = ref<number>(0);
@@ -30,7 +37,7 @@ onMounted(() => {
   setInterval(() => {
     loadMetaData();
     autoTimeUpdate();
-  }, 1500)
+  }, 1500);
 });
 
 async function onMusicEnded() {
@@ -61,6 +68,12 @@ function autoTimeUpdate() {
 
 function timeUpdate(time: number) {
   audio.value!.currentTime = time;
+  isPlaying.value = true;
+}
+
+function volumeUpdate(newVolume: number) {
+  audio.value!.volume = newVolume;
+  volume.value = newVolume;
 }
 
 function loadMetaData() {
@@ -92,7 +105,7 @@ watch(audio, () => {
               class="artist"
               v-for="(artist, index) in currentAudioData.artists"
               :key="artist.id"
-              :to="`/artists/${artist.url}`"
+              :to="`/artist/${artist.url}`"
           >
             <span>
               {{artist.name}}
@@ -143,6 +156,7 @@ watch(audio, () => {
             class="range"
             :max="duration"
             :current="currentTime"
+            :thumb-fix="1"
             @onValueChange="timeUpdate"
             @mousedown="audio.pause()"
             @mouseup="audio.play()"
@@ -155,7 +169,49 @@ watch(audio, () => {
     </div>
 
     <div class="additional-controls">
+      <div class="options">
 
+        <NowPlaying
+            class="icon"
+            v-tooltip="'Экран «Сейчас играет»'"
+        />
+
+        <ShowText
+            class="icon"
+            v-tooltip="'Текст'"
+        />
+
+        <ShowQueue
+            class="icon"
+            v-tooltip="'Очередь'"
+        />
+
+        <ConnectToDevice
+            class="icon"
+            v-tooltip="'Подключиться к устройству'"
+        />
+
+        <div class="volume-option">
+          <Volume
+              v-tooltip="'Выключить звук'"
+              class="icon"
+          />
+
+          <Range
+              class="range"
+              :max="1"
+              :thumb-fix="6"
+              v-model:current="volume!"
+              :step="0.01"
+              @onValueChange="volumeUpdate"
+          />
+        </div>
+
+        <FullScreen
+            class="icon fullscreen"
+            v-tooltip="'На весь экран'"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -236,24 +292,6 @@ watch(audio, () => {
       justify-content: center;
       gap: 8px;
 
-      .icon {
-        height: 100%;
-        aspect-ratio: 1/1;
-        display: grid;
-        place-items: center;
-        background: none;
-        border: none;
-        fill: var(--text-soft);
-
-        &:hover, &:active {
-          fill: var(--white);
-        }
-
-        svg {
-          height: 16px;
-          aspect-ratio: 1/1;
-        }
-      }
       .musicState {
         background-color: var(--white);
         fill: var(--black);
@@ -292,6 +330,58 @@ watch(audio, () => {
       }
     }
   }
+
+  .additional-controls {
+
+    .options {
+      display: flex;
+
+      .icon:first-child {
+        margin-left: auto;
+      }
+
+      .icon {
+        width: 32px;
+        cursor: pointer;
+      }
+
+      .volume-option {
+        display: flex;
+        align-items: center;
+
+        .range {
+          width: 100px;
+        }
+      }
+    }
+  }
 }
 
+.icon {
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  fill: var(--text-soft);
+
+  &:hover, &:active {
+    fill: var(--white);
+  }
+
+  svg {
+    height: 16px;
+    aspect-ratio: 1/1;
+  }
+}
+
+.fullscreen {
+  margin-left: 11px;
+
+  // TODO: update tooltip positioning on screen edge
+  &:hover::before {
+    left: -50%;
+  }
+}
 </style>
