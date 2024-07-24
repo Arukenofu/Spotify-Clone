@@ -6,7 +6,7 @@ import MediaPlayer from "@/components/MediaPlayer.vue";
 
   <div class="root">
     <div class="main">
-      <aside>
+      <aside class="router">
 
       </aside>
 
@@ -15,6 +15,10 @@ import MediaPlayer from "@/components/MediaPlayer.vue";
           <RouterView />
         </Suspense>
       </main>
+
+      <aside v-if="true" class="info">
+
+      </aside>
     </div>
   </div>
 
@@ -37,8 +41,15 @@ import MediaPlayer from "@/components/MediaPlayer.vue";
     aside {
       background-color: var(--ui);
       max-height: 100%;
-      width: 380px;
       border-radius: var(--border-radius);
+    }
+
+    .router {
+      width: 420px;
+    }
+
+    .info {
+      width: 350px;
     }
 
     main {

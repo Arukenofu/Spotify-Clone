@@ -4,7 +4,8 @@ import {computed} from "vue";
 
 const props = defineProps<{
   max: number,
-  step?: number
+  step?: number,
+  thumbFix: number
 }>();
 
 const current = defineModel<number>('current',{
@@ -32,7 +33,7 @@ const emit = defineEmits<{
     <input :max="max" :step="step ?? 1" type="range" @input="updateCurrentValue($event)">
     <div class="range-progress" :style="`width: ${progress}%`" />
 
-    <div class="thumb" :style="`left: ${progress - 1}%`" />
+    <div class="thumb" :style="`left: ${progress - thumbFix}%`" />
   </div>
 </template>
 

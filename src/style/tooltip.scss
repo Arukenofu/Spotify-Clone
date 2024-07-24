@@ -10,14 +10,17 @@
   &:hover {
 
     &::before {
+      white-space: nowrap;
       font-family: "Arimo", sans-serif;
       content: attr(data-tooltip);
+      word-wrap: unset;
       font-size: .8rem;
       text-align: center;
       position: absolute;
       display: block;
       left: 50%;
       bottom: calc(100% + #{$distance});
+      min-width: $width;
       transform: translate(-50%);
       animation: fade-in 300ms ease;
       background: $tooltip-bg-color;
