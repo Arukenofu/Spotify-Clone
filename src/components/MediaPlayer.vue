@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import {onMounted, ref, watch} from "vue";
 import {useUserConfigStore} from "@/store/useUserConfigStore";
 import {useMusicStore} from "@/store/useMusicStore";
@@ -10,17 +10,18 @@ import Next from "@/UI/Icons/MediaPlayer/Next.vue";
 import RandomOrder from "@/UI/Icons/MediaPlayer/RandomOrder.vue";
 import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import Range from "@/components/Range.vue";
-
-import formatTime from "../utils/formatTime";
-import getActiveColor from "@/utils/getActiveColor";
-import getRandomNumber from "@/utils/getRandomNumber";
-import useMusicUtils from "@/composables/useMusicUtils";
 import NowPlaying from "@/UI/Icons/MediaPlayerControls/NowPlaying.vue";
 import ShowText from "@/UI/Icons/MediaPlayerControls/ShowText.vue";
 import ShowQueue from "@/UI/Icons/MediaPlayerControls/ShowQueue.vue";
 import ConnectToDevice from "@/UI/Icons/MediaPlayerControls/ConnectToDevice.vue";
 import Volume from "@/UI/Icons/MediaPlayerControls/Volume.vue";
 import FullScreen from "@/UI/Icons/MediaPlayerControls/FullScreen.vue";
+import VolumeSilent from "@/UI/Icons/MediaPlayerControls/VolumeSilent.vue";
+
+import formatTime from "../utils/formatTime";
+import getActiveColor from "@/utils/getActiveColor";
+import getRandomNumber from "@/utils/getRandomNumber";
+import useMusicUtils from "@/composables/useMusicUtils";
 
 const musicStore = useMusicStore();
 
@@ -76,10 +77,31 @@ function volumeUpdate(newVolume: number) {
   volume.value = newVolume;
 }
 
+function toggleVolume() {
+  if (volume.value === 0 && audio.value?.volume === 0 && !localStorage.getItem('volumeCached')) {
+    audio.value!.volume = 1;
+    volume.value = 1;
+
+    return;
+  }
+
+  if (audio.value!.volume === 0) {
+    audio.value!.volume = JSON.parse(localStorage.getItem('volumeCached')!);
+    volume.value = JSON.parse(localStorage.getItem('volumeCached')!);
+    localStorage.removeItem('volumeCached')
+
+    return;
+  }
+
+  localStorage.setItem('volumeCached', JSON.stringify(volume.value));
+  volume.value = 0;
+  audio.value!.volume = 0
+}
+
 function loadMetaData() {
   audio.value?.addEventListener("loadedmetadata", () => {
     duration.value = audio.value!.duration;
-  })
+  });
 }
 
 watch(audio, () => {
@@ -129,7 +151,7 @@ watch(audio, () => {
             class="icon pointerable"
         />
         <PlayingState
-            v-tooltip="'Слушать'"
+            v-tooltip="isPlaying ? 'Остановить' : 'Слушать'"
             :state="isPlaying"
             @click="toggleTrackPlaying()"
             class="icon musicState pointerable"
@@ -193,8 +215,16 @@ watch(audio, () => {
 
         <div class="volume-option">
           <Volume
-              v-tooltip="'Выключить звук'"
+              v-if="volume !== 0"
               class="icon"
+              v-tooltip="'Выключить звук'"
+              @click="toggleVolume()"
+          />
+          <VolumeSilent
+              v-else
+              class="icon"
+              v-tooltip="'Включить звук'"
+              @click="toggleVolume()"
           />
 
           <Range
@@ -216,7 +246,7 @@ watch(audio, () => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .player {
   height: var(--player-height);
   display: grid;
@@ -370,9 +400,11 @@ watch(audio, () => {
     fill: var(--white);
   }
 
-  svg {
-    height: 16px;
-    aspect-ratio: 1/1;
+  &:deep {
+    svg {
+      height: 16px;
+      aspect-ratio: 1/1;
+    }
   }
 }
 

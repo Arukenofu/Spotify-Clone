@@ -5,6 +5,7 @@
   "compilerOptions": {
     "moduleResolution": "Bundler",
     "types": [
+      "vite-plugin-vue-layouts/client",
       "unplugin-vue-router/client"
     ]
   },

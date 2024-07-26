@@ -14,6 +14,6 @@ defineProps<{
   </button>
 </template>
 
-<style scoped>
+<style>
 
 </style>

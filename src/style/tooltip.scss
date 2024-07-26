@@ -1,9 +1,9 @@
-.with-tooltip {
-  $height: 4px;
-  $width: 10px;
-  $distance: 10px;
-  $tooltip-bg-color: #282828;
+$height: 4px;
+$width: 10px;
+$distance: 10px;
+$tooltip-bg-color: #282828;
 
+.with-tooltip {
   position: relative;
   cursor: default;
 
@@ -31,21 +31,19 @@
     }
 
   }
+}
 
-  &[tooltip-position="bottom"] {
-    &:hover {
-      &::before {
-        bottom: auto;
-        top: calc(100% + #{$distance});
-      }
+.tooltip--bottom:hover {
+  &::before {
+    bottom: auto;
+    top: calc(100% + #{$distance});
+  }
 
-      &::after {
-        bottom: auto;
-        top: calc(100% + #{$distance - $height});
-        border-color: transparent transparent $tooltip-bg-color;
-        border-width: 0 $width $height;
-      }
-    }
+  &::after {
+    bottom: auto;
+    top: calc(100% + #{$distance - $height});
+    border-color: transparent transparent $tooltip-bg-color;
+    border-width: 0 $width $height;
   }
 }
 
