@@ -1,9 +1,9 @@
 import {defineStore} from "pinia";
-import useCachedRef from "@/composables/useCachedRef";
+import useCachedRef from "@/shared/composables/useCachedRef";
 
 type repeatModes = 'onlyCurrentMusic' | 'repeatCurrentMusic' | 'repeatCurrentPlaylist'
 
-export const useUserConfigStore = defineStore('useUserConfigStore', () => {
+export const useUserSettings = defineStore('useUserSettings', () => {
     const currentRepeatMode = useCachedRef<repeatModes>('repeatMode', 'onlyCurrentMusic');
     const isShuffle = useCachedRef<boolean>('isShuffle', false);
     const volume = useCachedRef<number>('volume', 0.75);

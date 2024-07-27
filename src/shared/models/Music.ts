@@ -1,4 +1,4 @@
-import type {Artist} from "@/models/Artist";
+import type {Artist} from "@/shared/models/Artist";
 
 interface SimpleArtist extends Pick<Artist, 'id' | 'name' | 'url'> {}
 

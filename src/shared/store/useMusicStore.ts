@@ -1,14 +1,9 @@
 import {defineStore} from "pinia";
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 
-import type {Music} from "@/models/Music";
-
+import type {Music} from "@/shared/models/Music";
 
 export const useMusicStore = defineStore('useMusicStore', () => {
-    onMounted(() => {
-        audio.value = new Audio(currentAudioData.value.url);
-    });
-
     const audio = ref<HTMLAudioElement | null>(null);
     const isPlaying = ref<boolean>(false);
     const currentAudioId = ref<number | null>(1);

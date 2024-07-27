@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import MediaPlayer from "@/components/MediaPlayer.vue";
+import MediaPlayer from "@/modules/MediaPlayer";
 </script>
 
 <template>

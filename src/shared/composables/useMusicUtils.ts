@@ -1,10 +1,8 @@
 import {storeToRefs} from "pinia";
+import {useMusicStore} from "@/shared/store/useMusicStore";
+import useTitle from "@/shared/composables/useTitle";
 
-import {useMusicStore} from "@/store/useMusicStore";
-import changeTitle from "@/composables/useTitle";
-
-import type {Music} from "@/models/Music";
-
+import type {Music} from "@/shared/models/Music";
 
 export default function (){
     const store = useMusicStore();
@@ -35,14 +33,14 @@ export default function (){
             }
         });
 
-        changeTitle(`${currentAudioData.value.name} • ${artistsString}`);
+        useTitle(`${currentAudioData.value.name} • ${artistsString}`);
     }
 
     function pauseAudio() {
         audio.value!.pause();
         isPlaying.value = false;
 
-        changeTitle();
+        useTitle();
     }
 
     function loadSong(data: Music, album?: Music[]) {

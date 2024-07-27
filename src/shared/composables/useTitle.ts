@@ -1,5 +1,5 @@
-import {useMusicStore} from "@/store/useMusicStore";
-import {useConfigStore} from "@/store/useConfigStore";
+import {useMusicStore} from "@/shared/store/useMusicStore";
+import {useConfigStore} from "@/shared/store/useConfigStore";
 
 export default function (value?: string) {
     const config = useConfigStore();
