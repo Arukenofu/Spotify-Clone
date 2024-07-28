@@ -4,79 +4,250 @@ import FormLabel from "@/UI/Form/FormLabel.vue";
 import FormInput from "@/UI/Form/FormInput.vue";
 import FormSelect from "@/UI/Form/FormSelect.vue";
 import FormField from "@/shared/components/FormField.vue";
+import FormRadio from "@/UI/Form/FormRadio.vue";
+import {computed, reactive, ref} from "vue";
+import FormButton from "@/UI/Form/FormButton.vue";
+import stepStore from "@/modules/SignUp/store/stepStore";
+import type {SecondStepForm} from "@/modules/SignUp/types/form";
+import getCurrentAge from "@/modules/SignUp/helpers/getCurrentAge";
+import FormError from "@/UI/Form/FormError.vue";
 
-const step = defineModel<number>('step', {
-  required: true
+const {step, form: storeForm} = stepStore();
+
+const genders = ['Мужчина', 'Женщина', 'Другое', 'Не хочу выбирать'];
+
+const form = reactive<SecondStepForm>({
+  username: '',
+  day: '',
+  month: 'Месяц',
+  year: '',
+  gender: ''
+});
+const formErrors = ref({
+  username: false,
+  gender: false
 });
 
+const birthdayValidate = computed(() => {
+  const errors: {message: string, field: 'day' | 'month' | 'year'}[] = [];
+  const {day, month, year} = form;
+
+  const isDayFill = String(day).length !== 0;
+  const isMonthFill = month !== 'Месяц';
+  const isYearFill = !!year;
+
+  if (!(isDayFill && isMonthFill && isYearFill)) {
+    return errors;
+  }
+
+  if (Number(day) > 31 || Number(day) < 1) {
+    errors.push({
+      field: 'day',
+      message: 'Введите число от 1 до 31.'
+    });
+  }
+
+  const today = new Date();
+  const userCurrentAge = getCurrentAge(Number(form.day), form.month, Number(form.year))
+
+  if (today.getFullYear() <= Number(year)) {
+    errors.push({
+      field: 'year',
+      message: 'Введите действительный год рождения.'
+    })
+  }
+
+  if (userCurrentAge <= 16) {
+    errors.push({
+      field: 'year',
+      message: 'Вы еще не достигли возраста, позволяющего создать аккаунт Spotify.'
+    });
+  }
+
+  if (userCurrentAge >= 100) {
+    errors.push({
+      field: 'year',
+      message: 'Год рождения должен быть не ранее 1900 г.'
+    });
+  }
+
+  return errors;
+});
+
+function validateCurrentStep() {
+  formErrors.value = {
+    username: false,
+    gender: false
+  };
+
+  if (!form.username.length) {
+    return formErrors.value.username = true
+  }
+  if (!form.gender) {
+    return formErrors.value.gender = true
+  }
+  if (birthdayValidate.value.length) {
+    return;
+  }
+
+  storeForm.value.username = form.username;
+  storeForm.value.gender = form.gender;
+  storeForm.value.day = form.day;
+  storeForm.value.month = form.month;
+  storeForm.value.year = form.year;
+  step.value++
+}
 
 </script>
 
 <template>
-  <form @submit.prevent="step++">
 
-    <FormLabel margin="0 0 3px">
-      Название
-    </FormLabel>
-    <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
-      Ваше имя появится в профиле.
-    </FormLabel>
-    <FormField type="text" :error="true">
-      Укажите имя своего профиля.
-    </FormField>
-
-    <FormLabel margin="18px 0 0">
-      Дата рождения
-    </FormLabel>
-
-    <div class="inputs">
-      <FormInput
-          class="day"
+  <form @submit.prevent="validateCurrentStep()">
+    <div class="username">
+      <FormLabel margin="0 0 3px">
+        Название
+      </FormLabel>
+      <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
+        Ваше имя появится в профиле.
+      </FormLabel>
+      <FormField
           type="text"
-          maxLength="2"
-          :only-number="true"
-          placeholder="дд"
-      />
-
-      <FormSelect text="Месяц" class="month">
-        <option v-for="month in months" :key="month">
-          {{month}}
-        </option>
-      </FormSelect>
-
-      <FormInput
-          class="year"
-          maxLength="4"
-          :only-number="true"
-          placeholder="гггг"
-      />
+          v-model="form.username"
+          :error="formErrors.username"
+      >
+        Укажите имя для своего профиля.
+      </FormField>
     </div>
 
+    <div class="birthday">
+      <FormLabel margin="18px 0 0">
+        Дата рождения
+      </FormLabel>
+
+      <div class="inputs">
+        <FormInput
+            class="day"
+            type="text"
+            maxLength="2"
+            :only-number="true"
+            placeholder="дд"
+            v-model="form.day"
+        />
+
+        <FormSelect text="Месяц" class="month" v-model="form.month">
+          <option v-for="month in months" :key="month">
+            {{month}}
+          </option>
+        </FormSelect>
+
+        <FormInput
+            class="year"
+            maxLength="4"
+            :only-number="true"
+            placeholder="гггг"
+            v-model="form.year"
+        />
+      </div>
+
+      <div class="errors" v-if="birthdayValidate.length">
+        <FormError
+            v-for="birthday in birthdayValidate"
+            :key="birthday.message"
+            class="error"
+        >
+          {{birthday.message}}
+        </FormError>
+      </div>
+    </div>
+
+    <div class="gender">
+      <FormLabel margin="4px 0 3px">
+        Пол
+      </FormLabel>
+      <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
+        Мы учитываем пол при подборе персональных рекомендаций и рекламы.
+      </FormLabel>
+
+      <div class="radio">
+        <FormRadio
+            v-for="(gender, index) in genders"
+            :key="index"
+            :index="gender"
+            :text="gender"
+            name="gender"
+            v-model="form.gender"
+        />
+
+        <FormError class="error" v-if="formErrors.gender">
+          Выберите свой пол.
+        </FormError>
+      </div>
+    </div>
+
+    <FormButton class="button">
+      Далее
+    </FormButton>
 
   </form>
 </template>
 
 <style scoped>
 form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
 
-  .inputs {
-    margin-top: 9px;
+  .username {
     display: flex;
-    gap: 8px;
-
-    .day {
-      width: 20%;
-    }
-
-    .month {
-      flex: 1;
-    }
-
-    .year {
-      width: 30%;
-    }
-
+    flex-direction: column;
   }
 
+  .birthday {
+
+    .inputs {
+      margin-top: 9px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 8px;
+
+      .day {
+        width: 20%;
+      }
+
+      .month {
+        flex: 1;
+      }
+
+      .year {
+        width: 30%;
+      }
+    }
+
+    .errors {
+      display: grid;
+      gap: 6px;
+    }
+  }
+
+  .gender {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .radio {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 6px;
+    row-gap: 9px;
+
+    .error {
+      margin-top: 5px;
+    }
+  }
+
+  .button {
+    margin-top: 28px;
+  }
 }
 </style>

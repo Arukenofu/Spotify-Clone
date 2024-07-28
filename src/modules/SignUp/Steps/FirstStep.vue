@@ -1,31 +1,94 @@
 <script setup lang="ts">
+import {computed, reactive, ref} from "vue";
+
 import FormLabel from "@/UI/Form/FormLabel.vue";
 import FormInput from "@/UI/Form/FormInput.vue";
-import {ref} from "vue";
-import rules from "@/modules/SignUp/constants/rules";
 import FormButton from "@/UI/Form/FormButton.vue";
 
-const step = defineModel<number>('step', {
-  required: true
+import stepStore from "@/modules/SignUp/store/stepStore";
+
+import type {FirstStepForm} from "@/modules/SignUp/types/form";
+import Pin from "@/UI/Icons/Shared/Pin.vue";
+
+const {step, form} = stepStore();
+
+const currentForm = reactive<FirstStepForm>({
+  password: ''
 });
 
-const passwordRules = ref(rules);
+const errorSteps = ref<number[]>([]);
+
+function isError(index: number) {
+  if (!errorSteps.value.length) {
+    return false;
+  }
+
+  return !errorSteps.value[index]
+}
+
+const passwordRuleValidation = computed(() => {
+  const {password} = currentForm;
+
+  const isHasOneLetter = /[a-zA-Z]/.test(password);
+  const isHasSpecialSymbolOrNumber = /[\d#?!&]/.test(password);
+  const isHas10Symbol = password.length >= 10;
+
+  return [
+    {
+      text: '1 букву',
+      achieved: isHasOneLetter
+    },
+    {
+      text: '1 цифру или специальный символ (например, # ? ! &)',
+      achieved: isHasSpecialSymbolOrNumber
+    },
+    {
+      text: '10 символов',
+      achieved: isHas10Symbol
+    }
+  ]
+});
+
+function validateCurrentStep() {
+  const isNotPassed = passwordRuleValidation.value.some(obj => {
+    return Object.values(obj).includes(false);
+  });
+
+  if (isNotPassed) {
+    passwordRuleValidation.value.forEach((obj, index) => {
+      if (!obj.achieved) {
+        errorSteps.value.push(index);
+      }
+    })
+
+    return;
+  }
+
+  form.value.password = currentForm.password;
+  step.value++
+}
+
 </script>
 
 <template>
-  <form @submit.prevent="step++">
+  <form @submit.prevent="validateCurrentStep()">
     <FormLabel>Пароль</FormLabel>
-    <FormInput class="input" type="password" />
+    <FormInput
+        v-model="currentForm.password"
+        class="input"
+        type="password"
+        :error="errorSteps.length"
+        @input="errorSteps = []"
+    />
 
     <div class="rules">
       <label>Пароль должен содержать как минимум:</label>
-      <div class="rule" v-for="rule in passwordRules" :key="rule.text">
+      <div class="rule" v-for="(rule, index) in passwordRuleValidation" :key="rule.text">
         <span class="icon">
-                  <svg v-if="rule.achieved" style="fill: var(--main-color)" data-encore-id="icon" role="img" aria-hidden="true" data-testid="password_requirement_one_letter-true" class="Svg-sc-ytk21e-0 jcyZiX sc-hiDLIP edQIim" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z"></path></svg>
-                  <svg v-else aria-hidden="true" width="12" height="12" data-testid="password_requirement_one_letter-false"><ellipse cx="6" cy="6" rx="5.5" ry="5.5" stroke="#A7A7A7" stroke-width="1" fill="none"></ellipse></svg>
-                </span>
+          <Pin :achieve="rule.achieved" />
+        </span>
 
-        <span class="text">
+        <span class="text" :class="isError(index) && 'alert'">
           {{rule.text}}
         </span>
       </div>
@@ -69,6 +132,9 @@ form {
         line-height: 1.4;
       }
 
+      .alert {
+        color: #f15e6c;
+      }
 
     }
   }

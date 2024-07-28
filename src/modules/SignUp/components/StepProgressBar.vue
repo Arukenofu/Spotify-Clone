@@ -1,9 +1,7 @@
 <script setup lang="ts">
+import stepStore from "@/modules/SignUp/store/stepStore";
 
-const step = defineModel<number>('step', {
-  required: true
-});
-
+const {step} = stepStore();
 </script>
 
 <template>

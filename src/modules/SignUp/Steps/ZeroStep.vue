@@ -2,10 +2,28 @@
 import FormButton from "@/UI/Form/FormButton.vue";
 import FormField from "@/shared/components/FormField.vue";
 import FormLabel from "@/UI/Form/FormLabel.vue";
+import {reactive, ref} from "vue";
+import stepStore from "@/modules/SignUp/store/stepStore";
+import type {ZeroStepForm} from "@/modules/SignUp/types/form";
 
-const step = defineModel<number>('step', {
-  required: true
+const {step, form} = stepStore();
+
+const currentForm = reactive<ZeroStepForm>({
+  email: '',
 });
+const isValidationError = ref<boolean>(false);
+
+function validateCurrentStep() {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isEmailValid = emailRegex.test(currentForm.email);
+
+  if (!isEmailValid) {
+    return isValidationError.value = true;
+  }
+
+  form.value.email = currentForm.email;
+  step.value++
+}
 
 </script>
 
@@ -15,12 +33,18 @@ const step = defineModel<number>('step', {
       Зарегистрируйтесь и погрузитесь в музыку
     </h1>
 
-    <form @submit.prevent="step++">
+    <form @submit.prevent="validateCurrentStep()">
       <FormLabel>Электронная почта</FormLabel>
 
-      <FormField class="input" type="email" placeholder="example@domain.com">
-        Неверный адрес электронной почты.<br>
-        Проверьте, нет ли опечаток, и попробуйте еще раз.
+      <FormField
+          class="input"
+          type="text"
+          placeholder="example@domain.com"
+          v-model="currentForm.email"
+          :error="isValidationError"
+      >
+        Адрес электронной почты недействителен. <br>
+        Убедитесь, что он указан в таком формате: example@email.com.
       </FormField>
 
       <FormButton class="button">

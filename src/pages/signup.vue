@@ -11,7 +11,7 @@ import RegistrationForm from "@/modules/SignUp";
 
 <style lang="scss" scoped>
   main {
-    height: 100dvh;
+    min-height: 100dvh;
     width: 100dvw;
     background-color: var(--ui);
   }

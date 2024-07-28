@@ -35,24 +35,22 @@ onMounted(() => {
   padding: 0 14px;
 }
 
-:deep {
-  .icon {
-    height: 100%;
+:deep(.icon) {
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  fill: var(--text-soft);
+
+  &:hover, &:active {
+    fill: var(--white);
+  }
+
+  svg {
+    height: 16px;
     aspect-ratio: 1/1;
-    display: grid;
-    place-items: center;
-    background: none;
-    border: none;
-    fill: var(--text-soft);
-
-    &:hover, &:active {
-      fill: var(--white);
-    }
-
-    svg {
-      height: 16px;
-      aspect-ratio: 1/1;
-    }
   }
 }
 </style>

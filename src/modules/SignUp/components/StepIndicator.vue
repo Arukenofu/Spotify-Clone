@@ -1,9 +1,7 @@
 <script setup lang="ts">
+import stepStore from "@/modules/SignUp/store/stepStore";
 
-const step = defineModel<number>('step', {
-  required: true
-});
-
+const {step} = stepStore();
 </script>
 
 <template>
@@ -14,14 +12,18 @@ const step = defineModel<number>('step', {
     <div class="indicator">
       <span class="counter">Шаг {{step}} из 3</span>
       <span class="text">
-              <template v-if="step === 1">
-                Придуймайте пароль
-              </template>
+        <template v-if="step === 1">
+          Придуймайте пароль
+        </template>
 
-              <template v-if="step === 2">
-                Расскажите о себе
-              </template>
-            </span>
+        <template v-if="step === 2">
+          Расскажите о себе
+        </template>
+
+        <template v-if="step === 3">
+          Условия использования
+        </template>
+      </span>
     </div>
   </div>
 </template>

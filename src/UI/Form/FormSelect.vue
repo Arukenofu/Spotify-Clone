@@ -1,14 +1,17 @@
 <script setup lang="ts">
 
 defineProps<{
-  text: string
-}>()
+  text: string,
+  error?: any
+}>();
+
+const model = defineModel()
 
 </script>
 
 <template>
   <div class="select">
-    <select>
+    <select :class="!!error && 'error'" v-model="model">
       <option selected disabled>
         {{text}}
       </option>
@@ -48,6 +51,14 @@ defineProps<{
 
     &:hover, &:focus {
       border: 2px solid var(--white);
+    }
+  }
+
+  .error {
+    border: 2px solid #e91429;
+
+    &:hover, &:focus {
+      border: 2px solid #e91429;
     }
   }
 
