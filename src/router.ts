@@ -10,9 +10,6 @@ export const router = createRouter({
 })
 
 router.beforeEach(() => {
-  // if (to.path !== '/auth' && !localStorage.getItem('token')) {
-  //   return '/auth'
-  // }
 })
 
 if (import.meta.hot) {

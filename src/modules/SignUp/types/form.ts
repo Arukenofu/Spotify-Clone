@@ -8,10 +8,8 @@ export interface FirstStepForm {
 
 export interface SecondStepForm {
     username: string,
-    day: number | string | null,
+    day: number | null,
     month: string,
-    year: number | string | null,
+    year: number | null,
     gender: string
 }
-
-export interface Form extends ZeroStepForm, FirstStepForm, SecondStepForm {}

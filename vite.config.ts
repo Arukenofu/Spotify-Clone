@@ -22,5 +22,10 @@ export default defineConfig({
         alias: {
           '@': fileURLToPath(new URL('./src', import.meta.url))
         }
+    },
+    server: {
+        cors: {
+            origin: 'http://localhost:5174',
+        }
     }
 })

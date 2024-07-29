@@ -1,11 +1,12 @@
 import {defineStore, storeToRefs} from "pinia";
 import {ref} from "vue";
-import type {Form} from "@/modules/SignUp/types/form";
+
+import type {RegisterForm} from "@/services/types/authServiceTypes";
 
 const StepStore = defineStore('StepStore', () => {
-    const step = ref<number>(3);
+    const step = ref<number>(0);
 
-    const form = ref<Form>({
+    const form = ref<RegisterForm>({
         email: '',
         password: '',
         username: '',

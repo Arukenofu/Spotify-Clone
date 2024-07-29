@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import months from "@/modules/SignUp/constants/months";
+import {computed, reactive, ref} from "vue";
+
 import FormLabel from "@/UI/Form/FormLabel.vue";
 import FormInput from "@/UI/Form/FormInput.vue";
 import FormSelect from "@/UI/Form/FormSelect.vue";
 import FormField from "@/shared/components/FormField.vue";
 import FormRadio from "@/UI/Form/FormRadio.vue";
-import {computed, reactive, ref} from "vue";
 import FormButton from "@/UI/Form/FormButton.vue";
-import stepStore from "@/modules/SignUp/store/stepStore";
-import type {SecondStepForm} from "@/modules/SignUp/types/form";
-import getCurrentAge from "@/modules/SignUp/helpers/getCurrentAge";
 import FormError from "@/UI/Form/FormError.vue";
+
+import months from "@/modules/SignUp/constants/months";
+import stepStore from "@/modules/SignUp/store/stepStore";
+import getCurrentAge from "@/modules/SignUp/helpers/getCurrentAge";
+
+import type {SecondStepForm} from "@/modules/SignUp/types/form";
 
 const {step, form: storeForm} = stepStore();
 
@@ -18,9 +21,9 @@ const genders = ['Мужчина', 'Женщина', 'Другое', 'Не хо�
 
 const form = reactive<SecondStepForm>({
   username: '',
-  day: '',
+  day: null,
   month: 'Месяц',
-  year: '',
+  year: null,
   gender: ''
 });
 const formErrors = ref({
@@ -40,7 +43,7 @@ const birthdayValidate = computed(() => {
     return errors;
   }
 
-  if (Number(day) > 31 || Number(day) < 1) {
+  if (day! > 31 || day! < 1) {
     errors.push({
       field: 'day',
       message: 'Введите число от 1 до 31.'
@@ -48,9 +51,9 @@ const birthdayValidate = computed(() => {
   }
 
   const today = new Date();
-  const userCurrentAge = getCurrentAge(Number(form.day), form.month, Number(form.year))
+  const userCurrentAge = getCurrentAge(form.day!, form.month, form.year!)
 
-  if (today.getFullYear() <= Number(year)) {
+  if (today.getFullYear() <= year!) {
     errors.push({
       field: 'year',
       message: 'Введите действительный год рождения.'
@@ -131,7 +134,7 @@ function validateCurrentStep() {
             maxLength="2"
             :only-number="true"
             placeholder="дд"
-            v-model="form.day"
+            v-model.number="form.day"
         />
 
         <FormSelect text="Месяц" class="month" v-model="form.month">
@@ -145,7 +148,7 @@ function validateCurrentStep() {
             maxLength="4"
             :only-number="true"
             placeholder="гггг"
-            v-model="form.year"
+            v-model.number="form.year"
         />
       </div>
 

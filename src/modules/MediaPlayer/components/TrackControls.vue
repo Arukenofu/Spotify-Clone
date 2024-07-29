@@ -22,7 +22,7 @@ const {audio, isPlaying, currentQueue, currentAudioIndexInQueue} = storeToRefs(m
 const {toggleTrackPlaying, nextTrack, previousTrack, loadSong} = useMusicUtils();
 
 const userConfig = useUserSettings();
-const {isShuffle, currentRepeatMode} = storeToRefs(userConfig);
+const {isShuffle, currentRepeatMode, volume} = storeToRefs(userConfig);
 
 const currentTime = ref<number>(0);
 const duration = ref<number>(0);
@@ -70,6 +70,7 @@ function timeUpdate(time: number) {
 
 function loadMetaData() {
   audio.value?.addEventListener("loadedmetadata", () => {
+    audio.value!.volume = volume.value;
     duration.value = audio.value!.duration;
   });
 }

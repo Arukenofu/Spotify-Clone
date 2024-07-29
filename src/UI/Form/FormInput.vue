@@ -49,6 +49,10 @@ input {
 
   &[type=password] {
     font-size: 1.4rem;
+
+    &::placeholder {
+      font-size: .9rem;
+    }
   }
 
   &[type=number] {

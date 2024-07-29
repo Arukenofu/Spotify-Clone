@@ -3,7 +3,8 @@ import type {FetchOptions, FetchRequest} from "ofetch"
 import {ref} from "vue";
 
 const api = ofetch.create({
-    baseURL: "http://localhost:8000/"
+    baseURL: "http://localhost:8000/",
+    credentials: 'include'
 });
 
 export async function $api<T>(request: FetchRequest, options: FetchOptions<"json"> = {}) {

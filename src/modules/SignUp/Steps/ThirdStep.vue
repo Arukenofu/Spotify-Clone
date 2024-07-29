@@ -4,6 +4,10 @@ import FormButton from "@/UI/Form/FormButton.vue";
 import {ref} from "vue";
 import FormError from "@/UI/Form/FormError.vue";
 import {router} from "@/router";
+import stepStore from "@/modules/SignUp/store/stepStore";
+import {RegisterAccount} from "@/services/api/authService";
+
+const {form} = stepStore();
 
 const terms = ref([
   {
@@ -21,7 +25,7 @@ const terms = ref([
 ]);
 const isError = ref<boolean>(false)
 
-function validateWholeForm() {
+async function validateWholeForm() {
   if (!terms.value[0].checked) {
     // do something
   }
@@ -32,7 +36,9 @@ function validateWholeForm() {
     return isError.value = true;
   }
 
-  router.push('/login');
+  await RegisterAccount(form.value);
+
+  await router.push('/login');
 }
 
 </script>
