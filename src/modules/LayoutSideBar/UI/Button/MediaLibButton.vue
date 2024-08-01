@@ -1,0 +1,165 @@
+<script setup lang="ts">
+import useSidebarStore from "@/modules/LayoutSideBar/store/useSidebarStore";
+import {storeToRefs} from "pinia";
+import LibraryIcon from "@/modules/LayoutSideBar/UI/Icons/LibraryIcon.vue";
+import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
+import ArrowIcon from "@/UI/Icons/Shared/ArrowIcon.vue";
+import {computed} from "vue";
+import defaultWidth from "@/modules/LayoutSideBar/constants/defaultWidth";
+import max from "@/modules/LayoutSideBar/constants/max";
+
+const store = useSidebarStore();
+const {isMinimized, currentWidth} = storeToRefs(store);
+
+function toggleSidebar() {
+  if (isMinimized.value) {
+    isMinimized.value = !isMinimized.value;
+    currentWidth.value = defaultWidth;
+  } else {
+    isMinimized.value = !isMinimized.value;
+    currentWidth.value = 72;
+  }
+}
+
+const widthArrowDirection = computed(() => {
+  if (currentWidth.value < 450) {
+    return 'right'
+  } else {
+    return 'left'
+  }
+});
+
+function toggleWidth() {
+  if (widthArrowDirection.value === 'left') {
+    currentWidth.value = defaultWidth;
+  } else {
+    currentWidth.value = max;
+  }
+}
+
+</script>
+
+<template>
+  <div class="medialib">
+    <button
+        v-if="isMinimized"
+        class="toggle"
+        @click="toggleSidebar()"
+        v-tooltip.right="isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'"
+    >
+      <LibraryIcon class="icon" />
+    </button>
+
+    <button
+        v-else
+        class="toggle"
+        @click="toggleSidebar()"
+        v-tooltip="isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'"
+    >
+      <LibraryIcon class="icon" />
+      <span class="text">
+        Моя медиатека
+      </span>
+    </button>
+    <!--  TODO: Find solution to minimize  -->
+
+    <div class="other-controls" v-if="!isMinimized">
+      <button class="createPlaylist" v-tooltip="'Создать плейлист или папку'">
+        <PlusIcon class="icon" />
+      </button>
+
+      <button
+          class="toggleWidth"
+          v-tooltip="currentWidth < 450 ? 'Развернуть' : 'Свернуть'"
+          @click="toggleWidth()"
+      >
+        <ArrowIcon class="icon" :direction="widthArrowDirection" />
+      </button>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+  .medialib {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    height: 56px;
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      padding: 4px 8px;
+      gap: 12px;
+
+      &:hover {
+        .icon {
+          fill: var(--white);
+        }
+      }
+
+      .text {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      &:deep(.icon) {
+        width: 24px;
+        height: 24px;
+        fill: var(--text-soft);
+      }
+    }
+
+    .other-controls {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+
+      button {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+
+        &:active {
+          background-color: var(--black) !important;
+        }
+
+        &:hover {
+          background-color: var(--ui-highlight);
+
+          .icon {
+            fill: var(--white);
+          }
+        }
+      }
+
+      &:deep(.icon) {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  * {
+    color: var(--text-soft);
+    transition: color .2s linear, fill .2s linear;
+  }
+
+  :deep(.icon) {
+    fill: var(--text-soft);
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      .text {
+        color: var(--white);
+      }
+    }
+  }
+</style>

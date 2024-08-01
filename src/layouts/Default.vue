@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import MediaPlayer from "@/modules/MediaPlayer";
+import {LayoutSideBar} from "@/modules/LayoutSideBar";
+
 </script>
 
 <template>
   <div class="root">
     <div class="main">
-      <aside class="router">
 
-      </aside>
+      <LayoutSideBar />
 
       <main>
         <Suspense>
@@ -32,21 +33,16 @@ import MediaPlayer from "@/modules/MediaPlayer";
   padding: 7px;
 
   .main {
-    border-radius: var(--border-radius);
+    border-radius: var(--layout-gap);
     display: flex;
-    gap: var(--border-radius);
 
     aside {
-      background-color: var(--ui);
-      max-height: 100%;
       border-radius: var(--border-radius);
     }
 
-    .router {
-      width: 420px;
-    }
-
     .info {
+      background-color: var(--ui);
+      max-height: 100%;
       width: 350px;
     }
 

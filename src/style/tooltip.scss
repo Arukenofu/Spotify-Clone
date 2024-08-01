@@ -38,12 +38,23 @@ $tooltip-bg-color: #282828;
     bottom: auto;
     top: calc(100% + #{$distance});
   }
+}
 
-  &::after {
+.tooltip--right:hover {
+  &::before {
     bottom: auto;
-    top: calc(100% + #{$distance - $height});
-    border-color: transparent transparent $tooltip-bg-color;
-    border-width: 0 $width $height;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(100% + #{$distance});
+  }
+}
+
+.tooltip--left:hover {
+  &::before {
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    right: calc(100% + #{$distance});
   }
 }
 
