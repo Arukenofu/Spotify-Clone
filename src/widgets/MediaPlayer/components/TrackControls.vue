@@ -8,10 +8,8 @@ import Next from "@/UI/Icons/MediaPlayer/Next.vue";
 import Repeat from "@/UI/Icons/MediaPlayer/Repeat.vue";
 import Range from "@/shared/components/Range.vue";
 
-
 import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
-import {useMusicStore} from "@/widgets/MediaPlayer/store/useMusicStore";
-import useMusicUtils from "@/widgets/MediaPlayer/composables/useMusicUtils";
+import {useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
 import getRandomNumber from "@/shared/utils/getRandomNumber";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import formatTime from "@/shared/utils/formatTime";

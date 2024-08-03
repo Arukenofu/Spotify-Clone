@@ -2,9 +2,10 @@
 import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
 import RoundButton from "@/UI/Buttons/RoundButton.vue";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import useInfoContentStore from "@/widgets/LayoutInfoContent/store/useInfoContentStore";
 
-const {currentPanel} = useInfoContentStore();
+import useInfoContentStore from "@/features/InfoPanel/store/useInfoContentStore";
+
+const {setNewPanel} = useInfoContentStore();
 </script>
 
 <template>
@@ -17,7 +18,7 @@ const {currentPanel} = useInfoContentStore();
       <div class="panel-options">
         <slot />
 
-        <RoundButton v-tooltip.bottom="'Закрыть'" @click="currentPanel = null">
+        <RoundButton v-tooltip.bottom="'Закрыть'" @click="setNewPanel(null)">
           <CloseIcon class="icon" />
         </RoundButton>
       </div>

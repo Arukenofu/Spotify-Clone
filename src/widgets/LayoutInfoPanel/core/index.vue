@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import Resizer from "@/shared/components/Resizer.vue";
 
-import max from "@/widgets/LayoutInfoContent/constants/max";
-import min from "@/widgets/LayoutInfoContent/constants/min";
+import max from "@/widgets/LayoutInfoPanel/constants/max";
+import min from "@/widgets/LayoutInfoPanel/constants/min";
 import defaultWidth from "@/widgets/LayoutSideBar/constants/defaultWidth";
 import useCachedRef from "@/shared/composables/useCachedRef";
-import useInfoContentStore from "@/widgets/LayoutInfoContent/store/useInfoContentStore";
-import CurrentPlaylistQueue from "@/widgets/LayoutInfoContent/components/CurrentPlaylistQueue.vue";
+import {infoPanel} from "@/features/InfoPanel";
 
 const currentPanelWidth = useCachedRef('infoContentWidth', defaultWidth);
 
-const {currentPanel} = useInfoContentStore()
+const {currentPanelComponent} = infoPanel();
+
 </script>
 
 <template>
   <Resizer
-      v-if="currentPanel"
+      v-if="currentPanelComponent"
       :min-width="min"
       :max-width="max"
       v-model:current-width="currentPanelWidth"
@@ -23,11 +23,11 @@ const {currentPanel} = useInfoContentStore()
   />
 
   <aside
-      v-if="currentPanel"
+      v-if="currentPanelComponent"
       class="info"
       :style="`width: ${currentPanelWidth}px;`"
   >
-    <CurrentPlaylistQueue v-if="currentPanel === 'currentPlaylistQueue'" />
+    <Component :is="currentPanelComponent" />
   </aside>
 </template>
 

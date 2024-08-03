@@ -30,7 +30,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="range-outer">
-    <input :max="max" :step="step ?? 1" type="range" @input="updateCurrentValue($event)">
+    <input :max="max" :step="step ?? 1" type="range" :value="current" @input="updateCurrentValue($event)">
     <div class="range-progress" :style="`width: ${progress}%`" />
 
     <div class="thumb" :style="`left: ${progress - thumbFix}%`" />

@@ -10,13 +10,16 @@ import NowPlaying from "@/UI/Icons/MediaPlayerControls/NowPlaying.vue";
 
 import {storeToRefs} from "pinia";
 import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
-import {useMusicStore} from "@/widgets/MediaPlayer/store/useMusicStore";
+import {useMusicStore} from "@/features/MediaPlayer";
+import {infoPanel} from '@/features/InfoPanel'
 
 const musicStore = useMusicStore();
 const {audio} = storeToRefs(musicStore);
 
 const userConfig = useUserSettings();
 const {volume} = storeToRefs(userConfig);
+
+const {setNewPanel} = infoPanel()
 
 function volumeUpdate(newVolume: number) {
   audio.value!.volume = newVolume;
@@ -61,6 +64,7 @@ function toggleVolume() {
       />
 
       <ShowQueue
+          @click="setNewPanel('CurrentPlaylistQueue')"
           class="icon"
           v-tooltip="'Очередь'"
       />

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {MediaPlayer} from "@/widgets/MediaPlayer";
 import {LayoutSideBar} from "@/widgets/LayoutSideBar";
-import {LayoutInfoContent} from "@/widgets/LayoutInfoContent";
+import {LayoutInfoContent} from "@/widgets/LayoutInfoPanel";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 
 </script>

@@ -1,0 +1,1 @@
+export {default as infoPanel} from './store/useInfoContentStore'

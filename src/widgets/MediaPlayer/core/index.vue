@@ -1,6 +1,6 @@
-<script setup lang="ts" generic="T">
-import {useMusicStore} from "@/widgets/MediaPlayer/store/useMusicStore";
+<script setup lang="ts">
 import {storeToRefs} from "pinia";
+import {useMusicStore} from "@/features/MediaPlayer";
 
 import TrackDetails from "@/widgets/MediaPlayer/components/TrackDetails.vue";
 import TrackControls from "@/widgets/MediaPlayer/components/TrackControls.vue";

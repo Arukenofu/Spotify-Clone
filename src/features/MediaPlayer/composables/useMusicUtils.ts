@@ -1,6 +1,6 @@
 import {storeToRefs} from "pinia";
 import useTitle from "@/shared/composables/useTitle";
-import {useMusicStore} from "@/widgets/MediaPlayer/store/useMusicStore";
+import {useMusicStore} from "@/features/MediaPlayer/store/useMusicStore";
 
 import type {Music} from "@/shared/models/Music";
 
