@@ -12,7 +12,7 @@ export default defineConfig({
         Router(),
         sassGlobImports(),
         ClientSideLayout({
-            layoutDir: 'src/layouts',
+            layoutDir: 'src/app/layouts',
             defaultLayout: 'Default',
             importMode: 'sync'
         }),

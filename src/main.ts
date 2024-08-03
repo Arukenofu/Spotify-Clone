@@ -1,11 +1,11 @@
-import './global.scss'
+import './app/index.scss'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from './App.vue'
-import {router} from './router'
-import ToolTip from "@/directives/Tooltip";
+import App from './app/App.vue'
+import {router} from './app/router'
+import ToolTip from "./app/directives/Tooltip";
 
 const app = createApp(App)
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RegistrationForm from "@/modules/SignUp";
+import {RegistrationForm} from "@/widgets/SignUp";
 
 </script>
 

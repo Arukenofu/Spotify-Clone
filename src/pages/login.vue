@@ -7,8 +7,8 @@ import {reactive, ref} from "vue";
 import FormButton from "@/UI/Form/FormButton.vue";
 import ErrorIcon from "@/UI/Icons/Shared/ErrorIcon.vue";
 import FormError from "@/UI/Form/FormError.vue";
-import {router} from "@/router";
 import {LoginToAccount} from "@/services/api/authService";
+import {router} from "@/app/router";
 
 const form = reactive({
   email: '',

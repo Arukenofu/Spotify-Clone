@@ -1,0 +1,18 @@
+<script setup lang="ts">
+
+import MediaLibButton from "@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue";
+</script>
+
+<template>
+  <div class="media-library">
+    <MediaLibButton />
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.media-library {
+  flex: 1;
+  background-color: var(--ui);
+  border-radius: var(--border-radius);
+}
+</style>
