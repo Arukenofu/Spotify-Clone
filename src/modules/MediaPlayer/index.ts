@@ -1,3 +1,3 @@
-import MediaPlayer from './components/_index.vue'
+import MediaPlayer from './core/index.vue'
 
 export default MediaPlayer;

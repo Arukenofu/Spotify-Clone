@@ -1,4 +1,4 @@
-import LayoutSideBar from './components/_index.vue'
+import LayoutSideBar from './core/index.vue'
 
 export {
     LayoutSideBar

@@ -7,6 +7,7 @@ import ArrowIcon from "@/UI/Icons/Shared/ArrowIcon.vue";
 import {computed} from "vue";
 import defaultWidth from "@/modules/LayoutSideBar/constants/defaultWidth";
 import max from "@/modules/LayoutSideBar/constants/max";
+import RoundButton from "@/UI/Buttons/RoundButton.vue";
 
 const store = useSidebarStore();
 const {isMinimized, currentWidth} = storeToRefs(store);
@@ -64,17 +65,17 @@ function toggleWidth() {
     <!--  TODO: Find solution to minimize  -->
 
     <div class="other-controls" v-if="!isMinimized">
-      <button class="createPlaylist" v-tooltip="'Создать плейлист или папку'">
+      <RoundButton class="createPlaylist" v-tooltip="'Создать плейлист или папку'">
         <PlusIcon class="icon" />
-      </button>
+      </RoundButton>
 
-      <button
+      <RoundButton
           class="toggleWidth"
           v-tooltip="currentWidth < 450 ? 'Развернуть' : 'Свернуть'"
           @click="toggleWidth()"
       >
         <ArrowIcon class="icon" :direction="widthArrowDirection" />
-      </button>
+      </RoundButton>
     </div>
   </div>
 </template>
@@ -114,26 +115,6 @@ function toggleWidth() {
       margin-left: auto;
       display: flex;
       gap: 8px;
-
-      button {
-        display: grid;
-        place-items: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-
-        &:active {
-          background-color: var(--black) !important;
-        }
-
-        &:hover {
-          background-color: var(--ui-highlight);
-
-          .icon {
-            fill: var(--white);
-          }
-        }
-      }
 
       &:deep(.icon) {
         width: 16px;

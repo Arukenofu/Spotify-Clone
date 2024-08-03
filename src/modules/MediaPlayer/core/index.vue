@@ -33,6 +33,8 @@ onMounted(() => {
   grid-gap: var(--border-radius);
   align-items: center;
   padding: 0 14px;
+  z-index: 2;
+  background-color: var(--black);
 }
 
 :deep(.icon) {

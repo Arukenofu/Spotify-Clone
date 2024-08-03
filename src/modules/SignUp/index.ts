@@ -1,3 +1,3 @@
-import RegistrationForm from './components/_index.vue'
+import RegistrationForm from './core/index.vue'
 
 export default RegistrationForm

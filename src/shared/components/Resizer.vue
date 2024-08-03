@@ -3,14 +3,18 @@ import {ref} from "vue";
 
 interface Props {
   maxWidth: number,
-  minWidth: number
+  minWidth: number,
+  fromRight?: boolean
 }
 
 type Emits = {
   customResizeEvent: [newWidth: number, max: number, min: number]
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  fromRight: false
+});
+
 const resizableWidth = defineModel<number>('currentWidth', {
   required: true,
 });
@@ -32,7 +36,11 @@ function resize(event: MouseEvent): void {
   if (!isResizing.value) return;
 
   const mouseX = event.clientX;
-  const newWidth = initialWidth.value + (mouseX - initialWidth.value);
+  let newWidth = initialWidth.value + (mouseX - initialWidth.value);
+
+  if (props.fromRight) {
+    newWidth = window.screen.availWidth - newWidth
+  }
 
   if (newWidth >= props.minWidth && newWidth <= props.maxWidth) {
     resizableWidth.value = newWidth - 10;

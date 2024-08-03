@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import MediaPlayer from "@/modules/MediaPlayer";
 import {LayoutSideBar} from "@/modules/LayoutSideBar";
+import { LayoutInfoContent } from "@/modules/LayoutInfoContent";
+import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 
 </script>
 
@@ -10,15 +12,13 @@ import {LayoutSideBar} from "@/modules/LayoutSideBar";
 
       <LayoutSideBar />
 
-      <main>
+      <ScrollableBlock is="main">
         <Suspense>
           <RouterView />
         </Suspense>
-      </main>
+      </ScrollableBlock>
 
-      <aside v-if="true" class="info">
-
-      </aside>
+      <LayoutInfoContent />
     </div>
   </div>
 
@@ -28,23 +28,14 @@ import {LayoutSideBar} from "@/modules/LayoutSideBar";
 <style lang="scss" scoped>
 .root {
   width: 100dvw;
-  height: calc(100dvh - var(--player-height));
   display: grid;
   padding: 7px;
 
   .main {
     border-radius: var(--layout-gap);
+    height: calc(100dvh - var(--player-height) - (var(--layout-gap) * 2));
+    min-height: 500px;
     display: flex;
-
-    aside {
-      border-radius: var(--border-radius);
-    }
-
-    .info {
-      background-color: var(--ui);
-      max-height: 100%;
-      width: 350px;
-    }
 
     main {
       flex: 1;

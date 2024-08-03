@@ -1,0 +1,25 @@
+.scrollbar {
+  --scrollbar-bg: hsla(0,0%,100%,.3);
+  --scrollbar-bg-hover: hsla(0,0%,100%,.5);
+  --scrollbar-bg-active: hsla(0,0%,100%,.7);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  background-color: var(--scrollbar-bg);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0;
+  transition: opacity .15s;
+
+  &:hover {
+    opacity: 1;
+    background-color: var(--scrollbar-bg-hover);
+  }
+
+  &:active {
+    opacity: 1;
+    background-color: var(--scrollbar-bg-active);
+  }
+}
