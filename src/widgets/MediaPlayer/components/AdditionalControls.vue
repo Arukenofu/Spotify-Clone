@@ -19,7 +19,7 @@ const {audio} = storeToRefs(musicStore);
 const userConfig = useUserSettings();
 const {volume} = storeToRefs(userConfig);
 
-const {setNewPanel} = infoPanel()
+const {currentPanelName, setNewPanel} = infoPanel()
 
 function volumeUpdate(newVolume: number) {
   audio.value!.volume = newVolume;
@@ -64,6 +64,7 @@ function toggleVolume() {
       />
 
       <ShowQueue
+          :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
           @click="setNewPanel('CurrentPlaylistQueue')"
           class="icon"
           v-tooltip="'Очередь'"
@@ -99,8 +100,8 @@ function toggleVolume() {
       </div>
 
       <FullScreen
-          class="icon fullscreen"
-          v-tooltip="'На весь экран'"
+          class="icon"
+          v-tooltip.top_left="'На весь экран'"
       />
     </div>
   </div>
@@ -121,6 +122,10 @@ function toggleVolume() {
       cursor: pointer;
     }
 
+    .active:deep(svg) {
+      fill: var(--main-color);
+    }
+
     .volume-option {
       display: flex;
       align-items: center;
@@ -129,16 +134,6 @@ function toggleVolume() {
         width: 100px;
       }
     }
-  }
-}
-
-
-.fullscreen {
-  margin-left: 11px;
-
-  // TODO: update tooltip positioning on screen edge
-  &:hover::before {
-    left: -50%;
   }
 }
 </style>

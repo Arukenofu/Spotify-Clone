@@ -19,14 +19,14 @@ const {currentAudioData} = storeToRefs(store);
       </a>
       <div class="track-artists">
         <RouterLink
-            class="artist"
             v-for="(artist, index) in currentAudioData.artists"
             :key="artist.id"
             :to="`/artist/${artist.url}`"
+            v-bind="$attrs"
         >
-            <span>
-              {{artist.name}}
-            </span>
+      <span>
+        {{artist.name}}
+      </span>
           <template v-if="index !== currentAudioData.artists.length - 1">, </template>
         </RouterLink>
       </div>

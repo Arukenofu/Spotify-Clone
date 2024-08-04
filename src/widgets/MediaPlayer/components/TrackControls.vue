@@ -56,11 +56,11 @@ async function onMusicEnded() {
 function autoTimeUpdate() {
   audio.value?.addEventListener('timeupdate', () => {
     currentTime.value = audio.value!.currentTime;
-  });
 
-  if (currentTime.value === duration.value) {
-    onMusicEnded();
-  }
+    if (currentTime.value === duration.value) {
+      onMusicEnded();
+    }
+  });
 }
 
 function timeUpdate(time: number) {
@@ -95,12 +95,16 @@ watch(audio, () => {
           @click="previousTrack()"
           class="icon pointerable"
       />
-      <PlayingState
-          v-tooltip="isPlaying ? 'Остановить' : 'Слушать'"
-          :state="isPlaying"
+      <button
           @click="toggleTrackPlaying()"
           class="icon musicState pointerable"
-      />
+          v-tooltip="isPlaying ? 'Остановить' : 'Слушать'"
+      >
+        <PlayingState
+            :state="isPlaying"
+            class="icon"
+        />
+      </button>
       <Next
           v-tooltip="'Далее'"
           @click="nextTrack()"
@@ -151,12 +155,14 @@ watch(audio, () => {
 
     .musicState {
       background-color: var(--white);
-      fill: var(--black);
       border-radius: 50%;
       margin: 0 9px;
 
-      &:hover, &:active {
+      &:deep(.icon) {
         fill: var(--black);
+      }
+
+      &:hover, &:active {
         scale: 1.1;
       }
     }

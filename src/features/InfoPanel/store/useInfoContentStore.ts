@@ -3,11 +3,11 @@ import {computed, defineAsyncComponent, markRaw, ref} from "vue";
 
 import type CurrentPanelData from "@/features/InfoPanel/models/CurrentPanelData";
 
-import CurrentPlaylistQueue from "@/features/InfoPanel/Panels/CurrentPlaylistQueue.vue";
+import CurrentPlaylistQueue from "@/widgets/LayoutInfoPanel/Panels/CurrentPlaylistQueue.vue";
 
 const useInfoStore = defineStore('useInfoContentStore', () => {
     const currentPanel = ref<CurrentPanelData | null>({
-        name: 'asd',
+        name: 'CurrentPlaylistQueue',
         component: CurrentPlaylistQueue
     });
 
@@ -26,7 +26,7 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
         }
 
         const component = markRaw(defineAsyncComponent( () => {
-            return import(`@/features/InfoPanel/Panels/${componentName}.vue`)
+            return import(`@/widgets/LayoutInfoPanel/Panels/${componentName}.vue`)
         }));
 
         if (!component) {

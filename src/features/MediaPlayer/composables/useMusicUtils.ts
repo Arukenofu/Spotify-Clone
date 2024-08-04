@@ -3,6 +3,7 @@ import useTitle from "@/shared/composables/useTitle";
 import {useMusicStore} from "@/features/MediaPlayer/store/useMusicStore";
 
 import type {Music} from "@/shared/models/Music";
+import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
 
 export default function (){
     const store = useMusicStore();
@@ -23,15 +24,7 @@ export default function (){
             isPlaying.value = true;
         });
 
-        let artistsString: string = '';
-
-        currentAudioData.value.artists.map((value, index, array) => {
-            artistsString += `${value.name}`
-
-            if (index !== array.length - 1) {
-                artistsString += `, `;
-            }
-        });
+        const artistsString: string = getCommaSeparatedString(currentAudioData.value.artists, 'name');
 
         useTitle(`${currentAudioData.value.name} • ${artistsString}`);
     }
