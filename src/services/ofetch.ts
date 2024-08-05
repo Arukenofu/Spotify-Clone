@@ -3,7 +3,7 @@ import type {FetchOptions, FetchRequest} from "ofetch"
 import {ref} from "vue";
 
 const api = ofetch.create({
-    baseURL: "http://localhost:8000/",
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     credentials: 'include'
 });
 

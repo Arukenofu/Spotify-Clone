@@ -1,21 +1,32 @@
 # Spotify Clone
 
-This application is created to expand my portfolio and gain practical experience in Web development.
+`Spotify Clone` is a comprehensive web application developed to replicate the core functionalities of Spotify. This project showcases my skills in web development, providing a seamless music streaming experience, and serves as a vital addition to my portfolio.
 
-Some icons was taken from original Spotify due to correspond.
+⚠ Make sure that my custom [Spotify Backend](https://github.com/Arukenofu/Spotify_Backend) server running on your machine
 
-## Build Setup
+## Instructions
+
+### Install dependencies
+
+I use npm as a package manager. Some package managers should work too.
 
 ``` bash
-# install dependencies
 npm install
-
-# serve with hot reload
-npm run dev
-
-# build for production with type checking
-npm run build
-
-# type check whole project
-npm run type-check
 ```
+
+
+### Setting environment variables 
+Create a `.env` fle with the following content:
+``` bash
+VITE_BACKEND_URL=MY BACKEND URL
+```
+
+### Open the application
+Now you can run `npm run dev` to start the app and open http://localhost:5173 with your browser to see the result. Yappi! 🎉
+
+## Contributing
+I welcome contributions to improve this project. It will help me a lot!
+
+
+## Purpose
+This project was developed as a learning exercise to deepen my understanding of web development. It demonstrates my ability to build complex applications and serves as a showcase of my technical capabilities for potential employers.
