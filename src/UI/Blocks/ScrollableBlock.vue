@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 import type {Component} from "vue";
 
 interface Props {
@@ -21,6 +21,15 @@ const scrollbar = ref<HTMLElement>();
 function updateScrollBar() {
   const contentHeight = content.value!.scrollHeight;
   const customBlockHeight = block.value!.clientHeight;
+
+  if (contentHeight <= customBlockHeight) {
+    scrollbar.value!.style.display = 'none';
+    isScrolled.value = false;
+
+    return;
+  }
+  scrollbar.value!.style.display = 'block';
+
   const scrollbarHeight = (customBlockHeight / contentHeight) * customBlockHeight;
   const scrollTop = content.value!.scrollTop;
   const scrollbarTop = (scrollTop / contentHeight) * customBlockHeight;
@@ -61,6 +70,15 @@ function initCustomScrollBar() {
   updateScrollBar();
 
   scrollbar.value!.addEventListener("mousedown", onMouseDown);
+
+
+  const observer = new MutationObserver(() => {
+    nextTick(() => {
+      updateScrollBar();
+    });
+  });
+
+  observer.observe(content.value!, { childList: true, subtree: true });
 }
 
 onMounted(() => {
@@ -81,15 +99,16 @@ onMounted(() => {
 .scrollable-block {
   position: relative;
   overflow: hidden;
-}
+  height: 100%;
 
-.scrollable-content {
-  max-height: 100%;
-  overflow-y: scroll;
-  padding-right: v-bind("gap");
-  scrollbar-width: none !important;
+  .scrollable-content {
+    max-height: 100%;
+    overflow-y: scroll;
+    padding-right: v-bind("gap");
+    scrollbar-width: none !important;
+  }
 
-  &:hover + .scrollbar {
+  &:hover .scrollbar {
     opacity: 1;
   }
 }

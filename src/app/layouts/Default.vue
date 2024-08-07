@@ -36,7 +36,7 @@ import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
   .main {
     border-radius: var(--layout-gap);
     height: calc(100dvh - var(--player-height) - (var(--layout-gap) * 2));
-    min-height: 500px;
+    min-height: 400px;
     display: flex;
 
     main {

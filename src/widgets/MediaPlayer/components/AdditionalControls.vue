@@ -37,7 +37,7 @@ function toggleVolume() {
   if (audio.value!.volume === 0) {
     audio.value!.volume = JSON.parse(localStorage.getItem('volumeCached')!);
     volume.value = JSON.parse(localStorage.getItem('volumeCached')!);
-    localStorage.removeItem('volumeCached')
+    localStorage.removeItem('volumeCached');
 
     return;
   }
@@ -93,7 +93,7 @@ function toggleVolume() {
             class="range"
             :max="1"
             :thumb-fix="6"
-            v-model:current="volume!"
+            :current="volume!"
             :step="0.01"
             @onValueChange="volumeUpdate"
         />

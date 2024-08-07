@@ -126,7 +126,7 @@ watch(audio, () => {
       <Range
           class="range"
           :max="duration"
-          v-model:current="currentTime"
+          :current="currentTime"
           :thumb-fix="1"
           @onValueChange="timeUpdate"
           @mousedown="audio!.pause()"
