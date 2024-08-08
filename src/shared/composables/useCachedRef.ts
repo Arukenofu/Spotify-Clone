@@ -8,18 +8,14 @@ interface Options {
 }
 
 export default function<T>(key: string, initialValue: T, options: Options = {}) {
-    const innerRef = ref<T>();
+    const innerRef = ref(initialValue);
     const cachedValue = localStorage.getItem(key);
 
     innerRef.value = !cachedValue || checkJSON(parseJSON(cachedValue), options) === 'fail' ?
         initialValue : parseJSON(cachedValue);
 
     watch(innerRef, (value) => {
-        if (!value) {
-            localStorage.removeItem(key); return;
-        }
-
-        localStorage.setItem(key, stringifyJSON<T>(value));
+        localStorage.setItem(key, stringifyJSON(value));
     });
 
     return innerRef;

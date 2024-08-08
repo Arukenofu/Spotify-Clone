@@ -50,7 +50,7 @@ const getCurrentGridWidthInPx = computed(() => {
               minimized: isMinimized
           }"
       >
-        <Component v-bind="props" :is="currentComponent" v-for="a in 5" />
+        <Component v-bind="props" :is="currentComponent" v-for="a in 10" />
       </div>
     </ScrollableBlock>
   </div>

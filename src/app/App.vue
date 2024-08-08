@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {ContextMenu} from '@/features/ContextMenu';
+
 
 
 </script>
@@ -7,6 +9,10 @@
   <Suspense>
     <RouterView />
   </Suspense>
+
+  <ContextMenu>
+
+  </ContextMenu>
 </template>
 
 <style scoped>

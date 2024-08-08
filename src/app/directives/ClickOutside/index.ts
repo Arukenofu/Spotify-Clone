@@ -8,14 +8,10 @@ export default {
             }
         }
 
-        document.addEventListener('click', (event) => {
-            element.clickOutsideEvent(event);
-        });
+        document.addEventListener('click', element.clickOutsideEvent);
     },
 
     unmounted: (element) => {
-        document.removeEventListener('click', (event) => {
-            element.clickOutsideEvent(event);
-        });
+        document.removeEventListener('click', element.clickOutsideEvent);
     }
 } as Directive;

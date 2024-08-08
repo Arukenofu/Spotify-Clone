@@ -1,7 +1,7 @@
 import {defineStore, storeToRefs} from "pinia";
 import {computed, defineAsyncComponent, markRaw, ref} from "vue";
 
-import type CurrentPanelData from "@/features/InfoPanel/models/CurrentPanelData";
+import type CurrentPanelData from "@/features/InfoPanel/types/CurrentPanelData";
 
 const useInfoStore = defineStore('useInfoContentStore', () => {
     const currentPanel = ref<CurrentPanelData | null>(null);
