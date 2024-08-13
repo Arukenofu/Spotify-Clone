@@ -1,22 +1,26 @@
 import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
 import {nextTick} from "vue";
+import type {ContextMenuTypes} from '@/features/ContextMenu';
+import type {Options} from '../types/Options'
 
-import type {Tree} from "@/features/ContextMenu";
-import type {Options} from "@/features/ContextMenu/types/Options";
 
-export default async function showContextMenu(event: MouseEvent, value: Tree[], opts?: Options) {
+export default async function showContextMenu(
+    event: MouseEvent,
+    value: ContextMenuTypes[],
+    options?: Options
+): Promise<void> {
     event.preventDefault();
 
     const {
         core,
         currentTree,
         isActive,
-        options,
-        coordinates
     } = contextMenuStore();
 
-    options.value.style = opts?.style || 'default';
-    options.value.stickOn = opts?.stickOn || 'mousePosition';
+    const coordinates = {
+        top: 0,
+        left: 0
+    }
 
     isActive.value = true;
     currentTree.value = value;
@@ -25,11 +29,21 @@ export default async function showContextMenu(event: MouseEvent, value: Tree[], 
     const width = core.value!.offsetWidth;
     const height = core.value!.offsetHeight;
 
-    if (options.value.stickOn === 'mousePosition') {
-        setCoordinatesByMousePosition(event, coordinates.value, width, height);
+    if (options?.stickOn === 'mousePosition') {
+        setCoordinatesByMousePosition(event, coordinates, width, height);
     } else {
-        setCoordinatesByCurrentElement(event, coordinates.value, width, height);
+        setCoordinatesByCurrentElement(event, coordinates, width, height);
     }
+
+    const styles = {
+        width: options?.style === 'default' ? '350px' : '175px',
+        top: coordinates.top + 'px',
+        left: coordinates.left + 'px',
+    }
+
+    core.value!.style.minWidth = styles.width;
+    core.value!.style.top = styles.top;
+    core.value!.style.left = styles.left;
 }
 
 function setCoordinatesByMousePosition(

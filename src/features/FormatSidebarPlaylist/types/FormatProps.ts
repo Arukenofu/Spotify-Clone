@@ -1,6 +1,3 @@
-export interface FormatProps {
-    to: string | number,
-    name: string,
-    owner: string,
-    avatar?: string
-}
+import type {Playlist} from "@/shared/models/Playlist";
+
+export interface FormatProps extends Playlist {}

@@ -8,10 +8,20 @@ export default {
             }
         }
 
-        document.addEventListener('click', element.clickOutsideEvent);
+        document.addEventListener('click', element.clickOutsideEvent, {
+            capture: true
+        });
+        document.addEventListener('contextmenu', element.clickOutsideEvent, {
+            capture: true
+        });
     },
 
     unmounted: (element) => {
-        document.removeEventListener('click', element.clickOutsideEvent);
+        document.removeEventListener('click', element.clickOutsideEvent, {
+            capture: true
+        });
+        document.removeEventListener('contextmenu', element.clickOutsideEvent, {
+            capture: true
+        });
     }
 } as Directive;

@@ -11,6 +11,16 @@ defineProps<FormatProps>();
       class="compact-playlist"
   >
     {{name}}
+
+    <template v-if="type === 'Плейлист'">
+      <div class="divider">
+        •
+      </div>
+
+      <div class="type">
+        {{type}}
+      </div>
+    </template>
   </RouterLink>
 </template>
 
@@ -20,11 +30,18 @@ defineProps<FormatProps>();
   width: 100%;
   display: flex;
   align-items: center;
+  gap: 5px;
   padding: 0 8px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   user-select: none;
+
+  .type, .divider {
+    color: var(--text-soft);
+    font-size: .9rem;
+    font-weight: 600;
+  }
 }
 
 </style>

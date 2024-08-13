@@ -1,33 +1,13 @@
 import {defineStore, storeToRefs} from "pinia";
-import {ref, shallowRef} from "vue";
-import type {Tree} from "@/features/ContextMenu";
-import SearchIcon from "@/widgets/LayoutSideBar/UI/Icons/SearchIcon.vue";
+import {ref} from "vue";
+import type {ContextMenuTypes} from "@/features/ContextMenu";
 
 const contextMenuStore = defineStore('contextMenuStore', () => {
     const core = ref<HTMLElement>();
 
     const isActive = ref<boolean>(false);
 
-    const coordinates = ref({
-        top: 0,
-        left: 0,
-    });
-
-    const options = ref<Options>({
-        style: 'default',
-        stickOn: 'mousePosition'
-    });
-
-    const currentTree = ref<Tree[] | null>([
-        {
-            svgIcon: shallowRef(SearchIcon),
-            text: 'Привет',
-        },
-        {
-            svgIcon: shallowRef(SearchIcon),
-            text: 'Приветa',
-        },
-    ]);
+    const currentTree = ref<ContextMenuTypes[]>([]);
 
     function closeContextMenu() {
         isActive.value = false;
@@ -37,8 +17,6 @@ const contextMenuStore = defineStore('contextMenuStore', () => {
         core,
         isActive,
         currentTree,
-        options,
-        coordinates,
         closeContextMenu
     }
 });

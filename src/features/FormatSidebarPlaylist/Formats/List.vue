@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue";
 import type {FormatProps} from "@/features/FormatSidebarPlaylist/types/FormatProps";
+import NoFolderAvatar from "@/UI/Icons/Shared/NoFolderAvatar.vue";
 
 defineProps<FormatProps>()
 
@@ -19,6 +20,11 @@ defineProps<FormatProps>()
 
       <NoMusicOrPlaylistAvatar
           class="noAvatar"
+          v-else-if="type === 'Плейлист'"
+      />
+
+      <NoFolderAvatar
+          class="noAvatar"
           v-else
       />
     </div>
@@ -27,8 +33,9 @@ defineProps<FormatProps>()
       <span class="playlist-name">
         {{name}}
       </span>
-      <span class="playlist-owner">
-        {{owner}}
+
+      <span class="info">
+        {{type}} • {{owner}}
       </span>
     </div>
   </RouterLink>
@@ -71,7 +78,7 @@ defineProps<FormatProps>()
       font-weight: 600;
     }
 
-    .playlist-owner {
+    .info {
       font-size: .85rem;
       font-weight: 500;
       color: var(--text-soft);

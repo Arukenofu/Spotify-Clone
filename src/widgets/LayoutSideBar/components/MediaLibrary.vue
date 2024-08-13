@@ -1,30 +1,38 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
+import {storeToRefs} from "pinia";
 
 import MediaLibButton from "@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import SearchPlaylist from "@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue";
+import FormatButton from "@/widgets/LayoutSideBar/UI/Button/FormatButton.vue";
 
 import useSidebarStore from "@/widgets/LayoutSideBar/store/useSidebarStore";
-import {storeToRefs} from "pinia";
-import FormatButton from "@/widgets/LayoutSideBar/UI/Button/FormatButton.vue";
+
 import {gridColumnWidth, usePlaylistFormat} from "@/features/FormatSidebarPlaylist";
-import type {FormatProps} from "@/features/FormatSidebarPlaylist/types/FormatProps";
+import {showContextMenu} from "@/features/ContextMenu";
+import formatContextMenu from "@/widgets/LayoutSideBar/contextMenu/formatContextMenu";
+
+import type {FormatProps} from "@/features/FormatSidebarPlaylist";
 
 const search = ref<string>('');
 
 const store = useSidebarStore();
 const {isMinimized} = storeToRefs(store);
 
-const {currentComponent, setComponent, getComponentName} = usePlaylistFormat();
+const {currentComponent, getComponentName} = usePlaylistFormat();
 
 const props: FormatProps = {
+  id: 1,
   to: '12',
   name: 'baur',
   owner: 'baur',
+  type: 'Плейлист'
 }
 
-const {getCurrentWidth} = gridColumnWidth();
+const {
+    getCurrentWidth,
+} = gridColumnWidth();
 
 const getCurrentGridWidthInPx = computed(() => {
   return `${getCurrentWidth.value}px`
@@ -40,7 +48,12 @@ const getCurrentGridWidthInPx = computed(() => {
       <div class="controls" v-if="!isMinimized">
         <SearchPlaylist v-model="search" />
 
-        <FormatButton @click="setComponent('Grid')" />
+        <FormatButton
+            @click="showContextMenu($event, formatContextMenu(), {
+              style: 'minimal',
+              stickOn: 'mousePosition'
+            })"
+        />
       </div>
 
       <div
@@ -50,7 +63,7 @@ const getCurrentGridWidthInPx = computed(() => {
               minimized: isMinimized
           }"
       >
-        <Component v-bind="props" :is="currentComponent" v-for="a in 10" />
+        <Component v-bind="props" :is="currentComponent" v-for="a in 10" :key="a" />
       </div>
     </ScrollableBlock>
   </div>

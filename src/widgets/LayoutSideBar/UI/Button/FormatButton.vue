@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import BricksIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/BricksIcon.vue";
+import {usePlaylistFormat} from "@/features/FormatSidebarPlaylist";
+import {computed} from "vue";
+import GridIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/GridIcon.vue";
+import ListIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/ListIcon.vue";
+import CompactIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/CompactIcon.vue";
 
 const sortTypes = [
     'Недавно прослушано',
@@ -7,18 +11,37 @@ const sortTypes = [
     'По алфавиту',
     'По автору',
     'Свой порядок'
-]
+];
+
+const {
+  
+} = usePlaylistFormat();
+
+const currentComponent = computed(() => {
+  const name = getComponentName.value;
+
+  if (name === 'Grid') {
+    return GridIcon
+  }
+  if (name === 'List') {
+    return ListIcon
+  } else {
+    return CompactIcon
+  }
+})
 
 </script>
 
 <template>
-  <button class="format">
+  <button class="format"
+
+  >
     <span class="text">
       {{sortTypes[0]}}
     </span>
 
     <span class="icon">
-      <BricksIcon />
+      <Component :is="currentComponent" />
     </span>
   </button>
 </template>
@@ -48,6 +71,10 @@ const sortTypes = [
     .icon {
       fill: var(--white);
     }
+  }
+
+  span {
+    pointer-events: none;
   }
 
   &:active {
