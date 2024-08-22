@@ -1,20 +1,19 @@
 import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
-import {nextTick} from "vue";
-import type {ContextMenuTypes} from '@/features/ContextMenu';
+import {type Component, nextTick} from "vue";
 import type {Options} from '../types/Options'
 
 
 export default async function showContextMenu(
     event: MouseEvent,
-    value: ContextMenuTypes[],
+    value: Component,
     options?: Options
 ): Promise<void> {
     event.preventDefault();
 
     const {
         core,
-        currentTree,
         isActive,
+        setContextMenuComponent
     } = contextMenuStore();
 
     const coordinates = {
@@ -23,7 +22,7 @@ export default async function showContextMenu(
     }
 
     isActive.value = true;
-    currentTree.value = value;
+    setContextMenuComponent(value);
     await nextTick();
 
     const width = core.value!.offsetWidth;

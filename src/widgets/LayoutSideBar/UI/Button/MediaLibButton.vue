@@ -8,6 +8,8 @@ import {computed} from "vue";
 import defaultWidth from "@/widgets/LayoutSideBar/constants/defaultWidth";
 import max from "@/widgets/LayoutSideBar/constants/max";
 import RoundButton from "@/UI/Buttons/RoundButton.vue";
+import {showContextMenu} from "@/features/ContextMenu";
+import createPlaylistContextMenu from "@/widgets/LayoutSideBar/contextMenu/createPlaylistContextMenu.vue";
 
 const store = useSidebarStore();
 const {isMinimized, currentWidth} = storeToRefs(store);
@@ -65,7 +67,14 @@ function toggleWidth() {
     <!--  TODO: Find solution to minimize  -->
 
     <div class="other-controls" v-if="!isMinimized">
-      <RoundButton class="createPlaylist" v-tooltip="'Создать плейлист или папку'">
+      <RoundButton
+          class="createPlaylist"
+          v-tooltip="'Создать плейлист или папку'"
+          @click="showContextMenu($event, createPlaylistContextMenu, {
+            style: 'minimal',
+            stickOn: 'currentElement'
+          })"
+      >
         <PlusIcon class="icon" />
       </RoundButton>
 

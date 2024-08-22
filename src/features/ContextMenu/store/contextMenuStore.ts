@@ -1,32 +1,37 @@
 import {defineStore, storeToRefs} from "pinia";
-import {ref} from "vue";
-import type {ContextMenuTypes} from "@/features/ContextMenu";
+import {type Component, ref} from "vue";
 
 const contextMenuStore = defineStore('contextMenuStore', () => {
     const core = ref<HTMLElement>();
 
     const isActive = ref<boolean>(false);
 
-    const currentTree = ref<ContextMenuTypes[]>([]);
+    const currentComponent = ref<Component>();
 
     function closeContextMenu() {
         isActive.value = false;
     }
 
+    function setContextMenuComponent(value: Component) {
+        currentComponent.value = value
+    }
+
     return {
         core,
         isActive,
-        currentTree,
+        currentComponent,
+        setContextMenuComponent,
         closeContextMenu
     }
 });
 
 export default function() {
     const store = contextMenuStore();
-    const {closeContextMenu} = store;
+    const {closeContextMenu, setContextMenuComponent} = store;
 
     return {
         ...storeToRefs(store),
-        closeContextMenu
+        closeContextMenu,
+        setContextMenuComponent
     }
 }

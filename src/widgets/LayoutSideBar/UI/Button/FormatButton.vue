@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import {computed} from "vue";
 import {usePlaylistFormat} from "@/features/FormatSidebarPlaylist";
+import GridIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/GridIcon.vue";
+import CompactIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/CompactIcon.vue";
+import ListIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/ListIcon.vue";
 
 const sortTypes = [
     'Недавно прослушано',
@@ -10,8 +14,20 @@ const sortTypes = [
 ];
 
 const {
-  currentComponent
+  getComponentName
 } = usePlaylistFormat();
+
+const getFormatButtonIcon = computed(() => {
+  if (getComponentName.value === 'Grid') {
+    return GridIcon;
+  }
+
+  if (getComponentName.value === 'Compact') {
+    return CompactIcon;
+  }
+
+  return ListIcon;
+});
 
 
 </script>
@@ -25,7 +41,7 @@ const {
     </span>
 
     <span class="icon">
-      <Component :is="currentComponent" />
+      <Component :is="getFormatButtonIcon" />
     </span>
   </button>
 </template>

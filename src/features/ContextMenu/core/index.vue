@@ -3,7 +3,7 @@ import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
 
 const {
   core,
-  currentTree,
+  currentComponent,
   isActive,
   closeContextMenu
 } = contextMenuStore();
@@ -14,17 +14,11 @@ const {
   <div
       ref="core"
       v-if="isActive"
-      v-click-outside="closeContextMenu"
       class="context-menu"
+      v-click-outside="closeContextMenu"
   >
     <ul>
-      <li v-for="(el, index) in currentTree" :key="index">
-        <Component
-            :is="el.component"
-            v-bind="el.props"
-            @click="el.clickEvent"
-        />
-      </li>
+      <Component :is="currentComponent" />
     </ul>
   </div>
 </template>

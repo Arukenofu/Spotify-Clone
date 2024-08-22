@@ -9,11 +9,11 @@ defineProps<FormatProps>()
 </script>
 
 <template>
-  <RouterLink class="list" to="">
+  <RouterLink class="list" :to="`/playlist/${to}`">
     <div class="picture">
       <div
           class="image"
-          v-if="avatar"
+          v-if="image"
       >
 
       </div>

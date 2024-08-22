@@ -9,7 +9,7 @@ defineProps<FormatProps>();
 <template>
   <RouterLink :to="`/playlist/${to}`" class="block">
     <div class="picture">
-      <div class="image" v-if="avatar" />
+      <div class="image" v-if="image" />
       <NoMusicOrPlaylistAvatar class="icon" v-else />
     </div>
   </RouterLink>

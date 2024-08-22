@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {type Component, computed, type Reactive, type ShallowRef} from "vue";
-import type {ContextMenuTypes} from "@/features/ContextMenu";
+import {type Component, computed} from "vue";
 import Index from "@/features/ContextMenu/core/index.vue";
 
 defineOptions({
@@ -10,11 +9,10 @@ defineOptions({
 interface Props {
   text: string,
 
-  svgIcon?: ShallowRef<Component>,
+  svgIcon?: Component,
   underline?: boolean,
-  isActive?: Reactive<boolean>,
-  additionalSVG?: ShallowRef<Component>,
-  subTree?: ContextMenuTypes[]
+  isActive?: boolean,
+  additionalSVG?: Component,
 }
 
 const props = defineProps<Props>();

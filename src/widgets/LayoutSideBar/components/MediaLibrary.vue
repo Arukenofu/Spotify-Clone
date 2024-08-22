@@ -6,12 +6,13 @@ import MediaLibButton from "@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import SearchPlaylist from "@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue";
 import FormatButton from "@/widgets/LayoutSideBar/UI/Button/FormatButton.vue";
+import FormatContextMenu from "@/widgets/LayoutSideBar/contextMenu/formatContextMenu.vue";
 
 import useSidebarStore from "@/widgets/LayoutSideBar/store/useSidebarStore";
 
 import {gridColumnWidth, usePlaylistFormat} from "@/features/FormatSidebarPlaylist";
 import {showContextMenu} from "@/features/ContextMenu";
-import formatContextMenu from "@/widgets/LayoutSideBar/contextMenu/formatContextMenu";
+
 
 import type {FormatProps} from "@/features/FormatSidebarPlaylist";
 
@@ -34,7 +35,14 @@ const {
     getCurrentWidth,
 } = gridColumnWidth();
 
-const getCurrentGridWidthInPx = computed(() => {
+const playlistsComputedClasses = computed(() => {
+  return {
+    grid: getComponentName.value === 'Grid',
+    minimized: isMinimized.value
+  }
+})
+
+const gridItemWidth = computed(() => {
   return `${getCurrentWidth.value}px`
 });
 
@@ -49,7 +57,7 @@ const getCurrentGridWidthInPx = computed(() => {
         <SearchPlaylist v-model="search" />
 
         <FormatButton
-            @click="showContextMenu($event, formatContextMenu(), {
+            @click="showContextMenu($event, FormatContextMenu, {
               style: 'minimal',
               stickOn: 'mousePosition'
             })"
@@ -58,12 +66,12 @@ const getCurrentGridWidthInPx = computed(() => {
 
       <div
           class="playlists"
-          :class="{
-              grid: getComponentName === 'Grid',
-              minimized: isMinimized
-          }"
+          :class="playlistsComputedClasses"
       >
-        <Component v-bind="props" :is="currentComponent" v-for="a in 10" :key="a" />
+        <Component
+            v-bind="props"
+            :is="currentComponent"
+        />
       </div>
     </ScrollableBlock>
   </div>
@@ -119,7 +127,7 @@ const getCurrentGridWidthInPx = computed(() => {
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(v-bind('getCurrentGridWidthInPx'), 1fr));;
+      grid-template-columns: repeat(auto-fill, minmax(v-bind('gridItemWidth'), 1fr));;
     }
 
     .minimized {
