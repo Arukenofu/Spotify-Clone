@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
+import CloseIconRound from "@/UI/Icons/Shared/CloseIconRound.vue";
 import RoundButton from "@/UI/Buttons/RoundButton.vue";
 import useInfoContentStore from "@/features/InfoPanel/store/useInfoContentStore";
 
@@ -16,7 +16,7 @@ const {setNewPanel} = useInfoContentStore();
       <slot name="options" />
 
       <RoundButton v-tooltip.bottom="'Закрыть'" @click="setNewPanel(null)">
-        <CloseIcon class="icon" />
+        <CloseIconRound class="icon" />
       </RoundButton>
     </div>
   </div>

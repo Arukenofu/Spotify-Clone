@@ -59,7 +59,7 @@ function toggleWidth() {
         @click="toggleSidebar()"
         v-tooltip="isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'"
     >
-      <LibraryIcon class="icon" />
+      <LibraryIcon :state="true" class="icon" />
       <span class="text">
         Моя медиатека
       </span>
@@ -93,6 +93,7 @@ function toggleWidth() {
   .medialib {
     display: flex;
     align-items: center;
+    margin: 4px 0;
     padding: 8px var(--medialib-padding-x);
     height: 56px;
 

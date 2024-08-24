@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
-import SearchIcon from "@/widgets/LayoutSideBar/UI/Icons/SearchIcon.vue";
+import SearchIcon from "@/UI/Icons/Shared/SearchIcon.vue";
 import RoundButton from "@/UI/Buttons/RoundButton.vue";
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
+import CloseIconRound from "@/UI/Icons/Shared/CloseIconRound.vue";
 
 const state = ref<boolean>(false);
 const input = ref<HTMLInputElement>();
@@ -53,7 +53,7 @@ function onClickOutside() {
         placeholder="Искать в медиатеке"
     />
 
-    <CloseIcon
+    <CloseIconRound
         @click="handleClose()"
         v-if="state && model.length"
         class="icon"

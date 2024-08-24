@@ -71,6 +71,8 @@ const gridItemWidth = computed(() => {
         <Component
             v-bind="props"
             :is="currentComponent"
+            v-for="a in 12"
+            :key="a"
         />
       </div>
     </ScrollableBlock>
@@ -87,7 +89,7 @@ const gridItemWidth = computed(() => {
   --medialib-padding-x: 16px;
   display: flex;
   flex-direction: column;
-  max-height: calc(100% - 112px - var(--layout-gap));
+  max-height: 100%;
 
   .block {
     flex: 1;
@@ -103,7 +105,7 @@ const gridItemWidth = computed(() => {
     }
 
     .playlists {
-      padding: 0 var(--medialib-padding-x);
+      padding: 0 var(--medialib-padding-x) 21px;
       height: 100%;
 
       &:deep(a) {
@@ -117,10 +119,10 @@ const gridItemWidth = computed(() => {
       }
 
       &:deep(.router-link-active) {
-        //background-color: var(--ui-highlight);
+        background-color: var(--ui-highlight);
 
         &:hover {
-          //background-color: var(--ui-highlight-active);
+          background-color: var(--ui-highlight-active);
         }
       }
     }

@@ -18,6 +18,8 @@ export default function (el: HTMLElement, binding: DirectiveBinding<TextContent>
         el.setAttribute('data-position', 'center bottom')
     } else if (binding.modifiers.top_left) {
         el.setAttribute('data-position', 'left top')
+    } else if (binding.modifiers.bottom_left) {
+        el.setAttribute('data-position', 'left bottom')
     }
 
     //Todo: Automatize directive modifiers

@@ -2,7 +2,6 @@
 import {storeToRefs} from "pinia";
 import Resizer from "@/shared/components/Resizer.vue";
 import useSidebarStore from "@/widgets/LayoutSideBar/store/useSidebarStore";
-import Routes from "@/widgets/LayoutSideBar/components/Routes.vue";
 import MediaLibrary from "@/widgets/LayoutSideBar/components/MediaLibrary.vue";
 import max from "@/widgets/LayoutSideBar/constants/max";
 import min from "@/widgets/LayoutSideBar/constants/min";
@@ -23,7 +22,6 @@ function onMinimizeTooMany(newWidth: number, max: number, min: number) {
 
 <template>
   <aside :style="`width: ${currentWidth}px;`">
-    <Routes />
     <MediaLibrary />
   </aside>
   <Resizer

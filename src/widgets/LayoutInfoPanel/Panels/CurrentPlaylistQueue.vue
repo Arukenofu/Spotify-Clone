@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import {computed} from "vue";
+import {storeToRefs} from "pinia";
+import {useMusicStore, usePlaylistStore} from "@/features/MediaPlayer";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
-import {useMusicStore} from "@/features/MediaPlayer";
-import {storeToRefs} from "pinia";
 import MusicBlock from "@/shared/components/Music/MusicBlock.vue";
-import {computed} from "vue";
 
 const store = useMusicStore();
-const {currentAudioData, currentQueue, currentAudioIndexInQueue} = storeToRefs(store);
+const {currentAudioData, currentAudioIndexInQueue} = storeToRefs(store);
+const {currentQueue, currentPlaylist} = usePlaylistStore();
 
 const nextSongsInQueue = computed(() => {
-  if (!currentQueue.value && currentQueue.value !== undefined) {
+  if (!currentQueue.value.length) {
     return []
   }
 
@@ -36,7 +37,7 @@ const nextSongsInQueue = computed(() => {
       </div>
 
       <div class="next-queue section" v-if="nextSongsInQueue.length">
-        <div class="head-text">Далее из: {{'Playlist name'}}</div>
+        <div class="head-text">Далее{{currentPlaylist?.name ? ` из: ${currentPlaylist?.name}` : ':'}}</div>
 
         <div class="music-wrap">
           <MusicBlock
