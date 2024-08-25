@@ -139,6 +139,12 @@ header {
       border-radius: 500px;
       cursor: pointer;
 
+      @media screen and (max-width: 1050px) {
+        & {
+          display: none;
+        }
+      }
+
       &:hover {
         scale: 1.04;
       }
@@ -196,6 +202,12 @@ header {
       cursor: pointer;
       margin: 0 8px;
 
+      @media screen and (max-width: 815px) {
+        & {
+          display: none;
+        }
+      }
+
       .icon {
         width: 16px;
         height: 16px;
@@ -210,6 +222,7 @@ header {
     .user-avatar {
       height: 48px;
       width: 48px;
+      min-width: 48px;
       background-color: var(--ui-highlight);
       display: grid;
       place-items: center;

@@ -3,11 +3,13 @@ import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import {useMusicStore, useMusicUtils, usePlaylistStore} from "@/features/MediaPlayer";
 import {computed} from "vue";
 import {storeToRefs} from "pinia";
+import routerPushPrevent from "@/shared/utils/routerPushPrevent";
 
 interface Props {
   id: number,
   albumName: string,
   avatar: string,
+  href: string
 }
 
 const props = defineProps<Props>();
@@ -39,14 +41,14 @@ function onButtonClick() {
 </script>
 
 <template>
-  <div class="album">
+  <div class="album" @click="routerPushPrevent(`/playlist/${href}`)">
     <div class="avatar" :style="`background-image: url(${avatar})`" />
     <div class="other">
       <span class="album-name">
         {{albumName}}
       </span>
 
-      <button @click="onButtonClick()" v-tooltip="isCurrentAlbum && isPlaying ? 'Пауза' : 'Слушать'">
+      <button @click.stop="onButtonClick()" v-tooltip="isCurrentAlbum && isPlaying ? 'Пауза' : 'Слушать'">
         <PlayingState :state="isCurrentAlbum && isPlaying" class="icon" />
       </button>
     </div>

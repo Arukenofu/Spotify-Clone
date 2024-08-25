@@ -27,6 +27,7 @@ function onSearchClick() {
 <template>
   <div class="search" @click="onSearchClick()">
     <input
+        @keyup="onSearchClick()"
         type="text"
         placeholder="Что хочешь включить?"
         ref="input"

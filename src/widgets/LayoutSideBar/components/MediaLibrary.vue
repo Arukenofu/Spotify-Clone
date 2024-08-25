@@ -129,7 +129,8 @@ const gridItemWidth = computed(() => {
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(v-bind('gridItemWidth'), 1fr));;
+      grid-template-columns: repeat(auto-fill, minmax(v-bind('gridItemWidth'), 1fr));
+      grid-auto-rows: min-content;
     }
 
     .minimized {

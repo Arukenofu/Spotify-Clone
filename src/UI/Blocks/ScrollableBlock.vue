@@ -75,7 +75,6 @@ function initCustomScrollBar() {
 
   scrollbar.value!.addEventListener("mousedown", onMouseDown);
 
-
   const observer = new MutationObserver(() => {
     nextTick(() => {
       updateScrollBar();

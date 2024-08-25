@@ -15,7 +15,8 @@ export default function (){
         currentAudioId,
         currentAudioIndexInQueue,
         currentAudioData,
-        currentQueue
+        currentQueue,
+        currentPlaylist
     } = {
         ...storeToRefs(store),
         ...usePlaylistStore()
@@ -54,6 +55,21 @@ export default function (){
 
         audio.value = new Audio();
         audio.value.src = data.url;
+
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: data.name,
+                artist: getCommaSeparatedString(data.artists, 'name'),
+                album: currentPlaylist.value?.name || undefined,
+                artwork: [
+                    {src: data.avatar, type: 'image/jpg', sizes: '500x500'}
+                ]
+            });
+            navigator.mediaSession.setActionHandler('play', playAudio);
+            navigator.mediaSession.setActionHandler('pause', pauseAudio);
+            navigator.mediaSession.setActionHandler('nexttrack', nextTrack);
+            navigator.mediaSession.setActionHandler('previoustrack', previousTrack);
+        }
 
         playAudio();
     }

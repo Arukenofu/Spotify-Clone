@@ -9,7 +9,7 @@ import Repeat from "@/UI/Icons/MediaPlayer/Repeat.vue";
 import Range from "@/shared/components/Range.vue";
 
 import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
-import {useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
+import {useMusicStore, useMusicUtils, usePlaylistStore} from "@/features/MediaPlayer";
 import getRandomNumber from "@/shared/utils/getRandomNumber";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import formatTime from "@/shared/utils/formatTime";
@@ -18,7 +18,8 @@ import {storeToRefs} from "pinia";
 
 
 const musicStore = useMusicStore();
-const {audio, isPlaying, currentQueue, currentAudioIndexInQueue} = storeToRefs(musicStore);
+const {audio, isPlaying, currentAudioIndexInQueue} = storeToRefs(musicStore);
+const {currentQueue} = usePlaylistStore();
 const {toggleTrackPlaying, nextTrack, previousTrack, loadSong} = useMusicUtils();
 
 const userConfig = useUserSettings();
@@ -78,7 +79,6 @@ function loadMetaData() {
 watch(audio, () => {
   loadMetaData();
 });
-
 
 </script>
 
@@ -160,10 +160,12 @@ watch(audio, () => {
 
       &:deep(.icon) {
         fill: var(--black);
+        width: 20px;
+        height: 20px;
       }
 
       &:hover, &:active {
-        scale: 1.1;
+        scale: 1.04;
       }
     }
 

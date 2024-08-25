@@ -4,6 +4,8 @@ import PageStickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import {BackgroundNoise, useBackgroundNoise} from "@/features/BackgroundNoise";
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
 import RecommendedAlbum from "@/UI/Elements/RecommendedAlbum.vue";
+import RecommendationSection from "@/UI/Elements/RecommendationSection.vue";
+import MusicCard from "@/UI/Elements/MusicCard.vue";
 
 const {currentColor, setColor} = useBackgroundNoise();
 
@@ -32,28 +34,31 @@ const recommendations = [
     id: 0,
     name: 'Микс дня #1',
     avatar: 'https://cameralabs.org/media/lab18/03/02/arhiv-muzykalnyh-oblozhek_4.jpg',
-    hoverColor: '#11342b'
+    hoverColor: '#11342b',
+    href: '/asd'
   },
   {
     id: 1,
     name: 'Микс дня #2',
     avatar: 'https://inde.io/uploads/1f9953e88ceae76aa8af90498bc91b90.png',
-    hoverColor: '#c63b34'
+    hoverColor: '#c63b34',
+    href: '/asd'
   },
   {
     id: 2,
     name: 'Микс дня #3',
     avatar: 'https://pult.ru/upload/medialibrary/5ee/5eee4b14e41c7b041d127204557242ec.jpg',
-    hoverColor: '#1077a7'
+    hoverColor: '#1077a7',
+    href: '/asd'
   },
   {
     id: 3,
     name: 'Микс дня #4',
     avatar: 'https://avatars.dzeninfra.ru/get-zen_doc/1708669/pub_5d20c72970080e00aee0b858_5d20c77091645e00ac348023/scale_1200',
-    hoverColor: '#e2d840'
+    hoverColor: '#e2d840',
+    href: '/asd'
   }
 ]
-
 </script>
 
 <template>
@@ -93,11 +98,28 @@ const recommendations = [
             :id="rec.id"
             :album-name="rec.name"
             :avatar="rec.avatar"
+            :href="rec.href"
             @mouseenter="setColor(rec.hoverColor)"
         />
       </div>
     </section>
 
+    <RecommendationSection
+        class="for-you"
+        naming="Только для тебя, Бауыржан Алкенов"
+        href="/section/1"
+    >
+      <MusicCard
+          :album-id="1"
+          to="/hello"
+          type="playlist"
+          name="Only for you"
+          v-for="a in 10"
+          :key="a"
+      >
+        Новые треки и редкие композиции в еженедельном миксе специально для тебя. Лови обновление каждый понедельник.
+      </MusicCard>
+    </RecommendationSection>
   </section>
 
 </template>
@@ -105,6 +127,8 @@ const recommendations = [
 <style lang="scss" scoped>
 .container {
   padding: 12px var(--content-spacing) 0;
+  display: grid;
+  gap: 24px 32px;
 
   .recommended-albums {
     container: recommended-albums / inline-size;
