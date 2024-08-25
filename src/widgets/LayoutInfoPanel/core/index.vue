@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import {watch} from "vue";
 import Resizer from "@/shared/components/Resizer.vue";
-
 import max from "@/widgets/LayoutInfoPanel/constants/max";
 import min from "@/widgets/LayoutInfoPanel/constants/min";
-import defaultWidth from "@/widgets/LayoutSideBar/constants/defaultWidth";
 import useCachedRef from "@/shared/composables/useCachedRef";
-import {infoPanel} from "@/features/InfoPanel";
+import {infoPanel, defaultWidth} from "@/features/InfoPanel";
 
 const currentPanelWidth = useCachedRef('infoContentWidth', defaultWidth);
 
-const {currentPanelComponent} = infoPanel();
+watch(currentPanelWidth, (value) => {
+  setPanelStyleWidth(value);
+})
+
+const {currentPanelComponent, setPanelStyleWidth} = infoPanel();
 
 </script>
 

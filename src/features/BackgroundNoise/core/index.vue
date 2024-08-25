@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import useBackgroundNoise from "@/features/backgroundNoise/composables/useBackgroundNoise";
 
-const {currentColor} = useBackgroundNoise();
+defineProps<{
+  currentColor: string,
+  height?: string
+}>();
 
 </script>
 
@@ -19,11 +21,12 @@ const {currentColor} = useBackgroundNoise();
   transition-property: background;
   transition-timing-function: ease;
 
-  height: 350px;
+  height: v-bind('height || "320px"');
   width: 100%;
 
   position: absolute;
   top: 0;
   left: 0;
+  z-index: -1;
 }
 </style>

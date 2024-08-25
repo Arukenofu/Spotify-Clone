@@ -18,6 +18,8 @@ const block = ref<HTMLElement>();
 const content = ref<HTMLElement>();
 const scrollbar = ref<HTMLElement>();
 
+const scrollTopModel = defineModel<number>();
+
 function updateScrollBar() {
   const contentHeight = content.value!.scrollHeight;
   const customBlockHeight = block.value!.clientHeight;
@@ -35,6 +37,8 @@ function updateScrollBar() {
   const scrollbarTop = (scrollTop / contentHeight) * customBlockHeight;
 
   isScrolled.value = scrollTop !== 0;
+
+  scrollTopModel.value = scrollTop;
 
   scrollbar.value!.style.height = `${scrollbarHeight}px`;
   scrollbar.value!.style.top = `${scrollbarTop}px`;
@@ -103,9 +107,14 @@ onMounted(() => {
 
   .scrollable-content {
     max-height: 100%;
+    height: 100%;
     overflow-y: scroll;
     padding-right: v-bind("gap");
     scrollbar-width: none !important;
+  }
+
+  .scrollbar {
+    z-index: 1;
   }
 
   &:hover .scrollbar {

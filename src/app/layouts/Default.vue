@@ -2,9 +2,12 @@
 import {MediaPlayer} from "@/widgets/MediaPlayer";
 import {LayoutSideBar} from "@/widgets/LayoutSideBar";
 import {LayoutInfoContent} from "@/widgets/LayoutInfoPanel";
-import {BackgroundNoise} from "@/features/backgroundNoise";
 import {LayoutHeader} from "@/widgets/LayoutHeader";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
+import {provide, ref} from "vue";
+
+const layoutScrollX = ref<number>(0);
+provide('layoutScrollX', layoutScrollX);
 
 </script>
 
@@ -16,15 +19,12 @@ import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 
       <LayoutSideBar />
 
-      <ScrollableBlock is="main">
-<!--        <DefaultLayoutStickyHeader />-->
-
+      <ScrollableBlock is="main" gap="0" v-model="layoutScrollX">
         <div class="content">
           <Suspense>
             <RouterView />
           </Suspense>
         </div>
-        <BackgroundNoise />
       </ScrollableBlock>
 
       <LayoutInfoContent />
@@ -52,6 +52,8 @@ import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
       background-color: var(--ui);
       flex: 1;
       border-radius: var(--border-radius);
+      container-type: inline-size;
+      container-name: content;
     }
 
     .content {

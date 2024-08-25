@@ -8,7 +8,7 @@ import BellIcon from "@/widgets/LayoutHeader/UI/BellIcon.vue";
 
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
 
-const {currentRoutePath} = useCurrentRoutePath()
+const {currentRoutePath} = useCurrentRoutePath('path');
 </script>
 
 <template>
@@ -202,7 +202,7 @@ header {
         fill: var(--text-soft);
       }
 
-      .active {
+      &:hover .icon, .active {
         fill: var(--white);
       }
     }
@@ -213,6 +213,14 @@ header {
       background-color: var(--ui-highlight);
       display: grid;
       place-items: center;
+
+      &:hover {
+        scale: 1.02;
+
+        .picture {
+          scale: 1.02;
+        }
+      }
 
       .picture {
         height: 32px;

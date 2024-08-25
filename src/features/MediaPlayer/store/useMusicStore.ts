@@ -6,7 +6,7 @@ import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
 
 export const useMusicStore = defineStore('useMusicStore', () => {
     const audio = ref<HTMLAudioElement | null>(null);
-    const isPlaying = ref<boolean>(false);
+    const isPlaying = ref<Readonly<boolean>>(false);
     const currentAudioId = ref<number | null>(1);
 
     const {currentQueue} = usePlaylistStore();
@@ -29,7 +29,6 @@ export const useMusicStore = defineStore('useMusicStore', () => {
         currentAudioId,
         currentAudioIndexInQueue,
         currentAudioData,
-        currentQueue,
         getAudioData
     }
 });

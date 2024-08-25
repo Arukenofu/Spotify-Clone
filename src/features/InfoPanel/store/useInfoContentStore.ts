@@ -1,23 +1,27 @@
-import {defineStore, storeToRefs} from "pinia";
 import {computed, defineAsyncComponent, markRaw, ref} from "vue";
+import {defineStore, storeToRefs} from "pinia";
 
 import type CurrentPanelData from "@/features/InfoPanel/types/CurrentPanelData";
+import defaultWidth from "@/features/InfoPanel/constants/defaultWidth";
 
 const useInfoStore = defineStore('useInfoContentStore', () => {
     const currentPanel = ref<CurrentPanelData | null>(null);
 
     const currentPanelName = computed(() => currentPanel.value?.name);
-    const currentPanelComponent = computed(() => currentPanel.value?.component)
+    const currentPanelComponent = computed(() => currentPanel.value?.component);
+
+    function setPanelStyleWidth(value: number) {
+        document.documentElement.style.setProperty('--panel-width', `${value}px`);
+    }
 
     function setNewPanel(componentName: string | null) {
-        if (!componentName) {
+        function reset() {
+            setPanelStyleWidth(0);
             currentPanel.value = null;
-            return;
         }
 
-        if (currentPanelName.value === componentName) {
-            currentPanel.value = null;
-            return;
+        if (!componentName || currentPanelName.value === componentName) {
+            reset(); return;
         }
 
         const component = markRaw(defineAsyncComponent( () => {
@@ -25,31 +29,31 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
         }));
 
         if (!component) {
-            currentPanel.value = null;
-            return;
+            reset(); return;
         }
 
         currentPanel.value = {
             name: componentName,
             component: component,
         }
+        setPanelStyleWidth(defaultWidth);
     }
 
     return {
         currentPanelName,
         currentPanelComponent,
-        setNewPanel
+        setNewPanel,
+        setPanelStyleWidth
     }
 });
 
 export default function () {
     const store = useInfoStore();
-    const {currentPanelName, currentPanelComponent} = storeToRefs(store);
-    const {setNewPanel} = store;
+    const {setNewPanel, setPanelStyleWidth} = store;
 
     return {
-        currentPanelName,
-        currentPanelComponent,
-        setNewPanel
+        ...storeToRefs(store),
+        setNewPanel,
+        setPanelStyleWidth
     }
 }

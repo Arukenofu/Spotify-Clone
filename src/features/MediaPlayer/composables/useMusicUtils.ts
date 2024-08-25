@@ -4,6 +4,7 @@ import {useMusicStore} from "@/features/MediaPlayer/store/useMusicStore";
 
 import type {Music} from "@/shared/models/Music";
 import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
+import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
 
 export default function (){
     const store = useMusicStore();
@@ -15,7 +16,10 @@ export default function (){
         currentAudioIndexInQueue,
         currentAudioData,
         currentQueue
-    } = storeToRefs(store);
+    } = {
+        ...storeToRefs(store),
+        ...usePlaylistStore()
+    };
 
     const {getAudioData} = store;
 

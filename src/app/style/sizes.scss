@@ -2,4 +2,8 @@
   --border-radius: 7px;
   --layout-gap: 8px;
   --player-height: 82px;
+  --sidebar-width: 0px;
+  --panel-width: 0px;
+
+  --content-spacing: clamp(16px, calc(16px + ((100vw - var(--sidebar-width, 0px) - var(--panel-width, 0px) - 600px) / 424) * 8), 24px);
 }

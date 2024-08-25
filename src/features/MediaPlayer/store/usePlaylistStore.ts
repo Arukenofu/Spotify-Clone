@@ -2,7 +2,7 @@ import {defineStore, storeToRefs} from "pinia";
 import {ref} from "vue";
 
 import type {Music} from "@/shared/models/Music";
-import type {CurrentPlaylist} from "@/features/MediaPlayer/types/CurrentPlaylist";
+import type {CurrentPlaylist} from "../types/CurrentPlaylist";
 
 const usePlaylistStore = defineStore('usePlaylistStore', () => {
     const currentPlaylist = ref<CurrentPlaylist | null>(basePlaylistInfo);
