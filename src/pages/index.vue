@@ -31,26 +31,26 @@ const recommendations = [
   {
     id: 0,
     name: 'Микс дня #1',
-    avatar: '',
-    hoverColor: '#59ff53'
+    avatar: 'https://cameralabs.org/media/lab18/03/02/arhiv-muzykalnyh-oblozhek_4.jpg',
+    hoverColor: '#11342b'
   },
   {
     id: 1,
     name: 'Микс дня #2',
-    avatar: '',
-    hoverColor: '#f34545'
+    avatar: 'https://inde.io/uploads/1f9953e88ceae76aa8af90498bc91b90.png',
+    hoverColor: '#c63b34'
   },
   {
     id: 2,
     name: 'Микс дня #3',
-    avatar: '',
-    hoverColor: '#4369e7'
+    avatar: 'https://pult.ru/upload/medialibrary/5ee/5eee4b14e41c7b041d127204557242ec.jpg',
+    hoverColor: '#1077a7'
   },
   {
     id: 3,
     name: 'Микс дня #4',
-    avatar: '',
-    hoverColor: '#ffed3a'
+    avatar: 'https://avatars.dzeninfra.ru/get-zen_doc/1708669/pub_5d20c72970080e00aee0b858_5d20c77091645e00ac348023/scale_1200',
+    hoverColor: '#e2d840'
   }
 ]
 
@@ -87,6 +87,7 @@ const recommendations = [
     <section class="recommended-albums">
       <div class="albums-wrap">
         <RecommendedAlbum
+            class="album"
             v-for="rec in recommendations"
             :key="rec.id"
             :id="rec.id"
@@ -106,35 +107,44 @@ const recommendations = [
   padding: 12px var(--content-spacing) 0;
 
   .recommended-albums {
+    container: recommended-albums / inline-size;
 
     .albums-wrap {
-      container: recommended-albums / inline-size;
-
       --album-item-height: 64px;
       --album-min-width: 270px;
 
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
       grid-gap: 8px;
     }
   }
 }
 
-@container recommended-albums (min-width: 1141px) {
-  .album {
-    --album-item-height: 64px !important;
-    font-size: 16px !important;
+  @container recommended-albums (min-width: 1141px) {
+    .album {
+      --album-item-height: 64px;
+      font-size: 16px !important;
 
-    :deep(.other) {
-      padding-left: 16px !important;
+      :deep(.other) {
+        padding-left: 16px !important;
+      }
     }
+  }
+
+@container recommended-albums (min-width: 815px) {
+  .albums-wrap {
+    --album-item-height: 48px !important;
+    font-size: 14px;
+
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 
-@container recommended-albums (min-width: 815px) {
-  .album {
-    --album-item-height: 48px;
+@container recommended-albums (min-width: 0px) {
+  .albums-wrap {
+    --album-item-height: 48px !important;
     font-size: 14px;
+
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
