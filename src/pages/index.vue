@@ -114,10 +114,42 @@ const recommendations = [
           to="/hello"
           type="playlist"
           name="Only for you"
+          :show-name="false"
           v-for="a in 10"
           :key="a"
       >
         Новые треки и редкие композиции в еженедельном миксе специально для тебя. Лови обновление каждый понедельник.
+      </MusicCard>
+    </RecommendationSection>
+
+
+    <RecommendationSection naming="Популярные исполнители" href="/asdasdas">
+      <MusicCard
+          :album-id="1"
+          name="The Weekend"
+          to="/artistName"
+          type="artist"
+          v-for="a in 10"
+          :key="a"
+      >
+        Исполнитель
+      </MusicCard>
+    </RecommendationSection>
+
+    <RecommendationSection
+        naming="Вам должно понравиться"
+        head-title="По мотивам твоих недавних действий"
+        href="/liked"
+    >
+      <MusicCard
+          :album-id="1"
+          :show-name="false"
+          name="Music"
+          to="/musicName"
+          v-for="a in 10"
+          :key="a"
+      >
+        The greatest indie love songs of all time.
       </MusicCard>
     </RecommendationSection>
   </section>
@@ -129,6 +161,7 @@ const recommendations = [
   padding: 12px var(--content-spacing) 0;
   display: grid;
   gap: 24px 32px;
+  padding-bottom: 32px;
 
   .recommended-albums {
     container: recommended-albums / inline-size;

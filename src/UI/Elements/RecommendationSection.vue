@@ -1,22 +1,30 @@
 <script setup lang="ts">
+
 interface Props {
   naming: string,
+  headTitle?: string
   href: string,
   isShowAll?: boolean,
 }
 
 withDefaults(defineProps<Props>(), {
   isShowAll: true
-})
+});
 
 </script>
 
 <template>
   <section class="">
     <div class="head-area">
-      <RouterLink :to="href">
-        {{naming}}
-      </RouterLink>
+      <div class="title">
+        <p v-if="headTitle">
+          {{headTitle}}
+        </p>
+
+        <RouterLink :to="href">
+          {{naming}}
+        </RouterLink>
+      </div>
 
       <div class="show-all" v-if="isShowAll">
         <RouterLink :to="href">
@@ -40,23 +48,33 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 21px;
+    margin-bottom: 14px;
 
-    & > a {
+    .title {
       margin-top: auto;
-      display: -webkit-box;
-      overflow: hidden;
-      -moz-box-orient: vertical;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
-      user-select: none;
-      font-size: 1.5rem;
-      font-weight: 900;
-      text-wrap: balance;
-      align-items: flex-end;
+      display: grid;
+      gap: 7px;
 
-      &:hover {
-        text-decoration: underline;
+      p {
+        font-size: .75rem;
+        color: var(--text-soft);
+      }
+
+      a {
+        display: -webkit-box;
+        overflow: hidden;
+        -moz-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        user-select: none;
+        font-size: 1.5rem;
+        font-weight: 900;
+        text-wrap: balance;
+        align-items: flex-end;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
