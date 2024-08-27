@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import {computed, inject, ref, type Ref} from "vue";
-import PageStickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import {BackgroundNoise, useBackgroundNoise} from "@/features/BackgroundNoise";
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
+import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import RecommendedAlbum from "@/UI/Elements/RecommendedAlbum.vue";
 import RecommendationSection from "@/UI/Elements/RecommendationSection.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
 
 const {currentColor, setColor} = useBackgroundNoise();
 
-const layoutScrollX = inject<Ref<number>>('layoutScrollX', ref(0));
+const layoutScrollY = inject<Ref<number>>('layoutScrollY', ref(0));
 
 const computeOpacity = computed<number>(() => {
-  if (layoutScrollX.value === 0) {
+  if (layoutScrollY.value === 0) {
     return 0;
   }
 
-  return Math.min(layoutScrollX.value / 120, 1);
+  return Math.min(layoutScrollY.value / 120, 1);
 });
 
 const computeBackgroundColor = computed(() => {
@@ -62,7 +62,7 @@ const recommendations = [
 </script>
 
 <template>
-  <PageStickyHeader
+  <StickyHeader
       :underlay-style="{
           opacity: computeOpacity,
           backgroundColor: computeBackgroundColor,
@@ -83,7 +83,7 @@ const recommendations = [
     >
       Музыка
     </button>
-  </PageStickyHeader>
+  </StickyHeader>
   <BackgroundNoise
       :currentColor="currentColor"
   />

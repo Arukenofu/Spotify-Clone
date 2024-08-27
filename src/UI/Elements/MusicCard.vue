@@ -1,12 +1,12 @@
 <script setup lang="ts">
-
 import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue";
 import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
+import NoUserAvatar from "@/UI/Icons/Shared/NoUserAvatar.vue";
 import routerPushPrevent from "@/shared/utils/routerPushPrevent";
 
 interface Props {
   albumId: number,
-  type?: 'playlist' | 'artist',
+  type?: 'playlist' | 'artist' | 'user',
   to: string,
   name: string,
   showName?: boolean,
@@ -17,7 +17,6 @@ withDefaults(defineProps<Props>(), {
   type: 'playlist',
   showName: true
 });
-
 
 </script>
 
@@ -30,11 +29,17 @@ withDefaults(defineProps<Props>(), {
           :alt="name"
       >
       <NoMusicOrPlaylistAvatar
-          v-else
+          v-else-if="type === 'playlist'"
           class="noImage"
       />
 
+      <NoUserAvatar
+          class="noImage"
+          v-else
+      />
+
       <button
+          v-if="type !== 'user'"
           @click.stop
           @mousedown.prevent
           v-tooltip="`Слушать плейлист «${name}»`"
@@ -68,6 +73,10 @@ withDefaults(defineProps<Props>(), {
   &:hover {
     background-color: var(--ui-highlight);
 
+    .image {
+      box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    }
+
     button {
       opacity: 1 !important;
       transform: translateY(0) !important;
@@ -87,6 +96,7 @@ withDefaults(defineProps<Props>(), {
     border-radius: 6px;
     position: relative;
     margin-bottom: 3px;
+    transition: all .2s ease-out;
 
     .noImage {
       width: 64px;

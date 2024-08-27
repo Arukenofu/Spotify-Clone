@@ -5,10 +5,23 @@ import {LayoutInfoContent} from "@/widgets/LayoutInfoPanel";
 import {LayoutHeader} from "@/widgets/LayoutHeader";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import {provide, ref} from "vue";
+import type {Ref} from "vue"
+import {router} from "@/app/router";
 
-const layoutScrollX = ref<number>(0);
-provide('layoutScrollX', layoutScrollX);
+interface ScrollableWithExpose extends Ref<InstanceType<typeof ScrollableBlock>> {
+  content: HTMLElement,
+}
 
+const layout = ref<ScrollableWithExpose>();
+const layoutScrollY = ref<number>(0);
+
+provide('layoutScrollY', layoutScrollY);
+
+router.beforeEach(() => {
+  layout.value?.content.scrollTo({
+    top: 0,
+  });
+})
 </script>
 
 <template>
@@ -19,7 +32,12 @@ provide('layoutScrollX', layoutScrollX);
 
       <LayoutSideBar />
 
-      <ScrollableBlock is="main" gap="0" v-model="layoutScrollX">
+      <ScrollableBlock
+          is="main"
+          gap="0"
+          ref="layout"
+          v-model="layoutScrollY"
+      >
         <div class="content">
           <Suspense>
             <RouterView />

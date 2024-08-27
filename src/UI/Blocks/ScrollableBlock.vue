@@ -18,7 +18,11 @@ const block = ref<HTMLElement>();
 const content = ref<HTMLElement>();
 const scrollbar = ref<HTMLElement>();
 
-const scrollTopModel = defineModel<number>();
+const scrollY = defineModel<number>();
+
+defineExpose({
+  content
+});
 
 function updateScrollBar() {
   const contentHeight = content.value!.scrollHeight;
@@ -38,7 +42,7 @@ function updateScrollBar() {
 
   isScrolled.value = scrollTop !== 0;
 
-  scrollTopModel.value = scrollTop;
+  scrollY.value = scrollTop;
 
   scrollbar.value!.style.height = `${scrollbarHeight}px`;
   scrollbar.value!.style.top = `${scrollbarTop}px`;

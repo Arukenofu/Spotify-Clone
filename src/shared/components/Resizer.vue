@@ -46,11 +46,13 @@ function resize(event: MouseEvent): void {
     resizableWidth.value = newWidth - 10;
   }
 
+  document.documentElement.style.userSelect = 'none';
   emit('customResizeEvent', newWidth, props.maxWidth, props.minWidth);
 }
 
 function stopResize(): void {
   isResizing.value = false;
+  document.documentElement.style.userSelect = 'auto';
 
   document.removeEventListener('mousemove', resize);
   document.removeEventListener('mouseup', stopResize);
