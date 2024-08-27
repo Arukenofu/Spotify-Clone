@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import setTitle from "@/shared/utils/setTitle";
 
+setTitle('Страница не найдена');
 </script>
 
 <template>

@@ -4,6 +4,9 @@ import {PremiumCards} from "@/widgets/PremiumCards";
 import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
 import Logo from "@/UI/Icons/Shared/Logo.vue";
+import setTitle from "@/shared/utils/setTitle";
+
+setTitle('Spotify — Premium');
 
 const layoutScrollY = inject<Ref<number>>('layoutScrollY', ref(0));
 

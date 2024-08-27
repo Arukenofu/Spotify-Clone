@@ -1,10 +1,9 @@
 import {storeToRefs} from "pinia";
-import useTitle from "@/shared/composables/useTitle";
 import {useMusicStore} from "@/features/MediaPlayer/store/useMusicStore";
-
-import type {Music} from "@/shared/models/Music";
-import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
+import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
+import setTitle from "@/shared/utils/setTitle";
+import type {Music} from "@/shared/models/Music";
 
 export default function (){
     const store = useMusicStore();
@@ -31,14 +30,18 @@ export default function (){
 
         const artistsString: string = getCommaSeparatedString(currentAudioData.value.artists, 'name');
 
-        useTitle(`${currentAudioData.value.name} • ${artistsString}`);
+        setTitle(`${currentAudioData.value.name} • ${artistsString}`, {
+            temporarily: true
+        })
     }
 
     function pauseAudio() {
         audio.value!.pause();
         isPlaying.value = false;
 
-        useTitle();
+        setTitle('', {
+            temporarily: true
+        });
     }
 
     function loadSong(data: Music, album?: Music[]) {

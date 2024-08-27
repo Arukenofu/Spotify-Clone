@@ -2,12 +2,15 @@
 import {computed, inject, ref, type Ref} from "vue";
 import {BackgroundNoise, useBackgroundNoise} from "@/features/BackgroundNoise";
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
+import setTitle from "@/shared/utils/setTitle";
 import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import RecommendedAlbum from "@/UI/Elements/RecommendedAlbum.vue";
 import RecommendationSection from "@/UI/Elements/RecommendationSection.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
 
 const {currentColor, setColor} = useBackgroundNoise();
+
+setTitle('Spotify - Web Player: Music for everyone');
 
 const layoutScrollY = inject<Ref<number>>('layoutScrollY', ref(0));
 

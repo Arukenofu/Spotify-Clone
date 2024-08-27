@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import {reactive, ref} from "vue";
 import Logo from "@/UI/Icons/Shared/Logo.vue";
 import FormLabel from "@/UI/Form/FormLabel.vue";
 import FormInput from "@/UI/Form/FormInput.vue";
 import FormCheckboxIOS from "@/UI/Form/FormCheckboxIOS.vue";
-import {reactive, ref} from "vue";
 import FormButton from "@/UI/Form/FormButton.vue";
 import ErrorIcon from "@/UI/Icons/Shared/ErrorIcon.vue";
 import FormError from "@/UI/Form/FormError.vue";
+import setTitle from "@/shared/utils/setTitle";
 import {LoginToAccount} from "@/services/api/authService";
 import {router} from "@/app/router";
+
+setTitle('Войти - Spotify');
 
 const form = reactive({
   email: '',

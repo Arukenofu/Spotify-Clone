@@ -5,13 +5,13 @@ import setTitle from "@/shared/utils/setTitle";
 const route = useRoute();
 
 // Temporarily using id parameter
-setTitle(`${route.params.id} | Spotify Playlist`);
+setTitle(`${route.params.id} | Spotify`)
 </script>
 
 <template>
 
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

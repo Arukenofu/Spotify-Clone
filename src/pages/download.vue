@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import {computed, inject, ref, type Ref} from "vue";
 import { BackgroundNoise, useBackgroundNoise } from '@/features/BackgroundNoise'
 import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
-import {computed, inject, ref, type Ref} from "vue";
+import setTitle from "@/shared/utils/setTitle";
+
+setTitle('Spotify — Приложение для компьютера');
 
 const {currentColor} = useBackgroundNoise('#447bff');
 

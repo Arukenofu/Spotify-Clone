@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {RegistrationForm} from "@/widgets/SignUp";
+import setTitle from "@/shared/utils/setTitle";
 
+setTitle('Зарегестрироваться - Spotify');
 </script>
 
 <template>
