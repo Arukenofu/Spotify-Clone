@@ -13,6 +13,7 @@ interface Props {
   underline?: boolean,
   isActive?: boolean,
   additionalSVG?: Component,
+  subTree?: Component
 }
 
 const props = defineProps<Props>();

@@ -1,25 +1,17 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
-import {storeToRefs} from "pinia";
-
 import MediaLibButton from "@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import SearchPlaylist from "@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue";
 import FormatButton from "@/widgets/LayoutSideBar/UI/Button/FormatButton.vue";
 import FormatContextMenu from "@/widgets/LayoutSideBar/contextMenu/formatContextMenu.vue";
-
-import useSidebarStore from "@/widgets/LayoutSideBar/store/useSidebarStore";
-
-import {gridColumnWidth, usePlaylistFormat} from "@/features/FormatSidebarPlaylist";
+import {gridColumnWidth, usePlaylistFormat, useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
 import {showContextMenu} from "@/features/ContextMenu";
-
-
 import type {FormatProps} from "@/features/FormatSidebarPlaylist";
 
 const search = ref<string>('');
 
-const store = useSidebarStore();
-const {isMinimized} = storeToRefs(store);
+const {isMinimized} = useSidebarWidthStore();
 
 const {currentComponent, getComponentName} = usePlaylistFormat();
 
@@ -68,12 +60,15 @@ const gridItemWidth = computed(() => {
           class="playlists"
           :class="playlistsComputedClasses"
       >
-        <Component
-            v-bind="props"
-            :is="currentComponent"
-            v-for="a in 12"
-            :key="a"
-        />
+      <Component
+          v-bind="props"
+          :is="currentComponent"
+          :minimized="getCurrentWidth < 135 || isMinimized"
+          v-for="a in 12"
+          :key="a"
+      />
+
+
       </div>
     </ScrollableBlock>
   </div>
@@ -95,6 +90,7 @@ const gridItemWidth = computed(() => {
     flex: 1;
     border-bottom-right-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
+    height: auto;
 
     .controls {
       display: flex;
@@ -118,11 +114,16 @@ const gridItemWidth = computed(() => {
         }
       }
 
-      &:deep(.router-link-active) {
+      .router-link-active {
         background-color: var(--ui-highlight);
 
+        &:after {
+          inset: 0;
+          background: none;
+        }
+
         &:hover {
-          background-color: var(--ui-highlight-active);
+          background-color: var(--ui-highlight-active) !important;
         }
       }
     }

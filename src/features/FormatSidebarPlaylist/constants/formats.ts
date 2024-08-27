@@ -3,5 +3,5 @@ import type {FormatTypes} from "@/features/FormatSidebarPlaylist/types/FormatTyp
 export default [
     'Compact',
     'Grid',
-    'List'
+    'List',
 ] as FormatTypes[]

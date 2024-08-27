@@ -1,13 +1,14 @@
 import {defineStore, storeToRefs} from "pinia";
 import {type Component, computed} from "vue";
-import useCachedRef from "@/shared/composables/useCachedRef";
 
 import Grid from "@/features/FormatSidebarPlaylist/Formats/Grid.vue";
 import Compact from "@/features/FormatSidebarPlaylist/Formats/Compact.vue";
 import List from "@/features/FormatSidebarPlaylist/Formats/List.vue";
 
-import type {FormatTypes} from "@/features/FormatSidebarPlaylist/types/FormatTypes";
+import useCachedRef from "@/shared/composables/useCachedRef";
 import formats from "@/features/FormatSidebarPlaylist/constants/formats";
+import {useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
+import type {FormatTypes} from "@/features/FormatSidebarPlaylist/types/FormatTypes";
 
 const formatStore = defineStore('usePlaylistFormat', () => {
     const currentComponentName = useCachedRef<FormatTypes>('format', 'Grid', {
@@ -15,7 +16,13 @@ const formatStore = defineStore('usePlaylistFormat', () => {
         expectedValues: formats
     });
 
+    const {isMinimized} = useSidebarWidthStore();
+
     const currentComponent = computed<Component>(() => {
+        if (isMinimized.value) {
+            return Grid;
+        }
+
         if (currentComponentName.value === 'Grid') {
             return Grid;
         }

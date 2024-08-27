@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import useSidebarStore from "@/widgets/LayoutSideBar/store/useSidebarStore";
-import {storeToRefs} from "pinia";
+import {computed} from "vue";
 import LibraryIcon from "@/widgets/LayoutSideBar/UI/Icons/LibraryIcon.vue";
 import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
 import ArrowIcon from "@/UI/Icons/Shared/ArrowIcon.vue";
-import {computed} from "vue";
+import RoundButton from "@/UI/Buttons/RoundButton.vue";
+import createPlaylistContextMenu from "@/widgets/LayoutSideBar/contextMenu/createPlaylistContextMenu.vue";
 import defaultWidth from "@/widgets/LayoutSideBar/constants/defaultWidth";
 import max from "@/widgets/LayoutSideBar/constants/max";
-import RoundButton from "@/UI/Buttons/RoundButton.vue";
 import {showContextMenu} from "@/features/ContextMenu";
-import createPlaylistContextMenu from "@/widgets/LayoutSideBar/contextMenu/createPlaylistContextMenu.vue";
+import {useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
 
-const store = useSidebarStore();
-const {isMinimized, currentWidth} = storeToRefs(store);
+const {isMinimized, currentWidth} = useSidebarWidthStore();
 
 function toggleSidebar() {
   if (isMinimized.value) {

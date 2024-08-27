@@ -1,5 +1,5 @@
 import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
-import {type Component, nextTick} from "vue";
+import {type Component, nextTick, shallowRef} from "vue";
 import type {Options} from '../types/Options'
 
 
@@ -22,7 +22,7 @@ export default async function showContextMenu(
     }
 
     isActive.value = true;
-    setContextMenuComponent(value);
+    setContextMenuComponent(shallowRef(value));
     await nextTick();
 
     const width = core.value!.offsetWidth;

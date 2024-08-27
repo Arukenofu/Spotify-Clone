@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
 import Resizer from "@/shared/components/Resizer.vue";
-import useSidebarStore from "@/widgets/LayoutSideBar/store/useSidebarStore";
 import MediaLibrary from "@/widgets/LayoutSideBar/components/MediaLibrary.vue";
+import {useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
 import max from "@/widgets/LayoutSideBar/constants/max";
 import min from "@/widgets/LayoutSideBar/constants/min";
 
-const store = useSidebarStore();
-const {isMinimized, currentWidth} = storeToRefs(store);
+const {isMinimized, currentWidth} = useSidebarWidthStore();
 
 function onMinimizeTooMany(newWidth: number, max: number, min: number) {
   if (newWidth < (min / 2)) {

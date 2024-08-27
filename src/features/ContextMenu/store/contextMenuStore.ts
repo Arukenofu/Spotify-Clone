@@ -1,25 +1,29 @@
 import {defineStore, storeToRefs} from "pinia";
-import {type Component, ref} from "vue";
+import {type Component, computed, ref, type ShallowRef} from "vue";
 
 const contextMenuStore = defineStore('contextMenuStore', () => {
     const core = ref<HTMLElement>();
 
     const isActive = ref<boolean>(false);
 
-    const currentComponent = ref<Component>();
+    const currentComponent = ref<ShallowRef<Component>>();
 
     function closeContextMenu() {
         isActive.value = false;
     }
 
-    function setContextMenuComponent(value: Component) {
-        currentComponent.value = value
+    const getCurrentComponent = computed(() => {
+        return currentComponent.value;
+    })
+
+    function setContextMenuComponent(value: ShallowRef<Component>) {
+        currentComponent.value = value;
     }
 
     return {
         core,
         isActive,
-        currentComponent,
+        getCurrentComponent,
         setContextMenuComponent,
         closeContextMenu
     }

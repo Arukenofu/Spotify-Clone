@@ -3,7 +3,7 @@ import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
 
 const {
   core,
-  currentComponent,
+  getCurrentComponent,
   isActive,
   closeContextMenu
 } = contextMenuStore();
@@ -18,7 +18,7 @@ const {
       v-click-outside="closeContextMenu"
   >
     <ul>
-      <Component :is="currentComponent" />
+      <Component :is="getCurrentComponent?.value" />
     </ul>
   </div>
 </template>

@@ -1,9 +1,9 @@
-import {defineStore} from "pinia";
+import {defineStore, storeToRefs} from "pinia";
 import useCachedRef from "@/shared/composables/useCachedRef";
 import defaultWidth from "@/widgets/LayoutSideBar/constants/defaultWidth";
 import {onMounted, watch} from "vue";
 
-export default defineStore('useSidebarStore', () => {
+const useSidebarWidthStore = defineStore('useSidebarStore', () => {
     const isMinimized = useCachedRef<boolean>('isAsideMinimized', false);
     const currentWidth = useCachedRef<number>('currentWidth', defaultWidth);
 
@@ -23,4 +23,12 @@ export default defineStore('useSidebarStore', () => {
         isMinimized,
         currentWidth
     }
-})
+});
+
+export default function() {
+    const store = useSidebarWidthStore();
+
+    return {
+        ...storeToRefs(store)
+    }
+}

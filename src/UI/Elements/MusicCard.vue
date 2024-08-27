@@ -3,6 +3,7 @@ import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.v
 import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import NoUserAvatar from "@/UI/Icons/Shared/NoUserAvatar.vue";
 import routerPushPrevent from "@/shared/utils/routerPushPrevent";
+import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
 
 interface Props {
   albumId: number,
@@ -38,14 +39,16 @@ withDefaults(defineProps<Props>(), {
           v-else
       />
 
-      <button
+
+
+      <GreenPlayingButton
+          class="playingState"
           v-if="type !== 'user'"
           @click.stop
           @mousedown.prevent
           v-tooltip="`Слушать плейлист «${name}»`"
-      >
-        <PlayingState class="icon" />
-      </button>
+          :state="false"
+      />
     </div>
 
     <span v-if="showName">
@@ -104,36 +107,13 @@ withDefaults(defineProps<Props>(), {
       fill: var(--white);
     }
 
-    button {
+    .playingState {
       opacity: 0;
       position: absolute;
       right: 8px;
       bottom: 8px;
-      height: 48px;
-      width: 48px;
-      background-color: var(--main-color);
-      border: none;
-      border-radius: 50%;
-      box-shadow: 0 8px 8px rgba(0,0,0,.3);
       transition: all .2s ease-out;
       transform: translateY(8px);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-
-      &:hover {
-        scale: 1.04;
-        filter: brightness(1.2);
-      }
-
-      &:active {
-        scale: 1 !important;
-      }
-
-      .icon {
-        width: 24px;
-        height: 24px;
-      }
     }
   }
 
