@@ -1,13 +1,6 @@
 {
-  "include": [
-    "./typed-router.d.ts"
-  ],
   "compilerOptions": {
-    "moduleResolution": "Bundler",
-    "types": [
-      "vite-plugin-vue-layouts/client",
-      "unplugin-vue-router/client"
-    ]
+    "moduleResolution": "Bundler"
   },
   "files": [],
   "references": [

@@ -23,7 +23,7 @@ function onMinimizeTooMany(newWidth: number, max: number, min: number) {
     <MediaLibrary />
   </aside>
   <Resizer
-      v-model:current-width="currentWidth!"
+      v-model:current-width="currentWidth"
       :min-width="min"
       :max-width="max"
       @customResizeEvent="onMinimizeTooMany"
