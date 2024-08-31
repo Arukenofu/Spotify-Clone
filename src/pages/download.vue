@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, ref, type Ref} from "vue";
+import {computed, inject, ref} from "vue";
 import { BackgroundNoise, useBackgroundNoise } from '@/features/BackgroundNoise'
 import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import setTitle from "@/shared/utils/setTitle";
@@ -8,7 +8,7 @@ setTitle('Spotify — Приложение для компьютера');
 
 const {currentColor} = useBackgroundNoise('#447bff');
 
-const layoutScrollY = inject<Ref<number>>('layoutScrollY', ref(0));
+const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const computeOpacity = computed<number>(() => {
   if (layoutScrollY.value === 0) {

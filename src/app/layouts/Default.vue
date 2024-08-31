@@ -7,6 +7,7 @@ import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import {provide, ref} from "vue";
 import type {Ref} from "vue"
 import {router} from "@/app/router";
+import useResponsive from "@/shared/composables/useResponsive";
 
 interface ScrollableWithExpose extends Ref<InstanceType<typeof ScrollableBlock>> {
   content: HTMLElement,
@@ -21,7 +22,9 @@ router.beforeEach(() => {
   layout.value?.content.scrollTo({
     top: 0,
   });
-})
+});
+
+const {isMobile} = useResponsive();
 </script>
 
 <template>
@@ -30,7 +33,7 @@ router.beforeEach(() => {
 
     <div class="main">
 
-      <LayoutSideBar />
+      <LayoutSideBar v-if="!isMobile" />
 
       <ScrollableBlock
           is="main"
@@ -58,6 +61,7 @@ router.beforeEach(() => {
   display: grid;
   padding: 7px;
   gap: var(--layout-gap);
+  background-color: var(--black);
 
   .main {
     border-radius: var(--layout-gap);

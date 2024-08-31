@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, ref, type Ref} from "vue";
+import {computed, inject, ref} from "vue";
 import {BackgroundNoise, useBackgroundNoise} from "@/features/BackgroundNoise";
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
 import setTitle from "@/shared/utils/setTitle";
@@ -12,7 +12,7 @@ const {currentColor, setColor} = useBackgroundNoise();
 
 setTitle('Spotify - Web Player: Music for everyone');
 
-const layoutScrollY = inject<Ref<number>>('layoutScrollY', ref(0));
+const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const computeOpacity = computed<number>(() => {
   if (layoutScrollY.value === 0) {
@@ -74,7 +74,7 @@ const recommendations = [
       class="header"
   >
     <button
-        @click="$router.push('/'); setColor(null)"
+        @click="$router.push(''); setColor(null)"
         :class="currentRoutePath !== '/' && 'inactive'"
     >
       Все

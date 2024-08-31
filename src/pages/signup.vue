@@ -15,7 +15,6 @@ setTitle('Зарегестрироваться - Spotify');
   main {
     min-height: 100dvh;
     width: 100dvw;
-    background-color: var(--ui);
   }
 </style>
 

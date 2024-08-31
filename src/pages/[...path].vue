@@ -22,7 +22,6 @@ setTitle('Страница не найдена');
 .layout {
   width: 100dvw;
   height: 100dvh;
-  background-color: var(--ui);
   cursor: pointer;
 
   .center {

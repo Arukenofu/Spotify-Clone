@@ -1,11 +1,11 @@
 import {defineStore, storeToRefs} from "pinia";
-import {ref} from "vue";
+import {ref, shallowRef} from "vue";
 
 import type {Music} from "@/shared/models/Music";
 import type {CurrentPlaylist} from "../types/CurrentPlaylist";
 
 const usePlaylistStore = defineStore('usePlaylistStore', () => {
-    const currentPlaylist = ref<CurrentPlaylist | null>(basePlaylistInfo);
+    const currentPlaylist = shallowRef<CurrentPlaylist | null>(basePlaylistInfo);
 
     const currentQueue = ref<Music[]>(baseQueue);
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, ref, type Ref} from "vue";
+import {computed, inject, ref} from "vue";
 import {PremiumCards} from "@/widgets/PremiumCards";
 import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
@@ -8,7 +8,7 @@ import setTitle from "@/shared/utils/setTitle";
 
 setTitle('Spotify — Premium');
 
-const layoutScrollY = inject<Ref<number>>('layoutScrollY', ref(0));
+const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const computeOpacity = computed<number>(() => {
   if (layoutScrollY.value === 0) {
