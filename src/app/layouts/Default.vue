@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { LayoutMobileRouter } from "@/widgets/LayoutRouterMobile";
 import {MediaPlayer} from "@/widgets/MediaPlayer";
 import {LayoutSideBar} from "@/widgets/LayoutSideBar";
 import {LayoutInfoContent} from "@/widgets/LayoutInfoPanel";
 import {LayoutHeader} from "@/widgets/LayoutHeader";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import {provide, ref} from "vue";
+import {computed, provide, ref} from "vue";
 import type {Ref} from "vue"
 import {router} from "@/app/router";
 import useResponsive from "@/shared/composables/useResponsive";
@@ -25,21 +26,26 @@ router.beforeEach(() => {
 });
 
 const {isMobile} = useResponsive();
+
+const playerHeight = computed(() => {
+  return isMobile.value ? "calc(100dvh - var(--player-height))" : "calc(100dvh - var(--player-height) - 72px)";
+})
 </script>
 
 <template>
   <div class="root">
-    <LayoutHeader />
+    <LayoutHeader v-if="!isMobile" />
 
-    <div class="main">
-
+    <div class="main" :style="`height: ${playerHeight}`">
       <LayoutSideBar v-if="!isMobile" />
 
       <ScrollableBlock
           is="main"
           gap="0"
+          :scrollbar-width="isMobile ? '5px' : '12px'"
           ref="layout"
           v-model="layoutScrollY"
+          :style="isMobile && 'padding-bottom: 72px'"
       >
         <div class="content">
           <Suspense>
@@ -52,20 +58,19 @@ const {isMobile} = useResponsive();
     </div>
   </div>
 
-  <MediaPlayer />
+  <LayoutMobileRouter v-if="isMobile" />
+  <MediaPlayer v-if="!isMobile" />
 </template>
 
 <style lang="scss" scoped>
 .root {
   width: 100dvw;
   display: grid;
-  padding: 7px;
+  padding: var(--layout-gap);
   gap: var(--layout-gap);
   background-color: var(--black);
 
   .main {
-    border-radius: var(--layout-gap);
-    height: calc(100dvh - 72px - var(--player-height));
     min-height: 400px;
     display: flex;
 
@@ -76,6 +81,12 @@ const {isMobile} = useResponsive();
       border-radius: var(--border-radius);
       container-type: inline-size;
       container-name: content;
+
+      @media screen and (max-width: 768px) {
+        & {
+          border-radius: 0 !important;
+        }
+      }
     }
 
     .content {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue";
-import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import NoUserAvatar from "@/UI/Icons/Shared/NoUserAvatar.vue";
 import routerPushPrevent from "@/shared/utils/routerPushPrevent";
 import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
@@ -38,8 +37,6 @@ withDefaults(defineProps<Props>(), {
           class="noImage"
           v-else
       />
-
-
 
       <GreenPlayingButton
           class="playingState"
@@ -127,7 +124,8 @@ withDefaults(defineProps<Props>(), {
   }
 
   .textInfo {
-    line-height: 1.35;
+    line-height: 1.1rem;
+    max-height: 2.2rem;
     color: var(--text-soft);
     font-size: .875rem;
     font-weight: 500;

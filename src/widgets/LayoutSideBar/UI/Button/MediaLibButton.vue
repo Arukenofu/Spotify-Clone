@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed} from "vue";
-import LibraryIcon from "@/widgets/LayoutSideBar/UI/Icons/LibraryIcon.vue";
+import LibraryIcon from "@/UI/Icons/Shared/LibraryIcon.vue";
 import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
 import ArrowIcon from "@/UI/Icons/Shared/ArrowIcon.vue";
 import RoundButton from "@/UI/Buttons/RoundButton.vue";

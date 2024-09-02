@@ -4,12 +4,14 @@ import type {Component} from "vue";
 
 interface Props {
   is?: Component | string,
-  gap?: string
+  gap?: string,
+  scrollbarWidth?: string
 }
 
 withDefaults(defineProps<Props>(), {
   is: 'div',
-  gap: '15px'
+  gap: '15px',
+  scrollbarWidth: '12px'
 });
 
 const isScrolled = ref<boolean>(false);
@@ -24,7 +26,10 @@ defineExpose({
   content
 });
 
+let scrollBarOpacityTimeOut: ReturnType<typeof setTimeout>;
+
 function updateScrollBar() {
+  clearTimeout(scrollBarOpacityTimeOut);
   const contentHeight = content.value!.scrollHeight;
   const customBlockHeight = block.value!.clientHeight;
 
@@ -44,8 +49,13 @@ function updateScrollBar() {
 
   scrollY.value = scrollTop;
 
+  scrollbar.value!.style.opacity = '1';
   scrollbar.value!.style.height = `${scrollbarHeight}px`;
   scrollbar.value!.style.top = `${scrollbarTop}px`;
+
+  scrollBarOpacityTimeOut = setTimeout(() => {
+    scrollbar.value!.style.removeProperty('opacity')
+  }, 800)
 }
 
 function onMouseDown(event: MouseEvent) {
@@ -117,7 +127,30 @@ onMounted(() => {
   }
 
   .scrollbar {
-    z-index: 1;
+    z-index: 1 !important;
+    --scrollbar-bg: hsla(0,0%,100%,.3);
+    --scrollbar-bg-hover: hsla(0,0%,100%,.5);
+    --scrollbar-bg-active: hsla(0,0%,100%,.7);
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: v-bind('scrollbarWidth');
+    background-color: var(--scrollbar-bg);
+    cursor: pointer;
+    user-select: none;
+    opacity: 0;
+    transition: opacity .5s;
+
+    &:hover {
+      opacity: 1;
+      background-color: var(--scrollbar-bg-hover);
+    }
+
+    &:active {
+      opacity: 1;
+      background-color: var(--scrollbar-bg-active);
+    }
   }
 
   &:hover .scrollbar {

@@ -9,6 +9,8 @@ import BellIcon from "@/widgets/LayoutHeader/UI/BellIcon.vue";
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
 
 const {currentRoutePath} = useCurrentRoutePath('path');
+
+
 </script>
 
 <template>

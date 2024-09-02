@@ -1,7 +1,9 @@
 <script setup lang="ts">
 
+import useResponsive from "@/shared/composables/useResponsive";
+
 interface Props {
-  naming: string,
+  naming?: string,
   headTitle?: string
   href: string,
   isShowAll?: boolean,
@@ -11,22 +13,24 @@ withDefaults(defineProps<Props>(), {
   isShowAll: true
 });
 
+const {isMobile} = useResponsive();
+
 </script>
 
 <template>
   <section class="">
-    <div class="head-area">
+    <div class="head-area" v-if="naming">
       <div class="title">
-        <p v-if="headTitle">
+        <p>
           {{headTitle}}
         </p>
 
-        <RouterLink :to="href">
+        <RouterLink :to="!isMobile ? href : ''">
           {{naming}}
         </RouterLink>
       </div>
 
-      <div class="show-all" v-if="isShowAll">
+      <div class="show-all" v-if="isShowAll && !isMobile">
         <RouterLink :to="href">
           Показать все
         </RouterLink>
@@ -50,13 +54,22 @@ section {
     align-items: center;
     margin-bottom: 14px;
 
+    @media screen and (max-width: 768px) {
+      & {height: 40px}
+    }
+
     .title {
       margin-top: auto;
       display: grid;
       gap: 7px;
+      font-size: 1rem;
+
+      @media screen and (max-width: 768px) {
+        font-size: .75rem;
+      }
 
       p {
-        font-size: .75rem;
+        font-size: .75em;
         color: var(--text-soft);
       }
 
@@ -67,7 +80,7 @@ section {
         -webkit-line-clamp: 1;
         line-clamp: 1;
         user-select: none;
-        font-size: 1.5rem;
+        font-size: 1.5em;
         font-weight: 900;
         text-wrap: balance;
         align-items: flex-end;

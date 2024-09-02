@@ -7,8 +7,10 @@ import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
 import RecommendedAlbum from "@/UI/Elements/RecommendedAlbum.vue";
 import RecommendationSection from "@/UI/Elements/RecommendationSection.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
+import useResponsive from "@/shared/composables/useResponsive";
 
 const {currentColor, setColor} = useBackgroundNoise();
+const {isMobile} = useResponsive();
 
 setTitle('Spotify - Web Player: Music for everyone');
 
@@ -62,37 +64,53 @@ const recommendations = [
     href: '/asd'
   }
 ]
+
+function getGreeting() {
+  const currentHour = new Date().getHours();
+
+  if (currentHour >= 5 && currentHour < 12) {
+    return 'Доброе утро';
+  } else if (currentHour >= 12 && currentHour < 17) {
+    return 'Добрый день';
+  } else if (currentHour >= 17 && currentHour < 21) {
+    return 'Добрый вечер';
+  } else {
+    return 'Доброй ночи';
+  }
+}
 </script>
 
 <template>
-  <StickyHeader
-      :underlay-style="{
+  <template v-if="!isMobile">
+    <StickyHeader
+        :underlay-style="{
           opacity: computeOpacity,
           backgroundColor: computeBackgroundColor,
           transition: 'background-color .25s, opacity .4s ease-out'
       }"
-      class="header"
-  >
-    <button
-        @click="$router.push(''); setColor(null)"
-        :class="currentRoutePath !== '/' && 'inactive'"
+        class="header"
     >
-      Все
-    </button>
+      <button
+          @click="$router.push(''); setColor(null)"
+          :class="currentRoutePath !== '/' && 'inactive'"
+      >
+        Все
+      </button>
 
-    <button
-        @click="$router.push('/?facet=music-chip'); setColor(null)"
-        :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
-    >
-      Музыка
-    </button>
-  </StickyHeader>
-  <BackgroundNoise
-      :currentColor="currentColor"
-  />
+      <button
+          @click="$router.push('/?facet=music-chip'); setColor(null)"
+          :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
+      >
+        Музыка
+      </button>
+    </StickyHeader>
+    <BackgroundNoise
+        :currentColor="currentColor"
+    />
+  </template>
 
   <section class="container">
-    <section class="recommended-albums">
+    <section class="recommended-albums" v-if="!isMobile">
       <div class="albums-wrap">
         <RecommendedAlbum
             class="album"
@@ -107,9 +125,12 @@ const recommendations = [
       </div>
     </section>
 
+    <section class="greetings" v-else>
+      <h1>{{getGreeting()}}</h1>
+    </section>
+
     <RecommendationSection
         class="for-you"
-        naming="Только для тебя, Бауыржан Алкенов"
         href="/section/1"
     >
       <MusicCard
@@ -175,6 +196,15 @@ const recommendations = [
 
       display: grid;
       grid-gap: 8px;
+    }
+  }
+
+  .greetings {
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-top: 12px;
+      margin-bottom: 8px;
     }
   }
 }
