@@ -5,9 +5,14 @@ setTitle('Spotify — Поиск');
 </script>
 
 <template>
-
+  <section class="searchSection">
+    <RouterView />
+  </section>
 </template>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.searchSection {
+  width: 100%;
+  padding: 0 var(--content-spacing);
+}
 </style>

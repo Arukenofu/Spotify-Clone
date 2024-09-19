@@ -8,12 +8,13 @@ import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
 
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
 import {router} from "@/app/router";
+import debounce from "@/shared/utils/debounce";
 
 const route = useRoute();
 const input = ref<HTMLInputElement>();
-const inputValue = ref<string>();
+const inputValue = ref<string>('');
 
-const {currentRoutePath} = useCurrentRoutePath()
+const {currentRoutePath} = useCurrentRoutePath();
 
 function onSearchClick() {
   if (!/^\/search/.test(route.path)) {
@@ -22,12 +23,19 @@ function onSearchClick() {
 
   input.value?.focus();
 }
+
+function onInput() {
+  debounce(() => {
+    router.push(`/search/${inputValue.value}`);
+  }, 1000);
+}
 </script>
 
 <template>
-  <div class="search" @click="onSearchClick()">
+  <div class="searchSection" @click="onSearchClick()">
     <input
         @keyup="onSearchClick()"
+        @input="onInput()"
         type="text"
         placeholder="Что хочешь включить?"
         ref="input"
@@ -61,7 +69,7 @@ function onSearchClick() {
 </template>
 
 <style lang="scss" scoped>
-.search {
+.searchSection {
   margin: 0 8px;
   height: 100%;
   min-width: 320px;
