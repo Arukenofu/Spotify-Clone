@@ -31,6 +31,8 @@ button {
   cursor: pointer;
   display: grid;
   place-items: center;
+  transition-duration: 300ms;
+  transition-property: background-color, border-color, color, box-shadow, filter, transform, opacity;
 
   &:hover {
     scale: 1.04;

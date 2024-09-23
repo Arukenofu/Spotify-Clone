@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onUnmounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 
 import SearchReviewIcon from "@/UI/Icons/Shared/SearchReviewIcon.vue";
@@ -7,8 +7,8 @@ import SearchIcon from "@/UI/Icons/Shared/SearchIcon.vue";
 import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
 
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
+import useDebounce from "@/shared/composables/useDebounce";
 import {router} from "@/app/router";
-import debounce from "@/shared/utils/debounce";
 
 const route = useRoute();
 const input = ref<HTMLInputElement>();
@@ -24,18 +24,29 @@ function onSearchClick() {
   input.value?.focus();
 }
 
-function onInput() {
+watch(inputValue, () => {
+  const {debounce, clear} = useDebounce();
+  const cachedCurrentRoute = currentRoutePath.value;
+
+  if (!inputValue.value) {
+    clear(); router.push('/search');
+    return;
+  }
+
   debounce(() => {
-    router.push(`/search/${inputValue.value}`);
+    if (cachedCurrentRoute !== currentRoutePath.value) {
+      clear(); return;
+    }
+
+    router.push(`/search?q=${inputValue.value}`);
   }, 1000);
-}
+})
 </script>
 
 <template>
   <div class="searchSection" @click="onSearchClick()">
     <input
         @keyup="onSearchClick()"
-        @input="onInput()"
         type="text"
         placeholder="Что хочешь включить?"
         ref="input"

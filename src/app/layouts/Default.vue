@@ -45,7 +45,6 @@ const playerHeight = computed(() => {
           :scrollbar-width="isMobile ? '5px' : '12px'"
           ref="layout"
           v-model="layoutScrollY"
-          :style="isMobile && 'padding-bottom: 72px'"
       >
         <div class="content">
           <Suspense>

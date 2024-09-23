@@ -122,6 +122,7 @@ onMounted(() => {
     max-height: 100%;
     height: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
     padding-right: v-bind("gap");
     scrollbar-width: none !important;
   }

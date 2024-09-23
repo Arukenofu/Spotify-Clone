@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="layout">
+  <div class="layout" >
     <h1 class="title">
       Всё остальное
     </h1>
@@ -27,8 +27,10 @@
 
 <style lang="scss" scoped>
 .layout {
+  padding: 0 var(--content-spacing);
+
   .title {
-    padding-top: 72px;
+    margin-top: 24px;
     margin-bottom: 24px;
     font-weight: 900;
     width: 100%;
