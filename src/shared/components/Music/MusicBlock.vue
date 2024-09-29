@@ -2,7 +2,7 @@
 import type {Music} from "@/shared/models/Music";
 import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import {computed} from "vue";
-import {useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
+import {useCurrentMusicStore, useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
 import {storeToRefs} from "pinia";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
@@ -12,12 +12,13 @@ const props = defineProps<{
 }>();
 
 const store = useMusicStore();
-const {currentAudioId, isPlaying} = storeToRefs(store);
+const currentMusic = useCurrentMusicStore();
+const {isPlaying} = storeToRefs(store);
 
 const {toggleTrackPlaying, loadSong} = useMusicUtils();
 
 const isCurrent = computed(() => {
-  return currentAudioId.value === props.music.id;
+  return currentMusic.currentAudioId === props.music.id;
 });
 
 function toggleMusic() {

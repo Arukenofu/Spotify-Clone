@@ -9,17 +9,21 @@ import Repeat from "@/UI/Icons/MediaPlayer/Repeat.vue";
 import Range from "@/shared/components/Range.vue";
 
 import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
-import {useMusicStore, useMusicUtils, usePlaylistStore} from "@/features/MediaPlayer";
+import {useCurrentMusicStore, useMusicStore, useMusicUtils, usePlaylistStore} from "@/features/MediaPlayer";
 import getRandomNumber from "@/shared/utils/getRandomNumber";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import formatTime from "@/shared/utils/formatTime";
 
 import {storeToRefs} from "pinia";
 
-
 const musicStore = useMusicStore();
-const {audio, isPlaying, currentAudioIndexInQueue} = storeToRefs(musicStore);
-const {currentQueue} = usePlaylistStore();
+const playlistStore = usePlaylistStore();
+const currentMusicStore = useCurrentMusicStore();
+
+const {audio, isPlaying} = storeToRefs(musicStore);
+const {currentQueue} = storeToRefs(playlistStore);
+const {currentAudioIndexInQueue} = storeToRefs(currentMusicStore);
+
 const {toggleTrackPlaying, nextTrack, previousTrack, loadSong} = useMusicUtils();
 
 const userConfig = useUserSettings();

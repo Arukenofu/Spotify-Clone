@@ -1,21 +1,33 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import {storeToRefs} from "pinia";
-import {useMusicStore, usePlaylistStore} from "@/features/MediaPlayer";
+import {useCurrentMusicStore, usePlaylistStore} from "@/features/MediaPlayer";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
 import MusicBlock from "@/shared/components/Music/MusicBlock.vue";
 
-const store = useMusicStore();
+const store = useCurrentMusicStore();
+const playlistStore = usePlaylistStore();
 const {currentAudioData, currentAudioIndexInQueue} = storeToRefs(store);
-const {currentQueue, currentPlaylist} = usePlaylistStore();
 
 const nextSongsInQueue = computed(() => {
-  if (!currentQueue.value.length) {
-    return []
+  if (playlistStore.currentQueue.length) {
+    return [];
   }
 
-  return currentQueue.value.slice(currentAudioIndexInQueue.value + 1);
+  return playlistStore.currentQueue.slice(currentAudioIndexInQueue.value + 1);
+});
+
+const headTextValue = computed(() => {
+  let output = "Далее";
+
+  if (playlistStore.currentPlaylist?.name) {
+    output += ` из: ${playlistStore.currentPlaylist?.name}`;
+  } else {
+    output += ':'
+  }
+
+  return output;
 })
 
 </script>
@@ -37,7 +49,7 @@ const nextSongsInQueue = computed(() => {
       </div>
 
       <div class="next-queue section" v-if="nextSongsInQueue.length">
-        <div class="head-text">Далее{{currentPlaylist?.name ? ` из: ${currentPlaylist?.name}` : ':'}}</div>
+        <div class="head-text">{{headTextValue}}</div>
 
         <div class="music-wrap">
           <MusicBlock

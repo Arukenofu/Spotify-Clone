@@ -1,38 +1,34 @@
 import {storeToRefs} from "pinia";
-import {useMusicStore} from "@/features/MediaPlayer/store/useMusicStore";
+
+import useMusicStore from "@/features/MediaPlayer/store/useMusicStore";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
+import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
+
 import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
 import setTitle from "@/shared/utils/setTitle";
 import type {Music} from "@/shared/models/Music";
 
 export default function (){
-    const store = useMusicStore();
+    const musicStore = useMusicStore();
+    const playlistStore = usePlaylistStore();
+    const currentMusicStore = useCurrentMusicStore();
 
-    const {
-        audio,
-        isPlaying,
-        currentAudioId,
-        currentAudioIndexInQueue,
-        currentAudioData,
-        currentQueue,
-        currentPlaylist
-    } = {
-        ...storeToRefs(store),
-        ...usePlaylistStore()
-    };
-
-    const {getAudioData} = store;
+    const {audio, isPlaying} = storeToRefs(musicStore);
+    const {currentQueue, currentPlaylist} = storeToRefs(playlistStore);
+    const {currentAudioId, currentAudioData, currentAudioIndexInQueue} = storeToRefs(currentMusicStore)
 
     function playAudio() {
         audio.value!.play().then(() => {
             isPlaying.value = true;
         });
 
-        const artistsString: string = getCommaSeparatedString(currentAudioData.value.artists, 'name');
+        const artistsString: string = getCommaSeparatedString(
+            currentAudioData.value.artists, 'name'
+        );
 
         setTitle(`${currentAudioData.value.name} • ${artistsString}`, {
             temporarily: true
-        })
+        });
     }
 
     function pauseAudio() {
@@ -79,10 +75,14 @@ export default function (){
 
     function nextTrack() {
         if (currentAudioIndexInQueue.value + 1 === currentQueue.value.length) {
-            return loadSong(currentQueue.value[0]);
+            return loadSong(
+                currentQueue.value[0]
+            );
         }
 
-        return loadSong(getAudioData(currentAudioIndexInQueue.value + 1));
+        return loadSong(
+            currentQueue.value[currentAudioIndexInQueue.value + 1]
+        );
     }
 
     function previousTrack() {
@@ -90,7 +90,7 @@ export default function (){
             return loadSong(currentQueue.value[currentQueue.value.length - 1]);
         }
 
-        return loadSong(getAudioData(currentAudioIndexInQueue.value - 1));
+        return loadSong(currentQueue.value[currentAudioIndexInQueue.value - 1]);
     }
 
     function toggleTrackPlaying() {

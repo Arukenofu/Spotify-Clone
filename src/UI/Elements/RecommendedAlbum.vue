@@ -20,7 +20,7 @@ const {
   isPlaying,
   toggleTrackPlaying
 } = {
-  ...usePlaylistStore(),
+  ...storeToRefs(usePlaylistStore()),
   ...storeToRefs(store),
   ...useMusicUtils()
 };

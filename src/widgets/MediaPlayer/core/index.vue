@@ -1,24 +1,21 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useMusicStore} from "@/features/MediaPlayer";
-
+import {onMounted} from "vue";
+import {useCurrentMusicStore, useMusicStore} from "@/features/MediaPlayer";
 import TrackDetails from "@/widgets/MediaPlayer/components/TrackDetails.vue";
 import TrackControls from "@/widgets/MediaPlayer/components/TrackControls.vue";
 import AdditionalControls from "@/widgets/MediaPlayer/components/AdditionalControls.vue";
 
-import {onMounted} from "vue";
-
 const musicStore = useMusicStore();
-const {audio, currentAudioData} = storeToRefs(musicStore);
+const currentMusicStore = useCurrentMusicStore();
 
 onMounted(() => {
-  audio.value = new Audio(currentAudioData.value.url);
+  musicStore.audio = new Audio(currentMusicStore.currentAudioData.url);
 });
 
 </script>
 
 <template>
-  <div class="player" v-if="audio">
+  <div class="player" v-if="musicStore.audio">
     <TrackDetails />
 
     <TrackControls />

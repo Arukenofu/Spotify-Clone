@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import {useMusicStore} from "@/features/MediaPlayer";
+import {useCurrentMusicStore} from "@/features/MediaPlayer";
 
-const store = useMusicStore();
+const store = useCurrentMusicStore();
 const {currentAudioData} = storeToRefs(store);
 
 </script>
