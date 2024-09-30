@@ -69,8 +69,9 @@ function toggleWidth() {
           class="createPlaylist"
           v-tooltip="'Создать плейлист или папку'"
           @click="showContextMenu($event, createPlaylistContextMenu, {
-            style: 'minimal',
-            stickOn: 'currentElement'
+            design: 'minimal',
+            stickOn: 'currentElement',
+            inset: 12
           })"
       >
         <PlusIcon class="icon" />

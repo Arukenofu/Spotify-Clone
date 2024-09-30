@@ -24,4 +24,4 @@ export default {
             capture: true
         });
     }
-} as Directive;
+} satisfies Directive;

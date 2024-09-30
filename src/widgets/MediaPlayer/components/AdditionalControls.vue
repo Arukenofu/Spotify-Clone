@@ -101,7 +101,7 @@ function toggleVolume() {
 
       <FullScreen
           class="icon"
-          v-tooltip.top_left="'На весь экран'"
+          v-tooltip.end_top="'На весь экран'"
       />
     </div>
   </div>

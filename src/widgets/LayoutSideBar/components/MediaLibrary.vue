@@ -50,7 +50,7 @@ const gridItemWidth = computed(() => {
 
         <FormatButton
             @click="showContextMenu($event, FormatContextMenu, {
-              style: 'minimal',
+              design: 'minimal',
               stickOn: 'mousePosition'
             })"
         />

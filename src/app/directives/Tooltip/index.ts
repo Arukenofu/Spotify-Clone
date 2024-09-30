@@ -1,26 +1,41 @@
-import Init from './scripts/'
+import onMouseOver from './scripts/'
 import './styles/index.scss'
+import {type DirectiveBinding} from "vue";
+import type {TooltipX, TooltipY} from "@/app/directives/Tooltip/types/Axis";
+import type {TooltipOptions} from "@/app/directives/Tooltip/types/TooltipOptions";
 
-import type {DirectiveBinding} from "vue";
+type BindingValue = TooltipOptions & { text: string } | string;
 
-type TextContent = 'string'
+type Bindings = DirectiveBinding<BindingValue, `${TooltipX}_${TooltipY}`>
 
-Init();
+export default function (el: HTMLElement, binding: Bindings) {
+    if (typeof binding.value === 'string') {
+        el.setAttribute('data-tooltip', binding.value);
+    } else if (typeof binding.value === 'object') {
+        const {text, showDelay, unShowDelay, distance} = binding.value;
 
-export default function (el: HTMLElement, binding: DirectiveBinding<TextContent>) {
-    el.setAttribute('data-tooltip', binding.value);
-
-    if (binding.modifiers.right) {
-        el.setAttribute('data-position', 'right center')
-    } else if (binding.modifiers.left) {
-        el.setAttribute('data-position', 'left center')
-    } else if (binding.modifiers.bottom) {
-        el.setAttribute('data-position', 'center bottom')
-    } else if (binding.modifiers.top_left) {
-        el.setAttribute('data-position', 'left top')
-    } else if (binding.modifiers.bottom_left) {
-        el.setAttribute('data-position', 'left bottom')
+        el.setAttribute('data-tooltip', text);
+        showDelay && el.setAttribute('data-showDelay', String(showDelay))
+        unShowDelay && el.setAttribute('data-showDelay', String(unShowDelay))
+        distance && el.setAttribute('data-distance', String(distance))
     }
 
-    //Todo: Automatize directive modifiers
+    const modifier = getModifierParam(binding.modifiers);
+
+    if (modifier) {
+        el.setAttribute(
+            'data-position',
+            `${modifier[0] || 'top'} ${modifier[1] || 'center'}`
+        );
+    }
+
+    el.addEventListener('mouseover', (event: MouseEvent) => {
+        const target = event.target as HTMLElementWithTooltip;
+        if (!target.hasAttribute('data-tooltip')) return;
+        onMouseOver(target);
+    })
+}
+
+function getModifierParam(value: Bindings['modifiers']) {
+    return Object.keys(value)[0]?.split('_');
 }

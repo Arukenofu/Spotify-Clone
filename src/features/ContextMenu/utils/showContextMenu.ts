@@ -1,12 +1,13 @@
-import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
 import {type Component, nextTick, shallowRef} from "vue";
-import type {Options} from '../types/Options'
-
+import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
+import setCoordinatesByMousePosition from "@/features/ContextMenu/utils/setCoordinatesByMousePosition";
+import setCoordinatesByCurrentElement from "@/features/ContextMenu/utils/setCoordinatesByCurrentElement";
+import type {ContextMenuOptions} from "@/features/ContextMenu/types/ContextMenuOptions";
 
 export default async function showContextMenu(
     event: MouseEvent,
     value: Component,
-    options?: Options
+    options?: ContextMenuOptions
 ): Promise<void> {
     event.preventDefault();
 
@@ -21,21 +22,32 @@ export default async function showContextMenu(
         left: 0
     }
 
-    isActive.value = true;
     setContextMenuComponent(shallowRef(value));
+    isActive.value = true;
+
     await nextTick();
 
-    const width = core.value!.offsetWidth;
+    const width = options?.design === 'default' ? 350 : 175;
     const height = core.value!.offsetHeight;
 
     if (options?.stickOn === 'mousePosition') {
-        setCoordinatesByMousePosition(event, coordinates, width, height);
-    } else {
-        setCoordinatesByCurrentElement(event, coordinates, width, height);
+        setCoordinatesByMousePosition(event, {
+            coordinates,
+            width,
+            height
+        });
+    }
+    else if (options?.stickOn === 'currentElement') {
+        setCoordinatesByCurrentElement(event, {
+            coordinates,
+            width,
+            height,
+            ...options
+        });
     }
 
     const styles = {
-        width: options?.style === 'default' ? '350px' : '175px',
+        width: `${width}px`,
         top: coordinates.top + 'px',
         left: coordinates.left + 'px',
     }
@@ -45,52 +57,3 @@ export default async function showContextMenu(
     core.value!.style.left = styles.left;
 }
 
-function setCoordinatesByMousePosition(
-    event: MouseEvent,
-    coordinates: {top: number, left: number},
-    width: number,
-    height: number
-) {
-    if ((width + event.pageX) >= window.innerWidth) {
-        coordinates.left = (event.pageX - width);
-    } else {
-        coordinates.left = event.pageX;
-    }
-
-    if ((height + event.clientY) >= window.innerHeight) {
-        coordinates.top = event.pageY - height;
-    } else {
-        coordinates.top = event.pageY ;
-    }
-}
-
-function setCoordinatesByCurrentElement(
-    event: MouseEvent,
-    coordinates: {top: number, left: number},
-    width: number,
-    height: number
-) {
-    const element = event.target as HTMLElement;
-    const elementCoordinates = element.getBoundingClientRect();
-
-    const centerX = elementCoordinates.left + elementCoordinates.width / 2;
-    const centerY = elementCoordinates.top + elementCoordinates.height / 2;
-
-    let left: number;
-    let top: number;
-
-    if ((width + elementCoordinates.left) >= window.innerWidth) {
-        left = (centerX - width);
-    } else {
-        left = centerX;
-    }
-
-    if ((height + centerY) >= window.innerHeight) {
-        top = centerY - height;
-    } else {
-        top = centerY;
-    }
-
-    coordinates.left = left;
-    coordinates.top = top + 20;
-}

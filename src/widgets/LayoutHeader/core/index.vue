@@ -5,12 +5,10 @@ import HomeIcon from "@/UI/Icons/Shared/HomeIcon.vue";
 import Search from "@/widgets/LayoutHeader/components/Search.vue";
 import DownloadIcon from "@/widgets/LayoutHeader/UI/DownloadIcon.vue";
 import BellIcon from "@/widgets/LayoutHeader/UI/BellIcon.vue";
-
+import User from "@/widgets/LayoutHeader/components/User.vue";
 import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
 
 const {currentRoutePath} = useCurrentRoutePath('path');
-
-
 </script>
 
 <template>
@@ -23,7 +21,10 @@ const {currentRoutePath} = useCurrentRoutePath('path');
       <RoundButton
           class="homeButton"
           @click="$router.push('/')"
-          v-tooltip.bottom="'Главная'"
+          v-tooltip.center_bottom="{
+            text: 'Главная',
+            distance: 5
+          }"
       >
         <HomeIcon
             class="icon"
@@ -58,16 +59,7 @@ const {currentRoutePath} = useCurrentRoutePath('path');
         />
       </div>
 
-      <RoundButton class="user-avatar">
-        <div
-            class="picture"
-            :class="'no-picture'"
-            data-char="Б"
-            v-tooltip.bottom_left="'Бауыржан Алкенов'"
-        >
-
-        </div>
-      </RoundButton>
+      <User />
     </div>
 
   </header>
@@ -218,42 +210,6 @@ header {
 
       &:hover .icon, .active {
         fill: var(--white);
-      }
-    }
-
-    .user-avatar {
-      height: 48px;
-      width: 48px;
-      min-width: 48px;
-      background-color: var(--ui-highlight);
-      display: grid;
-      place-items: center;
-
-      &:hover {
-        scale: 1.02;
-
-        .picture {
-          scale: 1.02;
-        }
-      }
-
-      .picture {
-        height: 32px;
-        width: 32px;
-        background-color: var(--main-color);
-        border-radius: 50%;
-        position: relative;
-      }
-
-      .no-picture::after {
-        content: attr(data-char);
-        font-weight: 600;
-        color: var(--black);
-        line-height: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
       }
     }
   }

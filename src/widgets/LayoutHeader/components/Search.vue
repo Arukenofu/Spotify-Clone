@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import {useRoute} from "vue-router";
 
 import SearchReviewIcon from "@/UI/Icons/Shared/SearchReviewIcon.vue";
@@ -58,7 +58,10 @@ watch(inputValue, () => {
 
     <div
         class="icon-container-box"
-        v-tooltip.bottom="'Обзор'"
+        v-tooltip.center_bottom="{
+            text: 'Обзор',
+            distance: 5
+        }"
         v-if="!inputValue?.length"
     >
       <SearchReviewIcon

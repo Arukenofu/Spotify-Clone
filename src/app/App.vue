@@ -7,9 +7,9 @@ import {ContextMenu} from '@/features/ContextMenu';
     <RouterView />
   </Suspense>
 
-  <ContextMenu>
-
-  </ContextMenu>
+  <Teleport to="body">
+    <ContextMenu />
+  </Teleport>
 </template>
 
 <style scoped>

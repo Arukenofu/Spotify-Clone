@@ -1,100 +1,121 @@
 /**
  * @original-author Zoltan Toth
- * @modifyed-by Bauyrzhan Alkenov
+ * @modified-by Bauyrzhan Alkenov
  */
+import type {TooltipX, TooltipY} from "@/app/directives/Tooltip/types/Axis";
 
-export default function () {
-    const showDelay = 500;
-    const unShowDelay = 10;
-    const distance = 10;
+export default function (
+    target: HTMLElementWithTooltip,
+) {
+    const showDelay: number = Number(target.dataset.showDelay) || 500;
+    const unShowDelay: number = Number(target.dataset.unShowDelay) || 10;
 
-    document.body.addEventListener('mouseenter', (event) => {
-        const target = event.target as HTMLElement;
+    const existingTooltips = document.querySelectorAll('.tooltip');
+    existingTooltips.forEach(tooltip => tooltip.remove());
 
-        if (!target.hasAttribute('data-tooltip')) {
-            return;
-        }
+    const tooltip = document.createElement('div');
+    tooltip.className = "tooltip";
+    tooltip.textContent = target.getAttribute('data-tooltip')!;
+    document.body.append(tooltip);
 
-        const existingTooltips = document.querySelectorAll('.tooltip');
-        existingTooltips.forEach(tooltip => tooltip.remove());
+    const position = target.dataset.position || 'center top';
+    const [horizontalPosition, verticalPosition] = position.split(" ") as [TooltipX, TooltipY];
 
-        const tooltip = document.createElement('div');
-        tooltip.className = "tooltip";
-        tooltip.innerHTML = target.getAttribute('data-tooltip')!;
+    setElementPosition(target, tooltip, horizontalPosition, verticalPosition);
 
-        document.body.append(tooltip);
+    setTimeout(() => {
+        tooltip.classList.add('show');
+    }, showDelay);
 
-        const position = target.getAttribute('data-position') || 'center top';
-        const [horizontalPosition, verticalPosition] = position.split(" ");
-
-        setElementPosition(target, tooltip, horizontalPosition, verticalPosition);
-
+    target.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('show');
         setTimeout(() => {
-            tooltip.classList.add('show');
-        }, showDelay);
+            tooltip.remove()
+        }, unShowDelay);
+    }, { once: true });
 
-        target.addEventListener('mouseleave', () => {
-            tooltip.classList.remove('show');
-            setTimeout(() => {
-                tooltip.remove()
-            }, unShowDelay);
-        }, { once: true });
-        // Todo: Fix mouseleave event when transforming element
-    }, true);
+    document.body.addEventListener('mouseenter', () => {
+        tooltip.classList.remove('show');
+        setTimeout(() => {
+            tooltip.remove()
+        }, unShowDelay);
+    }, { once: true });
+}
 
-    function setElementPosition(
-        parentElement: HTMLElement,
-        tooltip: HTMLElement,
-        horizontalPosition: string,
-        verticalPosition: string
-    ) {
-        const parentCoordinates = parentElement.getBoundingClientRect();
-        let left: number;
-        let top: number;
+function setElementPosition(
+    parentElement: HTMLElementWithTooltip,
+    tooltip: HTMLElement,
+    horizontalPosition: TooltipX,
+    verticalPosition: TooltipY
+) {
+    const distance = Number(parentElement.dataset.distance) || 10;
+    let left: number;
+    let top: number;
 
-        switch (horizontalPosition) {
-            case "left": {
-                left = parentCoordinates.left - distance - tooltip.offsetWidth;
-                if (parentCoordinates.left - tooltip.offsetWidth < 0) {
-                    left = distance;
-                }
-                break;
+    const parentCoordinates = parentElement.getBoundingClientRect();
+    const tooltipWidth = tooltip.offsetWidth;
+    const tooltipHeight = tooltip.offsetHeight;
+    const documentWidth = document.documentElement.clientWidth;
+
+    switch (horizontalPosition) {
+        case "left": {
+            left = parentCoordinates.left - distance - tooltipWidth;
+            if (parentCoordinates.left - tooltipWidth < 0) {
+                left = distance;
             }
-
-            case "right": {
-                left = parentCoordinates.right + distance;
-                if (parentCoordinates.right + tooltip.offsetWidth > document.documentElement.clientWidth) {
-                    left = document.documentElement.clientWidth - tooltip.offsetWidth - distance;
-                }
-                break;
+            break;
+        }
+        case "right": {
+            left = parentCoordinates.right + distance;
+            if (parentCoordinates.right + tooltipWidth > documentWidth) {
+                left = documentWidth - tooltipWidth - distance;
             }
-
-            default:
-            case "center":
-                left = parentCoordinates.left + ((parentElement.offsetWidth - tooltip.offsetWidth) / 2);
+            break;
         }
-
-        switch (verticalPosition) {
-            case "center":
-                top = (parentCoordinates.top + parentCoordinates.bottom) / 2 - tooltip.offsetHeight / 2;
-                break;
-
-            case "bottom":
-                top = parentCoordinates.bottom + distance;
-                break;
-
-            default:
-            case "top":
-                top = parentCoordinates.top - tooltip.offsetHeight - distance;
+        case "start": {
+            left = parentCoordinates.left;
+            break;
         }
-
-        left = (left < 0) ? parentCoordinates.left : left;
-        top  = (top < 0) ? parentCoordinates.bottom + distance : top;
-
-        // For cross-browser support
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-
-        tooltip.style.left = left + "px";
-        tooltip.style.top  = top + scrollY + "px";
+        case "end": {
+            left = parentCoordinates.right - tooltipWidth;
+            break;
+        }
+        default:
+        case "center": {
+            left = parentCoordinates.left + (parentElement.offsetWidth - tooltipWidth) / 2;
+            break;
+        }
     }
+
+    switch (verticalPosition) {
+        case "center": {
+            top = (parentCoordinates.top + parentCoordinates.bottom) / 2 - tooltipHeight / 2;
+            break;
+        }
+        case "bottom": {
+            top = parentCoordinates.bottom + distance;
+            break;
+        }
+        case "start": {
+            top = parentCoordinates.top;
+            break;
+        }
+        case "end": {
+            top = parentCoordinates.bottom - tooltipHeight;
+            break;
+        }
+        default:
+        case "top": {
+            top = parentCoordinates.top - tooltipHeight - distance;
+            break;
+        }
+    }
+
+    left = (left < 0) ? parentCoordinates.left : left;
+    top = (top < 0) ? parentCoordinates.bottom + distance : top;
+
+    const scrollY = document.body.scrollTop || 0;
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top + scrollY}px`;
 }
