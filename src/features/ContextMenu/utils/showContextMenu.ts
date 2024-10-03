@@ -1,4 +1,4 @@
-import {type Component, nextTick, shallowRef} from "vue";
+import {type Component, nextTick} from "vue";
 import contextMenuStore from "@/features/ContextMenu/store/contextMenuStore";
 import setCoordinatesByMousePosition from "@/features/ContextMenu/utils/setCoordinatesByMousePosition";
 import setCoordinatesByCurrentElement from "@/features/ContextMenu/utils/setCoordinatesByCurrentElement";
@@ -13,7 +13,6 @@ export default async function showContextMenu(
 
     const {
         core,
-        isActive,
         setContextMenuComponent
     } = contextMenuStore();
 
@@ -22,8 +21,7 @@ export default async function showContextMenu(
         left: 0
     }
 
-    setContextMenuComponent(shallowRef(value));
-    isActive.value = true;
+    setContextMenuComponent(value);
 
     await nextTick();
 

@@ -21,9 +21,8 @@ const {currentRoutePath} = useCurrentRoutePath('path');
       <RoundButton
           class="homeButton"
           @click="$router.push('/')"
-          v-tooltip.center_bottom="{
-            text: 'Главная',
-            distance: 5
+          v-tooltip.center_center="{
+            content: 'Главная',
           }"
       >
         <HomeIcon
@@ -50,7 +49,7 @@ const {currentRoutePath} = useCurrentRoutePath('path');
       <div
           class="notification"
           @click="$router.push('/content-feed')"
-          v-tooltip.bottom="'Что нового'"
+          v-tooltip.center_bottom="'Что нового'"
       >
         <BellIcon
             :state="currentRoutePath === '/content-feed'"

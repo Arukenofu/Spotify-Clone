@@ -1,54 +1,12 @@
-/**
- * @original-author Zoltan Toth
- * @modified-by Bauyrzhan Alkenov
- */
-import type {TooltipX, TooltipY} from "@/app/directives/Tooltip/types/Axis";
+import type {TooltipProps} from "@/app/directives/Tooltip/types/TooltipProps";
 
-export default function (
-    target: HTMLElementWithTooltip,
-) {
-    const showDelay: number = Number(target.dataset.showDelay) || 500;
-    const unShowDelay: number = Number(target.dataset.unShowDelay) || 10;
-
-    const existingTooltips = document.querySelectorAll('.tooltip');
-    existingTooltips.forEach(tooltip => tooltip.remove());
-
-    const tooltip = document.createElement('div');
-    tooltip.className = "tooltip";
-    tooltip.textContent = target.getAttribute('data-tooltip')!;
-    document.body.append(tooltip);
-
-    const position = target.dataset.position || 'center top';
-    const [horizontalPosition, verticalPosition] = position.split(" ") as [TooltipX, TooltipY];
-
-    setElementPosition(target, tooltip, horizontalPosition, verticalPosition);
-
-    setTimeout(() => {
-        tooltip.classList.add('show');
-    }, showDelay);
-
-    target.addEventListener('mouseleave', () => {
-        tooltip.classList.remove('show');
-        setTimeout(() => {
-            tooltip.remove()
-        }, unShowDelay);
-    }, { once: true });
-
-    document.body.addEventListener('mouseenter', () => {
-        tooltip.classList.remove('show');
-        setTimeout(() => {
-            tooltip.remove()
-        }, unShowDelay);
-    }, { once: true });
-}
-
-function setElementPosition(
-    parentElement: HTMLElementWithTooltip,
+export default function(
+    parentElement: HTMLElement,
     tooltip: HTMLElement,
-    horizontalPosition: TooltipX,
-    verticalPosition: TooltipY
-) {
-    const distance = Number(parentElement.dataset.distance) || 10;
+    placement: TooltipProps['placement'] = [],
+    distanceParam: number
+): [number, number] {
+    const distance = distanceParam || 10;
     let left: number;
     let top: number;
 
@@ -56,6 +14,8 @@ function setElementPosition(
     const tooltipWidth = tooltip.offsetWidth;
     const tooltipHeight = tooltip.offsetHeight;
     const documentWidth = document.documentElement.clientWidth;
+
+    const [horizontalPosition, verticalPosition] = placement;
 
     switch (horizontalPosition) {
         case "left": {
@@ -116,6 +76,5 @@ function setElementPosition(
 
     const scrollY = document.body.scrollTop || 0;
 
-    tooltip.style.left = `${left}px`;
-    tooltip.style.top = `${top + scrollY}px`;
+    return [left, top + scrollY]
 }

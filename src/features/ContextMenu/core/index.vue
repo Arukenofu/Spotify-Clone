@@ -18,7 +18,7 @@ const {
       v-click-outside="closeContextMenu"
   >
     <ul>
-      <Component :is="getCurrentComponent?.value" />
+      <Component :is="getCurrentComponent" />
     </ul>
   </div>
 </template>

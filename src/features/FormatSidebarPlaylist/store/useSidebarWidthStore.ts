@@ -1,11 +1,14 @@
 import {defineStore, storeToRefs} from "pinia";
 import useCachedRef from "@/shared/composables/useCachedRef";
 import defaultWidth from "@/widgets/LayoutSideBar/constants/defaultWidth";
-import {onMounted, watch} from "vue";
+import {computed, onMounted, watch} from "vue";
 
 const useSidebarWidthStore = defineStore('useSidebarStore', () => {
-    const isMinimized = useCachedRef<boolean>('isAsideMinimized', false);
     const currentWidth = useCachedRef<number>('currentWidth', defaultWidth);
+
+    const isMinimized = computed(() => {
+        return currentWidth.value <= 72;
+    });
 
     function setStyleWidth(value: number) {
         document.documentElement.style.setProperty('--sidebar-width', `${value}px`);

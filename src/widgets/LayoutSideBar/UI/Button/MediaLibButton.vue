@@ -14,10 +14,8 @@ const {isMinimized, currentWidth} = useSidebarWidthStore();
 
 function toggleSidebar() {
   if (isMinimized.value) {
-    isMinimized.value = !isMinimized.value;
     currentWidth.value = defaultWidth;
   } else {
-    isMinimized.value = !isMinimized.value;
     currentWidth.value = 72;
   }
 }
@@ -46,7 +44,7 @@ function toggleWidth() {
         v-if="isMinimized"
         class="toggle"
         @click="toggleSidebar()"
-        v-tooltip.right="isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'"
+        v-tooltip.right_center="isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'"
     >
       <LibraryIcon class="icon" />
     </button>
@@ -62,7 +60,6 @@ function toggleWidth() {
         Моя медиатека
       </span>
     </button>
-    <!--  TODO: Find solution to minimize  -->
 
     <div class="other-controls" v-if="!isMinimized">
       <RoundButton

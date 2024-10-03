@@ -5,14 +5,11 @@ import {useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
 import max from "@/widgets/LayoutSideBar/constants/max";
 import min from "@/widgets/LayoutSideBar/constants/min";
 
-const {isMinimized, currentWidth} = useSidebarWidthStore();
+const {currentWidth} = useSidebarWidthStore();
 
 function onMinimizeTooMany(newWidth: number, max: number, min: number) {
   if (newWidth < (min / 2)) {
     currentWidth.value = 72;
-    isMinimized.value = true;
-  } else if (newWidth >= min) {
-    isMinimized.value = false;
   }
 }
 

@@ -59,7 +59,7 @@ watch(inputValue, () => {
     <div
         class="icon-container-box"
         v-tooltip.center_bottom="{
-            text: 'Обзор',
+            content: 'Обзор',
             distance: 5
         }"
         v-if="!inputValue?.length"
