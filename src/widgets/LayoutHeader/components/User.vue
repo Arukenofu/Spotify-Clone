@@ -13,7 +13,8 @@ import UserProfileModal from "@/widgets/LayoutHeader/modals/UserProfileModal.vue
         inset: 0
       })"
       v-tooltip.end_bottom="{
-        distance: ''
+        content: 'Бауыржан Алкенов',
+        distance: 5
       }"
       v-disable-child
   >

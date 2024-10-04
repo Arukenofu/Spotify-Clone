@@ -5,7 +5,7 @@ import type {Ref} from "vue";
 export default function (
     el: HTMLElementWithProps,
     isShown: Ref<boolean>,
-    props: Ref<TooltipProps>,
+    props: Ref<TooltipProps | {}>,
 ) {
     isShown.value = true;
     props.value = el.tooltipProps;

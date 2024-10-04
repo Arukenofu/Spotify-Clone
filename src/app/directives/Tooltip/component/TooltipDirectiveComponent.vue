@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {ref, useTemplateRef, watchEffect} from "vue";
-import type {TooltipProps} from "@/app/directives/Tooltip/types/TooltipProps";
 import getElementPositionAxes from "@/app/directives/Tooltip/helpers/getElementPositionAxes";
+import type {TooltipProps} from "@/app/directives/Tooltip/types/TooltipProps";
+import type {BindingObject} from "@/app/directives/Tooltip/types/BindingTypes";
 
 const tooltip = useTemplateRef<HTMLElement>('tooltip');
 
@@ -12,9 +13,7 @@ const {
     distance = 10,
     showDelay = 1000,
     allowInnerHTML = false,
-} = defineProps<TooltipProps & {
-  parent: HTMLElement
-}>();
+} = defineProps<TooltipProps & BindingObject>();
 
 watchEffect(() => {
   if (!parent || !tooltip.value) {
@@ -52,6 +51,7 @@ watchEffect(() => {
   <div
       class="v-tooltip"
       :class="isShowDelayTimePassed && 'show'"
+      :style="style"
       ref="tooltip"
       v-if="isShown"
   >
@@ -62,7 +62,7 @@ watchEffect(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .v-tooltip {
   left: var(--v-tooltip-x);
   top: var(--v-tooltip-y);

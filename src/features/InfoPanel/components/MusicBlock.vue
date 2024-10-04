@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type {Music} from "@/shared/models/Music";
-import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import {computed} from "vue";
-import {useCurrentMusicStore, useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
 import {storeToRefs} from "pinia";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
+import {useCurrentMusicStore, useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
+import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
+import type {Music} from "@/shared/models/Music";
 
 const props = defineProps<{
   music: Music
@@ -44,7 +44,7 @@ const playingStateTooltip = computed(() => {
 
 <template>
   <div class="musicBlock">
-    <div class="image-block" @click="toggleMusic()"  v-tooltip="playingStateTooltip">
+    <div class="image-block" @click="toggleMusic()" v-tooltip="playingStateTooltip">
       <PlayingState
           :state="isCurrent && isPlaying"
           class="icon"

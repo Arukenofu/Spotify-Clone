@@ -1,18 +1,16 @@
-import '../styles/index.scss';
-
-import {createApp, type DirectiveBinding, h, ref} from "vue";
-import TooltipDirectiveComponent from "../component/TooltipDirectiveComponent.vue";
+import {createApp, h, ref} from "vue";
 import getOptions from "@/app/directives/Tooltip/helpers/getOptions";
-
+import onMouseOver from "@/app/directives/Tooltip/events/onMouseOver";
+import onMouseLeave from "@/app/directives/Tooltip/events/onMouseLeave";
+import TooltipDirectiveComponent from "../component/TooltipDirectiveComponent.vue";
 import type {App, Ref} from "vue";
 import type {Bindings, BindingValues} from "@/app/directives/Tooltip/types/BindingTypes";
 import type {HTMLElementWithProps} from "@/app/directives/Tooltip/types/HTMLElementWithProps";
 import type {TooltipProps} from "@/app/directives/Tooltip/types/TooltipProps";
-import onMouseOver from "@/app/directives/Tooltip/events/onMouseOver";
-import onMouseLeave from "@/app/directives/Tooltip/events/onMouseLeave";
+import '../styles/index.scss';
 
 let directiveApp: App;
-let props: Ref<TooltipProps>;
+let props: Ref<TooltipProps | {}>;
 let isShown: Ref<boolean>;
 
 function createDirectiveApplication() {
@@ -30,11 +28,11 @@ function createDirectiveApplication() {
                 props
             }
         },
-        render () {
-            return h(TooltipDirectiveComponent, {
+        render() {
+            return this.isShown && h(TooltipDirectiveComponent, {
                 isShown: this.isShown,
                 ...this.props,
-            })
+            });
         },
         devtools: {
             hide: true
@@ -49,8 +47,8 @@ function createDirectiveApplication() {
 
 function setTooltipParent(
     el: HTMLElementWithProps,
-    value: DirectiveBinding['value'],
-    modifiers: DirectiveBinding['modifiers']
+    value: BindingValues,
+    modifiers: Bindings['modifiers']
 ) {
     createDirectiveApplication();
 
@@ -64,19 +62,12 @@ function setTooltipParent(
     });
 }
 
-function destroyTooltip(el: HTMLElementWithProps) {
-    el.removeEventListener('mouseover', () => {
-        onMouseOver(el, isShown, props);
-    });
-    el.removeEventListener('mouseleave', () => {
-        onMouseLeave(el, isShown, props);
-    });
-}
-
-function bind(
+export function bind(
     el: HTMLElementWithProps,
-    {value, modifiers}: {value: BindingValues, modifiers: Bindings['modifiers']}
+    binding: Bindings
 ) {
+    const {value, modifiers} = binding;
+
     const options = getOptions(el, value, modifiers);
     if (!options.content) {
         destroyTooltip(el); return;
@@ -85,10 +76,11 @@ function bind(
     setTooltipParent(el, value, modifiers);
 }
 
-export default {
-    beforeMount: bind,
-    update: bind,
-    beforeUnmount(el: HTMLElementWithProps) {
-        destroyTooltip(el);
-    }
+export function destroyTooltip(el: HTMLElementWithProps) {
+    el.removeEventListener('mouseover', () => {
+        onMouseOver(el, isShown, props);
+    });
+    el.removeEventListener('mouseleave', () => {
+        onMouseLeave(el, isShown, props);
+    });
 }

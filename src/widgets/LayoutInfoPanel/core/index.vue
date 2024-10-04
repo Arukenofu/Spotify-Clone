@@ -4,15 +4,15 @@ import Resizer from "@/shared/components/Resizer.vue";
 import max from "@/widgets/LayoutInfoPanel/constants/max";
 import min from "@/widgets/LayoutInfoPanel/constants/min";
 import useCachedRef from "@/shared/composables/useCachedRef";
-import {infoPanel, defaultWidth} from "@/features/InfoPanel";
+import {InfoPanelComponent, infoPanel, defaultWidth} from "@/features/InfoPanel";
 
 const currentPanelWidth = useCachedRef('infoContentWidth', defaultWidth);
 
 watch(currentPanelWidth, (value) => {
-  setPanelStyleWidth(value);
+  document.documentElement.style.setProperty('--panel-width', `${value}px`);
 })
 
-const {currentPanelComponent, setPanelStyleWidth} = infoPanel();
+const {currentPanelComponent} = infoPanel();
 
 </script>
 
@@ -30,7 +30,7 @@ const {currentPanelComponent, setPanelStyleWidth} = infoPanel();
       class="info"
       :style="`width: ${currentPanelWidth}px;`"
   >
-    <Component :is="currentPanelComponent" />
+    <InfoPanelComponent />
   </aside>
 </template>
 

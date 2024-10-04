@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import {storeToRefs} from "pinia";
-import {useCurrentMusicStore, usePlaylistStore} from "@/features/MediaPlayer";
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
-import MusicBlock from "@/shared/components/Music/MusicBlock.vue";
+import MusicBlock from "@/features/InfoPanel/components/MusicBlock.vue";
+import PanelHeader from "@/features/InfoPanel/components/PanelHeader.vue";
+import {useCurrentMusicStore, usePlaylistStore} from "@/features/MediaPlayer";
 
 const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();
 const {currentAudioData, currentAudioIndexInQueue} = storeToRefs(store);
 
 const nextSongsInQueue = computed(() => {
-  if (playlistStore.currentQueue.length) {
+  if (!playlistStore.currentQueue.length) {
     return [];
   }
 
@@ -28,13 +28,12 @@ const headTextValue = computed(() => {
   }
 
   return output;
-})
+});
 
 </script>
 
 <template>
   <div class="panel">
-
     <PanelHeader>
       <template #name>
         Очередь

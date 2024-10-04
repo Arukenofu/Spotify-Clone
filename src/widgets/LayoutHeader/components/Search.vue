@@ -60,7 +60,10 @@ watch(inputValue, () => {
         class="icon-container-box"
         v-tooltip.center_bottom="{
             content: 'Обзор',
-            distance: 5
+            distance: 5,
+            style: {
+              marginLeft: '6px'
+            }
         }"
         v-if="!inputValue?.length"
     >

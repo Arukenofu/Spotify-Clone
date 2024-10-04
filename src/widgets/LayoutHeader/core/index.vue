@@ -21,9 +21,7 @@ const {currentRoutePath} = useCurrentRoutePath('path');
       <RoundButton
           class="homeButton"
           @click="$router.push('/')"
-          v-tooltip.center_center="{
-            content: 'Главная',
-          }"
+          v-tooltip.center_bottom="'Главная'"
       >
         <HomeIcon
             class="icon"

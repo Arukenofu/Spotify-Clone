@@ -6,10 +6,22 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import sassGlobImports from "vite-plugin-sass-glob-import";
 
+// @ts-ignore
+import createTypesByFolder from "./plugins/createTypesByFolder";
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        Router(),
+        createTypesByFolder([
+            {
+                name: 'PanelsName',
+                path: 'src/features/InfoPanel/Panels',
+                extension: '.vue'
+            }
+        ]),
+        Router({
+            dts: '.generated/router.d.ts'
+        }),
         sassGlobImports(),
         ClientSideLayout({
             layoutDir: 'src/app/layouts',
@@ -35,4 +47,4 @@ export default defineConfig({
             origin: 'http://localhost:5174',
         }
     }
-})
+});

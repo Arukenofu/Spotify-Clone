@@ -5,7 +5,7 @@ import type {TooltipProps} from "@/app/directives/Tooltip/types/TooltipProps";
 export default function (
     el: HTMLElementWithProps,
     isShown: Ref<boolean>,
-    props: Ref<TooltipProps>,
+    props: Ref<TooltipProps | {}>,
 ) {
     isShown.value = false;
 
