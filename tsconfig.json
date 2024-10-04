@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Bundler",
+    "moduleResolution": "Bundler"
   },
   "files": [],
   "references": [

@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import Resizer from "@/shared/components/Resizer.vue";
-import MediaLibrary from "@/widgets/LayoutSideBar/components/MediaLibrary.vue";
-import {useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
-import max from "@/widgets/LayoutSideBar/constants/max";
-import min from "@/widgets/LayoutSideBar/constants/min";
+import Resizer from '@/shared/components/Resizer.vue';
+import MediaLibrary from '@/widgets/LayoutSideBar/components/MediaLibrary.vue';
+import { useSidebarWidthStore } from '@/features/FormatSidebarPlaylist';
+import max from '@/widgets/LayoutSideBar/constants/max';
+import min from '@/widgets/LayoutSideBar/constants/min';
 
-const {currentWidth} = useSidebarWidthStore();
+const { currentWidth } = useSidebarWidthStore();
 
 function onMinimizeTooMany(newWidth: number, max: number, min: number) {
-  if (newWidth < (min / 2)) {
+  if (newWidth < min / 2) {
     currentWidth.value = 72;
   }
 }
-
 </script>
 
 <template>
@@ -20,10 +19,10 @@ function onMinimizeTooMany(newWidth: number, max: number, min: number) {
     <MediaLibrary />
   </aside>
   <Resizer
-      v-model:current-width="currentWidth"
-      :min-width="min"
-      :max-width="max"
-      @customResizeEvent="onMinimizeTooMany"
+    v-model:current-width="currentWidth"
+    :min-width="min"
+    :max-width="max"
+    @customResizeEvent="onMinimizeTooMany"
   />
 </template>
 

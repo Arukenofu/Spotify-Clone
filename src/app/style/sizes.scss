@@ -5,7 +5,17 @@
   --sidebar-width: 0px;
   --panel-width: 0px;
 
-  --content-spacing: clamp(16px, calc(16px + ((100vw - var(--sidebar-width, 0px) - var(--panel-width, 0px) - 600px) / 424) * 8), 24px);
+  --content-spacing: clamp(
+    16px,
+    calc(
+      16px +
+        (
+          (100vw - var(--sidebar-width, 0px) - var(--panel-width, 0px) - 600px) /
+            424
+        ) * 8
+    ),
+    24px
+  );
 }
 
 @media screen and (max-width: 768px) {

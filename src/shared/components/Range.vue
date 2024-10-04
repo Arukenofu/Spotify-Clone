@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {computed} from "vue";
+import { computed } from 'vue';
 
 interface Props {
-  current: number,
-  min?: number,
-  max: number,
-  step?: number,
-  thumbFix?: number
+  current: number;
+  min?: number;
+  max: number;
+  step?: number;
+  thumbFix?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   min: 0,
   step: 1,
   thumbFix: 2
-})
+});
 
 const progress = computed(() => {
   const min = props.min || 0;
@@ -25,28 +25,27 @@ const progress = computed(() => {
 
 function updateCurrentValue(event: Event) {
   const target = event.target as HTMLInputElement;
-  const value = props.min + ((props.max - props.min) * (parseFloat(target.value) / 100));
+  const value =
+    props.min + (props.max - props.min) * (parseFloat(target.value) / 100);
 
   emit('onValueChange', value);
 }
 
 const emit = defineEmits<{
-  onValueChange: [value: number]
+  onValueChange: [value: number];
 }>();
-
-
 </script>
 
 <template>
   <div class="range-outer">
     <input
-        min="0"
-        max="100"
-        :step="step ?? 1"
-        type="range"
-        :value="progress"
-        @input="updateCurrentValue($event)"
-    >
+      min="0"
+      max="100"
+      :step="step ?? 1"
+      type="range"
+      :value="progress"
+      @input="updateCurrentValue($event)"
+    />
     <div class="range-progress" :style="`width: ${progress}%`" />
 
     <div class="thumb" :style="`left: ${progress - thumbFix}%`" />
@@ -54,14 +53,15 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
-
 .range-outer {
   height: 4px;
   background-color: #4d4d4d;
   border-radius: 2px;
   position: relative;
 
-  &:hover, &:active, &:focus {
+  &:hover,
+  &:active,
+  &:focus {
     .range-progress {
       background-color: var(--main-color);
     }
@@ -147,5 +147,4 @@ const emit = defineEmits<{
     background-color: var(--white);
   }
 }
-
 </style>

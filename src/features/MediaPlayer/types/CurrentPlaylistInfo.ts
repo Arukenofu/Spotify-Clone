@@ -1,5 +1,5 @@
 export default interface CurrentPlaylistInfo {
-    id: number,
-    name: string,
-    to: string
+  id: number;
+  name: string;
+  to: string;
 }

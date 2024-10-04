@@ -1,37 +1,36 @@
 <script setup lang="ts">
-import type {FormatProps} from "@/features/FormatSidebarPlaylist/types/FormatProps";
-import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue";
-import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
+import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
+import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
+import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 
 interface GridFormatProps extends FormatProps {
-  minimized: boolean
+  minimized: boolean;
 }
 
 defineProps<GridFormatProps>();
-
 </script>
 
 <template>
   <RouterLink
-      :to="`/playlist/${to}`"
-      class="block"
-      :class="!minimized && 'unminimized'"
+    :to="`/playlist/${to}`"
+    class="block"
+    :class="!minimized && 'unminimized'"
   >
     <div class="picture">
       <div class="image" v-if="image" />
       <NoMusicOrPlaylistAvatar class="icon" v-else />
 
       <GreenPlayingButton
-          v-if="!minimized && type !== 'Папка'"
-          :state="false"
-          class="stateButton"
-          v-tooltip="`Слушать плейлист «${name}»`"
+        v-if="!minimized && type !== 'Папка'"
+        :state="false"
+        class="stateButton"
+        v-tooltip="`Слушать плейлист «${name}»`"
       />
     </div>
 
     <div class="text" v-if="!minimized">
-      <span class="name">{{name}}</span>
-      <span class="info">{{type}} • {{owner}}</span>
+      <span class="name">{{ name }}</span>
+      <span class="info">{{ type }} • {{ owner }}</span>
     </div>
   </RouterLink>
 </template>
@@ -42,7 +41,7 @@ defineProps<GridFormatProps>();
   position: relative;
 
   .picture {
-    box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     position: relative;
 
     .stateButton {
@@ -56,7 +55,7 @@ defineProps<GridFormatProps>();
   }
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     border-radius: 6px;
     inset: 12px;
@@ -129,7 +128,7 @@ defineProps<GridFormatProps>();
     }
 
     .info {
-      font-size: .875rem;
+      font-size: 0.875rem;
       color: var(--text-soft);
     }
   }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
-import {useCurrentMusicStore, useMusicStore} from "@/features/MediaPlayer";
-import TrackDetails from "@/widgets/MediaPlayer/components/TrackDetails.vue";
-import TrackControls from "@/widgets/MediaPlayer/components/TrackControls.vue";
-import AdditionalControls from "@/widgets/MediaPlayer/components/AdditionalControls.vue";
+import { onMounted } from 'vue';
+import { useCurrentMusicStore, useMusicStore } from '@/features/MediaPlayer';
+import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue';
+import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue';
+import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue';
 
 const musicStore = useMusicStore();
 const currentMusicStore = useCurrentMusicStore();
@@ -11,7 +11,6 @@ const currentMusicStore = useCurrentMusicStore();
 onMounted(() => {
   musicStore.audio = new Audio(currentMusicStore.currentAudioData.url);
 });
-
 </script>
 
 <template>
@@ -45,7 +44,8 @@ onMounted(() => {
   border: none;
   fill: var(--text-soft);
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     fill: var(--white);
   }
 

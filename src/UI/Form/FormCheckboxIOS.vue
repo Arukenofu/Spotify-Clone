@@ -1,12 +1,10 @@
 <script setup lang="ts">
-
 const model = defineModel();
-
 </script>
 
 <template>
   <div class="checkbox" ref="input">
-    <input type="checkbox" v-model="model">
+    <input type="checkbox" v-model="model" />
     <span class="indicator">
       <span class="thumb" />
     </span>
@@ -58,7 +56,7 @@ const model = defineModel();
       background: transparent;
       border-radius: 14px;
       border: 3px solid transparent;
-      content: "";
+      content: '';
     }
   }
 

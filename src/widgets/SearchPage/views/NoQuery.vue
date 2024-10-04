@@ -1,25 +1,18 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="layout" >
-    <h1 class="title">
-      Всё остальное
-    </h1>
+  <div class="layout">
+    <h1 class="title">Всё остальное</h1>
 
     <div class="cards">
-      <RouterLink
-          class="card"
-          v-for="a in 20"
-          :key="a"
-          :to="`/genre/${a}`"
-      >
-        <div class="name">
-          Музыка
-        </div>
+      <RouterLink class="card" v-for="a in 20" :key="a" :to="`/genre/${a}`">
+        <div class="name">Музыка</div>
 
-        <img class="image" src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb" alt="img" />
+        <img
+          class="image"
+          src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
+          alt="img"
+        />
       </RouterLink>
     </div>
   </div>
@@ -61,9 +54,9 @@
         right: 0;
         bottom: 0;
         width: 45%;
-        transform: rotate(25deg) translate(18%,-2%);;
+        transform: rotate(25deg) translate(18%, -2%);
         border-radius: 4px;
-        box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
         z-index: 1;
       }
     }

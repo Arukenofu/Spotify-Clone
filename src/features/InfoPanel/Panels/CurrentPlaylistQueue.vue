@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {storeToRefs} from "pinia";
-import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import MusicBlock from "@/features/InfoPanel/components/MusicBlock.vue";
-import PanelHeader from "@/features/InfoPanel/components/PanelHeader.vue";
-import {useCurrentMusicStore, usePlaylistStore} from "@/features/MediaPlayer";
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
+import MusicBlock from '@/features/InfoPanel/components/MusicBlock.vue';
+import PanelHeader from '@/features/InfoPanel/components/PanelHeader.vue';
+import { useCurrentMusicStore, usePlaylistStore } from '@/features/MediaPlayer';
 
 const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();
-const {currentAudioData, currentAudioIndexInQueue} = storeToRefs(store);
+const { currentAudioData, currentAudioIndexInQueue } = storeToRefs(store);
 
 const nextSongsInQueue = computed(() => {
   if (!playlistStore.currentQueue.length) {
@@ -19,46 +19,41 @@ const nextSongsInQueue = computed(() => {
 });
 
 const headTextValue = computed(() => {
-  let output = "Далее";
+  let output = 'Далее';
 
   if (playlistStore.currentPlaylist?.name) {
     output += ` из: ${playlistStore.currentPlaylist?.name}`;
   } else {
-    output += ':'
+    output += ':';
   }
 
   return output;
 });
-
 </script>
 
 <template>
   <div class="panel">
     <PanelHeader>
-      <template #name>
-        Очередь
-      </template>
+      <template #name> Очередь </template>
     </PanelHeader>
 
     <ScrollableBlock class="content">
-
       <div class="now-playing section">
         <div class="head-text">Сейчас играет</div>
         <MusicBlock :music="currentAudioData" />
       </div>
 
       <div class="next-queue section" v-if="nextSongsInQueue.length">
-        <div class="head-text">{{headTextValue}}</div>
+        <div class="head-text">{{ headTextValue }}</div>
 
         <div class="music-wrap">
           <MusicBlock
-              v-for="music in nextSongsInQueue"
-              :key="music.id"
-              :music="music"
+            v-for="music in nextSongsInQueue"
+            :key="music.id"
+            :music="music"
           />
         </div>
       </div>
-
     </ScrollableBlock>
   </div>
 </template>

@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {storeToRefs} from "pinia";
-import {useCurrentMusicStore, useMusicStore, usePlaylistStore, useMusicUtils} from "@/features/MediaPlayer";
-import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import {
+  useCurrentMusicStore,
+  useMusicStore,
+  usePlaylistStore,
+  useMusicUtils
+} from '@/features/MediaPlayer';
+import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 
 const musicStore = useMusicStore();
 const playlistStore = usePlaylistStore();
 const currentStore = useCurrentMusicStore();
-const {isPlaying} = storeToRefs(musicStore);
+const { isPlaying } = storeToRefs(musicStore);
 
-const {toggleTrackPlaying} = useMusicUtils();
+const { toggleTrackPlaying } = useMusicUtils();
 
 const props = defineProps<{
-  name: string,
-  type: 'Трек' | 'Пользователь' | 'Плейлист' | 'Исполнитель',
-  who: string,
-  image: string,
-  trackId: number,
-  albumId: number
+  name: string;
+  type: 'Трек' | 'Пользователь' | 'Плейлист' | 'Исполнитель';
+  who: string;
+  image: string;
+  trackId: number;
+  albumId: number;
 }>();
 
 const isCurrent = computed(() => {
@@ -33,40 +38,32 @@ function toggleMusic() {
     toggleTrackPlaying();
   }
 }
-
 </script>
 
 <template>
   <div class="best-result">
-    <div class="title">
-      Лучший результат
-    </div>
+    <div class="title">Лучший результат</div>
     <div class="card">
       <div class="image-outer">
-        <img
-            :src="image"
-            alt="Music Image"
-            width="92px"
-            height="92px"
-        />
+        <img :src="image" alt="Music Image" width="92px" height="92px" />
       </div>
       <div class="card-title">
-        {{name}}
+        {{ name }}
       </div>
       <div class="info">
         <div class="type">
-          {{type + ' '}}
+          {{ type + ' ' }}
         </div>
         <div class="name">
-          {{who}}
+          {{ who }}
         </div>
       </div>
 
       <GreenPlayingButton
-          @click="toggleMusic()"
-          v-if="type !== 'Пользователь'"
-          class="playingState"
-          :state="isCurrent && isPlaying"
+        @click="toggleMusic()"
+        v-if="type !== 'Пользователь'"
+        class="playingState"
+        :state="isCurrent && isPlaying"
       />
     </div>
   </div>
@@ -92,7 +89,7 @@ function toggleMusic() {
   .card {
     height: 100%;
     background-color: #181818;
-    transition: background-color .3s ease;
+    transition: background-color 0.3s ease;
     cursor: pointer;
     border-radius: 8px;
     padding: 20px;
@@ -111,13 +108,13 @@ function toggleMusic() {
     .info {
       margin-top: 6px;
       display: flex;
-      font-size: .85rem;
+      font-size: 0.85rem;
 
       .type {
         color: var(--text-soft);
 
         &::after {
-          content: "•";
+          content: '•';
         }
       }
 

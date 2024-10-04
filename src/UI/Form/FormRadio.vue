@@ -1,30 +1,21 @@
 <script setup lang="ts">
-
 defineProps<{
-  index: any,
-  text: any,
-  name: any
+  index: any;
+  text: any;
+  name: any;
 }>();
 
 const model = defineModel<string | null>();
-
 </script>
 
 <template>
   <div class="radio" @click="model = index">
-    <input
-        :id="index"
-        v-bind="$attrs"
-        type="radio"
-        :name="name"
-    >
+    <input :id="index" v-bind="$attrs" type="radio" :name="name" />
     <label :for="index">
-      <span class="indicator">
-
-      </span>
+      <span class="indicator"> </span>
 
       <span class="text">
-        {{text}}
+        {{ text }}
       </span>
     </label>
   </div>
@@ -54,7 +45,7 @@ const model = defineModel<string | null>();
 
     &::after {
       border-radius: 50%;
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       top: 50%;
@@ -82,7 +73,7 @@ const model = defineModel<string | null>();
     .text {
       padding-left: 9px;
       padding-right: 24px;
-      font-size: .95em;
+      font-size: 0.95em;
     }
   }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import setTitle from "@/shared/utils/setTitle";
+import { useRoute } from 'vue-router';
+import setTitle from '@/shared/utils/setTitle';
 
 const route = useRoute('/playlist/[id]');
 
@@ -8,10 +8,6 @@ const route = useRoute('/playlist/[id]');
 setTitle(`${route.params.id} | Spotify Playlist`);
 </script>
 
-<template>
+<template></template>
 
-</template>
-
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

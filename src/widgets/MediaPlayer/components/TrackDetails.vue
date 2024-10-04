@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useCurrentMusicStore} from "@/features/MediaPlayer";
+import { storeToRefs } from 'pinia';
+import { useCurrentMusicStore } from '@/features/MediaPlayer';
 
 const store = useCurrentMusicStore();
-const {currentAudioData} = storeToRefs(store);
-
+const { currentAudioData } = storeToRefs(store);
 </script>
 
 <template>
   <div class="track-details">
     <div class="track-image-outer">
-      <img :src="currentAudioData.avatar" alt="">
+      <img :src="currentAudioData.avatar" alt="" />
     </div>
 
     <div class="track-text-info">
       <a class="track-name">
-        {{currentAudioData.name}}
+        {{ currentAudioData.name }}
       </a>
       <div class="track-artists">
         <RouterLink
-            v-for="(artist, index) in currentAudioData.artists"
-            :key="artist.id"
-            :to="`/artist/${artist.url}`"
-            v-bind="$attrs"
+          v-for="(artist, index) in currentAudioData.artists"
+          :key="artist.id"
+          :to="`/artist/${artist.url}`"
+          v-bind="$attrs"
         >
-      <span>
-        {{artist.name}}
-      </span>
-          <template v-if="index !== currentAudioData.artists.length - 1">, </template>
+          <span>
+            {{ artist.name }}
+          </span>
+          <template v-if="index !== currentAudioData.artists.length - 1"
+            >,
+          </template>
         </RouterLink>
       </div>
     </div>
@@ -64,7 +65,7 @@ const {currentAudioData} = storeToRefs(store);
     font-size: 1.05rem;
 
     .track-name {
-      font-size: .85em;
+      font-size: 0.85em;
       cursor: pointer;
       font-weight: 700;
 
@@ -74,7 +75,7 @@ const {currentAudioData} = storeToRefs(store);
     }
 
     .track-artists {
-      font-size: .65em;
+      font-size: 0.65em;
 
       a span {
         color: var(--text-soft);
@@ -87,6 +88,5 @@ const {currentAudioData} = storeToRefs(store);
       }
     }
   }
-
 }
 </style>

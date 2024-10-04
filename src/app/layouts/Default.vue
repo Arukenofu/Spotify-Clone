@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { LayoutMobileRouter } from "@/widgets/LayoutRouterMobile";
-import {MediaPlayer} from "@/widgets/MediaPlayer";
-import {LayoutSideBar} from "@/widgets/LayoutSideBar";
-import {LayoutInfoContent} from "@/widgets/LayoutInfoPanel";
-import {LayoutHeader} from "@/widgets/LayoutHeader";
-import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import {computed, provide, ref} from "vue";
-import type {Ref} from "vue"
-import {router} from "@/app/router";
-import useResponsive from "@/shared/composables/useResponsive";
+import { LayoutMobileRouter } from '@/widgets/LayoutRouterMobile';
+import { MediaPlayer } from '@/widgets/MediaPlayer';
+import { LayoutSideBar } from '@/widgets/LayoutSideBar';
+import { LayoutInfoContent } from '@/widgets/LayoutInfoPanel';
+import { LayoutHeader } from '@/widgets/LayoutHeader';
+import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
+import { computed, provide, ref } from 'vue';
+import type { Ref } from 'vue';
+import { router } from '@/app/router';
+import useResponsive from '@/shared/composables/useResponsive';
 
-interface ScrollableWithExpose extends Ref<InstanceType<typeof ScrollableBlock>> {
-  content: HTMLElement,
+interface ScrollableWithExpose
+  extends Ref<InstanceType<typeof ScrollableBlock>> {
+  content: HTMLElement;
 }
 
 const layout = ref<ScrollableWithExpose>();
@@ -21,15 +22,17 @@ provide('layoutScrollY', layoutScrollY);
 
 router.beforeEach(() => {
   layout.value?.content.scrollTo({
-    top: 0,
+    top: 0
   });
 });
 
-const {isMobile} = useResponsive();
+const { isMobile } = useResponsive();
 
 const playerHeight = computed(() => {
-  return isMobile.value ? "calc(100dvh - var(--player-height))" : "calc(100dvh - var(--player-height) - 72px)";
-})
+  return isMobile.value
+    ? 'calc(100dvh - var(--player-height))'
+    : 'calc(100dvh - var(--player-height) - 72px)';
+});
 </script>
 
 <template>
@@ -40,11 +43,11 @@ const playerHeight = computed(() => {
       <LayoutSideBar v-if="!isMobile" />
 
       <ScrollableBlock
-          is="main"
-          gap="0"
-          :scrollbar-width="isMobile ? '5px' : '12px'"
-          ref="layout"
-          v-model="layoutScrollY"
+        is="main"
+        gap="0"
+        :scrollbar-width="isMobile ? '5px' : '12px'"
+        ref="layout"
+        v-model="layoutScrollY"
       >
         <div class="content">
           <Suspense>

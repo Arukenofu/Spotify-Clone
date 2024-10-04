@@ -1,5 +1,5 @@
-import {router} from "@/app/router";
+import { router } from '@/app/router';
 
-export default async function(value: string) {
-    await router.push(value.replace(/\/{2,}/g, '/'));
+export default async function (value: string) {
+  await router.push(value.replace(/\/{2,}/g, '/'));
 }

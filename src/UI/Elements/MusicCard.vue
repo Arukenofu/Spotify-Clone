@@ -1,55 +1,47 @@
 <script setup lang="ts">
-import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue";
-import NoUserAvatar from "@/UI/Icons/Shared/NoUserAvatar.vue";
-import routerPushPrevent from "@/shared/utils/routerPushPrevent";
-import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
+import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
+import NoUserAvatar from '@/UI/Icons/Shared/NoUserAvatar.vue';
+import routerPushPrevent from '@/shared/utils/routerPushPrevent';
+import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 
 interface Props {
-  albumId: number,
-  type?: 'playlist' | 'artist' | 'user',
-  to: string,
-  name: string,
-  showName?: boolean,
-  image?: string,
+  albumId: number;
+  type?: 'playlist' | 'artist' | 'user';
+  to: string;
+  name: string;
+  showName?: boolean;
+  image?: string;
 }
 
 withDefaults(defineProps<Props>(), {
   type: 'playlist',
   showName: true
 });
-
 </script>
 
 <template>
-  <div class="card" @click="routerPushPrevent(`/${type}/${to}`);">
+  <div class="card" @click="routerPushPrevent(`/${type}/${to}`)">
     <div class="image" :style="type === 'artist' && 'border-radius: 50%'">
-      <img
-          v-if="image"
-          :src="image"
-          :alt="name"
-      >
+      <img v-if="image" :src="image" :alt="name" />
       <NoMusicOrPlaylistAvatar
-          v-else-if="type === 'playlist'"
-          class="noImage"
+        v-else-if="type === 'playlist'"
+        class="noImage"
       />
 
-      <NoUserAvatar
-          class="noImage"
-          v-else
-      />
+      <NoUserAvatar class="noImage" v-else />
 
       <GreenPlayingButton
-          class="playingState"
-          v-if="type !== 'user'"
-          @click.stop
-          @mousedown.prevent
-          v-tooltip="`Слушать плейлист «${name}»`"
-          :state="false"
+        class="playingState"
+        v-if="type !== 'user'"
+        @click.stop
+        @mousedown.prevent
+        v-tooltip="`Слушать плейлист «${name}»`"
+        :state="false"
       />
     </div>
 
     <span v-if="showName">
-      {{name}}
+      {{ name }}
     </span>
 
     <div class="textInfo">
@@ -67,14 +59,14 @@ withDefaults(defineProps<Props>(), {
   padding-block: 12px;
   padding-inline: 12px;
   cursor: pointer;
-  transition: all ease .1s;
+  transition: all ease 0.1s;
   user-select: none;
 
   &:hover {
     background-color: var(--ui-highlight);
 
     .image {
-      box-shadow: 0 8px 24px rgba(0,0,0,.5);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
     button {
@@ -96,7 +88,7 @@ withDefaults(defineProps<Props>(), {
     border-radius: 6px;
     position: relative;
     margin-bottom: 3px;
-    transition: all .2s ease-out;
+    transition: all 0.2s ease-out;
 
     .noImage {
       width: 64px;
@@ -109,7 +101,7 @@ withDefaults(defineProps<Props>(), {
       position: absolute;
       right: 8px;
       bottom: 8px;
-      transition: all .2s ease-out;
+      transition: all 0.2s ease-out;
       transform: translateY(8px);
     }
   }
@@ -127,7 +119,7 @@ withDefaults(defineProps<Props>(), {
     line-height: 1.1rem;
     max-height: 2.2rem;
     color: var(--text-soft);
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 2;

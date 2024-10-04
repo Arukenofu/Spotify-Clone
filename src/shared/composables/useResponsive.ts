@@ -1,47 +1,56 @@
-import {onMounted, onUnmounted, ref} from "vue";
+import { onMounted, onUnmounted, ref } from 'vue';
 
 export default function () {
-    const isMobile = ref<boolean>(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    const screenWidth = ref<number>(window.innerWidth);
-    const screenHeight = ref<number>(window.innerHeight);
+  const isMobile = ref<boolean>(
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  );
+  const screenWidth = ref<number>(window.innerWidth);
+  const screenHeight = ref<number>(window.innerHeight);
 
-    function onResize() {
-        isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        screenWidth.value = window.innerWidth;
-        screenHeight.value = window.innerHeight;
-    }
+  function onResize() {
+    isMobile.value =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    screenWidth.value = window.innerWidth;
+    screenHeight.value = window.innerHeight;
+  }
 
-    onMounted(() => {
-        window.addEventListener('resize', onResize);
-    })
+  onMounted(() => {
+    window.addEventListener('resize', onResize);
+  });
 
-    onUnmounted(() => {
-        window.removeEventListener('resize', onResize);
-    });
+  onUnmounted(() => {
+    window.removeEventListener('resize', onResize);
+  });
 
-    return {
-        isMobile,
-        screenWidth,
-        screenHeight,
-        getOs
-    }
+  return {
+    isMobile,
+    screenWidth,
+    screenHeight,
+    getOs
+  };
 }
 
-
 function getOs() {
-    const userAgent = window.navigator.userAgent.toLowerCase();
+  const userAgent = window.navigator.userAgent.toLowerCase();
 
-    if (userAgent.indexOf('android') !== -1) {
-        return 'Android';
-    } else if (userAgent.indexOf('iphone') !== -1 || userAgent.indexOf('ipad') !== -1) {
-        return 'iOS';
-    } else if (userAgent.indexOf('win') !== -1) {
-        return 'Windows';
-    } else if (userAgent.indexOf('mac') !== -1) {
-        return 'macOS';
-    } else if (userAgent.indexOf('linux') !== -1) {
-        return 'Linux';
-    } else {
-        return 'Unknown';
-    }
+  if (userAgent.indexOf('android') !== -1) {
+    return 'Android';
+  } else if (
+    userAgent.indexOf('iphone') !== -1 ||
+    userAgent.indexOf('ipad') !== -1
+  ) {
+    return 'iOS';
+  } else if (userAgent.indexOf('win') !== -1) {
+    return 'Windows';
+  } else if (userAgent.indexOf('mac') !== -1) {
+    return 'macOS';
+  } else if (userAgent.indexOf('linux') !== -1) {
+    return 'Linux';
+  } else {
+    return 'Unknown';
+  }
 }

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import {computed, reactive, ref} from "vue";
+import { computed, reactive, ref } from 'vue';
 
-import FormLabel from "@/UI/Form/FormLabel.vue";
-import FormInput from "@/UI/Form/FormInput.vue";
-import FormSelect from "@/UI/Form/FormSelect.vue";
-import FormField from "@/UI/Form/FormField.vue";
-import FormRadio from "@/UI/Form/FormRadio.vue";
-import FormButton from "@/UI/Form/FormButton.vue";
-import FormError from "@/UI/Form/FormError.vue";
+import FormLabel from '@/UI/Form/FormLabel.vue';
+import FormInput from '@/UI/Form/FormInput.vue';
+import FormSelect from '@/UI/Form/FormSelect.vue';
+import FormField from '@/UI/Form/FormField.vue';
+import FormRadio from '@/UI/Form/FormRadio.vue';
+import FormButton from '@/UI/Form/FormButton.vue';
+import FormError from '@/UI/Form/FormError.vue';
 
-import months from "@/widgets/SignUp/constants/months";
-import stepStore from "@/widgets/SignUp/store/stepStore";
-import getCurrentAge from "@/widgets/SignUp/helpers/getCurrentAge";
+import months from '@/widgets/SignUp/constants/months';
+import stepStore from '@/widgets/SignUp/store/stepStore';
+import getCurrentAge from '@/widgets/SignUp/helpers/getCurrentAge';
 
-import type {SecondStepForm} from "@/widgets/SignUp/types/form";
+import type { SecondStepForm } from '@/widgets/SignUp/types/form';
 
-const {step, form: storeForm} = stepStore();
+const { step, form: storeForm } = stepStore();
 
 const genders = ['Мужчина', 'Женщина', 'Другое', 'Не хочу выбирать'];
 
@@ -32,8 +32,8 @@ const formErrors = ref({
 });
 
 const birthdayValidate = computed(() => {
-  const errors: {message: string, field: 'day' | 'month' | 'year'}[] = [];
-  const {day, month, year} = form;
+  const errors: { message: string; field: 'day' | 'month' | 'year' }[] = [];
+  const { day, month, year } = form;
 
   const isDayFill = String(day).length !== 0;
   const isMonthFill = month !== 'Месяц';
@@ -51,19 +51,20 @@ const birthdayValidate = computed(() => {
   }
 
   const today = new Date();
-  const userCurrentAge = getCurrentAge(form.day!, form.month, form.year!)
+  const userCurrentAge = getCurrentAge(form.day!, form.month, form.year!);
 
   if (today.getFullYear() <= year!) {
     errors.push({
       field: 'year',
       message: 'Введите действительный год рождения.'
-    })
+    });
   }
 
   if (userCurrentAge <= 16) {
     errors.push({
       field: 'year',
-      message: 'Вы еще не достигли возраста, позволяющего создать аккаунт Spotify.'
+      message:
+        'Вы еще не достигли возраста, позволяющего создать аккаунт Spotify.'
     });
   }
 
@@ -84,10 +85,10 @@ function validateCurrentStep() {
   };
 
   if (!form.username.length) {
-    return formErrors.value.username = true
+    return (formErrors.value.username = true);
   }
   if (!form.gender) {
-    return formErrors.value.gender = true
+    return (formErrors.value.gender = true);
   }
   if (birthdayValidate.value.length) {
     return;
@@ -98,87 +99,79 @@ function validateCurrentStep() {
   storeForm.value.day = form.day;
   storeForm.value.month = form.month;
   storeForm.value.year = form.year;
-  step.value++
+  step.value++;
 }
-
 </script>
 
 <template>
-
   <form @submit.prevent="validateCurrentStep()">
     <div class="username">
-      <FormLabel margin="0 0 3px">
-        Название
-      </FormLabel>
+      <FormLabel margin="0 0 3px"> Название </FormLabel>
       <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
         Ваше имя появится в профиле.
       </FormLabel>
       <FormField
-          type="text"
-          v-model="form.username"
-          :error="formErrors.username"
+        type="text"
+        v-model="form.username"
+        :error="formErrors.username"
       >
         Укажите имя для своего профиля.
       </FormField>
     </div>
 
     <div class="birthday">
-      <FormLabel margin="18px 0 0">
-        Дата рождения
-      </FormLabel>
+      <FormLabel margin="18px 0 0"> Дата рождения </FormLabel>
 
       <div class="inputs">
         <FormInput
-            class="day"
-            type="text"
-            maxLength="2"
-            :only-number="true"
-            placeholder="дд"
-            v-model.number="form.day"
+          class="day"
+          type="text"
+          maxLength="2"
+          :only-number="true"
+          placeholder="дд"
+          v-model.number="form.day"
         />
 
         <FormSelect text="Месяц" class="month" v-model="form.month">
           <option v-for="month in months" :key="month">
-            {{month}}
+            {{ month }}
           </option>
         </FormSelect>
 
         <FormInput
-            class="year"
-            maxLength="4"
-            :only-number="true"
-            placeholder="гггг"
-            v-model.number="form.year"
+          class="year"
+          maxLength="4"
+          :only-number="true"
+          placeholder="гггг"
+          v-model.number="form.year"
         />
       </div>
 
       <div class="errors" v-if="birthdayValidate.length">
         <FormError
-            v-for="birthday in birthdayValidate"
-            :key="birthday.message"
-            class="error"
+          v-for="birthday in birthdayValidate"
+          :key="birthday.message"
+          class="error"
         >
-          {{birthday.message}}
+          {{ birthday.message }}
         </FormError>
       </div>
     </div>
 
     <div class="gender">
-      <FormLabel margin="4px 0 3px">
-        Пол
-      </FormLabel>
+      <FormLabel margin="4px 0 3px"> Пол </FormLabel>
       <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
         Мы учитываем пол при подборе персональных рекомендаций и рекламы.
       </FormLabel>
 
       <div class="radio">
         <FormRadio
-            v-for="(gender, index) in genders"
-            :key="index"
-            :index="gender"
-            :text="gender"
-            name="gender"
-            v-model="form.gender"
+          v-for="(gender, index) in genders"
+          :key="index"
+          :index="gender"
+          :text="gender"
+          name="gender"
+          v-model="form.gender"
         />
 
         <FormError class="error" v-if="formErrors.gender">
@@ -187,10 +180,7 @@ function validateCurrentStep() {
       </div>
     </div>
 
-    <FormButton class="button">
-      Далее
-    </FormButton>
-
+    <FormButton class="button"> Далее </FormButton>
   </form>
 </template>
 
@@ -206,7 +196,6 @@ form {
   }
 
   .birthday {
-
     .inputs {
       margin-top: 9px;
       margin-bottom: 12px;

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from 'vue';
 
-import SearchIcon from "@/UI/Icons/Shared/SearchIcon.vue";
-import RoundButton from "@/UI/Buttons/RoundButton.vue";
-import CloseIconRound from "@/UI/Icons/Shared/CloseIconRound.vue";
+import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
+import RoundButton from '@/UI/Buttons/RoundButton.vue';
+import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
 
 const state = ref<boolean>(false);
 const input = ref<HTMLInputElement>();
@@ -32,31 +32,30 @@ function onClickOutside() {
 
   state.value = false;
 }
-
 </script>
 
 <template>
   <div class="search-section">
     <RoundButton
-        class="searchButton"
-        v-tooltip="'Искать в медиатеке'"
-        @click="handleToggle()"
-        v-click-outside="onClickOutside"
+      class="searchButton"
+      v-tooltip="'Искать в медиатеке'"
+      @click="handleToggle()"
+      v-click-outside="onClickOutside"
     >
       <SearchIcon class="searchIcon" />
     </RoundButton>
 
     <input
-        ref="input"
-        v-model="model"
-        :class="state && 'active'"
-        placeholder="Искать в медиатеке"
+      ref="input"
+      v-model="model"
+      :class="state && 'active'"
+      placeholder="Искать в медиатеке"
     />
 
     <CloseIconRound
-        @click="handleClose()"
-        v-if="state && model.length"
-        class="icon"
+      @click="handleClose()"
+      v-if="state && model.length"
+      class="icon"
     />
   </div>
 </template>
@@ -79,9 +78,9 @@ function onClickOutside() {
     left: 0;
     width: 100%;
     height: 100%;
-    transition-duration: .3s;
+    transition-duration: 0.3s;
     transition-property: opacity, width, padding, background-color;
-    transition-timing-function: cubic-bezier(.3,0,.4,1);
+    transition-timing-function: cubic-bezier(0.3, 0, 0.4, 1);
     border-radius: 4px;
     border: none;
     outline: none;
@@ -94,14 +93,13 @@ function onClickOutside() {
   }
 
   .active {
-    background-color: hsla(0,0%,100%,.1);
+    background-color: hsla(0, 0%, 100%, 0.1);
     max-width: 188px !important;
     padding: 4px 32px;
     opacity: 1;
   }
 
   .searchButton {
-
     &:hover .searchIcon {
       fill: var(--white);
     }
@@ -121,7 +119,7 @@ function onClickOutside() {
     fill: var(--text-soft);
     width: 32px;
     height: 32px;
-    scale: .5;
+    scale: 0.5;
   }
 }
 </style>

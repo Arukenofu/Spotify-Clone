@@ -1,18 +1,16 @@
 <script setup lang="ts">
-
-withDefaults(defineProps<{
-  design?: 'default' | 'active' | 'none'
-}>(), {
-  design: 'default'
-})
-
+withDefaults(
+  defineProps<{
+    design?: 'default' | 'active' | 'none';
+  }>(),
+  {
+    design: 'default'
+  }
+);
 </script>
 
 <template>
-  <button
-      class="bubble-button"
-      :class="design"
-  >
+  <button class="bubble-button" :class="design">
     <slot />
   </button>
 </template>
@@ -23,14 +21,13 @@ withDefaults(defineProps<{
   border-radius: 500px;
   padding: 4px 12px;
   border: none;
-  font-size: .875rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition:
-      background-color .2s ease,
-      color .2s ease,
-      opacity .2s ease;
-
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .default {

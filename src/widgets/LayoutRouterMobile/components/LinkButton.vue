@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import type {Component} from "vue";
+import type { Component } from 'vue';
 
 interface Props {
-  active: boolean,
-  component: Component
+  active: boolean;
+  component: Component;
 }
 
 defineProps<Props>();
-
 </script>
 
 <template>
@@ -27,7 +26,8 @@ defineProps<Props>();
   justify-content: center;
   gap: 3px;
 
-  .text, .icon {
+  .text,
+  .icon {
     transition-property: opacity, scale;
     transition-duration: 0.2s;
     transition-timing-function: ease;
@@ -40,7 +40,7 @@ defineProps<Props>();
   }
 
   .text {
-    font-size: .65rem;
+    font-size: 0.65rem;
     font-weight: 600;
     text-align: center;
     color: var(--text-soft);
@@ -48,17 +48,18 @@ defineProps<Props>();
 
   .logo {
     width: 22px;
-    height: 22px  ;
+    height: 22px;
   }
 
   &:active {
-    opacity: .75;
-    scale: .94;
+    opacity: 0.75;
+    scale: 0.94;
   }
 
   @media (hover: hover) {
-    &:hover .icon, &:hover .text {
-      opacity: .75;
+    &:hover .icon,
+    &:hover .text {
+      opacity: 0.75;
     }
   }
 }

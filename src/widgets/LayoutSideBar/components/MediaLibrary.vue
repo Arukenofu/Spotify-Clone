@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import MediaLibButton from "@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue";
-import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import SearchPlaylist from "@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue";
-import FormatButton from "@/widgets/LayoutSideBar/UI/Button/FormatButton.vue";
-import FormatContextMenu from "@/widgets/LayoutSideBar/contextMenu/formatContextMenu.vue";
-import {gridColumnWidth, usePlaylistFormat, useSidebarWidthStore} from "@/features/FormatSidebarPlaylist";
-import {showContextMenu} from "@/features/ContextMenu";
-import type {FormatProps} from "@/features/FormatSidebarPlaylist";
+import { computed, ref } from 'vue';
+import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue';
+import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
+import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue';
+import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
+import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/formatContextMenu.vue';
+import {
+  gridColumnWidth,
+  usePlaylistFormat,
+  useSidebarWidthStore
+} from '@/features/FormatSidebarPlaylist';
+import { showContextMenu } from '@/features/ContextMenu';
+import type { FormatProps } from '@/features/FormatSidebarPlaylist';
 
 const search = ref<string>('');
 
-const {isMinimized} = useSidebarWidthStore();
+const { isMinimized } = useSidebarWidthStore();
 
-const {currentComponent, getComponentName} = usePlaylistFormat();
+const { currentComponent, getComponentName } = usePlaylistFormat();
 
 const props: FormatProps = {
   id: 1,
@@ -21,23 +25,20 @@ const props: FormatProps = {
   name: 'baur',
   owner: 'baur',
   type: 'Плейлист'
-}
+};
 
-const {
-    getCurrentWidth,
-} = gridColumnWidth();
+const { getCurrentWidth } = gridColumnWidth();
 
 const playlistsComputedClasses = computed(() => {
   return {
     grid: getComponentName.value === 'Grid',
     minimized: isMinimized.value
-  }
-})
-
-const gridItemWidth = computed(() => {
-  return `${getCurrentWidth.value}px`
+  };
 });
 
+const gridItemWidth = computed(() => {
+  return `${getCurrentWidth.value}px`;
+});
 </script>
 
 <template>
@@ -49,31 +50,26 @@ const gridItemWidth = computed(() => {
         <SearchPlaylist v-model="search" />
 
         <FormatButton
-            @click="showContextMenu($event, FormatContextMenu, {
+          @click="
+            showContextMenu($event, FormatContextMenu, {
               design: 'minimal',
               stickOn: 'mousePosition'
-            })"
+            })
+          "
         />
       </div>
 
-      <div
-          class="playlists"
-          :class="playlistsComputedClasses"
-      >
-      <Component
+      <div class="playlists" :class="playlistsComputedClasses">
+        <Component
           v-bind="props"
           :is="currentComponent"
           :minimized="getCurrentWidth < 135 || isMinimized"
           v-for="a in 12"
           :key="a"
-      />
-
-
+        />
       </div>
     </ScrollableBlock>
   </div>
-
-
 </template>
 
 <style lang="scss" scoped>
@@ -130,7 +126,10 @@ const gridItemWidth = computed(() => {
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(v-bind('gridItemWidth'), 1fr));
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(v-bind('gridItemWidth'), 1fr)
+      );
       grid-auto-rows: min-content;
     }
 

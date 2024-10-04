@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from 'vue';
 
 interface Props {
-  maxWidth: number,
-  minWidth: number,
-  fromRight?: boolean
+  maxWidth: number;
+  minWidth: number;
+  fromRight?: boolean;
 }
 
 type Emits = {
-  customResizeEvent: [newWidth: number, max: number, min: number]
-}
+  customResizeEvent: [newWidth: number, max: number, min: number];
+};
 
 const props = withDefaults(defineProps<Props>(), {
   fromRight: false
 });
 
 const resizableWidth = defineModel<number>('currentWidth', {
-  required: true,
+  required: true
 });
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<Emits>();
 
 const isResizing = ref<boolean>(false);
 const initialWidth = ref<number>(0);
@@ -39,7 +39,7 @@ function resize(event: MouseEvent): void {
   let newWidth = initialWidth.value + (mouseX - initialWidth.value);
 
   if (props.fromRight) {
-    newWidth = window.screen.availWidth - newWidth
+    newWidth = window.screen.availWidth - newWidth;
   }
 
   if (newWidth >= props.minWidth && newWidth <= props.maxWidth) {
@@ -60,13 +60,19 @@ function stopResize(): void {
 </script>
 
 <template>
-  <div class="resizer" :class="isResizing && 'active'" @mousedown="initializeResize()" />
+  <div
+    class="resizer"
+    :class="isResizing && 'active'"
+    @mousedown="initializeResize()"
+  />
 </template>
 
 <style lang="scss" scoped>
 .resizer {
   width: var(--layout-gap);
-  transition: background-color .15s ease-out, opacity .25s ease-out;
+  transition:
+    background-color 0.15s ease-out,
+    opacity 0.25s ease-out;
   display: grid;
   place-items: center;
   cursor: grab;
@@ -77,7 +83,7 @@ function stopResize(): void {
   }
 
   &::after {
-    content: "";
+    content: '';
     display: block;
     width: 1px;
     background-color: #727272;

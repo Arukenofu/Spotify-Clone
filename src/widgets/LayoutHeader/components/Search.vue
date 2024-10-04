@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
-import {useRoute} from "vue-router";
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-import SearchReviewIcon from "@/UI/Icons/Shared/SearchReviewIcon.vue";
-import SearchIcon from "@/UI/Icons/Shared/SearchIcon.vue";
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
+import SearchReviewIcon from '@/UI/Icons/Shared/SearchReviewIcon.vue';
+import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
+import CloseIcon from '@/UI/Icons/Shared/CloseIcon.vue';
 
-import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
-import useDebounce from "@/shared/composables/useDebounce";
-import {router} from "@/app/router";
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
+import useDebounce from '@/shared/composables/useDebounce';
+import { router } from '@/app/router';
 
 const route = useRoute();
 const input = ref<HTMLInputElement>();
 const inputValue = ref<string>('');
 
-const {currentRoutePath} = useCurrentRoutePath();
+const { currentRoutePath } = useCurrentRoutePath();
 
 function onSearchClick() {
   if (!/^\/search/.test(route.path)) {
@@ -25,60 +25,62 @@ function onSearchClick() {
 }
 
 watch(inputValue, () => {
-  const {debounce, clear} = useDebounce();
+  const { debounce, clear } = useDebounce();
   const cachedCurrentRoute = currentRoutePath.value;
 
   if (!inputValue.value) {
-    clear(); router.push('/search');
+    clear();
+    router.push('/search');
     return;
   }
 
   debounce(() => {
     if (cachedCurrentRoute !== currentRoutePath.value) {
-      clear(); return;
+      clear();
+      return;
     }
 
     router.push(`/search?q=${inputValue.value}`);
   }, 1000);
-})
+});
 </script>
 
 <template>
   <div class="searchSection" @click="onSearchClick()">
     <input
-        @keyup="onSearchClick()"
-        type="text"
-        placeholder="Что хочешь включить?"
-        ref="input"
-        v-model="inputValue"
-    >
+      @keyup="onSearchClick()"
+      type="text"
+      placeholder="Что хочешь включить?"
+      ref="input"
+      v-model="inputValue"
+    />
     <div class="icon-container-search">
       <SearchIcon class="icon" />
     </div>
 
     <div
-        class="icon-container-box"
-        v-tooltip.center_bottom="{
-            content: 'Обзор',
-            distance: 5,
-            style: {
-              marginLeft: '6px'
-            }
-        }"
-        v-if="!inputValue?.length"
+      class="icon-container-box"
+      v-tooltip.center_bottom="{
+        content: 'Обзор',
+        distance: 5,
+        style: {
+          marginLeft: '6px'
+        }
+      }"
+      v-if="!inputValue?.length"
     >
       <SearchReviewIcon
-          :style="currentRoutePath === '/search' && 'fill: var(--white)'"
-          :state="currentRoutePath === '/search'"
-          class="icon"
+        :style="currentRoutePath === '/search' && 'fill: var(--white)'"
+        :state="currentRoutePath === '/search'"
+        class="icon"
       />
     </div>
 
     <div
-        class="icon-container-delete"
-        v-tooltip.bottom="'Очистить строку поиска'"
-        @click="inputValue = ''"
-        v-else
+      class="icon-container-delete"
+      v-tooltip.bottom="'Очистить строку поиска'"
+      @click="inputValue = ''"
+      v-else
     >
       <CloseIcon class="icon" />
     </div>
@@ -97,7 +99,7 @@ watch(inputValue, () => {
   display: flex;
   align-items: center;
   position: relative;
-  transition: all .22s ease-in;
+  transition: all 0.22s ease-in;
   cursor: pointer;
 
   &:hover {
@@ -117,7 +119,8 @@ watch(inputValue, () => {
     display: grid;
     place-items: center;
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       .icon {
         fill: var(--white);
       }
@@ -133,7 +136,8 @@ watch(inputValue, () => {
     place-items: center;
     margin-left: auto;
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       .icon {
         fill: var(--white);
         scale: 1.02;
@@ -176,10 +180,10 @@ watch(inputValue, () => {
     padding-left: 48px;
     background: none;
     border: none;
-    font-size: .95rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all .1s ease-in;
+    transition: all 0.1s ease-in;
 
     &::placeholder {
       color: var(--text-soft);

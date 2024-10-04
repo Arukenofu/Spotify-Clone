@@ -1,1 +1,1 @@
-export type FormatTypes = 'Compact' | 'Grid' | 'List'
+export type FormatTypes = 'Compact' | 'Grid' | 'List';

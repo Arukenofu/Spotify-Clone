@@ -7,7 +7,9 @@
   padding: 5px 7px;
   border-radius: 4px;
   opacity: 0;
-  box-shadow: 0 16px 24px rgba(0,0,0,.3),0 6px 8px rgba(0,0,0,.2);
+  box-shadow:
+    0 16px 24px rgba(0, 0, 0, 0.3),
+    0 6px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   max-width: 60ch;
   display: -webkit-box;
@@ -16,7 +18,7 @@
   -webkit-box-orient: vertical;
   user-select: none;
   pointer-events: none;
-  font-size: .85rem;
+  font-size: 0.85rem;
   z-index: 5;
 }
 

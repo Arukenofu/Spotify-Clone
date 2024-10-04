@@ -1,28 +1,33 @@
 <script setup lang="ts">
-import stepStore from "@/widgets/SignUp/store/stepStore";
+import stepStore from '@/widgets/SignUp/store/stepStore';
 
-const {step} = stepStore();
+const { step } = stepStore();
 </script>
 
 <template>
   <div class="steps">
     <button class="previous" @click="step--">
-      <span aria-hidden="true" class="IconWrapper__Wrapper-sc-16usrgb-0 hhAMGv"><svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" class="Svg-sc-ytk21e-0 jDHChT"><path d="M15.957 2.793a1 1 0 0 1 0 1.414L8.164 12l7.793 7.793a1 1 0 1 1-1.414 1.414L5.336 12l9.207-9.207a1 1 0 0 1 1.414 0z"></path></svg></span>
+      <span aria-hidden="true" class="IconWrapper__Wrapper-sc-16usrgb-0 hhAMGv"
+        ><svg
+          data-encore-id="icon"
+          role="img"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="Svg-sc-ytk21e-0 jDHChT"
+        >
+          <path
+            d="M15.957 2.793a1 1 0 0 1 0 1.414L8.164 12l7.793 7.793a1 1 0 1 1-1.414 1.414L5.336 12l9.207-9.207a1 1 0 0 1 1.414 0z"
+          ></path></svg
+      ></span>
     </button>
     <div class="indicator">
-      <span class="counter">Шаг {{step}} из 3</span>
+      <span class="counter">Шаг {{ step }} из 3</span>
       <span class="text">
-        <template v-if="step === 1">
-          Придуймайте пароль
-        </template>
+        <template v-if="step === 1"> Придуймайте пароль </template>
 
-        <template v-if="step === 2">
-          Расскажите о себе
-        </template>
+        <template v-if="step === 2"> Расскажите о себе </template>
 
-        <template v-if="step === 3">
-          Условия использования
-        </template>
+        <template v-if="step === 3"> Условия использования </template>
       </span>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ContextMenu} from '@/features/ContextMenu';
+import { ContextMenu } from '@/features/ContextMenu';
 </script>
 
 <template>
@@ -12,7 +12,4 @@ import {ContextMenu} from '@/features/ContextMenu';
   </Teleport>
 </template>
 
-<style scoped>
-
-</style>
-
+<style scoped></style>

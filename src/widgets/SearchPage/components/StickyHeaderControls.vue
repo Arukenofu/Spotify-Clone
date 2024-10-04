@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
-import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
-import {type LocationQuery, type LocationQueryValue, useRoute} from "vue-router";
-import {router} from "@/app/router";
+import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import BubbleButton from '@/UI/Buttons/BubbleButton.vue';
+import {
+  type LocationQuery,
+  type LocationQueryValue,
+  useRoute
+} from 'vue-router';
+import { router } from '@/app/router';
 
-const {queries} = defineProps<{
-  queries: LocationQuery
+const { queries } = defineProps<{
+  queries: LocationQuery;
 }>();
 
 const route = useRoute();
@@ -13,36 +17,36 @@ const route = useRoute();
 const filters = [
   {
     text: 'Все',
-    query: null,
+    query: null
   },
   {
     text: 'Исполнители',
-    query: 'artists',
+    query: 'artists'
   },
   {
     text: 'Плейлисты',
-    query: 'playlists',
+    query: 'playlists'
   },
   {
     text: 'Треки',
-    query: 'tracks',
+    query: 'tracks'
   },
   {
     text: 'Профили',
-    query: 'profiles',
+    query: 'profiles'
   },
   {
     text: 'Альбомы',
-    query: 'albums',
+    query: 'albums'
   },
   {
     text: 'Подкасты и шоу',
-    query: 'podcastsAndShows',
+    query: 'podcastsAndShows'
   }
 ];
 
 function setFilterQuery(query: LocationQueryValue) {
-  const newQueries = {...route.query}
+  const newQueries = { ...route.query };
 
   if (!query) {
     delete newQueries.filter;
@@ -60,22 +64,20 @@ function setActiveFilterQuery(query: LocationQueryValue) {
     return 'active';
   }
 
-  return queries.filter === query ? 'active' : 'default'
+  return queries.filter === query ? 'active' : 'default';
 }
 </script>
 
 <template>
-  <StickyHeader
-      class="sticky-header"
-  >
+  <StickyHeader class="sticky-header">
     <BubbleButton
-        class="button"
-        v-for="{text, query} in filters"
-        :key="text"
-        :design="setActiveFilterQuery(query)"
-        @click="setFilterQuery(query)"
+      class="button"
+      v-for="{ text, query } in filters"
+      :key="text"
+      :design="setActiveFilterQuery(query)"
+      @click="setFilterQuery(query)"
     >
-      {{text}}
+      {{ text }}
     </BubbleButton>
   </StickyHeader>
 </template>

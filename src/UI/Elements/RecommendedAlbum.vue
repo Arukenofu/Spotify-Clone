@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
-import {useMusicStore, useMusicUtils, usePlaylistStore} from "@/features/MediaPlayer";
-import {computed} from "vue";
-import {storeToRefs} from "pinia";
-import routerPushPrevent from "@/shared/utils/routerPushPrevent";
+import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
+import {
+  useMusicStore,
+  useMusicUtils,
+  usePlaylistStore
+} from '@/features/MediaPlayer';
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 
 interface Props {
-  id: number,
-  albumName: string,
-  avatar: string,
-  href: string
+  id: number;
+  albumName: string;
+  avatar: string;
+  href: string;
 }
 
 const props = defineProps<Props>();
 const store = useMusicStore();
 
-const {
-  currentPlaylist,
-  isPlaying,
-  toggleTrackPlaying
-} = {
+const { currentPlaylist, isPlaying, toggleTrackPlaying } = {
   ...storeToRefs(usePlaylistStore()),
   ...storeToRefs(store),
   ...useMusicUtils()
@@ -27,7 +27,7 @@ const {
 
 const isCurrentAlbum = computed(() => {
   return currentPlaylist.value?.id === props.id;
-})
+});
 
 function onButtonClick() {
   if (!isCurrentAlbum.value) {
@@ -37,7 +37,6 @@ function onButtonClick() {
 
   toggleTrackPlaying();
 }
-
 </script>
 
 <template>
@@ -45,10 +44,13 @@ function onButtonClick() {
     <div class="avatar" :style="`background-image: url(${avatar})`" />
     <div class="other">
       <span class="album-name">
-        {{albumName}}
+        {{ albumName }}
       </span>
 
-      <button @click.stop="onButtonClick()" v-tooltip="isCurrentAlbum && isPlaying ? 'Пауза' : 'Слушать'">
+      <button
+        @click.stop="onButtonClick()"
+        v-tooltip="isCurrentAlbum && isPlaying ? 'Пауза' : 'Слушать'"
+      >
         <PlayingState :state="isCurrentAlbum && isPlaying" class="icon" />
       </button>
     </div>
@@ -62,14 +64,14 @@ function onButtonClick() {
   overflow: hidden;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.1);
-  transition: background-color .3s ease;
+  transition: background-color 0.3s ease;
   display: flex;
 
   .avatar {
     height: var(--album-item-height);
     aspect-ratio: 1/1;
     background-color: #ffffff;
-    box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     background-position: center;
     background-size: cover;
   }
@@ -105,7 +107,7 @@ function onButtonClick() {
       place-items: center;
       margin-right: 8px;
       background-color: var(--main-color);
-      box-shadow: 0 8px 8px rgba(0,0,0,.3);
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
       cursor: pointer;
 
       &:hover {

@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {storeToRefs} from "pinia";
-import getActiveColor from "@/shared/utils/getActiveColor";
-import getCommaSeparatedString from "@/shared/utils/getCommaSeparatedString";
-import {useCurrentMusicStore, useMusicStore, useMusicUtils} from "@/features/MediaPlayer";
-import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
-import type {Music} from "@/shared/models/Music";
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import getActiveColor from '@/shared/utils/getActiveColor';
+import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
+import {
+  useCurrentMusicStore,
+  useMusicStore,
+  useMusicUtils
+} from '@/features/MediaPlayer';
+import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
+import type { Music } from '@/shared/models/Music';
 
 const props = defineProps<{
-  music: Music
+  music: Music;
 }>();
 
 const store = useMusicStore();
 const currentMusic = useCurrentMusicStore();
-const {isPlaying} = storeToRefs(store);
+const { isPlaying } = storeToRefs(store);
 
-const {toggleTrackPlaying, loadSong} = useMusicUtils();
+const { toggleTrackPlaying, loadSong } = useMusicUtils();
 
 const isCurrent = computed(() => {
   return currentMusic.currentAudioId === props.music.id;
@@ -34,39 +38,39 @@ const playingStateTooltip = computed(() => {
   const artists = getCommaSeparatedString(props.music.artists, 'name');
 
   if (isCurrent.value && isPlaying.value) {
-    return `Поставить на паузу то, что сейчас играет «${musicName}» (${artists})`
+    return `Поставить на паузу то, что сейчас играет «${musicName}» (${artists})`;
   } else {
-    return `Включить трек «${musicName}» исполнителя ${artists}`
+    return `Включить трек «${musicName}» исполнителя ${artists}`;
   }
-})
-
+});
 </script>
 
 <template>
   <div class="musicBlock">
-    <div class="image-block" @click="toggleMusic()" v-tooltip="playingStateTooltip">
-      <PlayingState
-          :state="isCurrent && isPlaying"
-          class="icon"
-      />
+    <div
+      class="image-block"
+      @click="toggleMusic()"
+      v-tooltip="playingStateTooltip"
+    >
+      <PlayingState :state="isCurrent && isPlaying" class="icon" />
 
       <div class="image" :style="`background-image: url('${music.avatar}')`" />
     </div>
 
     <div class="text">
       <div class="title" :style="getActiveColor(isCurrent, 'color')">
-        {{music.name}}
+        {{ music.name }}
       </div>
       <div class="artists">
         <RouterLink
-            class="artist"
-            v-for="(artist, index) in music.artists"
-            :key="artist.id"
-            :to="`/artist/${artist.url}`"
+          class="artist"
+          v-for="(artist, index) in music.artists"
+          :key="artist.id"
+          :to="`/artist/${artist.url}`"
         >
-            <span>
-              {{artist.name}}
-            </span>
+          <span>
+            {{ artist.name }}
+          </span>
           <template v-if="index !== music.artists.length - 1">, </template>
         </RouterLink>
       </div>
@@ -86,12 +90,13 @@ const playingStateTooltip = computed(() => {
   cursor: pointer;
   user-select: none;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: #1c1c1c;
 
     .image-block {
       .image {
-        filter: brightness(.5);
+        filter: brightness(0.5);
       }
 
       .icon {
@@ -106,8 +111,8 @@ const playingStateTooltip = computed(() => {
     aspect-ratio: 1/1;
 
     &:active .icon {
-      transform: translate(-50%,-50%) scale(.9);
-      opacity: .75 !important;
+      transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0.75 !important;
     }
 
     .image {
@@ -143,9 +148,9 @@ const playingStateTooltip = computed(() => {
     }
 
     .artists {
-
-      a, span {
-        font-size: .9em;
+      a,
+      span {
+        font-size: 0.9em;
         color: var(--text-soft);
       }
 
@@ -156,5 +161,4 @@ const playingStateTooltip = computed(() => {
     }
   }
 }
-
 </style>

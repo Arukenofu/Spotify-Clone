@@ -1,33 +1,36 @@
 <script setup lang="ts">
-import {reactive, ref} from "vue";
-import Logo from "@/UI/Icons/Shared/Logo.vue";
-import FormLabel from "@/UI/Form/FormLabel.vue";
-import FormInput from "@/UI/Form/FormInput.vue";
-import FormCheckboxIOS from "@/UI/Form/FormCheckboxIOS.vue";
-import FormButton from "@/UI/Form/FormButton.vue";
-import ErrorIcon from "@/UI/Icons/Shared/ErrorIcon.vue";
-import FormError from "@/UI/Form/FormError.vue";
-import setTitle from "@/shared/utils/setTitle";
-import {LoginToAccount} from "@/services/api/authService";
-import {router} from "@/app/router";
+import { reactive, ref } from 'vue';
+import Logo from '@/UI/Icons/Shared/Logo.vue';
+import FormLabel from '@/UI/Form/FormLabel.vue';
+import FormInput from '@/UI/Form/FormInput.vue';
+import FormCheckboxIOS from '@/UI/Form/FormCheckboxIOS.vue';
+import FormButton from '@/UI/Form/FormButton.vue';
+import ErrorIcon from '@/UI/Icons/Shared/ErrorIcon.vue';
+import FormError from '@/UI/Form/FormError.vue';
+import setTitle from '@/shared/utils/setTitle';
+import { LoginToAccount } from '@/services/api/authService';
+import { router } from '@/app/router';
 
 setTitle('Войти - Spotify');
 
 const form = reactive({
   email: '',
   password: '',
-  isRemember: true,
+  isRemember: true
 });
 const error = ref<boolean>(false);
 const fieldErrors = reactive({
   email: false,
   password: false
-})
+});
 
 async function loginToAccount() {
-  const {email, password} = form;
+  const { email, password } = form;
 
-  const isEmailError = !email || email.length < 6 || !(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email))
+  const isEmailError =
+    !email ||
+    email.length < 6 ||
+    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   if (isEmailError) {
     fieldErrors.email = true;
     return;
@@ -38,15 +41,14 @@ async function loginToAccount() {
     return;
   }
 
-  await LoginToAccount(form).then(() => {
-    router.push('/');
-  }).catch(() => {
-    error.value = true;
-  });
-
-
+  await LoginToAccount(form)
+    .then(() => {
+      router.push('/');
+    })
+    .catch(() => {
+      error.value = true;
+    });
 }
-
 </script>
 
 <template>
@@ -63,42 +65,41 @@ async function loginToAccount() {
           Электронная почта или имя пользователя
         </FormLabel>
         <FormInput
-            placeholder="Электронная почта или имя пользователя"
-            class="input"
-            v-model="form.email"
-            :error="fieldErrors.email"
-            @input="fieldErrors.email = false"
+          placeholder="Электронная почта или имя пользователя"
+          class="input"
+          v-model="form.email"
+          :error="fieldErrors.email"
+          @input="fieldErrors.email = false"
         />
         <FormError v-if="fieldErrors.email" class="formError">
-          Введите имя пользователя или адрес электронной почты из аккаунта Spotify.
+          Введите имя пользователя или адрес электронной почты из аккаунта
+          Spotify.
         </FormError>
-        <FormLabel margin="16px 0 6px" font-size=".85rem">
-          Пароль
-        </FormLabel>
+        <FormLabel margin="16px 0 6px" font-size=".85rem"> Пароль </FormLabel>
         <FormInput
-            placeholder="Пароль"
-            class="input"
-            v-model="form.password"
-            :error="fieldErrors.password"
-            @input="fieldErrors.password = false"
-            type="password"
+          placeholder="Пароль"
+          class="input"
+          v-model="form.password"
+          :error="fieldErrors.password"
+          @input="fieldErrors.password = false"
+          type="password"
         />
         <FormError v-if="fieldErrors.password" class="formError">
           Введите пароль вашего аккаунта Spotify.
         </FormError>
       </div>
       <div class="isRemember">
-        <FormCheckboxIOS v-model="form.isRemember" @click="form.isRemember =! form.isRemember" />
-        <span>
-            Запомнить меня
-        </span>
+        <FormCheckboxIOS
+          v-model="form.isRemember"
+          @click="form.isRemember = !form.isRemember"
+        />
+        <span> Запомнить меня </span>
       </div>
-      <FormButton class="button">
-        Войти
-      </FormButton>
-      <hr>
+      <FormButton class="button"> Войти </FormButton>
+      <hr />
       <div class="noAccount">
-        Нет аккаунта? <RouterLink to="/signup">Регистрация в Spotify</RouterLink>
+        Нет аккаунта?
+        <RouterLink to="/signup">Регистрация в Spotify</RouterLink>
       </div>
     </form>
   </main>
@@ -144,7 +145,7 @@ main {
       align-items: center;
       padding: 12px 16px 12px 16px;
       gap: 12px;
-      font-size: .9rem;
+      font-size: 0.9rem;
 
       .icon {
         width: 20px;
@@ -179,7 +180,7 @@ main {
       width: var(--login-size);
 
       span {
-        font-size: .7rem;
+        font-size: 0.7rem;
       }
     }
 
@@ -229,7 +230,7 @@ main {
       .noAccount {
         position: absolute;
         bottom: 20px;
-        font-size: .95em;
+        font-size: 0.95em;
       }
     }
   }

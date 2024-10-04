@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Logo from "@/UI/Icons/Shared/Logo.vue";
-import type {PremiumPlanProps} from '../types/PremiumPlanProps'
+import Logo from '@/UI/Icons/Shared/Logo.vue';
+import type { PremiumPlanProps } from '../types/PremiumPlanProps';
 
 defineProps<PremiumPlanProps>();
 </script>
@@ -8,7 +8,7 @@ defineProps<PremiumPlanProps>();
 <template>
   <div class="card">
     <div class="topSide" v-if="topSideText">
-      {{topSideText}}
+      {{ topSideText }}
     </div>
 
     <div class="heading">
@@ -17,28 +17,28 @@ defineProps<PremiumPlanProps>();
         <span>Premium</span>
       </div>
 
-      <h3>{{name}}</h3>
+      <h3>{{ name }}</h3>
 
       <template v-if="typeof additionalConditions === 'object'">
-        <p class="c-head">{{additionalConditions.head}}</p>
-        <p class="c-tail">{{additionalConditions.tail}}</p>
+        <p class="c-head">{{ additionalConditions.head }}</p>
+        <p class="c-tail">{{ additionalConditions.tail }}</p>
       </template>
 
       <p class="price" v-else>
-        {{additionalConditions}}
+        {{ additionalConditions }}
       </p>
 
-      <hr>
+      <hr />
     </div>
 
     <ul>
       <li v-for="benefit in benefits" :key="benefit">
-        {{benefit}}
+        {{ benefit }}
       </li>
     </ul>
 
     <button>
-      {{buttonText}}
+      {{ buttonText }}
     </button>
 
     <div class="about" v-html="about" />
@@ -106,7 +106,7 @@ defineProps<PremiumPlanProps>();
     .c-tail {
       color: var(--text-soft);
       font-weight: 600;
-      font-size: .875rem;
+      font-size: 0.875rem;
     }
 
     .price {
@@ -116,7 +116,7 @@ defineProps<PremiumPlanProps>();
 
     hr {
       border: none;
-      border-block-start: 1px solid hsla(0,0%,100%,.1);
+      border-block-start: 1px solid hsla(0, 0%, 100%, 0.1);
       margin-block: 16px 0;
     }
   }
@@ -127,7 +127,7 @@ defineProps<PremiumPlanProps>();
     margin: 20px 0 24px;
 
     li {
-      font-size: .95rem;
+      font-size: 0.95rem;
       margin-bottom: 2px;
       line-height: 1.3;
     }
@@ -156,7 +156,7 @@ defineProps<PremiumPlanProps>();
   .about {
     color: var(--text-soft);
     min-height: 46px;
-    font-size: .65rem;
+    font-size: 0.65rem;
     text-align: center;
     margin-top: 12px;
     line-height: 1.3;

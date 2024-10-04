@@ -1,14 +1,14 @@
-import './app/global.scss'
+import './app/global.scss';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from './app/App.vue'
-import {router} from './app/router'
+import App from './app/App.vue';
+import { router } from './app/router';
 
-import ClickOutside from "@/app/directives/ClickOutside";
-import DisableChild from "@/app/directives/DisableChild";
-import {Tooltip} from "@/app/directives/Tooltip";
+import ClickOutside from '@/app/directives/ClickOutside';
+import DisableChild from '@/app/directives/DisableChild';
+import { Tooltip } from '@/app/directives/Tooltip';
 
 const app = createApp(App);
 

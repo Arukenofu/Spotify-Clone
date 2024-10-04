@@ -1,20 +1,16 @@
 <script setup lang="ts">
-
-const model = defineModel<boolean>()
-
+const model = defineModel<boolean>();
 </script>
 
 <template>
   <div class="checkbox">
-    <input type="checkbox" v-model="model">
+    <input type="checkbox" v-model="model" />
 
-    <div class="indicator">
-    </div>
+    <div class="indicator"></div>
   </div>
 </template>
 
 <style scoped>
-
 .checkbox {
   position: relative;
 
@@ -58,7 +54,7 @@ const model = defineModel<boolean>()
       border-left-style: solid;
       border-color: var(--ui);
       display: block;
-      content: "";
+      content: '';
       block-size: 5px;
       inline-size: 9px;
       position: absolute;
@@ -68,5 +64,4 @@ const model = defineModel<boolean>()
     }
   }
 }
-
 </style>

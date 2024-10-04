@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import {watch} from "vue";
-import Resizer from "@/shared/components/Resizer.vue";
-import max from "@/widgets/LayoutInfoPanel/constants/max";
-import min from "@/widgets/LayoutInfoPanel/constants/min";
-import useCachedRef from "@/shared/composables/useCachedRef";
-import {InfoPanelComponent, infoPanel, defaultWidth} from "@/features/InfoPanel";
+import { watch } from 'vue';
+import Resizer from '@/shared/components/Resizer.vue';
+import max from '@/widgets/LayoutInfoPanel/constants/max';
+import min from '@/widgets/LayoutInfoPanel/constants/min';
+import useCachedRef from '@/shared/composables/useCachedRef';
+import {
+  InfoPanelComponent,
+  infoPanel,
+  defaultWidth
+} from '@/features/InfoPanel';
 
 const currentPanelWidth = useCachedRef('infoContentWidth', defaultWidth);
 
 watch(currentPanelWidth, (value) => {
   document.documentElement.style.setProperty('--panel-width', `${value}px`);
-})
+});
 
-const {currentPanelComponent} = infoPanel();
-
+const { currentPanelComponent } = infoPanel();
 </script>
 
 <template>
   <Resizer
-      v-if="currentPanelComponent"
-      :min-width="min"
-      :max-width="max"
-      v-model:current-width="currentPanelWidth"
-      :from-right="true"
+    v-if="currentPanelComponent"
+    :min-width="min"
+    :max-width="max"
+    v-model:current-width="currentPanelWidth"
+    :from-right="true"
   />
 
   <aside
-      v-if="currentPanelComponent"
-      class="info"
-      :style="`width: ${currentPanelWidth}px;`"
+    v-if="currentPanelComponent"
+    class="info"
+    :style="`width: ${currentPanelWidth}px;`"
   >
     <InfoPanelComponent />
   </aside>

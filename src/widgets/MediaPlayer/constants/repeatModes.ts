@@ -1,5 +1,5 @@
 export default [
-    'onlyCurrentMusic',
-    'repeatCurrentMusic',
-    'repeatCurrentPlaylist'
+  'onlyCurrentMusic',
+  'repeatCurrentMusic',
+  'repeatCurrentPlaylist'
 ];

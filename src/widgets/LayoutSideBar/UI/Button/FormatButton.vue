@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {usePlaylistFormat} from "@/features/FormatSidebarPlaylist";
-import GridIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/GridIcon.vue";
-import CompactIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/CompactIcon.vue";
-import ListIcon from "@/widgets/LayoutSideBar/UI/Icons/Format/ListIcon.vue";
+import { computed } from 'vue';
+import { usePlaylistFormat } from '@/features/FormatSidebarPlaylist';
+import GridIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/GridIcon.vue';
+import CompactIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/CompactIcon.vue';
+import ListIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/ListIcon.vue';
 
 const sortTypes = [
-    'Недавно прослушано',
-    'Недавно добавленные',
-    'По алфавиту',
-    'По автору',
-    'Свой порядок'
+  'Недавно прослушано',
+  'Недавно добавленные',
+  'По алфавиту',
+  'По автору',
+  'Свой порядок'
 ];
 
-const {
-  getComponentName
-} = usePlaylistFormat();
+const { getComponentName } = usePlaylistFormat();
 
 const getFormatButtonIcon = computed(() => {
   if (getComponentName.value === 'Grid') {
@@ -28,16 +26,12 @@ const getFormatButtonIcon = computed(() => {
 
   return ListIcon;
 });
-
-
 </script>
 
 <template>
-  <button class="format"
-
-  >
+  <button class="format">
     <span class="text">
-      {{sortTypes[0]}}
+      {{ sortTypes[0] }}
     </span>
 
     <span class="icon">
@@ -47,7 +41,6 @@ const getFormatButtonIcon = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-
 .format {
   display: flex;
   align-items: center;
@@ -58,7 +51,7 @@ const getFormatButtonIcon = computed(() => {
   cursor: pointer;
   position: relative;
   opacity: 1;
-  transition: opacity .1s;
+  transition: opacity 0.1s;
 
   &:hover {
     transform: scale(1.04);
@@ -79,7 +72,7 @@ const getFormatButtonIcon = computed(() => {
 
   &:active {
     transform: scale(1);
-    opacity: .5;
+    opacity: 0.5;
   }
 
   .text {
@@ -87,7 +80,7 @@ const getFormatButtonIcon = computed(() => {
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--text-soft);
-    font-size: .85rem;
+    font-size: 0.85rem;
     font-weight: 600;
   }
 
@@ -103,5 +96,4 @@ const getFormatButtonIcon = computed(() => {
     }
   }
 }
-
 </style>

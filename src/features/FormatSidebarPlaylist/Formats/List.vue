@@ -1,42 +1,30 @@
 <script setup lang="ts">
-import NoMusicOrPlaylistAvatar from "@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue";
-import type {FormatProps} from "@/features/FormatSidebarPlaylist/types/FormatProps";
-import NoFolderAvatar from "@/UI/Icons/Shared/NoFolderAvatar.vue";
+import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
+import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
+import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
 
-defineProps<FormatProps>()
-
-
+defineProps<FormatProps>();
 </script>
 
 <template>
   <RouterLink class="list" :to="`/playlist/${to}`">
     <div class="picture">
-      <div
-          class="image"
-          v-if="image"
-      >
-
-      </div>
+      <div class="image" v-if="image"></div>
 
       <NoMusicOrPlaylistAvatar
-          class="noAvatar"
-          v-else-if="type === 'Плейлист'"
+        class="noAvatar"
+        v-else-if="type === 'Плейлист'"
       />
 
-      <NoFolderAvatar
-          class="noAvatar"
-          v-else
-      />
+      <NoFolderAvatar class="noAvatar" v-else />
     </div>
 
     <div class="text">
       <span class="playlist-name">
-        {{name}}
+        {{ name }}
       </span>
 
-      <span class="info">
-        {{type}} • {{owner}}
-      </span>
+      <span class="info"> {{ type }} • {{ owner }} </span>
     </div>
   </RouterLink>
 </template>
@@ -79,7 +67,7 @@ defineProps<FormatProps>()
     }
 
     .info {
-      font-size: .85rem;
+      font-size: 0.85rem;
       font-weight: 500;
       color: var(--text-soft);
     }

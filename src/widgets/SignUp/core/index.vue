@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import Logo from "@/UI/Icons/Shared/Logo.vue";
-import ZeroStep from "@/widgets/SignUp/Steps/ZeroStep.vue";
-import StepIndicator from "@/widgets/SignUp/components/StepIndicator.vue";
-import StepProgressBar from "@/widgets/SignUp/components/StepProgressBar.vue";
-import FirstStep from "@/widgets/SignUp/Steps/FirstStep.vue";
-import SecondStep from "@/widgets/SignUp/Steps/SecondStep.vue";
-import ThirdStep from "@/widgets/SignUp/Steps/ThirdStep.vue";
-import stepStore from "@/widgets/SignUp/store/stepStore";
+import Logo from '@/UI/Icons/Shared/Logo.vue';
+import ZeroStep from '@/widgets/SignUp/Steps/ZeroStep.vue';
+import StepIndicator from '@/widgets/SignUp/components/StepIndicator.vue';
+import StepProgressBar from '@/widgets/SignUp/components/StepProgressBar.vue';
+import FirstStep from '@/widgets/SignUp/Steps/FirstStep.vue';
+import SecondStep from '@/widgets/SignUp/Steps/SecondStep.vue';
+import ThirdStep from '@/widgets/SignUp/Steps/ThirdStep.vue';
+import stepStore from '@/widgets/SignUp/store/stepStore';
 
-const {step} = stepStore();
-
+const { step } = stepStore();
 </script>
 
 <template>
@@ -18,24 +17,19 @@ const {step} = stepStore();
     <ZeroStep v-if="step === 0" />
 
     <div v-else class="steps-wrapper">
-
       <StepProgressBar />
 
       <StepIndicator />
 
       <div class="wrapper">
-
         <FirstStep v-if="step === 1" />
 
         <SecondStep v-if="step === 2" />
 
         <ThirdStep v-if="step === 3" />
-
       </div>
-
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -69,6 +63,5 @@ const {step} = stepStore();
   .steps-wrapper {
     width: 100%;
   }
-
 }
 </style>

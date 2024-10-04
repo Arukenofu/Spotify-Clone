@@ -1,30 +1,29 @@
 <script setup lang="ts">
-
 defineProps<{
-  text: string,
-  error?: any
+  text: string;
+  error?: any;
 }>();
 
-const model = defineModel()
-
+const model = defineModel();
 </script>
 
 <template>
   <div class="select">
     <select :class="!!error && 'error'" v-model="model">
       <option selected disabled>
-        {{text}}
+        {{ text }}
       </option>
       <slot />
     </select>
     <svg viewBox="0 0 16 16">
-      <path d="M.47 4.97a.75.75 0 0 1 1.06 0L8 11.44l6.47-6.47a.75.75 0 1 1 1.06 1.06L8 13.56.47 6.03a.75.75 0 0 1 0-1.06z"></path>
+      <path
+        d="M.47 4.97a.75.75 0 0 1 1.06 0L8 11.44l6.47-6.47a.75.75 0 1 1 1.06 1.06L8 13.56.47 6.03a.75.75 0 0 1 0-1.06z"
+      ></path>
     </svg>
   </div>
 </template>
 
 <style scoped>
-
 .select {
   display: flex;
   position: relative;
@@ -42,14 +41,15 @@ const model = defineModel()
     background-color: var(--ui);
     border: 2px solid #727272;
     outline: none;
-    transition: border .2s ease-in-out;
+    transition: border 0.2s ease-in-out;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     text-indent: 1px;
     text-overflow: '';
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border: 2px solid var(--white);
     }
   }
@@ -57,7 +57,8 @@ const model = defineModel()
   .error {
     border: 2px solid #e91429;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border: 2px solid #e91429;
     }
   }
@@ -69,5 +70,4 @@ const model = defineModel()
     fill: var(--text-soft);
   }
 }
-
 </style>

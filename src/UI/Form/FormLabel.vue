@@ -1,18 +1,18 @@
 <script setup lang="ts">
-
-withDefaults(defineProps<{
-  color?: string,
-  margin?: string,
-  fontWeight?: number | string,
-  fontSize?: string,
-}>(), {
-  color: 'inherit',
-  margin: '0 0 9px',
-  fontWeight: 700,
-  fontSize: '.9rem',
-})
-
-
+withDefaults(
+  defineProps<{
+    color?: string;
+    margin?: string;
+    fontWeight?: number | string;
+    fontSize?: string;
+  }>(),
+  {
+    color: 'inherit',
+    margin: '0 0 9px',
+    fontWeight: 700,
+    fontSize: '.9rem'
+  }
+);
 </script>
 
 <template>

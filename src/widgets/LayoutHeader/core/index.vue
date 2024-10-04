@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import SpotifyLogo from "@/UI/Icons/Shared/SpotifyLogo.vue";
-import RoundButton from "@/UI/Buttons/RoundButton.vue";
-import HomeIcon from "@/UI/Icons/Shared/HomeIcon.vue";
-import Search from "@/widgets/LayoutHeader/components/Search.vue";
-import DownloadIcon from "@/widgets/LayoutHeader/UI/DownloadIcon.vue";
-import BellIcon from "@/widgets/LayoutHeader/UI/BellIcon.vue";
-import User from "@/widgets/LayoutHeader/components/User.vue";
-import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
+import SpotifyLogo from '@/UI/Icons/Shared/SpotifyLogo.vue';
+import RoundButton from '@/UI/Buttons/RoundButton.vue';
+import HomeIcon from '@/UI/Icons/Shared/HomeIcon.vue';
+import Search from '@/widgets/LayoutHeader/components/Search.vue';
+import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
+import BellIcon from '@/widgets/LayoutHeader/UI/BellIcon.vue';
+import User from '@/widgets/LayoutHeader/components/User.vue';
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 
-const {currentRoutePath} = useCurrentRoutePath('path');
+const { currentRoutePath } = useCurrentRoutePath('path');
 </script>
 
 <template>
@@ -19,46 +19,44 @@ const {currentRoutePath} = useCurrentRoutePath('path');
 
     <div class="left-side">
       <RoundButton
-          class="homeButton"
-          @click="$router.push('/')"
-          v-tooltip.center_bottom="'Главная'"
+        class="homeButton"
+        @click="$router.push('/')"
+        v-tooltip.center_bottom="'Главная'"
       >
-        <HomeIcon
-            class="icon"
-            :state="currentRoutePath === '/'"
-        />
+        <HomeIcon class="icon" :state="currentRoutePath === '/'" />
       </RoundButton>
 
       <Search />
     </div>
 
     <div class="right-side">
-      <button class="premium-button" @click="$router.push('/premium')" v-if="currentRoutePath !== '/search'">
+      <button
+        class="premium-button"
+        @click="$router.push('/premium')"
+        v-if="currentRoutePath !== '/search'"
+      >
         Узнать больше о Premium
       </button>
 
       <button class="desktop-app-button" @click="$router.push('/download')">
         <DownloadIcon class="icon" />
-        <span>
-          Установить приложение
-        </span>
+        <span> Установить приложение </span>
       </button>
 
       <div
-          class="notification"
-          @click="$router.push('/content-feed')"
-          v-tooltip.center_bottom="'Что нового'"
+        class="notification"
+        @click="$router.push('/content-feed')"
+        v-tooltip.center_bottom="'Что нового'"
       >
         <BellIcon
-            :state="currentRoutePath === '/content-feed'"
-            :class="currentRoutePath === '/content-feed' && 'active'"
-            class="icon"
+          :state="currentRoutePath === '/content-feed'"
+          :class="currentRoutePath === '/content-feed' && 'active'"
+          class="icon"
         />
       </div>
 
       <User />
     </div>
-
   </header>
 </template>
 
@@ -95,8 +93,8 @@ header {
 
       &:active {
         background-color: var(--ui-highlight) !important;
-        opacity: .75;
-        scale: .96 !important;
+        opacity: 0.75;
+        scale: 0.96 !important;
       }
 
       &:hover {
@@ -120,7 +118,7 @@ header {
       height: 32px;
       flex-shrink: 0;
       font-weight: 800;
-      font-size: .875rem;
+      font-size: 0.875rem;
       background-color: var(--white);
       color: var(--black);
       padding: 4px 16px;
@@ -141,7 +139,7 @@ header {
       }
 
       &:active {
-        opacity: .8;
+        opacity: 0.8;
         scale: 1;
       }
     }
@@ -152,7 +150,7 @@ header {
       gap: 6px;
       height: 32px;
       flex-shrink: 0;
-      font-size: .875rem;
+      font-size: 0.875rem;
       background-color: var(--black);
       color: var(--white);
       border: none;
@@ -170,7 +168,7 @@ header {
       }
 
       &:active {
-        opacity: .8;
+        opacity: 0.8;
         scale: 1;
       }
 
@@ -205,7 +203,8 @@ header {
         fill: var(--text-soft);
       }
 
-      &:hover .icon, .active {
+      &:hover .icon,
+      .active {
         fill: var(--white);
       }
     }

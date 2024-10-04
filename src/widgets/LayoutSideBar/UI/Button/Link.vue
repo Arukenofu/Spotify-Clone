@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type {Component} from "vue";
+import type { Component } from 'vue';
 
 defineProps<{
-  to: string,
-  icon: Component,
-  isMinimized: boolean
-}>()
+  to: string;
+  icon: Component;
+  isMinimized: boolean;
+}>();
 </script>
 
 <template>
@@ -43,11 +43,11 @@ li {
       width: 24px;
       height: 24px;
       fill: var(--text-soft);
-      transition: fill .2s linear;
+      transition: fill 0.2s linear;
     }
 
     .text {
-      transition: color .2s linear;
+      transition: color 0.2s linear;
       color: var(--text-soft);
       font-weight: 600;
       font-size: 1rem;

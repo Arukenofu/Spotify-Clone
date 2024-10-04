@@ -1,6 +1,6 @@
-import type {BindingObject} from "@/app/directives/Tooltip/types/BindingTypes";
+import type { BindingObject } from '@/app/directives/Tooltip/types/BindingTypes';
 
 export interface TooltipProps extends BindingObject {
-    isShown?: boolean,
-    parent?: HTMLElement
+  isShown?: boolean;
+  parent?: HTMLElement;
 }

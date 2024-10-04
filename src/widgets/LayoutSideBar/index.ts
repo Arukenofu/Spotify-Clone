@@ -1,1 +1,1 @@
-export {default as LayoutSideBar} from './core/index.vue'
+export { default as LayoutSideBar } from './core/index.vue';

@@ -1,27 +1,24 @@
 <script setup lang="ts">
-import type {LocationQuery} from "vue-router";
-import BestResultCard from "@/widgets/SearchPage/components/BestResultCard.vue";
+import type { LocationQuery } from 'vue-router';
+import BestResultCard from '@/widgets/SearchPage/components/BestResultCard.vue';
 
 defineProps<{
-  queries: LocationQuery
+  queries: LocationQuery;
 }>();
-
 </script>
 
 <template>
   <div class="layout">
     <section class="top-result">
       <BestResultCard
-          name="Card Title"
-          type="Исполнитель"
-          who="Moldanazar"
-          image="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
-          :track-id="1"
-          :album-id="0"
+        name="Card Title"
+        type="Исполнитель"
+        who="Moldanazar"
+        image="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
+        :track-id="1"
+        :album-id="0"
       />
-      <div class="other">
-
-      </div>
+      <div class="other"></div>
     </section>
   </div>
 </template>

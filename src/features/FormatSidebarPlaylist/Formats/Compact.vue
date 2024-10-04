@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import type {FormatProps} from "@/features/FormatSidebarPlaylist/types/FormatProps";
+import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
 
 defineProps<FormatProps>();
-
 </script>
 
 <template>
-  <RouterLink
-      :to="`/playlist/${to}`"
-      class="compact-playlist"
-  >
-    {{name}}
+  <RouterLink :to="`/playlist/${to}`" class="compact-playlist">
+    {{ name }}
 
     <template v-if="type === 'Плейлист'">
-      <div class="divider">
-        •
-      </div>
+      <div class="divider">•</div>
 
       <div class="type">
-        {{type}}
+        {{ type }}
       </div>
     </template>
   </RouterLink>
@@ -37,11 +31,11 @@ defineProps<FormatProps>();
   font-size: 1rem;
   user-select: none;
 
-  .type, .divider {
+  .type,
+  .divider {
     color: var(--text-soft);
-    font-size: .9rem;
+    font-size: 0.9rem;
     font-weight: 600;
   }
 }
-
 </style>

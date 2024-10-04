@@ -1,1 +1,1 @@
-export {default as LayoutInfoContent} from './core/index.vue'
+export { default as LayoutInfoContent } from './core/index.vue';

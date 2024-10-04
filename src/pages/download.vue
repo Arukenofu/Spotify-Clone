@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
-import { BackgroundNoise, useBackgroundNoise } from '@/features/BackgroundNoise'
-import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
-import setTitle from "@/shared/utils/setTitle";
+import { computed, inject, ref } from 'vue';
+import {
+  BackgroundNoise,
+  useBackgroundNoise
+} from '@/features/BackgroundNoise';
+import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import setTitle from '@/shared/utils/setTitle';
 
 setTitle('Spotify — Приложение для компьютера');
 
-const {currentColor} = useBackgroundNoise('#447bff');
+const { currentColor } = useBackgroundNoise('#447bff');
 
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
@@ -24,12 +27,13 @@ const computeOpacity = computed<number>(() => {
   <BackgroundNoise :current-color="currentColor" height="260px" />
 
   <section>
-    <img src="https://open.spotifycdn.com/cdn/images/devices/mac.3fbeb8c6.png" alt="Desktop image" />
+    <img
+      src="https://open.spotifycdn.com/cdn/images/devices/mac.3fbeb8c6.png"
+      alt="Desktop image"
+    />
     <h1>Установи приложение Spotify и слушай любимую музыку на компьютере.</h1>
 
-    <button>
-      Скачай Spotify бесплатно
-    </button>
+    <button>Скачай Spotify бесплатно</button>
   </section>
 </template>
 
@@ -37,7 +41,7 @@ const computeOpacity = computed<number>(() => {
 .header {
   position: fixed;
   background-color: var(--ui);
-  transition: opacity .25s ease-out;
+  transition: opacity 0.25s ease-out;
 }
 
 section {
@@ -86,7 +90,7 @@ section {
     }
 
     &:active {
-      filter: brightness(.9);
+      filter: brightness(0.9);
       scale: 1 !important;
     }
   }

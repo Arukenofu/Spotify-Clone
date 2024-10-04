@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
-import {BackgroundNoise, useBackgroundNoise} from "@/features/BackgroundNoise";
-import useCurrentRoutePath from "@/shared/composables/useCurrentRoutePath";
-import setTitle from "@/shared/utils/setTitle";
-import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
-import RecommendedAlbum from "@/UI/Elements/RecommendedAlbum.vue";
-import RecommendationSection from "@/UI/Elements/RecommendationSection.vue";
-import MusicCard from "@/UI/Elements/MusicCard.vue";
-import useResponsive from "@/shared/composables/useResponsive";
+import { computed, inject, ref } from 'vue';
+import {
+  BackgroundNoise,
+  useBackgroundNoise
+} from '@/features/BackgroundNoise';
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
+import setTitle from '@/shared/utils/setTitle';
+import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import RecommendedAlbum from '@/UI/Elements/RecommendedAlbum.vue';
+import RecommendationSection from '@/UI/Elements/RecommendationSection.vue';
+import MusicCard from '@/UI/Elements/MusicCard.vue';
+import useResponsive from '@/shared/composables/useResponsive';
 
-const {currentColor, setColor} = useBackgroundNoise();
-const {isMobile} = useResponsive();
+const { currentColor, setColor } = useBackgroundNoise();
+const { isMobile } = useResponsive();
 
 setTitle('Spotify - Web Player: Music for everyone');
 
@@ -26,19 +29,20 @@ const computeOpacity = computed<number>(() => {
 
 const computeBackgroundColor = computed(() => {
   if (currentColor.value === 'rgb(83, 83, 83)') {
-    return '#212121'
+    return '#212121';
   }
 
   return currentColor.value;
 });
 
-const {currentRoutePath} = useCurrentRoutePath('fullPath');
+const { currentRoutePath } = useCurrentRoutePath('fullPath');
 
 const recommendations = [
   {
     id: 0,
     name: 'Микс дня #1',
-    avatar: 'https://cameralabs.org/media/lab18/03/02/arhiv-muzykalnyh-oblozhek_4.jpg',
+    avatar:
+      'https://cameralabs.org/media/lab18/03/02/arhiv-muzykalnyh-oblozhek_4.jpg',
     hoverColor: '#11342b',
     href: '/asd'
   },
@@ -52,18 +56,20 @@ const recommendations = [
   {
     id: 2,
     name: 'Микс дня #3',
-    avatar: 'https://pult.ru/upload/medialibrary/5ee/5eee4b14e41c7b041d127204557242ec.jpg',
+    avatar:
+      'https://pult.ru/upload/medialibrary/5ee/5eee4b14e41c7b041d127204557242ec.jpg',
     hoverColor: '#1077a7',
     href: '/asd'
   },
   {
     id: 3,
     name: 'Микс дня #4',
-    avatar: 'https://avatars.dzeninfra.ru/get-zen_doc/1708669/pub_5d20c72970080e00aee0b858_5d20c77091645e00ac348023/scale_1200',
+    avatar:
+      'https://avatars.dzeninfra.ru/get-zen_doc/1708669/pub_5d20c72970080e00aee0b858_5d20c77091645e00ac348023/scale_1200',
     hoverColor: '#e2d840',
     href: '/asd'
   }
-]
+];
 
 function getGreeting() {
   const currentHour = new Date().getHours();
@@ -83,101 +89,101 @@ function getGreeting() {
 <template>
   <template v-if="!isMobile">
     <StickyHeader
-        :underlay-style="{
-          opacity: computeOpacity,
-          backgroundColor: computeBackgroundColor,
-          transition: 'background-color .25s, opacity .4s ease-out'
+      :underlay-style="{
+        opacity: computeOpacity,
+        backgroundColor: computeBackgroundColor,
+        transition: 'background-color .25s, opacity .4s ease-out'
       }"
-        class="header"
+      class="header"
     >
       <button
-          @click="$router.push(''); setColor(null)"
-          :class="currentRoutePath !== '/' && 'inactive'"
+        @click="
+          $router.push('');
+          setColor(null);
+        "
+        :class="currentRoutePath !== '/' && 'inactive'"
       >
         Все
       </button>
 
       <button
-          @click="$router.push('/?facet=music-chip'); setColor(null)"
-          :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
+        @click="
+          $router.push('/?facet=music-chip');
+          setColor(null);
+        "
+        :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
       >
         Музыка
       </button>
     </StickyHeader>
-    <BackgroundNoise
-        :currentColor="currentColor"
-    />
+    <BackgroundNoise :currentColor="currentColor" />
   </template>
 
   <section class="container">
     <section class="recommended-albums" v-if="!isMobile">
       <div class="albums-wrap">
         <RecommendedAlbum
-            class="album"
-            v-for="rec in recommendations"
-            :key="rec.id"
-            :id="rec.id"
-            :album-name="rec.name"
-            :avatar="rec.avatar"
-            :href="rec.href"
-            @mouseenter="setColor(rec.hoverColor)"
+          class="album"
+          v-for="rec in recommendations"
+          :key="rec.id"
+          :id="rec.id"
+          :album-name="rec.name"
+          :avatar="rec.avatar"
+          :href="rec.href"
+          @mouseenter="setColor(rec.hoverColor)"
         />
       </div>
     </section>
 
     <section class="greetings" v-else>
-      <h1>{{getGreeting()}}</h1>
+      <h1>{{ getGreeting() }}</h1>
     </section>
 
-    <RecommendationSection
-        class="for-you"
-        href="/section/1"
-    >
+    <RecommendationSection class="for-you" href="/section/1">
       <MusicCard
-          :album-id="1"
-          to="/hello"
-          type="playlist"
-          name="Only for you"
-          :show-name="false"
-          v-for="a in 10"
-          :key="a"
+        :album-id="1"
+        to="/hello"
+        type="playlist"
+        name="Only for you"
+        :show-name="false"
+        v-for="a in 10"
+        :key="a"
       >
-        Новые треки и редкие композиции в еженедельном миксе специально для тебя. Лови обновление каждый понедельник.
+        Новые треки и редкие композиции в еженедельном миксе специально для
+        тебя. Лови обновление каждый понедельник.
       </MusicCard>
     </RecommendationSection>
 
-
     <RecommendationSection naming="Популярные исполнители" href="/asdasdas">
       <MusicCard
-          :album-id="1"
-          name="The Weekend"
-          to="/artistName"
-          type="artist"
-          v-for="a in 10"
-          :key="a"
+        :album-id="1"
+        name="The Weekend"
+        to="/artistName"
+        type="artist"
+        v-for="a in 10"
+        :key="a"
       >
         Исполнитель
       </MusicCard>
     </RecommendationSection>
 
     <RecommendationSection
-        naming="Вам должно понравиться"
-        head-title="По мотивам твоих недавних действий"
-        href="/liked"
+      naming="Вам должно понравиться"
+      head-title="По мотивам твоих недавних действий"
+      href="/liked"
     >
       <MusicCard
-          :album-id="1"
-          :show-name="false"
-          name="Music"
-          to="/musicName"
-          v-for="a in 10"
-          :key="a"
+        :album-id="1"
+        :show-name="false"
+        name="Music"
+        to="/musicName"
+        v-for="a in 10"
+        :key="a"
       >
         The greatest indie love songs of all time.
       </MusicCard>
     </RecommendationSection>
   </section>
-
 </template>
 
 <style lang="scss" scoped>
@@ -209,16 +215,16 @@ function getGreeting() {
   }
 }
 
-  @container recommended-albums (min-width: 1141px) {
-    .album {
-      --album-item-height: 64px;
-      font-size: 16px !important;
+@container recommended-albums (min-width: 1141px) {
+  .album {
+    --album-item-height: 64px;
+    font-size: 16px !important;
 
-      :deep(.other) {
-        padding-left: 16px !important;
-      }
+    :deep(.other) {
+      padding-left: 16px !important;
     }
   }
+}
 
 @container recommended-albums (min-width: 815px) {
   .albums-wrap {
@@ -249,11 +255,11 @@ function getGreeting() {
     background-color: var(--white);
     font-weight: 700;
     cursor: pointer;
-    transition: all .2s;
+    transition: all 0.2s;
     color: var(--black);
 
     &:active {
-      opacity: .7;
+      opacity: 0.7;
     }
   }
 

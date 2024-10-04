@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import RoundButton from "@/UI/Buttons/RoundButton.vue";
-import {showContextMenu} from "@/features/ContextMenu";
-import UserProfileModal from "@/widgets/LayoutHeader/modals/UserProfileModal.vue";
+import RoundButton from '@/UI/Buttons/RoundButton.vue';
+import { showContextMenu } from '@/features/ContextMenu';
+import UserProfileModal from '@/widgets/LayoutHeader/modals/UserProfileModal.vue';
 </script>
 
 <template>
   <RoundButton
-      class="user-avatar"
-      @click="showContextMenu($event, UserProfileModal, {
+    class="user-avatar"
+    @click="
+      showContextMenu($event, UserProfileModal, {
         stickOn: 'currentElement',
         design: 'minimal',
         inset: 0
-      })"
-      v-tooltip.end_bottom="{
-        content: 'Бауыржан Алкенов',
-        distance: 5
-      }"
-      v-disable-child
+      })
+    "
+    v-tooltip.end_bottom="{
+      content: 'Бауыржан Алкенов',
+      distance: 5
+    }"
+    v-disable-child
   >
-    <div
-        class="picture"
-        :class="'no-picture'"
-        data-char="Б"
-    >
-
-    </div>
+    <div class="picture" :class="'no-picture'" data-char="Б"></div>
   </RoundButton>
 </template>
 

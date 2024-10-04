@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import stepStore from "@/widgets/SignUp/store/stepStore";
+import stepStore from '@/widgets/SignUp/store/stepStore';
 
-const {step} = stepStore();
+const { step } = stepStore();
 </script>
 
 <template>
   <div class="progress-bar">
-    <div class="progress-bar-inner" :style="`width: ${Math.ceil(33.3333333 * step)}%`" />
+    <div
+      class="progress-bar-inner"
+      :style="`width: ${Math.ceil(33.3333333 * step)}%`"
+    />
   </div>
 </template>
 

@@ -1,20 +1,18 @@
 <script setup lang="ts">
-
-import useResponsive from "@/shared/composables/useResponsive";
+import useResponsive from '@/shared/composables/useResponsive';
 
 interface Props {
-  naming?: string,
-  headTitle?: string
-  href: string,
-  isShowAll?: boolean,
+  naming?: string;
+  headTitle?: string;
+  href: string;
+  isShowAll?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   isShowAll: true
 });
 
-const {isMobile} = useResponsive();
-
+const { isMobile } = useResponsive();
 </script>
 
 <template>
@@ -22,18 +20,16 @@ const {isMobile} = useResponsive();
     <div class="head-area" v-if="naming">
       <div class="title">
         <p>
-          {{headTitle}}
+          {{ headTitle }}
         </p>
 
         <RouterLink :to="!isMobile ? href : ''">
-          {{naming}}
+          {{ naming }}
         </RouterLink>
       </div>
 
       <div class="show-all" v-if="isShowAll && !isMobile">
-        <RouterLink :to="href">
-          Показать все
-        </RouterLink>
+        <RouterLink :to="href"> Показать все </RouterLink>
       </div>
     </div>
 
@@ -55,7 +51,9 @@ section {
     margin-bottom: 14px;
 
     @media screen and (max-width: 768px) {
-      & {height: 40px}
+      & {
+        height: 40px;
+      }
     }
 
     .title {
@@ -65,11 +63,11 @@ section {
       font-size: 1rem;
 
       @media screen and (max-width: 768px) {
-        font-size: .75rem;
+        font-size: 0.75rem;
       }
 
       p {
-        font-size: .75em;
+        font-size: 0.75em;
         color: var(--text-soft);
       }
 
@@ -96,7 +94,7 @@ section {
 
       a {
         font-weight: 900;
-        font-size: .875rem;
+        font-size: 0.875rem;
         color: var(--text-soft);
         white-space: nowrap;
       }
@@ -111,7 +109,10 @@ section {
     --rec-min-column-width: 160px;
     margin-inline: -12px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--rec-min-column-width), 1fr));
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--rec-min-column-width), 1fr)
+    );
     grid-template-rows: 1fr 0 0 0 0 0;
     overflow: hidden;
     grid-auto-rows: min-content;

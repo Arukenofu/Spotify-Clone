@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import setTitle from "@/shared/utils/setTitle";
+import setTitle from '@/shared/utils/setTitle';
 
 setTitle('Страница не найдена');
 </script>
 
 <template>
-    <div class="layout">
-      <div class="center">
-        <div class="logo"><img src="https://open.spotifycdn.com/cdn/images/error-page-logo.24aca703.svg" alt="logo"></div>
-        <h1>Страница не найдена</h1>
-        <p>Мы не нашли нужную страницу</p>
-
-        <RouterLink to="/">
-          Главная
-        </RouterLink>
+  <div class="layout">
+    <div class="center">
+      <div class="logo">
+        <img
+          src="https://open.spotifycdn.com/cdn/images/error-page-logo.24aca703.svg"
+          alt="logo"
+        />
       </div>
+      <h1>Страница не найдена</h1>
+      <p>Мы не нашли нужную страницу</p>
+
+      <RouterLink to="/"> Главная </RouterLink>
     </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

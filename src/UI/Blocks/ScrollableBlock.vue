@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {nextTick, onMounted, ref} from "vue";
-import type {Component} from "vue";
+import { nextTick, onMounted, ref } from 'vue';
+import type { Component } from 'vue';
 
 interface Props {
-  is?: Component | string,
-  gap?: string,
-  scrollbarWidth?: string
+  is?: Component | string;
+  gap?: string;
+  scrollbarWidth?: string;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -41,7 +41,8 @@ function updateScrollBar() {
   }
   scrollbar.value!.style.display = 'block';
 
-  const scrollbarHeight = (customBlockHeight / contentHeight) * customBlockHeight;
+  const scrollbarHeight =
+    (customBlockHeight / contentHeight) * customBlockHeight;
   const scrollTop = content.value!.scrollTop;
   const scrollbarTop = (scrollTop / contentHeight) * customBlockHeight;
 
@@ -54,8 +55,8 @@ function updateScrollBar() {
   scrollbar.value!.style.top = `${scrollbarTop}px`;
 
   scrollBarOpacityTimeOut = setTimeout(() => {
-    scrollbar.value!.style.removeProperty('opacity')
-  }, 800)
+    scrollbar.value!.style.removeProperty('opacity');
+  }, 800);
 }
 
 function onMouseDown(event: MouseEvent) {
@@ -84,10 +85,10 @@ function onMouseDown(event: MouseEvent) {
 }
 
 function initCustomScrollBar() {
-  content.value!.addEventListener("scroll", updateScrollBar);
+  content.value!.addEventListener('scroll', updateScrollBar);
   updateScrollBar();
 
-  scrollbar.value!.addEventListener("mousedown", onMouseDown);
+  scrollbar.value!.addEventListener('mousedown', onMouseDown);
 
   const observer = new MutationObserver(() => {
     nextTick(() => {
@@ -105,7 +106,11 @@ onMounted(() => {
 
 <template>
   <Component :is="is" class="scrollable-block" ref="block">
-    <div class="scrollable-content" ref="content" :class="isScrolled && 'scrolled'">
+    <div
+      class="scrollable-content"
+      ref="content"
+      :class="isScrolled && 'scrolled'"
+    >
       <slot></slot>
     </div>
     <div class="scrollbar" ref="scrollbar"></div>
@@ -123,15 +128,15 @@ onMounted(() => {
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-right: v-bind("gap");
+    padding-right: v-bind('gap');
     scrollbar-width: none !important;
   }
 
   .scrollbar {
     z-index: 1 !important;
-    --scrollbar-bg: hsla(0,0%,100%,.3);
-    --scrollbar-bg-hover: hsla(0,0%,100%,.5);
-    --scrollbar-bg-active: hsla(0,0%,100%,.7);
+    --scrollbar-bg: hsla(0, 0%, 100%, 0.3);
+    --scrollbar-bg-hover: hsla(0, 0%, 100%, 0.5);
+    --scrollbar-bg-active: hsla(0, 0%, 100%, 0.7);
 
     position: absolute;
     top: 0;
@@ -141,7 +146,7 @@ onMounted(() => {
     cursor: pointer;
     user-select: none;
     opacity: 0;
-    transition: opacity .5s;
+    transition: opacity 0.5s;
 
     &:hover {
       opacity: 1;

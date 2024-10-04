@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
-import {PremiumCards} from "@/widgets/PremiumCards";
-import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
-import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
-import Logo from "@/UI/Icons/Shared/Logo.vue";
-import setTitle from "@/shared/utils/setTitle";
+import { computed, inject, ref } from 'vue';
+import { PremiumCards } from '@/widgets/PremiumCards';
+import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
+import Logo from '@/UI/Icons/Shared/Logo.vue';
+import setTitle from '@/shared/utils/setTitle';
 
 setTitle('Spotify — Premium');
 
@@ -19,12 +19,12 @@ const computeOpacity = computed<number>(() => {
 });
 
 const benefits = [
-    'Музыка без рекламы',
-    'Возможность скачивать треки',
-    'Треки в любом порядке',
-    'Высокое качество звука',
-    'Групповые сеансы с друзьями',
-    'Добавление треков в очередь',
+  'Музыка без рекламы',
+  'Возможность скачивать треки',
+  'Треки в любом порядке',
+  'Высокое качество звука',
+  'Групповые сеансы с друзьями',
+  'Добавление треков в очередь'
 ];
 
 const comparisons = [
@@ -34,11 +34,13 @@ const comparisons = [
   },
   {
     text: 'Скачать треки',
-    bubble: 'Слушайте альбомы и плейлисты даже без подключения к интернету. Скачивйте до 10000 треков на разных устройствах.'
+    bubble:
+      'Слушайте альбомы и плейлисты даже без подключения к интернету. Скачивйте до 10000 треков на разных устройствах.'
   },
   {
     text: 'Треки в любом порядке',
-    bubble: 'Полный контроль над воспроизведением: повтор и перемотка треков, а также прослушивание композиции из альбомов в любом порядке'
+    bubble:
+      'Полный контроль над воспроизведением: повтор и перемотка треков, а также прослушивание композиции из альбомов в любом порядке'
   },
   {
     text: 'Высокое качество звука',
@@ -55,9 +57,8 @@ const comparisons = [
   {
     text: 'Добавление треков в очередь',
     bubble: 'Добавляйте, удаляйте и меняйте местами треки в очереди.'
-  },
-
-]
+  }
+];
 </script>
 
 <template>
@@ -66,27 +67,32 @@ const comparisons = [
     <div class="gradient-header">
       <div class="gradient-header-inner">
         <h1>Три месяца Premium за $0.00</h1>
-        <p>Слушайте музыку без рекламы, офлайн и не только. Отменить подписку можно в любой момент.</p>
+        <p>
+          Слушайте музыку без рекламы, офлайн и не только. Отменить подписку
+          можно в любой момент.
+        </p>
         <div class="buttons">
-          <button>
-            Попробовать 3 месяца бесплатно
-          </button>
+          <button>Попробовать 3 месяца бесплатно</button>
 
-          <button>
-            Посмотреть все планы
-          </button>
+          <button>Посмотреть все планы</button>
         </div>
 
         <span>
-        Только Индивидуальная подписка Spotify Premium. Бесплатно 3 месяца, затем 4,99$ в месяц. Только для новых подписчиков. Действуют <a>Условия</a>. <br>
-        Акция заканчивается 17 сентября 2024г.
-      </span>
+          Только Индивидуальная подписка Spotify Premium. Бесплатно 3 месяца,
+          затем 4,99$ в месяц. Только для новых подписчиков. Действуют
+          <a>Условия</a>. <br />
+          Акция заканчивается 17 сентября 2024г.
+        </span>
       </div>
     </div>
 
     <section class="about-payment">
       <h1>Доступные планы под любые потребности</h1>
-      <p>Слушайте музыку без рекламы сколько угодно на телефоне, колонке и других устройствах. Просто выберите Premium-подписку. Оплата различными способами. Отменить подписку можно в любой момент.</p>
+      <p>
+        Слушайте музыку без рекламы сколько угодно на телефоне, колонке и других
+        устройствах. Просто выберите Premium-подписку. Оплата различными
+        способами. Отменить подписку можно в любой момент.
+      </p>
     </section>
 
     <section class="benefits">
@@ -95,7 +101,7 @@ const comparisons = [
       <ul>
         <li v-for="benefit in benefits" :key="benefit">
           <CheckIcon class="check" />
-          <div class="text">{{benefit}}</div>
+          <div class="text">{{ benefit }}</div>
         </li>
       </ul>
     </section>
@@ -105,7 +111,10 @@ const comparisons = [
     <section class="comparison-header">
       <div class="comparison-header-inner">
         <h1>Почувствуйте разницу</h1>
-        <p>Переходите на Premium и управляйте своей музыкой. Отменить подписку можно в любой момент.</p>
+        <p>
+          Переходите на Premium и управляйте своей музыкой. Отменить подписку
+          можно в любой момент.
+        </p>
       </div>
     </section>
 
@@ -116,7 +125,7 @@ const comparisons = [
             <th class="what-you-get">Что вы получите</th>
             <th class="free-version">
               <div class="inner">
-                Бесплатная <br>
+                Бесплатная <br />
                 версия Spotify
               </div>
             </th>
@@ -134,7 +143,7 @@ const comparisons = [
           <tr v-for="(comparison, index) in comparisons" :key="index">
             <td>
               <span>
-                 {{comparison.text}}
+                {{ comparison.text }}
               </span>
 
               <div class="bubble" v-html="comparison.bubble" />
@@ -162,7 +171,8 @@ const comparisons = [
   .gradient-header {
     width: 100%;
     height: 350px;
-    background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.5)),linear-gradient(78.87deg,#b00d6e -3.32%,#004695 112.02%);
+    background-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.5)),
+      linear-gradient(78.87deg, #b00d6e -3.32%, #004695 112.02%);
 
     display: flex;
     align-items: center;
@@ -221,14 +231,14 @@ const comparisons = [
           }
 
           &:active {
-            filter: brightness(.8);
+            filter: brightness(0.8);
             scale: 1 !important;
           }
         }
       }
 
       span {
-        font-size: .75rem;
+        font-size: 0.75rem;
         line-height: 1.5;
         font-weight: 400;
         text-align: center;
@@ -248,7 +258,8 @@ const comparisons = [
     flex-direction: column;
     align-items: center;
 
-    h1, p {
+    h1,
+    p {
       text-align: center;
       max-width: 700px;
     }
@@ -312,7 +323,7 @@ const comparisons = [
         align-items: center;
       }
     }
-    
+
     @media screen and (width >= 1229px) {
       & {
         max-width: 1069px;
@@ -383,9 +394,8 @@ const comparisons = [
           }
 
           .free-version {
-
             .inner {
-              box-shadow: inset -2px 0 14px -7px rgba(0,0,0,.55);
+              box-shadow: inset -2px 0 14px -7px rgba(0, 0, 0, 0.55);
               height: 100px;
               padding: 16px 16px 40px;
               font-weight: 700;
@@ -394,9 +404,11 @@ const comparisons = [
           }
 
           .premium-version {
-
             .inner {
-              background: linear-gradient(rgba(255,210,215,.08) 20%,rgba(255,210,215,0) 90%);
+              background: linear-gradient(
+                rgba(255, 210, 215, 0.08) 20%,
+                rgba(255, 210, 215, 0) 90%
+              );
               height: 100px;
               padding: 16px;
               display: flex;
@@ -422,13 +434,12 @@ const comparisons = [
       }
 
       tbody {
-
         tr {
-          transition: background-color .1s ease-in-out;
+          transition: background-color 0.1s ease-in-out;
           cursor: pointer;
 
           &:hover {
-            background-color: hsla(0,0%,100%,.1);
+            background-color: hsla(0, 0%, 100%, 0.1);
 
             td:nth-child(1) .bubble {
               opacity: 1;
@@ -436,7 +447,7 @@ const comparisons = [
             }
 
             td:nth-child(3) {
-              background-color: hsla(0,0%,100%,.1);
+              background-color: hsla(0, 0%, 100%, 0.1);
             }
           }
 
@@ -454,7 +465,7 @@ const comparisons = [
                 max-width: 250px;
                 padding-left: 8px;
                 padding-right: 16px;
-                text-decoration: underline dashed hsla(0,0%,100%,.5) 1px;
+                text-decoration: underline dashed hsla(0, 0%, 100%, 0.5) 1px;
                 text-underline-offset: 4px;
                 vertical-align: middle;
               }
@@ -463,7 +474,7 @@ const comparisons = [
                 position: absolute;
                 left: -10px;
                 bottom: 100%;
-                transition: opacity .15s ease-in-out;
+                transition: opacity 0.15s ease-in-out;
                 opacity: 0;
                 border-radius: 6px;
                 text-align: left;
@@ -471,7 +482,7 @@ const comparisons = [
                 background-color: var(--white);
                 color: var(--black);
                 padding: 6px 12px;
-                font-size: .9rem;
+                font-size: 0.9rem;
                 line-height: 1.3;
                 font-weight: 500;
                 user-select: none;
@@ -507,6 +518,6 @@ const comparisons = [
 .header {
   position: fixed;
   background-color: var(--ui);
-  transition: opacity .25s ease-out;
+  transition: opacity 0.25s ease-out;
 }
 </style>

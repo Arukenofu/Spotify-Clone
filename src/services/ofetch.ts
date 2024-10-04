@@ -1,27 +1,33 @@
-import {ofetch} from "ofetch";
-import type {FetchOptions, FetchRequest} from "ofetch"
-import {ref} from "vue";
+import { ofetch } from 'ofetch';
+import type { FetchOptions, FetchRequest } from 'ofetch';
+import { ref } from 'vue';
 
 const api = ofetch.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-    credentials: 'include'
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  credentials: 'include'
 });
 
-export async function $api<T>(request: FetchRequest, options: FetchOptions<"json"> = {}) {
-    return await api<T>(request, options);
+export async function $api<T>(
+  request: FetchRequest,
+  options: FetchOptions<'json'> = {}
+) {
+  return await api<T>(request, options);
 }
 
-export function $apiLazy<T>(request: FetchRequest, options: FetchOptions<"json"> = {}) {
-    const data = ref<T>();
-    const loading = ref<boolean>(true);
+export function $apiLazy<T>(
+  request: FetchRequest,
+  options: FetchOptions<'json'> = {}
+) {
+  const data = ref<T>();
+  const loading = ref<boolean>(true);
 
-    api<T>(request, options).then((value) => {
-        loading.value = false;
-        data.value = value;
-    });
+  api<T>(request, options).then((value) => {
+    loading.value = false;
+    data.value = value;
+  });
 
-    return {
-        data,
-        loading
-    }
+  return {
+    data,
+    loading
+  };
 }

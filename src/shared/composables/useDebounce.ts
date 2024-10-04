@@ -1,21 +1,18 @@
 let timeout: ReturnType<typeof setTimeout>;
 
-export default function() {
-    function debounce(
-        callback: Function,
-        delay: number
-    ) {
-        clearTimeout(timeout);
+export default function () {
+  function debounce(callback: Function, delay: number) {
+    clearTimeout(timeout);
 
-        timeout = setTimeout(() => {
-            callback();
-        }, delay);
-    }
+    timeout = setTimeout(() => {
+      callback();
+    }, delay);
+  }
 
-    return {
-        debounce,
-        clear: () => {
-            clearTimeout(timeout);
-        }
+  return {
+    debounce,
+    clear: () => {
+      clearTimeout(timeout);
     }
+  };
 }

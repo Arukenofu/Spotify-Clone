@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import FormInput from "@/UI/Form/FormInput.vue";
-import FormError from "@/UI/Form/FormError.vue";
+import FormInput from '@/UI/Form/FormInput.vue';
+import FormError from '@/UI/Form/FormError.vue';
 
 interface Props {
-  error?: any
+  error?: any;
 }
 
-defineProps<Props>()
-
+defineProps<Props>();
 </script>
 
 <template>

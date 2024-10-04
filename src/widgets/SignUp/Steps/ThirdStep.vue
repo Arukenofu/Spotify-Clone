@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import FormCheckbox from "@/UI/Form/FormCheckbox.vue";
-import FormButton from "@/UI/Form/FormButton.vue";
-import {ref} from "vue";
-import FormError from "@/UI/Form/FormError.vue";
-import stepStore from "@/widgets/SignUp/store/stepStore";
-import {RegisterAccount} from "@/services/api/authService";
-import {router} from "@/app/router";
+import FormCheckbox from '@/UI/Form/FormCheckbox.vue';
+import FormButton from '@/UI/Form/FormButton.vue';
+import { ref } from 'vue';
+import FormError from '@/UI/Form/FormError.vue';
+import stepStore from '@/widgets/SignUp/store/stepStore';
+import { RegisterAccount } from '@/services/api/authService';
+import { router } from '@/app/router';
 
-const {form} = stepStore();
+const { form } = stepStore();
 
 const terms = ref([
   {
@@ -23,7 +23,7 @@ const terms = ref([
     checked: false
   }
 ]);
-const isError = ref<boolean>(false)
+const isError = ref<boolean>(false);
 
 async function validateWholeForm() {
   if (!terms.value[0].checked) {
@@ -33,29 +33,28 @@ async function validateWholeForm() {
     // do something
   }
   if (!terms.value[2].checked) {
-    return isError.value = true;
+    return (isError.value = true);
   }
 
   await RegisterAccount(form.value);
 
   await router.push('/login');
 }
-
 </script>
 
 <template>
   <form @submit.prevent="validateWholeForm()">
     <div
-        class="term"
-        v-for="term in terms"
-        :key="term.text"
-        @click="term.checked =! term.checked"
+      class="term"
+      v-for="term in terms"
+      :key="term.text"
+      @click="term.checked = !term.checked"
     >
       <div class="check">
         <FormCheckbox v-model="term.checked" />
       </div>
       <div class="text">
-        {{term.text}}
+        {{ term.text }}
       </div>
     </div>
 
@@ -63,9 +62,7 @@ async function validateWholeForm() {
       Чтобы продолжить, примите Условия использования.
     </FormError>
 
-    <FormButton class="button">
-      Зарегистрироваться
-    </FormButton>
+    <FormButton class="button"> Зарегистрироваться </FormButton>
   </form>
 </template>
 
@@ -85,7 +82,7 @@ form {
     .text {
       position: relative;
       bottom: 4px;
-      font-size: .9rem;
+      font-size: 0.9rem;
       line-height: 1.4;
     }
   }
@@ -98,6 +95,4 @@ form {
     margin-top: 28px;
   }
 }
-
-
 </style>

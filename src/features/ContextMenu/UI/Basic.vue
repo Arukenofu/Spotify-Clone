@@ -1,29 +1,26 @@
 <script setup lang="ts">
-import {type Component, computed} from "vue";
-import Index from "@/features/ContextMenu/core/index.vue";
+import { type Component, computed } from 'vue';
+import Index from '@/features/ContextMenu/core/index.vue';
 
 defineOptions({
   inheritAttrs: false
-})
+});
 
 interface Props {
-  text: string,
+  text: string;
 
-  svgIcon?: Component,
-  underline?: boolean,
-  isActive?: boolean,
-  additionalSVG?: Component,
-  subTree?: Component
+  svgIcon?: Component;
+  underline?: boolean;
+  isActive?: boolean;
+  additionalSVG?: Component;
+  subTree?: Component;
 }
 
 const props = defineProps<Props>();
 
 const computedClasses = computed(() => {
-  return [
-    props.underline && 'underline',
-    props.isActive && 'active'
-  ]
-})
+  return [props.underline && 'underline', props.isActive && 'active'];
+});
 </script>
 
 <template>
@@ -31,7 +28,7 @@ const computedClasses = computed(() => {
     <span class="block">
       <Component class="icon" :is="svgIcon" />
       <span class="text">
-        {{text}}
+        {{ text }}
       </span>
     </span>
 
@@ -39,10 +36,7 @@ const computedClasses = computed(() => {
       <Component class="icon" :is="additionalSVG" />
     </span>
 
-    <Index
-        v-if="subTree"
-        v-bind="subTree"
-    />
+    <Index v-if="subTree" v-bind="subTree" />
   </button>
 </template>
 
@@ -60,7 +54,7 @@ button {
   position: relative;
 
   &:hover {
-    background-color: hsla(0,0%,100%,.1);
+    background-color: hsla(0, 0%, 100%, 0.1);
   }
 
   .icon {
@@ -76,7 +70,7 @@ button {
 
     .text {
       font-weight: 600;
-      font-size: .85rem;
+      font-size: 0.85rem;
       white-space: nowrap;
       text-align: left;
     }
@@ -90,16 +84,16 @@ button {
 }
 
 .active {
-
-  .icon, span {
+  .icon,
+  span {
     color: var(--main-color);
     fill: var(--main-color);
   }
 }
 
 .underline::before {
-  border-bottom: 1px solid hsla(0,0%,100%,.1);
-  content: "";
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+  content: '';
   width: 100%;
   pointer-events: none;
   position: absolute;

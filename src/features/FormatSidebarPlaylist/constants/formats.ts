@@ -1,7 +1,3 @@
-import type {FormatTypes} from "@/features/FormatSidebarPlaylist/types/FormatTypes";
+import type { FormatTypes } from '@/features/FormatSidebarPlaylist/types/FormatTypes';
 
-export default [
-    'Compact',
-    'Grid',
-    'List',
-] as FormatTypes[]
+export default ['Compact', 'Grid', 'List'] as FormatTypes[];
