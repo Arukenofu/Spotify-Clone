@@ -7,16 +7,25 @@ defineProps<FormatProps>();
 </script>
 
 <template>
-  <RouterLink class="list" :to="`/playlist/${to}`">
+  <RouterLink
+    class="list"
+    :to="`/playlist/${to}`"
+  >
     <div class="picture">
-      <div class="image" v-if="image"></div>
-
-      <NoMusicOrPlaylistAvatar
-        class="noAvatar"
-        v-else-if="type === 'Плейлист'"
+      <div
+        v-if="image"
+        class="image"
       />
 
-      <NoFolderAvatar class="noAvatar" v-else />
+      <NoMusicOrPlaylistAvatar
+        v-else-if="type === 'Плейлист'"
+        class="noAvatar"
+      />
+
+      <NoFolderAvatar
+        v-else
+        class="noAvatar"
+      />
     </div>
 
     <div class="text">

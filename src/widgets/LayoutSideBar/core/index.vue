@@ -22,7 +22,7 @@ function onMinimizeTooMany(newWidth: number, max: number, min: number) {
     v-model:current-width="currentWidth"
     :min-width="min"
     :max-width="max"
-    @customResizeEvent="onMinimizeTooMany"
+    @custom-resize-event="onMinimizeTooMany"
   />
 </template>
 

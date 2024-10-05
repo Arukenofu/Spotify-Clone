@@ -48,13 +48,17 @@ watchEffect(() => {
 
 <template>
   <div
+    v-if="isShown"
+    ref="tooltip"
     class="v-tooltip"
     :class="isShowDelayTimePassed && 'show'"
     :style="style"
-    ref="tooltip"
-    v-if="isShown"
   >
-    <div class="innerHTMLContent" v-if="allowInnerHTML" v-html="content" />
+    <div
+      v-if="allowInnerHTML"
+      class="innerHTMLContent"
+      v-html="content"
+    />
     <template v-else>
       {{ content }}
     </template>

@@ -17,7 +17,10 @@ const { isMobile } = useResponsive();
 
 <template>
   <section class="">
-    <div class="head-area" v-if="naming">
+    <div
+      v-if="naming"
+      class="head-area"
+    >
       <div class="title">
         <p>
           {{ headTitle }}
@@ -28,8 +31,13 @@ const { isMobile } = useResponsive();
         </RouterLink>
       </div>
 
-      <div class="show-all" v-if="isShowAll && !isMobile">
-        <RouterLink :to="href"> Показать все </RouterLink>
+      <div
+        v-if="isShowAll && !isMobile"
+        class="show-all"
+      >
+        <RouterLink :to="href">
+          Показать все
+        </RouterLink>
       </div>
     </div>
 

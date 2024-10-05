@@ -108,24 +108,31 @@ watch(audio, () => {
       />
       <Previous
         v-tooltip="'Назад'"
-        @click="previousTrack()"
         class="icon pointerable"
+        @click="previousTrack()"
       />
       <button
-        @click="toggleTrackPlaying()"
-        class="icon musicState pointerable"
         v-tooltip="isPlaying ? 'Остановить' : 'Слушать'"
+        class="icon musicState pointerable"
+        @click="toggleTrackPlaying()"
       >
-        <PlayingState :state="isPlaying" class="icon" />
+        <PlayingState
+          :state="isPlaying"
+          class="icon"
+        />
       </button>
-      <Next v-tooltip="'Далее'" @click="nextTrack()" class="icon pointerable" />
+      <Next
+        v-tooltip="'Далее'"
+        class="icon pointerable"
+        @click="nextTrack()"
+      />
       <Repeat
         :style="
           getActiveColor(currentRepeatMode !== 'onlyCurrentMusic', 'fill')
         "
-        @click="userConfig.toggleRepeatMode()"
         :state="currentRepeatMode!"
         class="icon"
+        @click="userConfig.toggleRepeatMode()"
       />
     </div>
 
@@ -139,7 +146,7 @@ watch(audio, () => {
         :max="duration"
         :current="currentTime"
         :thumb-fix="1"
-        @onValueChange="timeUpdate"
+        @on-value-change="timeUpdate"
         @mousedown="audio!.pause()"
         @mouseup="audio!.play()"
       />

@@ -10,7 +10,15 @@ import {
   defaultWidth
 } from '@/features/InfoPanel';
 
-const currentPanelWidth = useCachedRef('infoContentWidth', defaultWidth);
+const currentPanelWidth = useCachedRef<number>(
+  'infoContentWidth',
+  defaultWidth,
+  {
+    expectedTypes: ['number'],
+    min,
+    max
+  }
+);
 
 watch(currentPanelWidth, (value) => {
   document.documentElement.style.setProperty('--panel-width', `${value}px`);
@@ -22,9 +30,9 @@ const { currentPanelComponent } = infoPanel();
 <template>
   <Resizer
     v-if="currentPanelComponent"
+    v-model:current-width="currentPanelWidth"
     :min-width="min"
     :max-width="max"
-    v-model:current-width="currentPanelWidth"
     :from-right="true"
   />
 

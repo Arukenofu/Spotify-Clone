@@ -45,10 +45,16 @@ const emit = defineEmits<{
       type="range"
       :value="progress"
       @input="updateCurrentValue($event)"
+    >
+    <div
+      class="range-progress"
+      :style="`width: ${progress}%`"
     />
-    <div class="range-progress" :style="`width: ${progress}%`" />
 
-    <div class="thumb" :style="`left: ${progress - thumbFix}%`" />
+    <div
+      class="thumb"
+      :style="`left: ${progress - thumbFix}%`"
+    />
   </div>
 </template>
 

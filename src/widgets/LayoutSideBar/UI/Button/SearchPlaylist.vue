@@ -37,10 +37,10 @@ function onClickOutside() {
 <template>
   <div class="search-section">
     <RoundButton
-      class="searchButton"
       v-tooltip="'Искать в медиатеке'"
-      @click="handleToggle()"
       v-click-outside="onClickOutside"
+      class="searchButton"
+      @click="handleToggle()"
     >
       <SearchIcon class="searchIcon" />
     </RoundButton>
@@ -50,12 +50,12 @@ function onClickOutside() {
       v-model="model"
       :class="state && 'active'"
       placeholder="Искать в медиатеке"
-    />
+    >
 
     <CloseIconRound
-      @click="handleClose()"
       v-if="state && model.length"
       class="icon"
+      @click="handleClose()"
     />
   </div>
 </template>

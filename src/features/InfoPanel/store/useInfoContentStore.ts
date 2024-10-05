@@ -1,11 +1,13 @@
-import { computed, defineAsyncComponent, readonly, ref } from 'vue';
+import { computed, defineAsyncComponent, readonly } from 'vue';
 import { defineStore, storeToRefs } from 'pinia';
-import LoadingComponent from '@/features/InfoPanel/components/LoadingComponent.vue';
 import type { Component } from 'vue';
 import type { PanelsName } from '#imports';
+import useCachedRef from '@/shared/composables/useCachedRef';
 
 const useInfoStore = defineStore('useInfoContentStore', () => {
-  const currentPanelName = ref<string | null>(null);
+  const currentPanelName = useCachedRef<PanelsName | null>('currentPanelName', null, {
+    expectedTypes: ['string']
+  });
 
   const currentPanelNamePrivate = readonly(currentPanelName);
 
@@ -17,7 +19,8 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
     return defineAsyncComponent({
       loader: () =>
         import(`@/features/InfoPanel/Panels/${currentPanelName.value}.vue`),
-      loadingComponent: LoadingComponent
+      onError: () =>
+        currentPanelName.value = null,
     });
   });
 

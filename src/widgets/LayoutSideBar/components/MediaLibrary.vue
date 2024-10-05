@@ -45,8 +45,14 @@ const gridItemWidth = computed(() => {
   <div class="media-library">
     <MediaLibButton />
 
-    <ScrollableBlock class="block" :gap="isMinimized ? '0px' : '7px'">
-      <div class="controls" v-if="!isMinimized">
+    <ScrollableBlock
+      class="block"
+      :gap="isMinimized ? '0px' : '7px'"
+    >
+      <div
+        v-if="!isMinimized"
+        class="controls"
+      >
         <SearchPlaylist v-model="search" />
 
         <FormatButton
@@ -59,13 +65,16 @@ const gridItemWidth = computed(() => {
         />
       </div>
 
-      <div class="playlists" :class="playlistsComputedClasses">
+      <div
+        class="playlists"
+        :class="playlistsComputedClasses"
+      >
         <Component
           v-bind="props"
           :is="currentComponent"
-          :minimized="getCurrentWidth < 135 || isMinimized"
           v-for="a in 12"
           :key="a"
+          :minimized="getCurrentWidth < 135 || isMinimized"
         />
       </div>
     </ScrollableBlock>

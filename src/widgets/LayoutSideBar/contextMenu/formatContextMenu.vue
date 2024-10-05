@@ -61,8 +61,8 @@ const {
       :current="getCurrentWidth"
       :min="gridColumnMinWidth"
       :max="gridColumnMaxWidth"
-      @onValueChange="setCurrentWidth"
       style="margin: 9px 12px 12px"
+      @on-value-change="setCurrentWidth"
     />
   </BasicContextMenuView>
 </template>

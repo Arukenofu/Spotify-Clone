@@ -71,9 +71,9 @@ function setActiveFilterQuery(query: LocationQueryValue) {
 <template>
   <StickyHeader class="sticky-header">
     <BubbleButton
-      class="button"
       v-for="{ text, query } in filters"
       :key="text"
+      class="button"
       :design="setActiveFilterQuery(query)"
       @click="setFilterQuery(query)"
     >

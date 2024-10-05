@@ -1,43 +1,22 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
-import {
-  useCurrentMusicStore,
-  useMusicStore,
-  useMusicUtils
-} from '@/features/MediaPlayer';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import type { Music } from '@/shared/models/Music';
 
 const props = defineProps<{
   music: Music;
+  state: boolean;
 }>();
 
-const store = useMusicStore();
-const currentMusic = useCurrentMusicStore();
-const { isPlaying } = storeToRefs(store);
-
-const { toggleTrackPlaying, loadSong } = useMusicUtils();
-
-const isCurrent = computed(() => {
-  return currentMusic.currentAudioId === props.music.id;
-});
-
-function toggleMusic() {
-  if (isCurrent.value) {
-    toggleTrackPlaying();
-  } else {
-    loadSong(props.music);
-  }
-}
+defineEmits(['onImageBlockClick']);
 
 const playingStateTooltip = computed(() => {
   const musicName = props.music.name;
   const artists = getCommaSeparatedString(props.music.artists, 'name');
 
-  if (isCurrent.value && isPlaying.value) {
+  if (props.state) {
     return `Поставить на паузу то, что сейчас играет «${musicName}» (${artists})`;
   } else {
     return `Включить трек «${musicName}» исполнителя ${artists}`;
@@ -48,24 +27,33 @@ const playingStateTooltip = computed(() => {
 <template>
   <div class="musicBlock">
     <div
-      class="image-block"
-      @click="toggleMusic()"
       v-tooltip="playingStateTooltip"
+      class="image-block"
+      @click="$emit('onImageBlockClick')"
     >
-      <PlayingState :state="isCurrent && isPlaying" class="icon" />
+      <PlayingState
+        :state="state"
+        class="icon"
+      />
 
-      <div class="image" :style="`background-image: url('${music.avatar}')`" />
+      <div
+        class="image"
+        :style="`background-image: url('${music.avatar}')`"
+      />
     </div>
 
     <div class="text">
-      <div class="title" :style="getActiveColor(isCurrent, 'color')">
+      <div
+        class="title"
+        :style="getActiveColor(state, 'color')"
+      >
         {{ music.name }}
       </div>
       <div class="artists">
         <RouterLink
-          class="artist"
           v-for="(artist, index) in music.artists"
           :key="artist.id"
+          class="artist"
           :to="`/artist/${artist.url}`"
         >
           <span>

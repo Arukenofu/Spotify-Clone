@@ -15,7 +15,10 @@ const { setNewPanel } = useInfoContentStore();
     <div class="panel-options">
       <slot name="options" />
 
-      <RoundButton v-tooltip.bottom="'Закрыть'" @click="setNewPanel(null)">
+      <RoundButton
+        v-tooltip:end_top="'Закрыть'"
+        @click="setNewPanel(null)"
+      >
         <CloseIconRound class="icon" />
       </RoundButton>
     </div>
@@ -24,7 +27,7 @@ const { setNewPanel } = useInfoContentStore();
 
 <style lang="scss" scoped>
 .head {
-  height: 64px;
+  height: var(--info-panel-header-height);
   width: 100%;
   display: flex;
   align-items: center;
@@ -34,9 +37,13 @@ const { setNewPanel } = useInfoContentStore();
     font-size: 1rem;
     font-weight: 800;
   }
-
   .panel-options {
     margin-left: auto;
+  }
+  .icon {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-soft);
   }
 }
 </style>

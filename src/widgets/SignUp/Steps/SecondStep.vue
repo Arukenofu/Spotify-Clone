@@ -106,13 +106,19 @@ function validateCurrentStep() {
 <template>
   <form @submit.prevent="validateCurrentStep()">
     <div class="username">
-      <FormLabel margin="0 0 3px"> Название </FormLabel>
-      <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
+      <FormLabel margin="0 0 3px">
+        Название
+      </FormLabel>
+      <FormLabel
+        color="var(--text-soft)"
+        font-size=".85rem"
+        font-weight="600"
+      >
         Ваше имя появится в профиле.
       </FormLabel>
       <FormField
-        type="text"
         v-model="form.username"
+        type="text"
         :error="formErrors.username"
       >
         Укажите имя для своего профиля.
@@ -120,34 +126,46 @@ function validateCurrentStep() {
     </div>
 
     <div class="birthday">
-      <FormLabel margin="18px 0 0"> Дата рождения </FormLabel>
+      <FormLabel margin="18px 0 0">
+        Дата рождения
+      </FormLabel>
 
       <div class="inputs">
         <FormInput
+          v-model.number="form.day"
           class="day"
           type="text"
-          maxLength="2"
+          max-length="2"
           :only-number="true"
           placeholder="дд"
-          v-model.number="form.day"
         />
 
-        <FormSelect text="Месяц" class="month" v-model="form.month">
-          <option v-for="month in months" :key="month">
+        <FormSelect
+          v-model="form.month"
+          text="Месяц"
+          class="month"
+        >
+          <option
+            v-for="month in months"
+            :key="month"
+          >
             {{ month }}
           </option>
         </FormSelect>
 
         <FormInput
+          v-model.number="form.year"
           class="year"
-          maxLength="4"
+          max-length="4"
           :only-number="true"
           placeholder="гггг"
-          v-model.number="form.year"
         />
       </div>
 
-      <div class="errors" v-if="birthdayValidate.length">
+      <div
+        v-if="birthdayValidate.length"
+        class="errors"
+      >
         <FormError
           v-for="birthday in birthdayValidate"
           :key="birthday.message"
@@ -159,8 +177,14 @@ function validateCurrentStep() {
     </div>
 
     <div class="gender">
-      <FormLabel margin="4px 0 3px"> Пол </FormLabel>
-      <FormLabel color="var(--text-soft)" font-size=".85rem" font-weight="600">
+      <FormLabel margin="4px 0 3px">
+        Пол
+      </FormLabel>
+      <FormLabel
+        color="var(--text-soft)"
+        font-size=".85rem"
+        font-weight="600"
+      >
         Мы учитываем пол при подборе персональных рекомендаций и рекламы.
       </FormLabel>
 
@@ -168,19 +192,24 @@ function validateCurrentStep() {
         <FormRadio
           v-for="(gender, index) in genders"
           :key="index"
+          v-model="form.gender"
           :index="gender"
           :text="gender"
           name="gender"
-          v-model="form.gender"
         />
 
-        <FormError class="error" v-if="formErrors.gender">
+        <FormError
+          v-if="formErrors.gender"
+          class="error"
+        >
           Выберите свой пол.
         </FormError>
       </div>
     </div>
 
-    <FormButton class="button"> Далее </FormButton>
+    <FormButton class="button">
+      Далее
+    </FormButton>
   </form>
 </template>
 

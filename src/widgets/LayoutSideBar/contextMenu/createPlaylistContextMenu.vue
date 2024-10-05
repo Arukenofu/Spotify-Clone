@@ -10,7 +10,10 @@ import Folder from '@/UI/Icons/Shared/Folder.vue';
 
 <template>
   <BasicContextMenuView>
-    <BasicContextMenuItem :svg-icon="PlusMusic" text="Создать плейлист" />
+    <BasicContextMenuItem
+      :svg-icon="PlusMusic"
+      text="Создать плейлист"
+    />
     <BasicContextMenuItem
       :svg-icon="Folder"
       text="Создать папку с плейлистами"

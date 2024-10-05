@@ -4,9 +4,12 @@ const model = defineModel<boolean>();
 
 <template>
   <div class="checkbox">
-    <input type="checkbox" v-model="model" />
+    <input
+      v-model="model"
+      type="checkbox"
+    >
 
-    <div class="indicator"></div>
+    <div class="indicator" />
   </div>
 </template>
 

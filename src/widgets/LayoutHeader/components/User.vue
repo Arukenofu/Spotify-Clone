@@ -6,6 +6,11 @@ import UserProfileModal from '@/widgets/LayoutHeader/modals/UserProfileModal.vue
 
 <template>
   <RoundButton
+    v-tooltip:end_bottom="{
+      content: 'Бауыржан Алкенов',
+      distance: 5
+    }"
+    v-disable-child
     class="user-avatar"
     @click="
       showContextMenu($event, UserProfileModal, {
@@ -14,13 +19,12 @@ import UserProfileModal from '@/widgets/LayoutHeader/modals/UserProfileModal.vue
         inset: 0
       })
     "
-    v-tooltip.end_bottom="{
-      content: 'Бауыржан Алкенов',
-      distance: 5
-    }"
-    v-disable-child
   >
-    <div class="picture" :class="'no-picture'" data-char="Б"></div>
+    <div
+      class="picture"
+      :class="'no-picture'"
+      data-char="Б"
+    />
   </RoundButton>
 </template>
 

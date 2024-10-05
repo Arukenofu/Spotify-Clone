@@ -1,10 +1,16 @@
 <script setup lang="ts">
-const model = defineModel();
+const model = defineModel<boolean>();
 </script>
 
 <template>
-  <div class="checkbox" ref="input">
-    <input type="checkbox" v-model="model" />
+  <div
+    ref="input"
+    class="checkbox"
+  >
+    <input
+      v-model="model"
+      type="checkbox"
+    >
     <span class="indicator">
       <span class="thumb" />
     </span>

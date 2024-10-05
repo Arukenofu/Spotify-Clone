@@ -50,7 +50,7 @@ const routes = [
 .mobile-router {
   position: fixed;
   bottom: 0;
-  height: 72px;
+  height: var(--mobile-router-height);
   width: 100%;
   background-color: var(--black);
   display: grid;

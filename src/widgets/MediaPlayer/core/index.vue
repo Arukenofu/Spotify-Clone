@@ -14,7 +14,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="player" v-if="musicStore.audio">
+  <div
+    v-if="musicStore.audio"
+    class="player"
+  >
     <TrackDetails />
 
     <TrackControls />

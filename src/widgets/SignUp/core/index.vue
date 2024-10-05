@@ -16,7 +16,10 @@ const { step } = stepStore();
     <Logo class="logo" />
     <ZeroStep v-if="step === 0" />
 
-    <div v-else class="steps-wrapper">
+    <div
+      v-else
+      class="steps-wrapper"
+    >
       <StepProgressBar />
 
       <StepIndicator />

@@ -2,17 +2,26 @@
 
 <template>
   <div class="layout">
-    <h1 class="title">Всё остальное</h1>
+    <h1 class="title">
+      Всё остальное
+    </h1>
 
     <div class="cards">
-      <RouterLink class="card" v-for="a in 20" :key="a" :to="`/genre/${a}`">
-        <div class="name">Музыка</div>
+      <RouterLink
+        v-for="a in 20"
+        :key="a"
+        class="card"
+        :to="`/genre/${a}`"
+      >
+        <div class="name">
+          Музыка
+        </div>
 
         <img
           class="image"
           src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
           alt="img"
-        />
+        >
       </RouterLink>
     </div>
   </div>
@@ -21,8 +30,32 @@
 <style lang="scss" scoped>
 .layout {
   padding: 0 var(--content-spacing);
+  --min-column-width: 300px;
+
+  @media screen and (max-width: 768px) {
+    --min-column-width: 150px;
+
+    .title {
+      font-size: 1.2rem !important;
+    }
+
+    .cards {
+      grid-gap: 15px !important;
+
+      .card {
+        border-radius: 5px !important;
+        aspect-ratio: 2/1.1 !important;
+
+        .name {
+          font-size: 1.05rem !important;
+          padding: 14px !important;
+        }
+      }
+    }
+  }
 
   .title {
+    font-size: 1.5rem;
     margin-top: 24px;
     margin-bottom: 24px;
     font-weight: 900;
@@ -33,7 +66,7 @@
     display: grid;
     grid-gap: 24px;
     grid-auto-rows: min-content;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
 
     .card {
       display: block;

@@ -9,8 +9,7 @@ setTitle('Spotify — Поиск');
 const route = useRoute('/search');
 const queries = ref(route.query || null);
 
-watch(
-  () => route.query,
+watch(() => route.query,
   (value) => {
     queries.value = value;
   }
@@ -25,7 +24,10 @@ watch(
     />
 
     <NoQuery v-if="!queries.q" />
-    <WithQuery :queries="queries" v-else />
+    <WithQuery
+      v-else
+      :queries="queries"
+    />
   </section>
 </template>
 

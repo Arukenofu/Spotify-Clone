@@ -10,8 +10,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier .  --write"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "ofetch": "^1.4.0",
@@ -20,18 +19,15 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.10.4",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^22.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@vitejs/plugin-vue": "^5.1.4",
-    "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-vue": "^9.27.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^9.28.0",
     "npm-run-all2": "^6.2.2",
-    "prettier": "3.3.3",
     "sass": "^1.79.3",
     "sass-loader": "^16.0.2",
     "typescript": "~5.6.2",

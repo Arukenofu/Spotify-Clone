@@ -56,35 +56,52 @@ async function loginToAccount() {
     <form @submit.prevent="loginToAccount()">
       <Logo class="logo" />
       <h1>Войти в Spotify</h1>
-      <div class="errorField" v-if="error">
+      <div
+        v-if="error"
+        class="errorField"
+      >
         <ErrorIcon class="icon" />
         Неправильное имя пользователя или пароль.
       </div>
       <div class="inputs">
-        <FormLabel margin="16px 0 6px" font-size=".85rem">
+        <FormLabel
+          margin="16px 0 6px"
+          font-size=".85rem"
+        >
           Электронная почта или имя пользователя
         </FormLabel>
         <FormInput
+          v-model="form.email"
           placeholder="Электронная почта или имя пользователя"
           class="input"
-          v-model="form.email"
           :error="fieldErrors.email"
           @input="fieldErrors.email = false"
         />
-        <FormError v-if="fieldErrors.email" class="formError">
+        <FormError
+          v-if="fieldErrors.email"
+          class="formError"
+        >
           Введите имя пользователя или адрес электронной почты из аккаунта
           Spotify.
         </FormError>
-        <FormLabel margin="16px 0 6px" font-size=".85rem"> Пароль </FormLabel>
+        <FormLabel
+          margin="16px 0 6px"
+          font-size=".85rem"
+        >
+          Пароль
+        </FormLabel>
         <FormInput
+          v-model="form.password"
           placeholder="Пароль"
           class="input"
-          v-model="form.password"
           :error="fieldErrors.password"
-          @input="fieldErrors.password = false"
           type="password"
+          @input="fieldErrors.password = false"
         />
-        <FormError v-if="fieldErrors.password" class="formError">
+        <FormError
+          v-if="fieldErrors.password"
+          class="formError"
+        >
           Введите пароль вашего аккаунта Spotify.
         </FormError>
       </div>
@@ -95,11 +112,15 @@ async function loginToAccount() {
         />
         <span> Запомнить меня </span>
       </div>
-      <FormButton class="button"> Войти </FormButton>
-      <hr />
+      <FormButton class="button">
+        Войти
+      </FormButton>
+      <hr>
       <div class="noAccount">
         Нет аккаунта?
-        <RouterLink to="/signup">Регистрация в Spotify</RouterLink>
+        <RouterLink to="/signup">
+          Регистрация в Spotify
+        </RouterLink>
       </div>
     </form>
   </main>

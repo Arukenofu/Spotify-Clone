@@ -62,7 +62,10 @@ const comparisons = [
 </script>
 
 <template>
-  <StickyHeader class="header" :style="`opacity: ${computeOpacity}`" />
+  <StickyHeader
+    class="header"
+    :style="`opacity: ${computeOpacity}`"
+  />
   <div class="main">
     <div class="gradient-header">
       <div class="gradient-header-inner">
@@ -80,7 +83,7 @@ const comparisons = [
         <span>
           Только Индивидуальная подписка Spotify Premium. Бесплатно 3 месяца,
           затем 4,99$ в месяц. Только для новых подписчиков. Действуют
-          <a>Условия</a>. <br />
+          <a>Условия</a>. <br>
           Акция заканчивается 17 сентября 2024г.
         </span>
       </div>
@@ -99,9 +102,14 @@ const comparisons = [
       <h2>Все Premium-подписки включают:</h2>
 
       <ul>
-        <li v-for="benefit in benefits" :key="benefit">
+        <li
+          v-for="benefit in benefits"
+          :key="benefit"
+        >
           <CheckIcon class="check" />
-          <div class="text">{{ benefit }}</div>
+          <div class="text">
+            {{ benefit }}
+          </div>
         </li>
       </ul>
     </section>
@@ -122,10 +130,12 @@ const comparisons = [
       <table>
         <thead>
           <tr>
-            <th class="what-you-get">Что вы получите</th>
+            <th class="what-you-get">
+              Что вы получите
+            </th>
             <th class="free-version">
               <div class="inner">
-                Бесплатная <br />
+                Бесплатная <br>
                 версия Spotify
               </div>
             </th>
@@ -140,13 +150,19 @@ const comparisons = [
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(comparison, index) in comparisons" :key="index">
+          <tr
+            v-for="(comparison, index) in comparisons"
+            :key="index"
+          >
             <td>
               <span>
                 {{ comparison.text }}
               </span>
 
-              <div class="bubble" v-html="comparison.bubble" />
+              <div
+                class="bubble"
+                v-html="comparison.bubble"
+              />
             </td>
             <td>—</td>
             <td>

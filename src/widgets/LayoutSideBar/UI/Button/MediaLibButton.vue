@@ -35,37 +35,36 @@ function toggleWidth() {
     currentWidth.value = max;
   }
 }
+
+const tooltipArguments = computed(() => {
+  return isMinimized.value ? 'right_center' : 'center_top';
+});
 </script>
 
 <template>
   <div class="medialib">
     <button
-      v-if="isMinimized"
-      class="toggle"
-      @click="toggleSidebar()"
-      v-tooltip.right_center="
+      v-tooltip:[tooltipArguments]="
         isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'
       "
+      class="toggle"
+      @click="toggleSidebar()"
     >
       <LibraryIcon class="icon" />
+
+      <span
+        v-if="!isMinimized"
+        class="text"
+      > Моя медиатека </span>
     </button>
 
-    <button
-      v-else
-      class="toggle"
-      @click="toggleSidebar()"
-      v-tooltip="
-        isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'
-      "
+    <div
+      v-if="!isMinimized"
+      class="other-controls"
     >
-      <LibraryIcon :state="true" class="icon" />
-      <span class="text"> Моя медиатека </span>
-    </button>
-
-    <div class="other-controls" v-if="!isMinimized">
       <RoundButton
-        class="createPlaylist"
         v-tooltip="'Создать плейлист или папку'"
+        class="createPlaylist"
         @click="
           showContextMenu($event, createPlaylistContextMenu, {
             design: 'minimal',
@@ -78,11 +77,14 @@ function toggleWidth() {
       </RoundButton>
 
       <RoundButton
-        class="toggleWidth"
         v-tooltip="currentWidth < 450 ? 'Развернуть' : 'Свернуть'"
+        class="toggleWidth"
         @click="toggleWidth()"
       >
-        <ArrowIcon class="icon" :direction="widthArrowDirection" />
+        <ArrowIcon
+          class="icon"
+          :direction="widthArrowDirection"
+        />
       </RoundButton>
     </div>
   </div>

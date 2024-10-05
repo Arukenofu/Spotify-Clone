@@ -10,8 +10,15 @@ defineProps<Props>();
 </script>
 
 <template>
-  <button class="link" :class="active && 'active'">
-    <Component :is="component" class="icon" :state="active" />
+  <button
+    class="link"
+    :class="active && 'active'"
+  >
+    <Component
+      :is="component"
+      class="icon"
+      :state="active"
+    />
     <span class="text"><slot /></span>
   </button>
 </template>

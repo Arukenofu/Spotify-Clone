@@ -6,12 +6,14 @@ interface Props {
   is?: Component | string;
   gap?: string;
   scrollbarWidth?: string;
+  allowStyleShadow?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   is: 'div',
   gap: '15px',
-  scrollbarWidth: '12px'
+  scrollbarWidth: '12px',
+  allowStyleShadow: true
 });
 
 const isScrolled = ref<boolean>(false);
@@ -105,15 +107,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <Component :is="is" class="scrollable-block" ref="block">
+  <Component
+    :is="is"
+    ref="block"
+    class="scrollable-block"
+  >
     <div
-      class="scrollable-content"
       ref="content"
-      :class="isScrolled && 'scrolled'"
+      class="scrollable-content"
+      :class="isScrolled && allowStyleShadow && 'scrolled'"
+      :style="`padding: 0 ${gap}`"
     >
-      <slot></slot>
+      <slot />
     </div>
-    <div class="scrollbar" ref="scrollbar"></div>
+    <div
+      ref="scrollbar"
+      class="scrollbar"
+    />
   </Component>
 </template>
 

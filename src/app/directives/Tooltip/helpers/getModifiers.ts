@@ -2,7 +2,7 @@ import type { HorizontalAxis, VerticalAxis } from '../types/Axes';
 import type { Bindings } from '@/app/directives/Tooltip/types/BindingTypes';
 
 export default function (
-  value: Bindings['modifiers']
+  value: Bindings['arg']
 ): [HorizontalAxis, VerticalAxis] {
-  return Object.keys(value)[0]?.split('_') as [HorizontalAxis, VerticalAxis];
+  return value?.split('_') as [HorizontalAxis, VerticalAxis];
 }

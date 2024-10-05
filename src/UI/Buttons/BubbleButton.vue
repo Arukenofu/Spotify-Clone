@@ -10,7 +10,10 @@ withDefaults(
 </script>
 
 <template>
-  <button class="bubble-button" :class="design">
+  <button
+    class="bubble-button"
+    :class="design"
+  >
     <slot />
   </button>
 </template>

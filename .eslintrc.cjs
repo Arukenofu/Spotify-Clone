@@ -1,20 +1,19 @@
-/* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution');
-
 module.exports = {
-  root: true,
+  env: {
+    node: true
+  },
   extends: [
     'plugin:vue/vue3-essential',
-    'eslint:recommended',
     '@vue/eslint-config-typescript',
-    '@vue/eslint-config-prettier'
+    'eslint:recommended',
+    'plugin:vue/vue3-recommended'
   ],
-  parserOptions: {
-    ecmaVersion: 'latest'
-  },
   rules: {
+    'vue/mustache-interpolation-spacing': 0,
+    'vue/require-default-prop': 0,
     'vue/multi-word-component-names': 0,
     'vue/valid-template-root': 0,
-    'prettier/prettier': ['error', { singleQuote: true, trailingComma: 'none' }]
+    'vue/no-v-html': 0,
+    'vue/singleline-html-element-content-newline': 0
   }
 };

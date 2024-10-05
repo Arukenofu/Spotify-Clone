@@ -12,6 +12,8 @@ import { storeToRefs } from 'pinia';
 import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
 import { useMusicStore } from '@/features/MediaPlayer';
 import { infoPanel } from '@/features/InfoPanel';
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
+import { router } from '@/app/router';
 
 const musicStore = useMusicStore();
 const { audio } = storeToRefs(musicStore);
@@ -50,35 +52,58 @@ function toggleVolume() {
   volume.value = 0;
   audio.value!.volume = 0;
 }
+
+const { currentRoutePath } = useCurrentRoutePath('path');
+
+function toggleLyricsPage() {
+  if (currentRoutePath.value !== '/lyrics') {
+    router.push('/lyrics');
+  } else {
+    router.back();
+  }
+}
 </script>
 
 <template>
   <div class="additional-controls">
     <div class="options">
-      <NowPlaying class="icon" v-tooltip="'Экран «Сейчас играет»'" />
-
-      <ShowText class="icon" v-tooltip="'Текст'" />
-
-      <ShowQueue
-        :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
-        @click="setNewPanel('CurrentPlaylistQueue')"
+      <NowPlaying
+        v-tooltip="'Экран «Сейчас играет»'"
         class="icon"
-        v-tooltip="'Очередь'"
       />
 
-      <ConnectToDevice class="icon" v-tooltip="'Подключиться к устройству'" />
+      <ShowText
+        v-tooltip="'Текст'"
+        class="icon"
+        :class="currentRoutePath === '/lyrics' && 'active'"
+        @click="toggleLyricsPage"
+      />
+
+      <ShowQueue
+        v-tooltip="'Очередь'"
+        :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
+        class="icon"
+        @click="setNewPanel('CurrentPlaylistQueue')"
+      />
+
+      <ConnectToDevice
+        v-tooltip="'Подключиться к устройству'"
+        :class="currentPanelName === 'ConnectToDevice' && 'active'"
+        class="icon"
+        @click="setNewPanel('ConnectToDevice')"
+      />
 
       <div class="volume-option">
         <Volume
           v-if="volume !== 0"
-          class="icon"
           v-tooltip="'Выключить звук'"
+          class="icon"
           @click="toggleVolume()"
         />
         <VolumeSilent
           v-else
-          class="icon"
           v-tooltip="'Включить звук'"
+          class="icon"
           @click="toggleVolume()"
         />
 
@@ -88,11 +113,14 @@ function toggleVolume() {
           :thumb-fix="6"
           :current="volume!"
           :step="0.01"
-          @onValueChange="volumeUpdate"
+          @on-value-change="volumeUpdate"
         />
       </div>
 
-      <FullScreen class="icon" v-tooltip.end_top="'На весь экран'" />
+      <FullScreen
+        v-tooltip:end_top="'На весь экран'"
+        class="icon"
+      />
     </div>
   </div>
 </template>

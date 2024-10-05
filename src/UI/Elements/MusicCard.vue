@@ -20,23 +20,36 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="card" @click="routerPushPrevent(`/${type}/${to}`)">
-    <div class="image" :style="type === 'artist' && 'border-radius: 50%'">
-      <img v-if="image" :src="image" :alt="name" />
+  <div
+    class="card"
+    @click="routerPushPrevent(`/${type}/${to}`)"
+  >
+    <div
+      class="image"
+      :style="type === 'artist' && 'border-radius: 50%'"
+    >
+      <img
+        v-if="image"
+        :src="image"
+        :alt="name"
+      >
       <NoMusicOrPlaylistAvatar
         v-else-if="type === 'playlist'"
         class="noImage"
       />
 
-      <NoUserAvatar class="noImage" v-else />
+      <NoUserAvatar
+        v-else
+        class="noImage"
+      />
 
       <GreenPlayingButton
-        class="playingState"
         v-if="type !== 'user'"
+        v-tooltip="`Слушать плейлист «${name}»`"
+        class="playingState"
+        :state="false"
         @click.stop
         @mousedown.prevent
-        v-tooltip="`Слушать плейлист «${name}»`"
-        :state="false"
       />
     </div>
 

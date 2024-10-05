@@ -42,10 +42,17 @@ function toggleMusic() {
 
 <template>
   <div class="best-result">
-    <div class="title">Лучший результат</div>
+    <div class="title">
+      Лучший результат
+    </div>
     <div class="card">
       <div class="image-outer">
-        <img :src="image" alt="Music Image" width="92px" height="92px" />
+        <img
+          :src="image"
+          alt="Music Image"
+          width="92px"
+          height="92px"
+        >
       </div>
       <div class="card-title">
         {{ name }}
@@ -60,10 +67,10 @@ function toggleMusic() {
       </div>
 
       <GreenPlayingButton
-        @click="toggleMusic()"
         v-if="type !== 'Пользователь'"
         class="playingState"
         :state="isCurrent && isPlaying"
+        @click="toggleMusic()"
       />
     </div>
   </div>

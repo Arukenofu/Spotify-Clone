@@ -34,17 +34,19 @@ function validateCurrentStep() {
       <FormLabel>Электронная почта</FormLabel>
 
       <FormField
+        v-model="currentForm.email"
         class="input"
         type="text"
         placeholder="example@domain.com"
-        v-model="currentForm.email"
         :error="isValidationError"
       >
-        Адрес электронной почты недействителен. <br />
+        Адрес электронной почты недействителен. <br>
         Убедитесь, что он указан в таком формате: example@email.com.
       </FormField>
 
-      <FormButton class="button"> Далее </FormButton>
+      <FormButton class="button">
+        Далее
+      </FormButton>
     </form>
   </div>
 </template>

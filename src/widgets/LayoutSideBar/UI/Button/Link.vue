@@ -10,9 +10,18 @@ defineProps<{
 
 <template>
   <li>
-    <RouterLink :to="to" active-class="active">
-      <Component :is="icon" class="icon" />
-      <span class="text" v-if="!isMinimized">
+    <RouterLink
+      :to="to"
+      active-class="active"
+    >
+      <Component
+        :is="icon"
+        class="icon"
+      />
+      <span
+        v-if="!isMinimized"
+        class="text"
+      >
         <slot />
       </span>
     </RouterLink>

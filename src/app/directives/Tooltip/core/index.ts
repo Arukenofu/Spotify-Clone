@@ -24,7 +24,7 @@ function createDirectiveApplication() {
   });
 
   directiveApp = createApp({
-    name: 'v-tooltip-directive-app',
+    name: 'VTooltipDirectiveApp',
     setup() {
       return {
         isShown,
@@ -54,11 +54,11 @@ function createDirectiveApplication() {
 function setTooltipParent(
   el: HTMLElementWithProps,
   value: BindingValues,
-  modifiers: Bindings['modifiers']
+  arg: Bindings['arg']
 ) {
   createDirectiveApplication();
 
-  el.tooltipProps = getOptions(el, value, modifiers);
+  el.tooltipProps = getOptions(el, value, arg);
 
   el.addEventListener('mouseover', () => {
     onMouseOver(el, isShown, props);
@@ -69,18 +69,22 @@ function setTooltipParent(
 }
 
 export function bind(el: HTMLElementWithProps, binding: Bindings) {
-  const { value, modifiers } = binding;
+  const { value, arg } = binding;
 
-  const options = getOptions(el, value, modifiers);
+  const options = getOptions(el, value, arg);
   if (!options.content) {
     destroyTooltip(el);
     return;
   }
 
-  setTooltipParent(el, value, modifiers);
+  setTooltipParent(el, value, arg);
 }
 
 export function destroyTooltip(el: HTMLElementWithProps) {
+  props.value = {
+    content: null
+  };
+  isShown.value = false;
   el.removeEventListener('mouseover', () => {
     onMouseOver(el, isShown, props);
   });

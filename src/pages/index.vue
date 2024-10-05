@@ -97,36 +97,39 @@ function getGreeting() {
       class="header"
     >
       <button
+        :class="currentRoutePath !== '/' && 'inactive'"
         @click="
           $router.push('');
           setColor(null);
         "
-        :class="currentRoutePath !== '/' && 'inactive'"
       >
         Все
       </button>
 
       <button
+        :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
         @click="
           $router.push('/?facet=music-chip');
           setColor(null);
         "
-        :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
       >
         Музыка
       </button>
     </StickyHeader>
-    <BackgroundNoise :currentColor="currentColor" />
+    <BackgroundNoise :current-color="currentColor" />
   </template>
 
   <section class="container">
-    <section class="recommended-albums" v-if="!isMobile">
+    <section
+      v-if="!isMobile"
+      class="recommended-albums"
+    >
       <div class="albums-wrap">
         <RecommendedAlbum
-          class="album"
           v-for="rec in recommendations"
-          :key="rec.id"
           :id="rec.id"
+          :key="rec.id"
+          class="album"
           :album-name="rec.name"
           :avatar="rec.avatar"
           :href="rec.href"
@@ -135,33 +138,42 @@ function getGreeting() {
       </div>
     </section>
 
-    <section class="greetings" v-else>
+    <section
+      v-else
+      class="greetings"
+    >
       <h1>{{ getGreeting() }}</h1>
     </section>
 
-    <RecommendationSection class="for-you" href="/section/1">
+    <RecommendationSection
+      class="for-you"
+      href="/section/1"
+    >
       <MusicCard
+        v-for="a in 10"
+        :key="a"
         :album-id="1"
         to="/hello"
         type="playlist"
         name="Only for you"
         :show-name="false"
-        v-for="a in 10"
-        :key="a"
       >
         Новые треки и редкие композиции в еженедельном миксе специально для
         тебя. Лови обновление каждый понедельник.
       </MusicCard>
     </RecommendationSection>
 
-    <RecommendationSection naming="Популярные исполнители" href="/asdasdas">
+    <RecommendationSection
+      naming="Популярные исполнители"
+      href="/asdasdas"
+    >
       <MusicCard
+        v-for="a in 10"
+        :key="a"
         :album-id="1"
         name="The Weekend"
         to="/artistName"
         type="artist"
-        v-for="a in 10"
-        :key="a"
       >
         Исполнитель
       </MusicCard>
@@ -173,12 +185,12 @@ function getGreeting() {
       href="/liked"
     >
       <MusicCard
+        v-for="a in 10"
+        :key="a"
         :album-id="1"
         :show-name="false"
         name="Music"
         to="/musicName"
-        v-for="a in 10"
-        :key="a"
       >
         The greatest indie love songs of all time.
       </MusicCard>

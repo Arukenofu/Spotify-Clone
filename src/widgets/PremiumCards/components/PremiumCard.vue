@@ -7,7 +7,10 @@ defineProps<PremiumPlanProps>();
 
 <template>
   <div class="card">
-    <div class="topSide" v-if="topSideText">
+    <div
+      v-if="topSideText"
+      class="topSide"
+    >
       {{ topSideText }}
     </div>
 
@@ -20,19 +23,29 @@ defineProps<PremiumPlanProps>();
       <h3>{{ name }}</h3>
 
       <template v-if="typeof additionalConditions === 'object'">
-        <p class="c-head">{{ additionalConditions.head }}</p>
-        <p class="c-tail">{{ additionalConditions.tail }}</p>
+        <p class="c-head">
+          {{ additionalConditions.head }}
+        </p>
+        <p class="c-tail">
+          {{ additionalConditions.tail }}
+        </p>
       </template>
 
-      <p class="price" v-else>
+      <p
+        v-else
+        class="price"
+      >
         {{ additionalConditions }}
       </p>
 
-      <hr />
+      <hr>
     </div>
 
     <ul>
-      <li v-for="benefit in benefits" :key="benefit">
+      <li
+        v-for="benefit in benefits"
+        :key="benefit"
+      >
         {{ benefit }}
       </li>
     </ul>
@@ -41,7 +54,10 @@ defineProps<PremiumPlanProps>();
       {{ buttonText }}
     </button>
 
-    <div class="about" v-html="about" />
+    <div
+      class="about"
+      v-html="about"
+    />
   </div>
 </template>
 

@@ -24,19 +24,34 @@ const computedClasses = computed(() => {
 </script>
 
 <template>
-  <button v-bind="$attrs" :class="computedClasses">
+  <button
+    v-bind="$attrs"
+    :class="computedClasses"
+  >
     <span class="block">
-      <Component class="icon" :is="svgIcon" />
+      <Component
+        :is="svgIcon"
+        class="icon"
+      />
       <span class="text">
         {{ text }}
       </span>
     </span>
 
-    <span class="additionalSvg" v-if="additionalSVG">
-      <Component class="icon" :is="additionalSVG" />
+    <span
+      v-if="additionalSVG"
+      class="additionalSvg"
+    >
+      <Component
+        :is="additionalSVG"
+        class="icon"
+      />
     </span>
 
-    <Index v-if="subTree" v-bind="subTree" />
+    <Index
+      v-if="subTree"
+      v-bind="subTree"
+    />
   </button>
 </template>
 

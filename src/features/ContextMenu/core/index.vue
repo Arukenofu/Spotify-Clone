@@ -7,10 +7,10 @@ const { core, getCurrentComponent, isActive, closeContextMenu } =
 
 <template>
   <div
-    ref="core"
     v-if="isActive"
-    class="context-menu"
+    ref="core"
     v-click-outside="closeContextMenu"
+    class="context-menu"
   >
     <ul>
       <Component :is="getCurrentComponent" />

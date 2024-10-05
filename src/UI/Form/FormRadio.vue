@@ -9,10 +9,18 @@ const model = defineModel<string | null>();
 </script>
 
 <template>
-  <div class="radio" @click="model = index">
-    <input :id="index" v-bind="$attrs" type="radio" :name="name" />
+  <div
+    class="radio"
+    @click="model = index"
+  >
+    <input
+      :id="index"
+      v-bind="$attrs"
+      type="radio"
+      :name="name"
+    >
     <label :for="index">
-      <span class="indicator"> </span>
+      <span class="indicator" />
 
       <span class="text">
         {{ text }}

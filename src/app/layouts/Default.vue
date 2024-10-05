@@ -5,7 +5,7 @@ import { LayoutSideBar } from '@/widgets/LayoutSideBar';
 import { LayoutInfoContent } from '@/widgets/LayoutInfoPanel';
 import { LayoutHeader } from '@/widgets/LayoutHeader';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import { computed, provide, ref } from 'vue';
+import { provide, ref, watchEffect } from 'vue';
 import type { Ref } from 'vue';
 import { router } from '@/app/router';
 import useResponsive from '@/shared/composables/useResponsive';
@@ -28,10 +28,18 @@ router.beforeEach(() => {
 
 const { isMobile } = useResponsive();
 
-const playerHeight = computed(() => {
-  return isMobile.value
-    ? 'calc(100dvh - var(--player-height))'
-    : 'calc(100dvh - var(--player-height) - 72px)';
+watchEffect(() => {
+  function setStyleVar(property: string, value: string) {
+    document.documentElement.style.setProperty(property, value);
+  }
+
+  if (isMobile.value) {
+    setStyleVar('--content-height', 'calc(100dvh - var(--mobile-router-height))');
+    setStyleVar('--layout-gap', '0px');
+  } else {
+    setStyleVar('--content-height', 'calc(100dvh - var(--player-height) - 72px)');
+    setStyleVar('--layout-gap', '8px');
+  }
 });
 </script>
 
@@ -39,15 +47,18 @@ const playerHeight = computed(() => {
   <div class="root">
     <LayoutHeader v-if="!isMobile" />
 
-    <div class="main" :style="`height: ${playerHeight}`">
+    <div
+      class="main"
+    >
       <LayoutSideBar v-if="!isMobile" />
 
       <ScrollableBlock
         is="main"
-        gap="0"
-        :scrollbar-width="isMobile ? '5px' : '12px'"
         ref="layout"
         v-model="layoutScrollY"
+        gap="0"
+        :scrollbar-width="isMobile ? '5px' : '12px'"
+        :allow-style-shadow="false"
       >
         <div class="content">
           <Suspense>
@@ -73,6 +84,7 @@ const playerHeight = computed(() => {
   background-color: var(--black);
 
   .main {
+    height: var(--content-height);
     min-height: 400px;
     display: flex;
 
@@ -92,6 +104,7 @@ const playerHeight = computed(() => {
     }
 
     .content {
+      height: 100%;
       position: relative;
       z-index: 1 !important;
     }

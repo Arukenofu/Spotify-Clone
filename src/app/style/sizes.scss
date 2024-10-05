@@ -5,21 +5,10 @@
   --sidebar-width: 0px;
   --panel-width: 0px;
 
-  --content-spacing: clamp(
-    16px,
-    calc(
-      16px +
-        (
-          (100vw - var(--sidebar-width, 0px) - var(--panel-width, 0px) - 600px) /
-            424
-        ) * 8
-    ),
-    24px
-  );
-}
+  --info-panel-header-height: 64px;
 
-@media screen and (max-width: 768px) {
-  :root {
-    --layout-gap: 0 !important;
-  }
+  --content-spacing: clamp(16px, calc(16px + ((100vw - var(--sidebar-width, 0px) - var(--panel-width, 0px) - 600px) / 424) * 8), 24px);
+  --content-height: calc(100dvh - var(--player-height) - 72px);
+
+  --mobile-router-height: 72px;
 }

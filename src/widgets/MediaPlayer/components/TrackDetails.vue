@@ -9,7 +9,10 @@ const { currentAudioData } = storeToRefs(store);
 <template>
   <div class="track-details">
     <div class="track-image-outer">
-      <img :src="currentAudioData.avatar" alt="" />
+      <img
+        :src="currentAudioData.avatar"
+        alt=""
+      >
     </div>
 
     <div class="track-text-info">
@@ -26,8 +29,8 @@ const { currentAudioData } = storeToRefs(store);
           <span>
             {{ artist.name }}
           </span>
-          <template v-if="index !== currentAudioData.artists.length - 1"
-            >,
+          <template v-if="index !== currentAudioData.artists.length - 1">
+            ,
           </template>
         </RouterLink>
       </div>

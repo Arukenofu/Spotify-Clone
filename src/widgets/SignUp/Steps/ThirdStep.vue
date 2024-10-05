@@ -45,9 +45,9 @@ async function validateWholeForm() {
 <template>
   <form @submit.prevent="validateWholeForm()">
     <div
-      class="term"
       v-for="term in terms"
       :key="term.text"
+      class="term"
       @click="term.checked = !term.checked"
     >
       <div class="check">
@@ -58,11 +58,16 @@ async function validateWholeForm() {
       </div>
     </div>
 
-    <FormError class="error" v-if="isError">
+    <FormError
+      v-if="isError"
+      class="error"
+    >
       Чтобы продолжить, примите Условия использования.
     </FormError>
 
-    <FormButton class="button"> Зарегистрироваться </FormButton>
+    <FormButton class="button">
+      Зарегистрироваться
+    </FormButton>
   </form>
 </template>
 

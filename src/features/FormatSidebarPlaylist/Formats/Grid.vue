@@ -17,18 +17,27 @@ defineProps<GridFormatProps>();
     :class="!minimized && 'unminimized'"
   >
     <div class="picture">
-      <div class="image" v-if="image" />
-      <NoMusicOrPlaylistAvatar class="icon" v-else />
+      <div
+        v-if="image"
+        class="image"
+      />
+      <NoMusicOrPlaylistAvatar
+        v-else
+        class="icon"
+      />
 
       <GreenPlayingButton
         v-if="!minimized && type !== 'Папка'"
+        v-tooltip="`Слушать плейлист «${name}»`"
         :state="false"
         class="stateButton"
-        v-tooltip="`Слушать плейлист «${name}»`"
       />
     </div>
 
-    <div class="text" v-if="!minimized">
+    <div
+      v-if="!minimized"
+      class="text"
+    >
       <span class="name">{{ name }}</span>
       <span class="info">{{ type }} • {{ owner }}</span>
     </div>

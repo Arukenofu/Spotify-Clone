@@ -46,28 +46,31 @@ watch(inputValue, () => {
 </script>
 
 <template>
-  <div class="searchSection" @click="onSearchClick()">
+  <div
+    class="searchSection"
+    @click="onSearchClick()"
+  >
     <input
-      @keyup="onSearchClick()"
-      type="text"
-      placeholder="Что хочешь включить?"
       ref="input"
       v-model="inputValue"
-    />
+      type="text"
+      placeholder="Что хочешь включить?"
+      @keyup="onSearchClick()"
+    >
     <div class="icon-container-search">
       <SearchIcon class="icon" />
     </div>
 
     <div
-      class="icon-container-box"
-      v-tooltip.center_bottom="{
+      v-if="!inputValue?.length"
+      v-tooltip:center_bottom="{
         content: 'Обзор',
         distance: 5,
         style: {
           marginLeft: '6px'
         }
       }"
-      v-if="!inputValue?.length"
+      class="icon-container-box"
     >
       <SearchReviewIcon
         :style="currentRoutePath === '/search' && 'fill: var(--white)'"
@@ -77,10 +80,10 @@ watch(inputValue, () => {
     </div>
 
     <div
-      class="icon-container-delete"
-      v-tooltip.bottom="'Очистить строку поиска'"
-      @click="inputValue = ''"
       v-else
+      v-tooltip:bottom="'Очистить строку поиска'"
+      class="icon-container-delete"
+      @click="inputValue = ''"
     >
       <CloseIcon class="icon" />
     </div>

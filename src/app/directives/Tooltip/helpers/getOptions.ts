@@ -6,7 +6,7 @@ import type { HTMLElementWithProps } from '@/app/directives/Tooltip/types/HTMLEl
 export default function (
   el: HTMLElementWithProps,
   value: BindingValues,
-  modifiers: Bindings['modifiers']
+  arg: Bindings['arg']
 ) {
   let options: TooltipProps;
 
@@ -22,7 +22,7 @@ export default function (
     };
   }
 
-  options.placement = getModifiers(modifiers);
+  options.placement = getModifiers(arg);
   options.parent = el;
 
   return options;

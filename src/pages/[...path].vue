@@ -11,12 +11,14 @@ setTitle('Страница не найдена');
         <img
           src="https://open.spotifycdn.com/cdn/images/error-page-logo.24aca703.svg"
           alt="logo"
-        />
+        >
       </div>
       <h1>Страница не найдена</h1>
       <p>Мы не нашли нужную страницу</p>
 
-      <RouterLink to="/"> Главная </RouterLink>
+      <RouterLink to="/">
+        Главная
+      </RouterLink>
     </div>
   </div>
 </template>

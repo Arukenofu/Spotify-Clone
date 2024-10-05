@@ -19,11 +19,14 @@ const { currentRoutePath } = useCurrentRoutePath('path');
 
     <div class="left-side">
       <RoundButton
+        v-tooltip:center_bottom="'Главная'"
         class="homeButton"
         @click="$router.push('/')"
-        v-tooltip.center_bottom="'Главная'"
       >
-        <HomeIcon class="icon" :state="currentRoutePath === '/'" />
+        <HomeIcon
+          class="icon"
+          :state="currentRoutePath === '/'"
+        />
       </RoundButton>
 
       <Search />
@@ -31,22 +34,25 @@ const { currentRoutePath } = useCurrentRoutePath('path');
 
     <div class="right-side">
       <button
+        v-if="currentRoutePath !== '/search'"
         class="premium-button"
         @click="$router.push('/premium')"
-        v-if="currentRoutePath !== '/search'"
       >
         Узнать больше о Premium
       </button>
 
-      <button class="desktop-app-button" @click="$router.push('/download')">
+      <button
+        class="desktop-app-button"
+        @click="$router.push('/download')"
+      >
         <DownloadIcon class="icon" />
         <span> Установить приложение </span>
       </button>
 
       <div
+        v-tooltip:center_bottom="'Что нового'"
         class="notification"
         @click="$router.push('/content-feed')"
-        v-tooltip.center_bottom="'Что нового'"
       >
         <BellIcon
           :state="currentRoutePath === '/content-feed'"

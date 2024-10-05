@@ -83,15 +83,18 @@ function validateCurrentStep() {
     <div class="rules">
       <label>Пароль должен содержать как минимум:</label>
       <div
-        class="rule"
         v-for="(rule, index) in passwordRuleValidation"
         :key="rule.text"
+        class="rule"
       >
         <span class="icon">
           <Pin :achieve="rule.achieved" />
         </span>
 
-        <span class="text" :class="isError(index) && 'alert'">
+        <span
+          class="text"
+          :class="isError(index) && 'alert'"
+        >
           {{ rule.text }}
         </span>
       </div>

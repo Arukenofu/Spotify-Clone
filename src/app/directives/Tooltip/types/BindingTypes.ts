@@ -17,4 +17,4 @@ export interface BindingObject {
 
 export type BindingValues = BindingObject | string;
 
-export type Bindings = DirectiveBinding<BindingValues, Axes>;
+export type Bindings = DirectiveBinding<BindingValues, '', Axes>;

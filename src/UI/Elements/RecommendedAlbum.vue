@@ -40,18 +40,27 @@ function onButtonClick() {
 </script>
 
 <template>
-  <div class="album" @click="routerPushPrevent(`/playlist/${href}`)">
-    <div class="avatar" :style="`background-image: url(${avatar})`" />
+  <div
+    class="album"
+    @click="routerPushPrevent(`/playlist/${href}`)"
+  >
+    <div
+      class="avatar"
+      :style="`background-image: url(${avatar})`"
+    />
     <div class="other">
       <span class="album-name">
         {{ albumName }}
       </span>
 
       <button
-        @click.stop="onButtonClick()"
         v-tooltip="isCurrentAlbum && isPlaying ? 'Пауза' : 'Слушать'"
+        @click.stop="onButtonClick()"
       >
-        <PlayingState :state="isCurrentAlbum && isPlaying" class="icon" />
+        <PlayingState
+          :state="isCurrentAlbum && isPlaying"
+          class="icon"
+        />
       </button>
     </div>
   </div>

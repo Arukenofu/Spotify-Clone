@@ -23,14 +23,20 @@ const computeOpacity = computed<number>(() => {
 </script>
 
 <template>
-  <StickyHeader class="header" :style="`opacity: ${computeOpacity}`" />
-  <BackgroundNoise :current-color="currentColor" height="260px" />
+  <StickyHeader
+    class="header"
+    :style="`opacity: ${computeOpacity}`"
+  />
+  <BackgroundNoise
+    :current-color="currentColor"
+    height="260px"
+  />
 
   <section>
     <img
       src="https://open.spotifycdn.com/cdn/images/devices/mac.3fbeb8c6.png"
       alt="Desktop image"
-    />
+    >
     <h1>Установи приложение Spotify и слушай любимую музыку на компьютере.</h1>
 
     <button>Скачай Spotify бесплатно</button>

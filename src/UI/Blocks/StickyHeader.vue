@@ -8,7 +8,10 @@ defineProps<{
 
 <template>
   <div class="sticky-header">
-    <div class="underlay" :style="underlayStyle" />
+    <div
+      class="underlay"
+      :style="underlayStyle"
+    />
 
     <slot />
   </div>

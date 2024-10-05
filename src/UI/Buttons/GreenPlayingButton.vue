@@ -12,7 +12,11 @@ defineProps<Props>();
 
 <template>
   <button>
-    <PlayingState class="icon" :style="innerStyle" :state="state" />
+    <PlayingState
+      class="icon"
+      :style="innerStyle"
+      :state="state"
+    />
   </button>
 </template>
 

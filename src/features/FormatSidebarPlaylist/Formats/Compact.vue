@@ -5,11 +5,16 @@ defineProps<FormatProps>();
 </script>
 
 <template>
-  <RouterLink :to="`/playlist/${to}`" class="compact-playlist">
+  <RouterLink
+    :to="`/playlist/${to}`"
+    class="compact-playlist"
+  >
     {{ name }}
 
     <template v-if="type === 'Плейлист'">
-      <div class="divider">•</div>
+      <div class="divider">
+        •
+      </div>
 
       <div class="type">
         {{ type }}

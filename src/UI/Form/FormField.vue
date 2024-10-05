@@ -11,7 +11,11 @@ defineProps<Props>();
 
 <template>
   <div class="field">
-    <FormInput :error="!!error" class="input" v-bind="$attrs" />
+    <FormInput
+      :error="!!error"
+      class="input"
+      v-bind="$attrs"
+    />
 
     <FormError v-if="!!error">
       <slot />

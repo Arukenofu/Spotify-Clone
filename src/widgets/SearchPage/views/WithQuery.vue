@@ -18,7 +18,7 @@ defineProps<{
         :track-id="1"
         :album-id="0"
       />
-      <div class="other"></div>
+      <div class="other" />
     </section>
   </div>
 </template>

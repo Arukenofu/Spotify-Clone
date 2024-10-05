@@ -8,7 +8,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const model = defineModel();
+const model = defineModel<any | null>();
 
 const inputModel = ref();
 
@@ -23,10 +23,10 @@ function updateModelValue() {
 
 <template>
   <input
+    v-model="inputModel"
     :class="!!error && 'error'"
     @input="updateModelValue()"
-    v-model="inputModel"
-  />
+  >
 </template>
 
 <style lang="scss" scoped>

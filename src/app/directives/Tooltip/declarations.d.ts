@@ -1,8 +1,12 @@
-import type { Tooltip } from '@/app/directives/Tooltip/index';
+import type { Directive } from 'vue';
+import type { BindingValues } from '@/app/directives/Tooltip/types/BindingTypes';
 
 declare module '@vue/runtime-core' {
+  interface GlobalDirectives {
+    vTooltip: Directive<HTMLElement, BindingValues>;
+  }
   interface ComponentCustomProperties {
-    vTooltip: typeof Tooltip;
+    vTooltip: Directive<HTMLElement, BindingValues>;
   }
 }
 
