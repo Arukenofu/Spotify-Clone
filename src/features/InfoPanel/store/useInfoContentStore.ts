@@ -29,10 +29,8 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
     allowToggle: boolean = true
   ) {
     if (allowToggle && componentName === currentPanelName.value) {
-      currentPanelName.value = null;
-      return;
+      currentPanelName.value = null; return;
     }
-
     currentPanelName.value = componentName;
   }
 

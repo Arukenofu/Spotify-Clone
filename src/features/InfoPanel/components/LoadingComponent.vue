@@ -1,22 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Loading from '@/shared/components/Loading.vue';
+</script>
 
 <template>
   <div class="loading">
-    <p>aasdfsflkjshjOKJSDFLKSDSLKDN</p>
+    <Loading size="11px" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .loading {
   height: 100%;
-  width: 100%;
   position: relative;
-
-  p {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 }
 </style>

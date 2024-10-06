@@ -36,10 +36,11 @@ function resize(event: MouseEvent): void {
   if (!isResizing.value) return;
 
   const mouseX = event.clientX;
+  console.log(mouseX);
   let newWidth = initialWidth.value + (mouseX - initialWidth.value);
 
   if (props.fromRight) {
-    newWidth = window.screen.availWidth - newWidth;
+    newWidth = window.innerWidth - newWidth;
   }
 
   if (newWidth >= props.minWidth && newWidth <= props.maxWidth) {

@@ -47,9 +47,7 @@ watchEffect(() => {
   <div class="root">
     <LayoutHeader v-if="!isMobile" />
 
-    <div
-      class="main"
-    >
+    <div class="main">
       <LayoutSideBar v-if="!isMobile" />
 
       <ScrollableBlock
@@ -104,7 +102,6 @@ watchEffect(() => {
     }
 
     .content {
-      height: 100%;
       position: relative;
       z-index: 1 !important;
     }
