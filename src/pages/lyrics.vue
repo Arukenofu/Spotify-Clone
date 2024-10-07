@@ -9,7 +9,7 @@
 <style scoped>
 .noText {
   width: 100%;
-  height: 100%;
+  height: var(--content-height);
   background-color: #333333;
   display: flex;
   align-items: center;

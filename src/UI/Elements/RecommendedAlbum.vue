@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import {
-  useMusicStore,
-  useMusicUtils,
-  usePlaylistStore
-} from '@/features/MediaPlayer';
-import { computed } from 'vue';
+import { useMusicStore, useMusicUtils} from '@/features/MediaPlayer';
 import { storeToRefs } from 'pinia';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 
@@ -14,25 +9,20 @@ interface Props {
   albumName: string;
   avatar: string;
   href: string;
+  state?: boolean;
 }
 
-const props = defineProps<Props>();
+const { state } = defineProps<Props>();
 const store = useMusicStore();
 
-const { currentPlaylist, isPlaying, toggleTrackPlaying } = {
-  ...storeToRefs(usePlaylistStore()),
+const { isPlaying, toggleTrackPlaying } = {
   ...storeToRefs(store),
   ...useMusicUtils()
 };
 
-const isCurrentAlbum = computed(() => {
-  return currentPlaylist.value?.id === props.id;
-});
-
 function onButtonClick() {
-  if (!isCurrentAlbum.value) {
+  if (!state) {
     return;
-    // set new Playlist and Queue
   }
 
   toggleTrackPlaying();
@@ -54,11 +44,11 @@ function onButtonClick() {
       </span>
 
       <button
-        v-tooltip="isCurrentAlbum && isPlaying ? 'Пауза' : 'Слушать'"
+        v-tooltip="state && isPlaying ? 'Пауза' : 'Слушать'"
         @click.stop="onButtonClick()"
       >
         <PlayingState
-          :state="isCurrentAlbum && isPlaying"
+          :state="state && isPlaying"
           class="icon"
         />
       </button>

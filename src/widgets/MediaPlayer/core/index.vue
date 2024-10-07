@@ -4,6 +4,10 @@ import { useCurrentMusicStore, useMusicStore } from '@/features/MediaPlayer';
 import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue';
 import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue';
 import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue';
+import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
+import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNone.vue';
+import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue';
+import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
 
 const musicStore = useMusicStore();
 const currentMusicStore = useCurrentMusicStore();
@@ -11,18 +15,30 @@ const currentMusicStore = useCurrentMusicStore();
 onMounted(() => {
   musicStore.audio = new Audio(currentMusicStore.currentAudioData.url);
 });
+
+window.addEventListener('keyup', (event: KeyboardEvent) => {
+  if (event.repeat) return;
+
+  const { toggleTrackPlaying } = useMusicUtils();
+
+  if (event.code === 'Space') {
+    toggleTrackPlaying();
+    event.preventDefault();
+  }
+});
 </script>
 
 <template>
-  <div
-    v-if="musicStore.audio"
-    class="player"
-  >
+  <div v-if="musicStore.audio" class="player">
     <TrackDetails />
-
     <TrackControls />
-
     <AdditionalControls />
+  </div>
+
+  <div v-else class="player disabled">
+    <TrackDetailsNone />
+    <TrackControlsNone />
+    <AdditionalControlsNone />
   </div>
 </template>
 
@@ -38,14 +54,28 @@ onMounted(() => {
   background-color: var(--black);
 }
 
+.disabled {
+  cursor: not-allowed;
+  user-select: none;
+
+  &:deep() > div {
+    opacity: .5;
+  }
+
+  :deep(.icon) {
+    cursor: not-allowed !important;
+  }
+}
+
 :deep(.icon) {
-  height: 100%;
-  aspect-ratio: 1/1;
+  height: 32px;
+  width: 32px;
   display: grid;
   place-items: center;
   background: none;
   border: none;
   fill: var(--text-soft);
+  cursor: pointer;
 
   &:hover,
   &:active {
@@ -54,7 +84,7 @@ onMounted(() => {
 
   svg {
     height: 16px;
-    aspect-ratio: 1/1;
+    width: 16px;
   }
 }
 </style>

@@ -130,7 +130,7 @@ watch(audio, () => {
         :style="
           getActiveColor(currentRepeatMode !== 'onlyCurrentMusic', 'fill')
         "
-        :state="currentRepeatMode!"
+        :state="currentRepeatMode === 'repeatCurrentMusic'"
         class="icon"
         @click="userConfig.toggleRepeatMode()"
       />
@@ -186,10 +186,6 @@ watch(audio, () => {
       &:active {
         scale: 1.04;
       }
-    }
-
-    .pointerable {
-      cursor: pointer;
     }
   }
 

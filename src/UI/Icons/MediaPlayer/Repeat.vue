@@ -1,13 +1,13 @@
 <script setup lang="ts">
 defineProps<{
-  state?: string;
+  state?: boolean;
 }>();
 </script>
 
 <template>
   <button>
     <svg
-      v-if="state === 'repeatCurrentMusic'"
+      v-if="state"
       role="img"
       viewBox="0 0 16 16"
     >

@@ -15,8 +15,7 @@ export default function () {
 
   const { audio, isPlaying } = storeToRefs(musicStore);
   const { currentQueue, currentPlaylist } = storeToRefs(playlistStore);
-  const { currentAudioId, currentAudioData, currentAudioIndexInQueue } =
-    storeToRefs(currentMusicStore);
+  const { currentAudioId, currentAudioData, currentAudioIndexInQueue } = storeToRefs(currentMusicStore);
 
   function playAudio() {
     audio.value!.play().then(() => {
@@ -90,7 +89,11 @@ export default function () {
   }
 
   function toggleTrackPlaying() {
-    if (audio.value?.paused) {
+    if (!audio.value) {
+      return;
+    }
+
+    if (audio.value.paused) {
       return playAudio();
     }
 

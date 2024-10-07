@@ -11,6 +11,7 @@ import RecommendedAlbum from '@/UI/Elements/RecommendedAlbum.vue';
 import RecommendationSection from '@/UI/Elements/RecommendationSection.vue';
 import MusicCard from '@/UI/Elements/MusicCard.vue';
 import useResponsive from '@/shared/composables/useResponsive';
+import { usePlaylistStore } from '@/features/MediaPlayer';
 
 const { currentColor, setColor } = useBackgroundNoise();
 const { isMobile } = useResponsive();
@@ -19,21 +20,11 @@ setTitle('Spotify - Web Player: Music for everyone');
 
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
-const computeOpacity = computed<number>(() => {
-  if (layoutScrollY.value === 0) {
-    return 0;
-  }
-
-  return Math.min(layoutScrollY.value / 120, 1);
-});
-
-const computeBackgroundColor = computed(() => {
-  if (currentColor.value === 'rgb(83, 83, 83)') {
-    return '#212121';
-  }
-
-  return currentColor.value;
-});
+const computeStickyHeaderStyle = computed(() => ({
+  opacity: Math.min(layoutScrollY.value / 120, 1),
+  backgroundColor: currentColor.value === 'rgb(83, 83, 83)' ? '#212121' : currentColor.value,
+  transition: 'background-color .25s, opacity .4s ease-out'
+}));
 
 const { currentRoutePath } = useCurrentRoutePath('fullPath');
 
@@ -84,24 +75,25 @@ function getGreeting() {
     return 'Доброй ночи';
   }
 }
+
+const playlistStore = usePlaylistStore();
 </script>
 
 <template>
-  <template v-if="!isMobile">
+  <section v-if="isMobile" class="greetings">
+    <h1>{{ getGreeting() }}</h1>
+  </section>
+
+  <template v-else>
+    <BackgroundNoise :current-color="currentColor" />
+
     <StickyHeader
-      :underlay-style="{
-        opacity: computeOpacity,
-        backgroundColor: computeBackgroundColor,
-        transition: 'background-color .25s, opacity .4s ease-out'
-      }"
+      :underlay-style="computeStickyHeaderStyle"
       class="header"
     >
       <button
         :class="currentRoutePath !== '/' && 'inactive'"
-        @click="
-          $router.push('');
-          setColor(null);
-        "
+        @click="$router.push('');setColor(null)"
       >
         Все
       </button>
@@ -116,12 +108,10 @@ function getGreeting() {
         Музыка
       </button>
     </StickyHeader>
-    <BackgroundNoise :current-color="currentColor" />
   </template>
 
   <section class="container">
     <section
-      v-if="!isMobile"
       class="recommended-albums"
     >
       <div class="albums-wrap">
@@ -129,20 +119,14 @@ function getGreeting() {
           v-for="rec in recommendations"
           :id="rec.id"
           :key="rec.id"
-          class="album"
           :album-name="rec.name"
           :avatar="rec.avatar"
           :href="rec.href"
+          :state="playlistStore.currentPlaylist?.id === rec.id"
+          class="album"
           @mouseenter="setColor(rec.hoverColor)"
         />
       </div>
-    </section>
-
-    <section
-      v-else
-      class="greetings"
-    >
-      <h1>{{ getGreeting() }}</h1>
     </section>
 
     <RecommendationSection

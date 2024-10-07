@@ -7,6 +7,7 @@ interface Props {
   max: number;
   step?: number;
   thumbFix?: number;
+  disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,6 +45,7 @@ const emit = defineEmits<{
       :step="step ?? 1"
       type="range"
       :value="progress"
+      :disabled="disabled"
       @input="updateCurrentValue($event)"
     >
     <div
