@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import {
-  useCurrentMusicStore,
-  useMusicStore,
-  usePlaylistStore,
-  useMusicUtils
-} from '@/features/MediaPlayer';
+
+import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
+import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 
 const musicStore = useMusicStore();
 const playlistStore = usePlaylistStore();

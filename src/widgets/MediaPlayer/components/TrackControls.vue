@@ -9,17 +9,15 @@ import Repeat from '@/UI/Icons/MediaPlayer/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
 
 import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
-import {
-  useCurrentMusicStore,
-  useMusicStore,
-  useMusicUtils,
-  usePlaylistStore
-} from '@/features/MediaPlayer';
 import getRandomNumber from '@/shared/utils/getRandomNumber';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import formatTime from '@/shared/utils/formatTime';
 
 import { storeToRefs } from 'pinia';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
+import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
+import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 
 const musicStore = useMusicStore();
 const playlistStore = usePlaylistStore();

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useCurrentMusicStore, useMusicStore } from '@/features/MediaPlayer';
 import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue';
 import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue';
 import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue';
@@ -8,6 +7,8 @@ import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNone.vue';
 import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue';
 import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 
 const musicStore = useMusicStore();
 const currentMusicStore = useCurrentMusicStore();

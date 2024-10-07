@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import { useMusicStore, useMusicUtils} from '@/features/MediaPlayer';
+
 import { storeToRefs } from 'pinia';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
+import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 
 interface Props {
   id: number;

@@ -4,7 +4,11 @@ import { storeToRefs } from 'pinia';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import MusicBlock from '@/features/InfoPanel/components/MusicBlock.vue';
 import PanelHeader from '@/features/InfoPanel/components/PanelHeader.vue';
-import { useCurrentMusicStore, useMusicStore, useMusicUtils, usePlaylistStore } from '@/features/MediaPlayer';
+import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
+import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
+import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+
 
 const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();

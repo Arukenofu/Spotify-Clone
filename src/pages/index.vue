@@ -5,13 +5,13 @@ import {
   useBackgroundNoise
 } from '@/features/BackgroundNoise';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
+import useResponsive from '@/shared/composables/useResponsive';
 import setTitle from '@/shared/utils/setTitle';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import RecommendedAlbum from '@/UI/Elements/RecommendedAlbum.vue';
 import RecommendationSection from '@/UI/Elements/RecommendationSection.vue';
 import MusicCard from '@/UI/Elements/MusicCard.vue';
-import useResponsive from '@/shared/composables/useResponsive';
-import { usePlaylistStore } from '@/features/MediaPlayer';
+import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 
 const { currentColor, setColor } = useBackgroundNoise();
 const { isMobile } = useResponsive();

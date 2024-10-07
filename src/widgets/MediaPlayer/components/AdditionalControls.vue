@@ -10,10 +10,11 @@ import NowPlaying from '@/UI/Icons/MediaPlayerControls/NowPlaying.vue';
 
 import { storeToRefs } from 'pinia';
 import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
-import { useMusicStore } from '@/features/MediaPlayer';
+
 import { infoPanel } from '@/features/InfoPanel';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import { router } from '@/app/router';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 
 const musicStore = useMusicStore();
 const { audio } = storeToRefs(musicStore);
