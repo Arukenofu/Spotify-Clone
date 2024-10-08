@@ -35,6 +35,13 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    rollupOptions: {
+      external: [
+        '.generated/**'
+      ]
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
