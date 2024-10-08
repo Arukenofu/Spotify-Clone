@@ -47,6 +47,7 @@ const model = defineModel<boolean>();
       top: 50%;
       transform: translateY(-50%);
       border-radius: 50%;
+      transition: left .2s;
     }
 
     &::after {
@@ -82,7 +83,6 @@ const model = defineModel<boolean>();
 
     .thumb {
       left: 2px;
-      right: auto;
     }
   }
 
@@ -90,8 +90,7 @@ const model = defineModel<boolean>();
     background-color: var(--main-color);
 
     .thumb {
-      left: auto;
-      right: 2px;
+      left: 16px;
     }
   }
 }

@@ -188,7 +188,7 @@ function validateCurrentStep() {
         Мы учитываем пол при подборе персональных рекомендаций и рекламы.
       </FormLabel>
 
-      <div class="radio">
+      <div class="radios">
         <FormRadio
           v-for="(gender, index) in genders"
           :key="index"
@@ -255,7 +255,7 @@ form {
     flex-direction: column;
   }
 
-  .radio {
+  .radios {
     margin-top: 4px;
     display: flex;
     flex-wrap: wrap;

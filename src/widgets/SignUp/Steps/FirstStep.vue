@@ -31,7 +31,7 @@ const passwordRuleValidation = computed(() => {
 
   const isHasOneLetter = /[a-zA-Z]/.test(password);
   const isHasSpecialSymbolOrNumber = /[\d#?!&]/.test(password);
-  const isHas10Symbol = password.length >= 10;
+  const isHas6Symbol = password.length >= 6;
 
   return [
     {
@@ -43,8 +43,8 @@ const passwordRuleValidation = computed(() => {
       achieved: isHasSpecialSymbolOrNumber
     },
     {
-      text: '10 символов',
-      achieved: isHas10Symbol
+      text: '6 символов',
+      achieved: isHas6Symbol
     }
   ];
 });

@@ -202,6 +202,7 @@ main {
 
       span {
         font-size: 0.7rem;
+        user-select: none;
       }
     }
 
