@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
-import { showContextMenu } from '@/features/ContextMenu';
-import UserProfileModal from '@/widgets/LayoutHeader/modals/UserProfileModal.vue';
 </script>
 
 <template>
@@ -13,11 +11,7 @@ import UserProfileModal from '@/widgets/LayoutHeader/modals/UserProfileModal.vue
     v-disable-child
     class="user-avatar"
     @click="
-      showContextMenu($event, UserProfileModal, {
-        stickOn: 'currentElement',
-        design: 'minimal',
-        inset: 0
-      })
+      $router.push('/signup');
     "
   >
     <div
