@@ -15,7 +15,7 @@ import { showContextMenu } from '@/features/ContextMenu';
 
 const search = ref<string>('');
 
-const { isMinimized } = useSidebarWidthStore();
+const { currentWidth, isMinimized } = useSidebarWidthStore();
 
 const { currentComponent, getComponentName } = usePlaylistFormat();
 
@@ -46,6 +46,7 @@ const gridItemWidth = computed(() => {
     <MediaLibButton />
 
     <ScrollableBlock
+      :key="currentWidth"
       class="block"
       :gap="isMinimized ? '0px' : '7px'"
     >

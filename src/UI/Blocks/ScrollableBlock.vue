@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { Component } from 'vue';
 
 interface Props {
@@ -52,7 +52,6 @@ function updateScrollBar() {
 
   scrollY.value = scrollTop;
 
-  scrollbar.value!.style.opacity = '1';
   scrollbar.value!.style.height = `${scrollbarHeight}px`;
   scrollbar.value!.style.top = `${scrollbarTop}px`;
 
@@ -86,23 +85,25 @@ function onMouseDown(event: MouseEvent) {
   document.addEventListener('mouseup', onMouseUp);
 }
 
-function initCustomScrollBar() {
-  content.value!.addEventListener('scroll', updateScrollBar);
-  updateScrollBar();
+function scrollTo(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+  const rect = target.getBoundingClientRect();
 
-  scrollbar.value!.addEventListener('mousedown', onMouseDown);
+  const mouseY = event.clientY - rect.top;
+  const contentHeight = content.value!.scrollHeight;
+  const currentPercentage = mouseY / rect.height;
 
-  const observer = new MutationObserver(() => {
-    nextTick(() => {
-      updateScrollBar();
-    });
+  const scrollTopCoordinate =
+    (contentHeight * currentPercentage) - scrollbar.value!.offsetHeight;
+
+  content.value!.scrollTo({
+    top: scrollTopCoordinate,
+    behavior: 'smooth'
   });
-
-  observer.observe(content.value!, { childList: true, subtree: true });
 }
 
 onMounted(() => {
-  initCustomScrollBar();
+  updateScrollBar();
 });
 </script>
 
@@ -117,13 +118,20 @@ onMounted(() => {
       class="scrollable-content"
       :class="isScrolled && allowStyleShadow && 'scrolled'"
       :style="`padding: 0 ${gap}`"
+      @scroll="updateScrollBar"
     >
       <slot />
     </div>
     <div
-      ref="scrollbar"
-      class="scrollbar"
-    />
+      class="scrollbar-wrapper"
+      @mousedown.self="scrollTo"
+    >
+      <div
+        ref="scrollbar"
+        class="scrollbar"
+        @mousedown="onMouseDown"
+      />
+    </div>
   </Component>
 </template>
 
@@ -142,30 +150,38 @@ onMounted(() => {
     scrollbar-width: none !important;
   }
 
-  .scrollbar {
-    z-index: 1 !important;
-    --scrollbar-bg: hsla(0, 0%, 100%, 0.3);
-    --scrollbar-bg-hover: hsla(0, 0%, 100%, 0.5);
-    --scrollbar-bg-active: hsla(0, 0%, 100%, 0.7);
-
-    position: absolute;
-    top: 0;
+  .scrollbar-wrapper {
+    height: 100%;
     right: 0;
-    width: v-bind('scrollbarWidth');
-    background-color: var(--scrollbar-bg);
-    cursor: pointer;
-    user-select: none;
-    opacity: 0;
-    transition: opacity 0.5s;
+    top: 0;
+    width: v-bind(scrollbarWidth);
+    position: absolute;
+    z-index: 1 !important;
 
-    &:hover {
-      opacity: 1;
-      background-color: var(--scrollbar-bg-hover);
-    }
+    .scrollbar {
+      --scrollbar-bg: hsla(0, 0%, 100%, 0.3);
+      --scrollbar-bg-hover: hsla(0, 0%, 100%, 0.5);
+      --scrollbar-bg-active: hsla(0, 0%, 100%, 0.7);
 
-    &:active {
-      opacity: 1;
-      background-color: var(--scrollbar-bg-active);
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: v-bind('scrollbarWidth');
+      background-color: var(--scrollbar-bg);
+      cursor: pointer;
+      user-select: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+
+      &:hover {
+        opacity: 1;
+        background-color: var(--scrollbar-bg-hover);
+      }
+
+      &:active {
+        opacity: 1;
+        background-color: var(--scrollbar-bg-active);
+      }
     }
   }
 
