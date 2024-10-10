@@ -10,4 +10,4 @@ setTitle(`${route.params.id} | Spotify`);
 
 <template></template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

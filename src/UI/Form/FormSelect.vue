@@ -29,7 +29,7 @@ const model = defineModel<string>();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .select {
   display: flex;
   position: relative;

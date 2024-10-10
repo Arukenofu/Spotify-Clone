@@ -10,7 +10,7 @@ defineProps<{
   </span>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .title {
   padding: 12px;
   height: 40px;

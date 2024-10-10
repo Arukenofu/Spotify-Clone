@@ -16,4 +16,4 @@ const { currentPanelComponent } = useInfoContentStore();
   </Suspense>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

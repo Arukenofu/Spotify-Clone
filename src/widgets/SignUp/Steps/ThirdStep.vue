@@ -71,7 +71,7 @@ async function validateWholeForm() {
   </form>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 form {
   display: grid;
   gap: 8px;

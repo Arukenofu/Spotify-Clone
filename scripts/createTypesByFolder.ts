@@ -13,6 +13,12 @@ interface Options {
 }
 
 export default function (options: Options[] = []) {
+  const declarationsFolder = path.resolve(__dirname, '../.generated');
+
+  if (!fs.existsSync(declarationsFolder)) {
+    fs.mkdirSync(declarationsFolder);
+  }
+
   const declarationsPath = path.resolve(
     __dirname,
     '../.generated/imports.d.ts'

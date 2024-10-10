@@ -13,7 +13,7 @@ const model = defineModel<boolean>();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .checkbox {
   position: relative;
 

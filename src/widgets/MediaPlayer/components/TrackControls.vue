@@ -156,7 +156,7 @@ watch(audio, () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .track-controls {
   height: 60px;
   display: flex;

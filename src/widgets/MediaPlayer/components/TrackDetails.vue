@@ -38,7 +38,7 @@ const { currentAudioData } = storeToRefs(store);
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .track-details {
   display: flex;
   gap: 16px;

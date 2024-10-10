@@ -12,5 +12,5 @@ import { ContextMenu } from '@/features/ContextMenu';
   </Teleport>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 </style>

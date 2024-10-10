@@ -29,7 +29,7 @@ const model = defineModel<string | null>();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .radio {
   display: flex;
   align-items: center;

@@ -213,7 +213,7 @@ function validateCurrentStep() {
   </form>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 form {
   display: flex;
   flex-direction: column;

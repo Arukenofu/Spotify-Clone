@@ -60,7 +60,7 @@ const emit = defineEmits<{
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .range-outer {
   height: 4px;
   background-color: #4d4d4d;

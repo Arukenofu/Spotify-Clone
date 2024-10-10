@@ -104,7 +104,7 @@ function validateCurrentStep() {
   </form>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 form {
   label {
     margin-bottom: 9px;

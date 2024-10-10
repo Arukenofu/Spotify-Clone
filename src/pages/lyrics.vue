@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .noText {
   width: 100%;
   height: var(--content-height);

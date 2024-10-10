@@ -20,7 +20,7 @@ defineProps<Props>();
   </button>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 button {
   height: 48px;
   width: 48px;

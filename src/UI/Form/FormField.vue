@@ -23,7 +23,7 @@ defineProps<Props>();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .input {
   width: 100%;
   margin-bottom: 12px;

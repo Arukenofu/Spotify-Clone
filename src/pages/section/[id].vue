@@ -6,4 +6,4 @@ setTitle('Spotify — Веб-плеер');
 
 <template></template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

@@ -13,7 +13,7 @@ const { step } = stepStore();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .progress-bar {
   height: 3px;
   background-color: #727272;

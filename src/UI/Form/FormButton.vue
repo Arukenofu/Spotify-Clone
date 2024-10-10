@@ -6,7 +6,7 @@
   </button>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 button {
   background-color: var(--main-color);
   border: none;

@@ -37,7 +37,7 @@ const { step } = stepStore();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .steps {
   display: flex;
   align-items: center;

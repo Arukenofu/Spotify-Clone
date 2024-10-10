@@ -51,7 +51,7 @@ function validateCurrentStep() {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .face {
   width: 100%;
 

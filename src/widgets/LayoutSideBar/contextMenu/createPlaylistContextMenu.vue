@@ -21,4 +21,4 @@ import Folder from '@/UI/Icons/Shared/Folder.vue';
   </BasicContextMenuView>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

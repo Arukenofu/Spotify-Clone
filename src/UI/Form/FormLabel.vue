@@ -21,7 +21,7 @@ withDefaults(
   </label>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 label {
   color: v-bind('color');
   font-weight: v-bind('fontWeight');

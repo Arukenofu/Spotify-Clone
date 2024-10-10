@@ -35,7 +35,7 @@ const { step } = stepStore();
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .scrollable-content {
   margin: 0 auto;
   max-width: 420px;
