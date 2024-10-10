@@ -24,12 +24,18 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
     });
   });
 
+  function removePanel() {
+    currentPanelName.value = null;
+    document.documentElement.style.setProperty('--panel-width', '0');
+  }
+
   function setNewPanel(
     componentName: PanelsName | null,
     allowToggle: boolean = true
   ) {
     if (allowToggle && componentName === currentPanelName.value) {
-      currentPanelName.value = null; return;
+      currentPanelName.value = null;
+      return;
     }
     currentPanelName.value = componentName;
   }
@@ -37,15 +43,17 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
   return {
     currentPanelName: currentPanelNamePrivate,
     currentPanelComponent,
-    setNewPanel
+    setNewPanel,
+    removePanel
   };
 });
 
 export default function () {
-  const { setNewPanel } = useInfoStore();
+  const { setNewPanel, removePanel } = useInfoStore();
 
   return {
     ...storeToRefs(useInfoStore()),
-    setNewPanel
+    setNewPanel,
+    removePanel
   };
 }

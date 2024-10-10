@@ -11,7 +11,7 @@ const useSidebarWidthStore = defineStore('useSidebarStore', () => {
   });
 
   function setStyleWidth(value: number) {
-    document.documentElement.style.setProperty('--sidebar-width', `${value}px`);
+    document.documentElement.style.setProperty('--sidebar-width', `${value}`);
   }
 
   watch(currentWidth, (value) => {

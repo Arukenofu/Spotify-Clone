@@ -4,17 +4,19 @@ import type { CSSProperties } from 'vue';
 interface Props {
   size?: CSSProperties['width'],
   distance?: CSSProperties['width'],
+  position?: CSSProperties['position']
 }
 
 const {
   size = '12px',
   distance = '16px',
+  position = 'relative',
 } = defineProps<Props>();
 
 </script>
 
 <template>
-  <div class="loader" />
+  <div class="loader" :style="`position: ${position}`" />
 </template>
 
 <style lang="scss" scoped>
@@ -25,7 +27,6 @@ const {
     --distance: v-bind('distance');
     --negative-distance: calc(v-bind('distance') * -1);
 
-    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

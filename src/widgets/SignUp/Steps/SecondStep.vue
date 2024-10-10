@@ -68,11 +68,12 @@ const birthdayValidate = computed(() => {
     });
   }
 
-  if (userCurrentAge >= 100) {
+  if (year < 1900) {
     errors.push({
       field: 'year',
       message: 'Год рождения должен быть не ранее 1900 г.'
     });
+    console.log(userCurrentAge);
   }
 
   return errors;

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
-import NoUserAvatar from '@/UI/Icons/Shared/NoUserAvatar.vue';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
+import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
+import type { Entities } from '@/shared/models/Entities';
+
+type EntitiesExpandedWithArtist = Entities | 'Artist'
 
 interface Props {
   albumId: number;
-  type?: 'playlist' | 'artist' | 'user';
+  type?: EntitiesExpandedWithArtist;
   to: string;
   name: string;
   showName?: boolean;
@@ -14,7 +16,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  type: 'playlist',
+  type: 'Playlist',
   showName: true
 });
 </script>
@@ -24,34 +26,20 @@ withDefaults(defineProps<Props>(), {
     class="card"
     @click="routerPushPrevent(`/${type}/${to}`)"
   >
-    <div
+    <EntityAvatar1x1
       class="image"
-      :style="type === 'artist' && 'border-radius: 50%'"
+      :image="image"
+      :style="type === 'Artist' && 'border-radius: 50%'"
     >
-      <img
-        v-if="image"
-        :src="image"
-        :alt="name"
-      >
-      <NoMusicOrPlaylistAvatar
-        v-else-if="type === 'playlist'"
-        class="noImage"
-      />
-
-      <NoUserAvatar
-        v-else
-        class="noImage"
-      />
-
       <GreenPlayingButton
-        v-if="type !== 'user'"
+        v-if="type !== 'User'"
         v-tooltip="`Слушать плейлист «${name}»`"
         class="playingState"
         :state="false"
         @click.stop
         @mousedown.prevent
       />
-    </div>
+    </EntityAvatar1x1>
 
     <span v-if="showName">
       {{ name }}

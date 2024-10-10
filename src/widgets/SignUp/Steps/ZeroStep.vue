@@ -48,6 +48,10 @@ function validateCurrentStep() {
         Далее
       </FormButton>
     </form>
+
+    <div class="separator" />
+
+    <p>Уже есть аккаунт? <RouterLink to="/login">Войдите в него</RouterLink> </p>
   </div>
 </template>
 
@@ -69,10 +73,39 @@ function validateCurrentStep() {
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    .button {
+      margin-top: 21px;
+    }
   }
 
-  .button {
-    margin-top: 21px;
+  .separator {
+    margin-top: 32px;
+    position: relative;
+    display: flex;
+
+    &::before {
+      content: " ";
+      height: 1px;
+      background-color: #292929;
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  p {
+    margin-top: 32px;
+    display: block;
+    text-align: center;
+    color: var(--text-soft);
+
+    a {
+      color: var(--white);
+      text-decoration: underline;
+    }
   }
 }
 </style>

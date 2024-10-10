@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
+import localizeTypes from '../utils/localizeTypes';
 
 defineProps<FormatProps>();
 </script>
@@ -11,13 +12,13 @@ defineProps<FormatProps>();
   >
     {{ name }}
 
-    <template v-if="type === 'Плейлист'">
+    <template v-if="type === 'Playlist'">
       <div class="divider">
         •
       </div>
 
       <div class="type">
-        {{ type }}
+        {{ localizeTypes(type) }}
       </div>
     </template>
   </RouterLink>

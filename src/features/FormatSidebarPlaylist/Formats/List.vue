@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
-import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
+import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
+import localizeTypes from '../utils/localizeTypes';
 
 defineProps<FormatProps>();
 </script>
@@ -11,29 +11,14 @@ defineProps<FormatProps>();
     class="list"
     :to="`/playlist/${to}`"
   >
-    <div class="picture">
-      <div
-        v-if="image"
-        class="image"
-      />
-
-      <NoMusicOrPlaylistAvatar
-        v-else-if="type === 'Плейлист'"
-        class="noAvatar"
-      />
-
-      <NoFolderAvatar
-        v-else
-        class="noAvatar"
-      />
-    </div>
+    <EntityAvatar1x1 :image="image" type="Folder" />
 
     <div class="text">
       <span class="playlist-name">
         {{ name }}
       </span>
 
-      <span class="info"> {{ type }} • {{ owner }} </span>
+      <span class="info"> {{ localizeTypes(type) }} • {{ owner }} </span>
     </div>
   </RouterLink>
 </template>

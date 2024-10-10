@@ -1,13 +1,14 @@
 <script setup lang="ts"></script>
 
 <template>
-  <button v-bind="$attrs">
+  <button class="v-form-button" v-bind="$attrs">
     <slot />
   </button>
 </template>
 
 <style lang="scss" scoped>
-button {
+.v-form-button {
+  width: 100%;
   background-color: var(--main-color);
   border: none;
   padding: 15px 0;

@@ -9,6 +9,7 @@ import { provide, ref, watchEffect } from 'vue';
 import type { Ref } from 'vue';
 import { router } from '@/app/router';
 import useResponsive from '@/shared/composables/useResponsive';
+import Loading from '@/shared/components/Loading.vue';
 
 interface ScrollableWithExpose
   extends Ref<InstanceType<typeof ScrollableBlock>> {
@@ -58,11 +59,16 @@ watchEffect(() => {
         :scrollbar-width="isMobile ? '5px' : '12px'"
         :allow-style-shadow="false"
       >
-        <div class="content">
-          <Suspense>
-            <RouterView />
-          </Suspense>
-        </div>
+        <Suspense>
+          <template #fallback>
+            <Loading />
+          </template>
+          <template #default>
+            <div class="content">
+              <RouterView />
+            </div>
+          </template>
+        </Suspense>
       </ScrollableBlock>
 
       <LayoutInfoContent />
@@ -102,7 +108,6 @@ watchEffect(() => {
     }
 
     .content {
-
       position: relative;
       z-index: 1 !important;
     }

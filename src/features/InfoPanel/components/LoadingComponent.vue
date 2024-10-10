@@ -11,6 +11,7 @@ import Loading from '@/shared/components/Loading.vue';
 <style lang="scss" scoped>
 .loading {
   height: 100%;
+  width: 100%;
   position: relative;
 }
 </style>

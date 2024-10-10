@@ -10,8 +10,8 @@ import {
   usePlaylistFormat,
   useSidebarWidthStore
 } from '@/features/FormatSidebarPlaylist';
+import type {FormatProps} from '@/features/FormatSidebarPlaylist';
 import { showContextMenu } from '@/features/ContextMenu';
-import type { FormatProps } from '@/features/FormatSidebarPlaylist';
 
 const search = ref<string>('');
 
@@ -24,7 +24,7 @@ const props: FormatProps = {
   to: '12',
   name: 'baur',
   owner: 'baur',
-  type: 'Плейлист'
+  type: 'Playlist'
 };
 
 const { getCurrentWidth } = gridColumnWidth();

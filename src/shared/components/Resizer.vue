@@ -36,7 +36,6 @@ function resize(event: MouseEvent): void {
   if (!isResizing.value) return;
 
   const mouseX = event.clientX;
-  console.log(mouseX);
   let newWidth = initialWidth.value + (mouseX - initialWidth.value);
 
   if (props.fromRight) {

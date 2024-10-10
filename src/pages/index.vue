@@ -138,7 +138,7 @@ const playlistStore = usePlaylistStore();
         :key="a"
         :album-id="1"
         to="/hello"
-        type="playlist"
+        type="Playlist"
         name="Only for you"
         :show-name="false"
       >
@@ -157,7 +157,7 @@ const playlistStore = usePlaylistStore();
         :album-id="1"
         name="The Weekend"
         to="/artistName"
-        type="artist"
+        type="Artist"
       >
         Исполнитель
       </MusicCard>

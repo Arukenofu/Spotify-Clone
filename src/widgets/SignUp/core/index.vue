@@ -12,7 +12,7 @@ const { step } = stepStore();
 </script>
 
 <template>
-  <div class="scrollable-content">
+  <div class="content">
     <Logo class="logo" />
     <ZeroStep v-if="step === 0" />
 
@@ -36,19 +36,22 @@ const { step } = stepStore();
 </template>
 
 <style lang="scss" scoped>
-.scrollable-content {
+.content {
   margin: 0 auto;
   max-width: 420px;
   width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100dvh;
 
   .logo {
+    display: block;
     width: 40px;
-    margin: 0 auto;
+    height: 40px;
     fill: var(--white);
-    padding: 32px 0 22px;
+    margin-top: 32px;
+    margin-bottom: 32px;
   }
 
   .wrapper {

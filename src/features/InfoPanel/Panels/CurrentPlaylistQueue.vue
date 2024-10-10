@@ -9,7 +9,6 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 
-
 const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();
 const musicStore = useMusicStore();

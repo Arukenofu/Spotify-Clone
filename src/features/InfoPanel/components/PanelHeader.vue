@@ -3,7 +3,7 @@ import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore';
 
-const { setNewPanel } = useInfoContentStore();
+const { removePanel } = useInfoContentStore();
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const { setNewPanel } = useInfoContentStore();
 
       <RoundButton
         v-tooltip:end_top="'Закрыть'"
-        @click="setNewPanel(null)"
+        @click="removePanel()"
       >
         <CloseIconRound class="icon" />
       </RoundButton>

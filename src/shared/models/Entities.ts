@@ -1,0 +1,1 @@
+export type Entities = 'Playlist' | 'User' | 'Artist'

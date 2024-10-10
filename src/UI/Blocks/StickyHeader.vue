@@ -11,7 +11,9 @@ defineProps<{
     <div
       class="underlay"
       :style="underlayStyle"
-    />
+    >
+      <slot name="filter" />
+    </div>
 
     <slot />
   </div>

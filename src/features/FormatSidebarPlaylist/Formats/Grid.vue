@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
-import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
+import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
+import localizeTypes from '../utils/localizeTypes';
 
 interface GridFormatProps extends FormatProps {
   minimized: boolean;
@@ -16,30 +17,21 @@ defineProps<GridFormatProps>();
     class="block"
     :class="!minimized && 'unminimized'"
   >
-    <div class="picture">
-      <div
-        v-if="image"
-        class="image"
-      />
-      <NoMusicOrPlaylistAvatar
-        v-else
-        class="icon"
-      />
-
+    <EntityAvatar1x1 class="picture" :image="image">
       <GreenPlayingButton
-        v-if="!minimized && type !== 'Папка'"
+        v-if="!minimized && type !== 'Folder'"
         v-tooltip="`Слушать плейлист «${name}»`"
         :state="false"
         class="stateButton"
       />
-    </div>
+    </EntityAvatar1x1>
 
     <div
       v-if="!minimized"
       class="text"
     >
       <span class="name">{{ name }}</span>
-      <span class="info">{{ type }} • {{ owner }}</span>
+      <span class="info">{{ localizeTypes(type) }} • {{ owner }}</span>
     </div>
   </RouterLink>
 </template>
@@ -94,27 +86,6 @@ defineProps<GridFormatProps>();
   height: 100%;
   padding: 4px;
   transition: all 0.2s;
-
-  .picture {
-    border-radius: calc(4px);
-    width: 100%;
-    aspect-ratio: 1/1;
-    display: grid;
-    place-items: center;
-    background-color: #333333;
-    z-index: 1;
-
-    .image {
-      width: 100%;
-      aspect-ratio: 1/1;
-    }
-
-    .icon {
-      height: 50%;
-      width: 50%;
-      fill: var(--text-soft);
-    }
-  }
 
   .text {
     display: flex;

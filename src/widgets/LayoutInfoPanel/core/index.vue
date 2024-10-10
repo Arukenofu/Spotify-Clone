@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import Resizer from '@/shared/components/Resizer.vue';
 import max from '@/widgets/LayoutInfoPanel/constants/max';
 import min from '@/widgets/LayoutInfoPanel/constants/min';
@@ -21,7 +21,11 @@ const currentPanelWidth = useCachedRef<number>(
 );
 
 watch(currentPanelWidth, (value) => {
-  document.documentElement.style.setProperty('--panel-width', `${value}px`);
+  document.documentElement.style.setProperty('--panel-width', `${value}`);
+});
+
+onMounted(() => {
+  document.documentElement.style.setProperty('--panel-width', `${currentPanelWidth.value}`);
 });
 
 const { currentPanelComponent } = infoPanel();
