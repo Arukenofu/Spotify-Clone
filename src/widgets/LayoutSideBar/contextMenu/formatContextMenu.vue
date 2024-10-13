@@ -9,9 +9,9 @@ import {
   usePlaylistFormat
 } from '@/features/FormatSidebarPlaylist';
 
-import CompactIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/CompactIcon.vue';
-import ListIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/ListIcon.vue';
-import GridIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/GridIcon.vue';
+import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
+import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
+import GridIcon from '@/UI/Icons/Shared/GridIcon.vue';
 import Range from '@/shared/components/Range.vue';
 
 const { setComponent, getComponentName } = usePlaylistFormat();

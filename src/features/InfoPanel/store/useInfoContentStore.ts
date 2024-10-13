@@ -1,8 +1,8 @@
 import { computed, defineAsyncComponent, readonly } from 'vue';
 import { defineStore, storeToRefs } from 'pinia';
+import useCachedRef from '@/shared/composables/useCachedRef';
 import type { Component } from 'vue';
 import type { PanelsName } from '#imports';
-import useCachedRef from '@/shared/composables/useCachedRef';
 
 const useInfoStore = defineStore('useInfoContentStore', () => {
   const currentPanelName = useCachedRef<PanelsName | null>('currentPanelName', null, {
@@ -26,7 +26,6 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
 
   function removePanel() {
     currentPanelName.value = null;
-    document.documentElement.style.setProperty('--panel-width', '0');
   }
 
   function setNewPanel(

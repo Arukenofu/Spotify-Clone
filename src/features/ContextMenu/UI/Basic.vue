@@ -12,7 +12,7 @@ interface Props {
   svgIcon?: Component;
   underline?: boolean;
   isActive?: boolean;
-  additionalSVG?: Component;
+  additionalSVG?: Component | false;
   subTree?: Component;
 }
 

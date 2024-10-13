@@ -7,7 +7,7 @@ import type { ContextMenuOptions } from '@/features/ContextMenu/types/ContextMen
 export default async function showContextMenu(
   event: MouseEvent,
   value: Component,
-  options?: ContextMenuOptions
+  options: ContextMenuOptions
 ): Promise<void> {
   event.preventDefault();
 

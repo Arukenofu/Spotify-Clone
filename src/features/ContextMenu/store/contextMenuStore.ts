@@ -4,7 +4,7 @@ import { type Component, computed, ref, shallowRef } from 'vue';
 const contextMenuStore = defineStore('contextMenuStore', () => {
   const core = ref<HTMLElement>();
 
-  const currentComponent = shallowRef<Component | null>(null);
+  const currentComponent = shallowRef<Component | string | null>(null);
 
   const isActive = computed(() => {
     return !!currentComponent.value;
@@ -18,7 +18,7 @@ const contextMenuStore = defineStore('contextMenuStore', () => {
     return currentComponent.value;
   });
 
-  function setContextMenuComponent(value: Component) {
+  function setContextMenuComponent(value: Component | string) {
     currentComponent.value = value;
   }
 

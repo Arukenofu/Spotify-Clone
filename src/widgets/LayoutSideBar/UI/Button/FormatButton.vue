@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { usePlaylistFormat } from '@/features/FormatSidebarPlaylist';
-import GridIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/GridIcon.vue';
-import CompactIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/CompactIcon.vue';
-import ListIcon from '@/widgets/LayoutSideBar/UI/Icons/Format/ListIcon.vue';
+import GridIcon from '@/UI/Icons/Shared/GridIcon.vue';
+import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
+import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
 
 const sortTypes = [
   'Недавно прослушано',

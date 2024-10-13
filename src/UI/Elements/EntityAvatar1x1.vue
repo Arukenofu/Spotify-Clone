@@ -2,17 +2,19 @@
 import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
 import type { Entities } from '@/shared/models/Entities';
+import type { Component } from 'vue';
 
 interface Props {
   image: string | unknown,
-  type?: Entities | 'Folder'
+  type?: Entities | 'Folder',
+  as?: Component | string
 }
 
 defineProps<Props>();
 </script>
 
 <template>
-  <div class="v-picture">
+  <Component :is="as ?? 'div'" class="v-picture">
     <div
       v-if="image"
       class="image"
@@ -29,7 +31,7 @@ defineProps<Props>();
     />
 
     <slot />
-  </div>
+  </Component>
 </template>
 
 <style scoped lang="scss">
