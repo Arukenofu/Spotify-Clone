@@ -15,6 +15,7 @@ module.exports = {
     'vue/valid-template-root': 0,
     'vue/no-v-html': 0,
     'vue/singleline-html-element-content-newline': 0,
-    'vue/max-attributes-per-line': 0
+    'vue/max-attributes-per-line': 0,
+    'vue/html-self-closing': 0
   }
 };

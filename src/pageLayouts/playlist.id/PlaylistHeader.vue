@@ -5,7 +5,7 @@ import { computed, inject, ref } from 'vue';
 
 const scrollY = inject('layoutScrollY', ref(0));
 
-const passingHeight = 240;
+const passingHeight = 160;
 const isHeightPassed = computed(() => {
   return scrollY.value > passingHeight;
 });

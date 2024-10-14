@@ -1,0 +1,357 @@
+<script setup lang="ts">
+import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
+import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
+import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
+import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue';
+import ThreeDots from '@/UI/Icons/Shared/ThreeDots.vue';
+import type { Music } from '@/shared/models/Music';
+import formatTime from '../../shared/utils/formatTime';
+import { computed } from 'vue';
+import getActiveColor from '@/shared/utils/getActiveColor';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
+
+interface Props extends Music {
+  index: number,
+  album: Exclude<Music['album'], undefined>,
+  artists: Exclude<Music['artists'], undefined>
+  uploadedDate: string,
+  duration: number,
+
+  isAlbum?: boolean,
+  isDate?: boolean,
+
+  format: 'Компактный'| 'Список',
+
+  isAdded: boolean,
+  isCurrent: boolean,
+}
+
+const {format} = defineProps<Props>();
+
+const isListFormat = computed(() => {
+  return format === 'Список';
+});
+
+const musicStore = useMusicStore();
+
+</script>
+
+<template>
+  <div class="v-row" :style="isListFormat ? 'height: 56px' : 'height: 32px'">
+    <div class="state">
+      <span class="order" :style="getActiveColor(isCurrent)">{{index}}</span>
+      <button class="toggle">
+        <img v-if="isCurrent && musicStore.isPlaying" src="/equalizer-animated.gif" alt="" />
+        <PlayingState v-else class="icon" />
+      </button>
+    </div>
+    <div class="main">
+      <div v-if="isListFormat" class="picture">
+        <NoMusicOrPlaylistAvatar class="icon" />
+      </div>
+      <div class="text">
+        <RouterLink
+          v-tooltip="name"
+          :to="`/track/${url}`"
+          :style="getActiveColor(isCurrent)" class="musicName"
+        >
+          {{name}}
+        </RouterLink>
+
+        <template v-if="isListFormat">
+          <RouterLink
+            v-for="(artist, artistIndex) in artists"
+            :key="artist.id"
+            v-tooltip="artist.name"
+            :to="`/artist${artist.url}`"
+            class="artistName"
+          >
+            {{artist.name}} <template v-if="artistIndex !== artists.length - 1">, </template>
+          </RouterLink>
+        </template>
+      </div>
+    </div>
+    <div v-if="isAlbum" class="album">
+      <RouterLink v-if="isListFormat" v-tooltip="album.name" :to="`/playlist/${album.to}`">
+        {{album.name}}
+      </RouterLink>
+
+      <RouterLink
+        v-for="(artist, artistIndex) in artists"
+        v-else
+        :key="artist.id"
+        v-tooltip="artist.name"
+        :to="`/artist${artist.url}`"
+        class="artistName"
+      >
+        {{artist.name}} <template v-if="artistIndex !== artists.length - 1">, </template>
+      </RouterLink>
+    </div>
+    <div v-if="isDate" class="date">{{uploadedDate}}</div>
+    <div class="time">
+      <button v-tooltip="isAdded ? 'Добавить в любимые треки' : 'Добавить в плейлист'" class="addState">
+        <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
+        <RoundPlusIcon v-else class="add" />
+      </button>
+      <span>
+        {{formatTime(duration)}}
+      </span>
+
+      <button
+        v-tooltip="{
+          content: `Открыть контекстное меню: ${getCommaSeparatedString(artists, 'name')} — ${name}`,
+          style: {
+            overflow: 'hidden',
+            textAlign: 'right',
+            direction: 'revert'
+          }
+        }"
+        class="contextMenu"
+      >
+        <ThreeDots />
+      </button>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.v-row {
+  grid-template-rows: auto;
+  grid-template-columns: auto;
+  display: grid;
+  align-items: center;
+  grid-gap: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  user-select: none;
+
+  &:hover {
+    background-color: hsla(0,0%,100%,.1);
+
+    .state {
+      .order {
+        display: none;
+      }
+
+      .toggle {
+        display: block;
+
+        .icon {
+          display: block;
+        }
+      }
+    }
+
+    .time {
+      button {
+        display: block;
+      }
+    }
+
+    .main {
+      .artistName {
+        color: var(--white) !important;
+      }
+    }
+
+    .album a {
+      color: var(--white);
+    }
+  }
+
+  .state {
+    width: 16px;
+    height: 100%;
+    display: grid;
+    justify-items: end;
+    align-items: center;
+
+    .order {
+      color: var(--text-soft);
+      text-align: right;
+    }
+
+    &:has(.toggle img) {
+      .order {
+        display: none;
+      }
+      .toggle {
+        display: block;
+      }
+    }
+
+    .toggle {
+      display: none;
+      position: relative;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      background: none;
+      border: none;
+
+      .icon {
+        display: none;
+        width: 100%;
+        height: 100%;
+        fill: var(--white);
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .picture {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      background-color: #333333;
+      display: grid;
+      place-items: center;
+
+      .icon {
+        fill: var(--text-soft);
+        width: 50%;
+        height: 50%;
+      }
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-items: center;
+
+      a {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: unset;
+        word-break: break-all;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .musicName {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 1rem;
+      }
+
+      .artistName {
+        color: var(--text-soft);
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .album a {
+    font-size: 0.875rem;
+    width: min-content;
+    white-space: nowrap;
+  }
+
+  .date {
+    font-size: 0.875rem;
+    color: var(--text-soft);
+  }
+
+  .time {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    span {
+      font-size: .875rem;
+      color: var(--text-soft);
+      margin-left: auto;
+      margin-right: 32px;
+    }
+
+    .addState {
+      display: none;
+      position: absolute;
+      left: 16px;
+      width: 16px;
+      height: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      .add, .remove {
+        width: 16px;
+        height: 16px;
+      }
+
+      .remove {
+        fill: var(--main-color);
+      }
+      .add {
+        fill: var(--text-soft);
+
+        &:hover {
+          fill: var(--main-color);
+          scale: 1.05;
+        }
+      }
+    }
+
+    .contextMenu {
+      display: none;
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      right: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        scale: 1.25;
+        fill: var(--white);
+      }
+    }
+  }
+
+  a {
+    color: var(--text-soft);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: unset;
+    word-break: break-all;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  $classes: (
+    'state' : 'index',
+    'main' : 'name',
+    'album' : 'var2',
+    'date' : 'var3',
+    'time' : 'time'
+  );
+
+  @each $class, $line in $classes {
+    .#{$class} {
+      grid-column: #{$line};
+    }
+  }
+}
+</style>

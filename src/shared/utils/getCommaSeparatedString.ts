@@ -1,4 +1,4 @@
-export default function (array: any[], pick?: string) {
+export default function<T>(array: T[], pick?: keyof T) {
   let result: string = '';
 
   array.map((value, index, array) => {

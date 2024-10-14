@@ -90,6 +90,7 @@ const {isActive, coordinates, showContextMenu, hideContextMenu, getWidth} = useC
   border: none;
   cursor: pointer;
   margin-left: auto;
+  margin-right: calc(var(--content-spacing) * 2);
 
   span {
     color: var(--text-soft);

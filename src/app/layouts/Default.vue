@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { provide, ref, watchEffect } from 'vue';
 import { LayoutMobileRouter } from '@/widgets/LayoutRouterMobile';
 import { MediaPlayer } from '@/widgets/MediaPlayer';
 import { LayoutSideBar } from '@/widgets/LayoutSideBar';
 import { LayoutInfoContent } from '@/widgets/LayoutInfoPanel';
 import { LayoutHeader } from '@/widgets/LayoutHeader';
-import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import { provide, ref, watchEffect } from 'vue';
-import type { Ref } from 'vue';
 import { router } from '@/app/router';
 import useResponsive from '@/shared/composables/useResponsive';
+import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import Loading from '@/shared/components/Loading.vue';
+import type { Ref } from 'vue';
 
 interface ScrollableWithExpose
   extends Ref<InstanceType<typeof ScrollableBlock>> {
@@ -20,6 +20,7 @@ const layout = ref<ScrollableWithExpose>();
 const layoutScrollY = ref<number>(0);
 
 provide('layoutScrollY', layoutScrollY);
+provide('layoutContent', layout)
 
 router.beforeEach(() => {
   layout.value?.content.scrollTo({

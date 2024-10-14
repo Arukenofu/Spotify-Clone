@@ -5,6 +5,8 @@ import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue
 import ThreeDots from '@/UI/Icons/Shared/ThreeDots.vue';
 import FormatLibraryButton from './Elements/FormatLibraryButton.vue';
 import useCachedRef from '@/shared/composables/useCachedRef';
+import Table from '@/pageLayouts/playlist.id/Elements/Table.vue';
+import { reactive } from 'vue';
 
 type Format = 'Компактный'| 'Список';
 
@@ -16,6 +18,14 @@ const format = useCachedRef<Format>('playlistFormat', 'Список', {
 function setFormat(newValue: Format) {
   format.value = newValue;
 }
+
+const tooltips = reactive({
+  addButton: {
+    content: true ? 'Удалить из медиатеки' : 'Добавить в медиатеку',
+    distance: 24
+  },
+  options: 'Открыть контекстное меню: {Название}'
+})
 </script>
 
 <template>
@@ -24,27 +34,23 @@ function setFormat(newValue: Format) {
 
     <div class="controls">
       <GreenPlayingButton class="playingButton" :state="false" />
-      <button class="state">
+      <button v-tooltip="tooltips.addButton" class="state">
         <CheckedRoundCircleIcon v-if="true" class="remove" />
         <RoundPlusIcon v-else class="add" />
       </button>
-      <button class="options">
+      <button v-tooltip="tooltips.options" class="options">
         <ThreeDots class="icon" />
       </button>
       <FormatLibraryButton :format @set-format="setFormat" />
     </div>
 
-    <div class="playlist_table">
-
-    </div>
+    <Table :format="format" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .playlist_general {
   position: relative;
-  height: 5000px;
-  padding: 0 var(--content-spacing);
 
   .controls {
     width: 100%;
@@ -115,10 +121,6 @@ function setFormat(newValue: Format) {
     height: 232px;
     width: 100%;
     z-index: -1;
-  }
-
-  .controls, .background {
-    margin: 0 calc(var(--content-spacing) * -1);
   }
 }
 </style>
