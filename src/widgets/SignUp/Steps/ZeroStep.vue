@@ -2,35 +2,34 @@
 import FormButton from '@/UI/Form/FormButton.vue';
 import FormField from '@/UI/Form/FormField.vue';
 import FormLabel from '@/UI/Form/FormLabel.vue';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import stepStore from '@/widgets/SignUp/store/stepStore';
 import type { ZeroStepForm } from '@/widgets/SignUp/types/form';
+import { useMutation } from '@tanstack/vue-query';
+import { AuthService } from '@/services/api/auth/authService';
 
 const { step, form } = stepStore();
 
 const currentForm = reactive<ZeroStepForm>({
   email: ''
 });
-const isValidationError = ref<boolean>(false);
 
-function validateCurrentStep() {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isEmailValid = emailRegex.test(currentForm.email);
-
-  if (!isEmailValid) {
-    return (isValidationError.value = true);
+const {mutate: register, error} = useMutation({
+  mutationKey: ['registerEmail'],
+  mutationFn: () => new AuthService().validateEmail(currentForm.email),
+  onSuccess: () => {
+    step.value++;
+    form.value.email = currentForm.email;
   }
+});
 
-  form.value.email = currentForm.email;
-  step.value++;
-}
 </script>
 
 <template>
   <div class="face">
     <h1>Зарегистрируйтесь и погрузитесь в музыку</h1>
 
-    <form @submit.prevent="validateCurrentStep()">
+    <form @submit.prevent="register()">
       <FormLabel>Электронная почта</FormLabel>
 
       <FormField
@@ -38,10 +37,9 @@ function validateCurrentStep() {
         class="input"
         type="text"
         placeholder="example@domain.com"
-        :error="isValidationError"
+        :error="error?.message"
       >
-        Адрес электронной почты недействителен. <br>
-        Убедитесь, что он указан в таком формате: example@email.com.
+        {{error?.message}}
       </FormField>
 
       <FormButton class="button">

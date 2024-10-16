@@ -7,6 +7,17 @@ import FormatLibraryButton from './Elements/FormatLibraryButton.vue';
 import useCachedRef from '@/shared/composables/useCachedRef';
 import Table from '@/pageLayouts/playlist.id/Elements/Table.vue';
 import { reactive } from 'vue';
+import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
+import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
+import useMusicStore from "@/features/MediaPlayer/store/useMusicStore";
+import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
+
+interface Props {
+  queue: PlaylistInfoQueue[],
+  dossier: PlaylistInfoDossier
+}
+
+const {dossier, queue} = defineProps<Props>();
 
 type Format = 'Компактный'| 'Список';
 
@@ -14,6 +25,21 @@ const format = useCachedRef<Format>('playlistFormat', 'Список', {
   expectedTypes: ['string'],
   expectedValues: ['Компактный', 'Список']
 });
+
+const {loadSongOrPlaylist, toggleTrackPlaying} = useMusicUtils();
+const musicStore = useMusicStore();
+const playlistStore = usePlaylistStore();
+
+function play() {
+  if (dossier.playlistId === playlistStore.currentPlaylistInfo?.playlistId) {
+    toggleTrackPlaying(); return;
+  }
+
+  loadSongOrPlaylist({
+    playlistInfoDossier: dossier,
+    playlistQueue: queue
+  });
+}
 
 function setFormat(newValue: Format) {
   format.value = newValue;
@@ -25,7 +51,7 @@ const tooltips = reactive({
     distance: 24
   },
   options: 'Открыть контекстное меню: {Название}'
-})
+});
 </script>
 
 <template>
@@ -33,18 +59,29 @@ const tooltips = reactive({
     <div class="background" />
 
     <div class="controls">
-      <GreenPlayingButton class="playingButton" :state="false" />
+      <GreenPlayingButton
+        class="playingButton"
+        :state="musicStore.isPlaying"
+        @click="play"
+      />
       <button v-tooltip="tooltips.addButton" class="state">
         <CheckedRoundCircleIcon v-if="true" class="remove" />
         <RoundPlusIcon v-else class="add" />
       </button>
-      <button v-tooltip="tooltips.options" class="options">
+      <button
+        v-tooltip="tooltips.options"
+        class="options"
+      >
         <ThreeDots class="icon" />
       </button>
       <FormatLibraryButton :format @set-format="setFormat" />
     </div>
 
-    <Table :format="format" />
+    <Table
+      :format="format"
+      :queue="queue"
+      :dossier="dossier"
+    />
   </div>
 </template>
 

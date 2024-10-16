@@ -1,34 +1,22 @@
 <script setup lang="ts">
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-
-import { storeToRefs } from 'pinia';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
-import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
-import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 
 interface Props {
-  id: number;
-  albumName: string;
-  avatar: string;
-  href: string;
+  playlistId: number;
+  name: string;
+  image: string;
+  href: string | number;
   state?: boolean;
 }
 
-const { state } = defineProps<Props>();
-const store = useMusicStore();
-
-const { isPlaying, toggleTrackPlaying } = {
-  ...storeToRefs(store),
-  ...useMusicUtils()
-};
-
-function onButtonClick() {
-  if (!state) {
-    return;
-  }
-
-  toggleTrackPlaying();
+type Emits = {
+  onButtonClick: [];
 }
+
+defineProps<Props>();
+defineEmits<Emits>();
+
 </script>
 
 <template>
@@ -38,19 +26,19 @@ function onButtonClick() {
   >
     <div
       class="avatar"
-      :style="`background-image: url(${avatar})`"
+      :style="`background-image: url(${image})`"
     />
     <div class="other">
       <span class="album-name">
-        {{ albumName }}
+        {{ name }}
       </span>
 
       <button
-        v-tooltip="state && isPlaying ? 'Пауза' : 'Слушать'"
-        @click.stop="onButtonClick()"
+        v-tooltip="state ? 'Пауза' : 'Слушать'"
+        @click.stop="$emit('onButtonClick')"
       >
         <PlayingState
-          :state="state && isPlaying"
+          :state="state"
           class="icon"
         />
       </button>

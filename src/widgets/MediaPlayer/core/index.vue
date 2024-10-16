@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue';
 import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue';
 import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue';
@@ -8,19 +7,13 @@ import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNon
 import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue';
 import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
-import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 
 const musicStore = useMusicStore();
-const currentMusicStore = useCurrentMusicStore();
 
-onMounted(() => {
-  musicStore.audio = new Audio(currentMusicStore.currentAudioData.url);
-});
+const {toggleTrackPlaying} = useMusicUtils();
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
   if (event.repeat) return;
-
-  const { toggleTrackPlaying } = useMusicUtils();
 
   if (event.code === 'Space') {
     toggleTrackPlaying();

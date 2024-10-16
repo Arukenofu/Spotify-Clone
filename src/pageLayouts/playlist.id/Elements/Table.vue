@@ -4,6 +4,8 @@ import ClockIcon from '@/UI/Icons/Shared/ClockIcon.vue';
 import type { Ref } from 'vue';
 import MusicTableRow from '@/UI/Elements/MusicTableRow.vue';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
+import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
+import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 
 const stickyTableHead = useTemplateRef<HTMLElement>('stickyTableHead');
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
@@ -65,9 +67,13 @@ const computeGridLines = computed(() => {
 
 defineProps<{
   format: 'Компактный'| 'Список';
+  queue: PlaylistInfoQueue[],
+  dossier: PlaylistInfoDossier
 }>();
 
 const currentMusicStore = useCurrentMusicStore();
+
+const {loadSongOrPlaylist} = useMusicUtils();
 
 </script>
 
@@ -93,22 +99,26 @@ const currentMusicStore = useCurrentMusicStore();
 
     <div class="playlistTableBody">
       <MusicTableRow
-        v-for="(a, index) in 12"
-        :id="1"
-        :key="a"
+        v-for="(music, index) in queue"
+        :id="music.id"
+        :key="music.id"
         :index="index + 1"
         :format="format"
-        :name="'Название'"
-        :artists="[{id: 1, name: 'Артист', url: '/artist'}]"
+        :name="music.name"
+        :artists="music.artists"
         :album="{id: 1, name: 'Альбом', to: '/playlist/'}"
-        :duration="292"
-        :uploaded-date="'12 часов назад'"
+        :duration="music.duration"
+        :uploaded-date="music.uploadedDate"
         :url="'/'"
         :is-added="false"
-        :is-current="currentMusicStore.currentAudioId === a"
+        :is-current="currentMusicStore.currentAudioId === music.id"
         v-bind="computeTableLines"
         :style="computeGridLines"
         class="row"
+        @set-play="loadSongOrPlaylist({
+          playlistInfoDossier: dossier,
+          playlistQueue: queue,
+        }, index)"
       />
     </div>
   </div>

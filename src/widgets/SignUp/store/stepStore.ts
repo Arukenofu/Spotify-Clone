@@ -1,7 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
-
-import type { RegisterForm } from '@/services/types/authServiceTypes';
+import type { RegisterForm } from '@/services/api/auth/types/RegisterForm';
 
 const StepStore = defineStore('StepStore', () => {
   const step = ref<number>(0);

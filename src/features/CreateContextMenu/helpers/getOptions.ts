@@ -1,4 +1,4 @@
-import type { ComposableOptions, FuncOptions } from '@/features/NewContextMenu/types/FuncOptions';
+import type { ComposableOptions, FuncOptions } from '@/features/CreateContextMenu/types/FuncOptions';
 
 export function getOptions(
   options: FuncOptions | Partial<FuncOptions>,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import {nextTick, onMounted, onUnmounted, ref} from 'vue';
 import type { Component } from 'vue';
 
 interface Props {
@@ -56,7 +56,7 @@ function updateScrollBar() {
   scrollbar.value!.style.top = `${scrollbarTop}px`;
 
   scrollBarOpacityTimeOut = setTimeout(() => {
-    scrollbar.value!.style.removeProperty('opacity');
+    scrollbar.value?.style.removeProperty('opacity');
   }, 800);
 }
 
@@ -102,8 +102,19 @@ function scrollTo(event: MouseEvent) {
   });
 }
 
+const mutationObserver = new MutationObserver(() => {
+  nextTick(() => {
+    updateScrollBar();
+  })
+})
+
 onMounted(() => {
   updateScrollBar();
+  mutationObserver.observe(content.value!, {childList: true, subtree: true});
+});
+
+onUnmounted(() => {
+  mutationObserver.disconnect();
 });
 </script>
 

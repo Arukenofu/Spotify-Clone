@@ -4,8 +4,8 @@ import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
 import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue';
 import ThreeDots from '@/UI/Icons/Shared/ThreeDots.vue';
-import type { Music } from '@/shared/models/Music';
-import formatTime from '../../shared/utils/formatTime';
+import type { Music } from '@/services/types/Music';
+import formatTime from '../../shared/utils/formatTimeMMSS';
 import { computed } from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
@@ -29,6 +29,10 @@ interface Props extends Music {
 
 const {format} = defineProps<Props>();
 
+defineEmits<{
+  setPlay: []
+}>()
+
 const isListFormat = computed(() => {
   return format === 'Список';
 });
@@ -38,7 +42,7 @@ const musicStore = useMusicStore();
 </script>
 
 <template>
-  <div class="v-row" :style="isListFormat ? 'height: 56px' : 'height: 32px'">
+  <div class="v-row" :style="isListFormat ? 'height: 56px' : 'height: 32px'" @click="$emit('setPlay')">
     <div class="state">
       <span class="order" :style="getActiveColor(isCurrent)">{{index}}</span>
       <button class="toggle">
@@ -53,44 +57,53 @@ const musicStore = useMusicStore();
       <div class="text">
         <RouterLink
           v-tooltip="name"
-          :to="`/track/${url}`"
-          :style="getActiveColor(isCurrent)" class="musicName"
+          :to="`/track/${id}`"
+          :style="getActiveColor(isCurrent)"
+          class="musicName"
+          @click.stop
         >
           {{name}}
         </RouterLink>
 
-        <template v-if="isListFormat">
+        <div v-if="isListFormat" class="artists">
           <RouterLink
             v-for="(artist, artistIndex) in artists"
             :key="artist.id"
             v-tooltip="artist.name"
-            :to="`/artist${artist.url}`"
+            :to="`/artist/${artist.id}`"
             class="artistName"
+            @click.stop
           >
-            {{artist.name}} <template v-if="artistIndex !== artists.length - 1">, </template>
+            {{artist.name}}<template v-if="artistIndex !== artists.length - 1">,&nbsp;</template>
           </RouterLink>
-        </template>
+        </div>
       </div>
     </div>
     <div v-if="isAlbum" class="album">
-      <RouterLink v-if="isListFormat" v-tooltip="album.name" :to="`/playlist/${album.to}`">
+      <RouterLink v-if="isListFormat" v-tooltip="album.name" :to="`/playlist/${album.to}`" @click.stop>
         {{album.name}}
       </RouterLink>
 
-      <RouterLink
-        v-for="(artist, artistIndex) in artists"
-        v-else
-        :key="artist.id"
-        v-tooltip="artist.name"
-        :to="`/artist${artist.url}`"
-        class="artistName"
-      >
-        {{artist.name}} <template v-if="artistIndex !== artists.length - 1">, </template>
-      </RouterLink>
+      <div v-else class="artists">
+        <RouterLink
+          v-for="(artist, artistIndex) in artists"
+          :key="artist.id"
+          v-tooltip="artist.name"
+          :to="`/artist/${artist.id}`"
+          class="artistName"
+          @click.stop
+        >
+          {{artist.name}}<template v-if="artistIndex !== artists.length - 1">,&nbsp;</template>
+        </RouterLink>
+      </div>
     </div>
     <div v-if="isDate" class="date">{{uploadedDate}}</div>
     <div class="time">
-      <button v-tooltip="isAdded ? 'Добавить в любимые треки' : 'Добавить в плейлист'" class="addState">
+      <button
+        v-tooltip="isAdded ? 'Добавить в любимые треки' : 'Добавить в плейлист'"
+        class="addState"
+        @click.stop
+      >
         <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
         <RoundPlusIcon v-else class="add" />
       </button>
@@ -108,6 +121,7 @@ const musicStore = useMusicStore();
           }
         }"
         class="contextMenu"
+        @click.stop
       >
         <ThreeDots />
       </button>
@@ -353,5 +367,9 @@ const musicStore = useMusicStore();
       grid-column: #{$line};
     }
   }
+}
+
+.artists {
+  display: flex;
 }
 </style>

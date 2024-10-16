@@ -9,6 +9,8 @@ import stepStore from '@/widgets/SignUp/store/stepStore';
 
 import type { FirstStepForm } from '@/widgets/SignUp/types/form';
 import Pin from '@/UI/Icons/Shared/Pin.vue';
+import { useMutation } from '@tanstack/vue-query';
+import { AuthService } from '@/services/api/auth/authService';
 
 const { step, form } = stepStore();
 
@@ -16,17 +18,28 @@ const currentForm = reactive<FirstStepForm>({
   password: ''
 });
 
-const errorSteps = ref<number[]>([]);
+interface ErrorForm {
+  length: boolean,
+  digitSpecial: boolean,
+  letter: boolean
+}
 
-function isError(index: number) {
-  if (!errorSteps.value.length) {
+const errorForm = ref<ErrorForm | {}>({});
+
+function isError(key: keyof ErrorForm) {
+  if (!Object.keys(errorForm.value).length) {
     return false;
   }
 
-  return !errorSteps.value[index];
+  // @ts-ignore
+  return !errorForm.value[key]
 }
 
-const passwordRuleValidation = computed(() => {
+const passwordRuleValidation = computed<{
+  text: string,
+  key: keyof ErrorForm,
+  achieved: boolean
+}[]>(() => {
   const { password } = currentForm;
 
   const isHasOneLetter = /[a-zA-Z]/.test(password);
@@ -36,54 +49,50 @@ const passwordRuleValidation = computed(() => {
   return [
     {
       text: '1 букву',
+      key: 'length',
       achieved: isHasOneLetter
     },
     {
       text: '1 цифру или специальный символ (например, # ? ! &)',
+      key: 'digitSpecial',
       achieved: isHasSpecialSymbolOrNumber
     },
     {
       text: '6 символов',
+      key: 'letter',
       achieved: isHas6Symbol
     }
   ];
 });
 
-function validateCurrentStep() {
-  const isNotPassed = passwordRuleValidation.value.some((obj) => {
-    return Object.values(obj).includes(false);
-  });
-
-  if (isNotPassed) {
-    passwordRuleValidation.value.forEach((obj, index) => {
-      if (!obj.achieved) {
-        errorSteps.value.push(index);
-      }
-    });
-
-    return;
+const {mutate: validate} = useMutation({
+  mutationKey: ['registerPassword'],
+  mutationFn: () => new AuthService().validatePassword(currentForm.password),
+  onError: (error) => {
+    errorForm.value = JSON.parse(error.message) as ErrorForm;
+  },
+  onSuccess: () => {
+    step.value++;
+    form.value.password = currentForm.password;
   }
-
-  form.value.password = currentForm.password;
-  step.value++;
-}
+})
 </script>
 
 <template>
-  <form @submit.prevent="validateCurrentStep()">
+  <form @submit.prevent="validate()">
     <FormLabel>Пароль</FormLabel>
     <FormInput
       v-model="currentForm.password"
       class="input"
       type="password"
-      :error="errorSteps.length"
-      @input="errorSteps = []"
+      :error="Object.keys(errorForm).length"
+      @input="errorForm = {}"
     />
 
     <div class="rules">
       <label>Пароль должен содержать как минимум:</label>
       <div
-        v-for="(rule, index) in passwordRuleValidation"
+        v-for="(rule) in passwordRuleValidation"
         :key="rule.text"
         class="rule"
       >
@@ -93,7 +102,7 @@ function validateCurrentStep() {
 
         <span
           class="text"
-          :class="isError(index) && 'alert'"
+          :class="isError(rule.key) && 'alert'"
         >
           {{ rule.text }}
         </span>

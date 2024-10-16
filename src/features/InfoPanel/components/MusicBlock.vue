@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import type { Music } from '@/shared/models/Music';
+import type { Music } from '@/services/types/Music';
 
 const props = defineProps<{
   music: Music;
@@ -14,7 +14,7 @@ defineEmits(['onImageBlockClick']);
 
 const playingStateTooltip = computed(() => {
   const musicName = props.music.name;
-  const artists = getCommaSeparatedString(props.music.artists, 'name');
+  const artists = getCommaSeparatedString(props.music.artists!, 'name');
 
   if (props.state) {
     return `Поставить на паузу то, что сейчас играет «${musicName}» (${artists})`;
@@ -54,12 +54,12 @@ const playingStateTooltip = computed(() => {
           v-for="(artist, index) in music.artists"
           :key="artist.id"
           class="artist"
-          :to="`/artist/${artist.url}`"
+          :to="`/artist/${artist.id}`"
         >
           <span>
             {{ artist.name }}
           </span>
-          <template v-if="index !== music.artists.length - 1">, </template>
+          <template v-if="index !== music.artists?.length || 1 - 1">, </template>
         </RouterLink>
       </div>
     </div>

@@ -2,8 +2,8 @@
 import useResponsive from '@/shared/composables/useResponsive';
 
 interface Props {
-  naming?: string;
-  headTitle?: string;
+  naming: string | null;
+  headTitle?: string | null;
   href: string;
   isShowAll?: boolean;
 }
@@ -103,7 +103,7 @@ section {
       a {
         font-weight: 900;
         font-size: 0.875rem;
-        color: var(--text-soft);
+        color: var(--white);
         white-space: nowrap;
       }
 

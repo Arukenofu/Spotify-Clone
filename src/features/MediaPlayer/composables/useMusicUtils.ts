@@ -6,7 +6,9 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
-import type { Music } from '@/shared/models/Music';
+import type { Music } from '@/services/types/Music';
+import type {PlaylistInfo} from "@/services/api/music/types/PlaylistInfo";
+import {MusicInfoService} from "@/services/api/music/musicInfoService";
 
 export default function () {
   const musicStore = useMusicStore();
@@ -14,22 +16,26 @@ export default function () {
   const currentMusicStore = useCurrentMusicStore();
 
   const { audio, isPlaying } = storeToRefs(musicStore);
-  const { currentQueue, currentPlaylist } = storeToRefs(playlistStore);
+  const { currentQueue, currentPlaylistInfo } = storeToRefs(playlistStore);
   const { currentAudioId, currentAudioData, currentAudioIndexInQueue } = storeToRefs(currentMusicStore);
+
+  const {setAudioUrl} = musicStore;
 
   function playAudio() {
     audio.value!.play().then(() => {
       isPlaying.value = true;
     });
 
-    const artistsString: string = getCommaSeparatedString(
-      currentAudioData.value.artists,
-      'name'
-    );
+    if (currentAudioData.value !== null) {
+      const artistsString: string = getCommaSeparatedString(
+          currentAudioData.value.artists || [],
+          'name'
+      );
 
-    setTitle(`${currentAudioData.value.name} • ${artistsString}`, {
-      temporarily: true
-    });
+      setTitle(`${currentAudioData.value.name} • ${artistsString}`, {
+        temporarily: true
+      });
+    }
   }
 
   function pauseAudio() {
@@ -41,11 +47,37 @@ export default function () {
     });
   }
 
-  function loadSong(data: Music, album?: Music[]) {
-    if (album) {
-      currentQueue.value = album;
+  async function loadPlaylist(id: number) {
+    if (id === playlistStore.currentPlaylistInfo?.playlistId) {
+      toggleTrackPlaying(); return;
     }
 
+    loadSongOrPlaylist(await new MusicInfoService().getPlaylistInfo(id));
+  }
+
+  function loadSongOrPlaylist(
+      playlist: PlaylistInfo,
+      index: number = 0,
+      play: boolean = true
+  ) {
+    const isSamePlaylist = playlist.playlistInfoDossier.playlistId === currentPlaylistInfo.value?.playlistId;
+    const isSameTrack = index === currentAudioIndexInQueue.value;
+
+    if (isSamePlaylist && isSameTrack) {
+      toggleTrackPlaying(); return;
+    }
+
+    if (isSamePlaylist) {
+      loadSongFromCurrentQueue(currentQueue.value[index], play); return;
+    }
+
+    playlistStore.setCurrentPlaylistInfo(playlist['playlistInfoDossier']);
+    playlistStore.setNewQueue(playlist['playlistQueue']);
+
+    loadSongFromCurrentQueue(currentQueue.value[index], play);
+  }
+
+  function loadSongFromCurrentQueue(data: Music, play: boolean = true) {
     currentAudioId.value = data.id;
 
     if (audio.value && audio.value.src) {
@@ -53,14 +85,13 @@ export default function () {
       audio.value.src = '';
     }
 
-    audio.value = new Audio();
-    audio.value.src = data.url;
+    setAudioUrl(data.url);
 
-    if ('mediaSession' in navigator) {
+    if ('mediaSession' in navigator && data.artists && data.avatar) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: data.name,
         artist: getCommaSeparatedString(data.artists, 'name'),
-        album: currentPlaylist.value?.name || undefined,
+        album: currentPlaylistInfo.value?.name || undefined,
         artwork: [{ src: data.avatar, type: 'image/jpg', sizes: '500x500' }]
       });
       navigator.mediaSession.setActionHandler('play', playAudio);
@@ -69,23 +100,31 @@ export default function () {
       navigator.mediaSession.setActionHandler('previoustrack', previousTrack);
     }
 
-    playAudio();
+    play && playAudio();
   }
 
   function nextTrack() {
-    if (currentAudioIndexInQueue.value + 1 === currentQueue.value.length) {
-      return loadSong(currentQueue.value[0]);
+    if (currentAudioIndexInQueue.value === null) {
+      return;
     }
 
-    return loadSong(currentQueue.value[currentAudioIndexInQueue.value + 1]);
+    if (currentAudioIndexInQueue.value + 1 === currentQueue.value.length) {
+      return loadSongFromCurrentQueue(currentQueue.value[0]);
+    }
+
+    return loadSongFromCurrentQueue(currentQueue.value[currentAudioIndexInQueue.value + 1]);
   }
 
   function previousTrack() {
-    if (currentAudioIndexInQueue.value === 0) {
-      return loadSong(currentQueue.value[currentQueue.value.length - 1]);
+    if (currentAudioIndexInQueue.value === null) {
+      return;
     }
 
-    return loadSong(currentQueue.value[currentAudioIndexInQueue.value - 1]);
+    if (currentAudioIndexInQueue.value === 0) {
+      return loadSongFromCurrentQueue(currentQueue.value[currentQueue.value.length - 1]);
+    }
+
+    return loadSongFromCurrentQueue(currentQueue.value[currentAudioIndexInQueue.value - 1]);
   }
 
   function toggleTrackPlaying() {
@@ -101,7 +140,9 @@ export default function () {
   }
 
   return {
-    loadSong,
+    loadPlaylist,
+    loadSongOrPlaylist,
+    loadSongFromCurrentQueue,
     toggleTrackPlaying,
     nextTrack,
     previousTrack

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import Logo from '@/UI/Icons/Shared/Logo.vue';
 import FormLabel from '@/UI/Form/FormLabel.vue';
 import FormInput from '@/UI/Form/FormInput.vue';
@@ -8,8 +8,9 @@ import FormButton from '@/UI/Form/FormButton.vue';
 import ErrorIcon from '@/UI/Icons/Shared/ErrorIcon.vue';
 import FormError from '@/UI/Form/FormError.vue';
 import setTitle from '@/shared/utils/setTitle';
-import { LoginToAccount } from '@/services/api/authService';
 import { router } from '@/app/router';
+import { useMutation } from '@tanstack/vue-query';
+import { AuthService } from '@/services/api/auth/authService';
 
 setTitle('Войти - Spotify');
 
@@ -18,42 +19,25 @@ const form = reactive({
   password: '',
   isRemember: true
 });
-const error = ref<boolean>(false);
+
 const fieldErrors = reactive({
   email: false,
   password: false
 });
 
-async function loginToAccount() {
-  const { email, password } = form;
-
-  const isEmailError =
-    !email ||
-    email.length < 6 ||
-    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
-  if (isEmailError) {
-    fieldErrors.email = true;
-    return;
+const {mutate: login, error} = useMutation({
+  mutationKey: ['login'],
+  mutationFn: () => new AuthService().LoginToAccount(form),
+  onSuccess: () => {
+    router.push('/');
   }
-  const isPasswordError = !password || password.length < 6;
-  if (isPasswordError) {
-    fieldErrors.password = true;
-    return;
-  }
+})
 
-  await LoginToAccount(form)
-    .then(() => {
-      router.push('/');
-    })
-    .catch(() => {
-      error.value = true;
-    });
-}
 </script>
 
 <template>
   <main>
-    <form @submit.prevent="loginToAccount()">
+    <form @submit.prevent="login()">
       <Logo class="logo" />
       <h1>Войти в Spotify</h1>
       <div
@@ -61,7 +45,7 @@ async function loginToAccount() {
         class="errorField"
       >
         <ErrorIcon class="icon" />
-        Неправильное имя пользователя или пароль.
+        {{error.message}}
       </div>
       <div class="inputs">
         <FormLabel
@@ -75,7 +59,6 @@ async function loginToAccount() {
           placeholder="Электронная почта или имя пользователя"
           class="input"
           :error="fieldErrors.email"
-          @input="fieldErrors.email = false"
         />
         <FormError
           v-if="fieldErrors.email"
@@ -96,7 +79,6 @@ async function loginToAccount() {
           class="input"
           :error="fieldErrors.password"
           type="password"
-          @input="fieldErrors.password = false"
         />
         <FormError
           v-if="fieldErrors.password"

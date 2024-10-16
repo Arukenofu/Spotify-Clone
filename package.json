@@ -13,8 +13,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "ofetch": "^1.4.0",
-    "pinia": "^2.2.2",
+    "@tanstack/vue-query": "^5.59.13",
+    "ofetch": "^1.4.1",
+    "pinia": "^2.2.4",
     "vue": "^3.5.11",
     "vue-router": "^4.4.5"
   },

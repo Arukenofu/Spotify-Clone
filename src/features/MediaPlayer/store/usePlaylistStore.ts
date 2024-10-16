@@ -1,19 +1,27 @@
-import { ref, shallowRef } from 'vue';
+import {computed, shallowRef} from 'vue';
 import { defineStore } from 'pinia';
-import baseQueue from '@/features/MediaPlayer/constants/baseQueue';
-import basePlaylistInfo from '@/features/MediaPlayer/constants/basePlaylistInfo';
-import type CurrentPlaylistInfo from '@/features/MediaPlayer/types/CurrentPlaylistInfo';
-import type { Music } from '@/shared/models/Music';
+import type { Music } from '@/services/types/Music';
+import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 
 export default defineStore('usePlaylistStore', () => {
-  const currentPlaylist = shallowRef<CurrentPlaylistInfo | null>(
-    basePlaylistInfo
+  const currentPlaylistInfo = shallowRef<PlaylistInfoDossier | null>(
+    null
   );
 
-  const currentQueue = ref<Music[]>(baseQueue);
+  const currentQueue = shallowRef<Music[]>([]);
+
+  function setCurrentPlaylistInfo(playlist: PlaylistInfoDossier | null) {
+    currentPlaylistInfo.value = playlist;
+  }
+
+  function setNewQueue(queue: Music[]) {
+    currentQueue.value = queue;
+  }
 
   return {
-    currentPlaylist,
-    currentQueue
+    currentPlaylistInfo: computed(() => currentPlaylistInfo.value),
+    currentQueue: computed(() => currentQueue.value),
+    setCurrentPlaylistInfo,
+    setNewQueue
   };
 });

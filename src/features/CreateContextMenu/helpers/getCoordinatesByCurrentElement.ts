@@ -1,4 +1,4 @@
-import type { FuncOptions } from '@/features/NewContextMenu/types/FuncOptions';
+import type {FuncOptions} from "@/features/CreateContextMenu/types/FuncOptions";
 
 export function getCoordinatesByCurrentElement(
   event: MouseEvent,

@@ -2,16 +2,14 @@
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import type { Entities } from '@/shared/models/Entities';
+import type { Entities } from '@/services/types/Entities';
 
 type EntitiesExpandedWithArtist = Entities | 'Artist'
 
 interface Props {
-  albumId: number;
+  playlistId: number;
   type?: EntitiesExpandedWithArtist;
-  to: string;
-  name: string;
-  showName?: boolean;
+  name?: string;
   image?: string;
 }
 
@@ -24,7 +22,7 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div
     class="card"
-    @click="routerPushPrevent(`/${type}/${to}`)"
+    @click="routerPushPrevent(`/${type}/${playlistId}`)"
   >
     <EntityAvatar1x1
       class="image"
@@ -41,7 +39,7 @@ withDefaults(defineProps<Props>(), {
       />
     </EntityAvatar1x1>
 
-    <span v-if="showName">
+    <span v-if="name">
       {{ name }}
     </span>
 

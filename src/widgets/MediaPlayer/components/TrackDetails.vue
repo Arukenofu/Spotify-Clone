@@ -7,7 +7,7 @@ const { currentAudioData } = storeToRefs(store);
 </script>
 
 <template>
-  <div class="track-details">
+  <div v-if="currentAudioData" class="track-details">
     <div class="track-image-outer">
       <img
         :src="currentAudioData.avatar"
@@ -23,13 +23,13 @@ const { currentAudioData } = storeToRefs(store);
         <RouterLink
           v-for="(artist, index) in currentAudioData.artists"
           :key="artist.id"
-          :to="`/artist/${artist.url}`"
+          :to="`/artist/${artist.id}`"
           v-bind="$attrs"
         >
           <span>
             {{ artist.name }}
           </span>
-          <template v-if="index !== currentAudioData.artists.length - 1">
+          <template v-if="index !== currentAudioData.artists?.length || 1 - 1">
             ,
           </template>
         </RouterLink>

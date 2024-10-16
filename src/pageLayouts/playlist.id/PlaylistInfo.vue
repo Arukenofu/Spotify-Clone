@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
+import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
+import localizeEntities from "../../services/utils/localizeEntities";
+import readableTime from "../../shared/utils/readableTime";
+
+interface Props extends PlaylistInfoDossier {
+}
+
+defineProps<Props>();
+
 </script>
 
 <template>
@@ -11,18 +20,18 @@ import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
         as="button"
         class="picture"
         type="Artist"
-        :image="''"
+        :image="imageUrl"
       />
 
       <div class="info">
         <span class="type">
-          Исполнитель
+          {{localizeEntities(type)}}
         </span>
 
-        <h1 class="name">Микс дня #4</h1>
+        <h1 class="name">{{name}}</h1>
 
         <div class="artists">
-          Sadraddin, Ирина Кайратовна, Hiro и не только
+          {{description}}
         </div>
 
         <div class="other-info">
@@ -30,11 +39,11 @@ import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
             <figure title="Spotify">
               <div><img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67757000003b8255c25988a6ac314394d3fbf5" alt="Spotify"></div>
             </figure>
-            <span>Spotify</span>
+            <span>{{creator.name}}</span>
           </div>
           <span class="dot">•</span>
           <div class="quantity">
-            50 треков, примерно 2 ч. 30 мин.
+            {{tracksAmount}} треков, примерно {{readableTime(tracksDuration)}}
           </div>
         </div>
       </div>

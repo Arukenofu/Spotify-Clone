@@ -60,16 +60,23 @@ watchEffect(() => {
         :scrollbar-width="isMobile ? '5px' : '12px'"
         :allow-style-shadow="false"
       >
-        <Suspense>
-          <template #fallback>
-            <Loading />
+        <RouterView v-slot="{ Component }">
+          <template v-if="Component">
+            <Transition mode="out-in">
+              <KeepAlive>
+                <Suspense>
+                  <div class="content">
+                    <Component :is="Component" />
+                  </div>
+
+                  <template #fallback>
+                    <Loading />
+                  </template>
+                </Suspense>
+              </KeepAlive>
+            </Transition>
           </template>
-          <template #default>
-            <div class="content">
-              <RouterView />
-            </div>
-          </template>
-        </Suspense>
+        </RouterView>
       </ScrollableBlock>
 
       <LayoutInfoContent />

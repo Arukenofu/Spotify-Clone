@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
-import type { Entities } from '@/shared/models/Entities';
+import type { Entities } from '@/services/types/Entities';
 import type { Component } from 'vue';
 
 interface Props {

@@ -4,8 +4,9 @@ import FormButton from '@/UI/Form/FormButton.vue';
 import { ref } from 'vue';
 import FormError from '@/UI/Form/FormError.vue';
 import stepStore from '@/widgets/SignUp/store/stepStore';
-import { RegisterAccount } from '@/services/api/authService';
 import { router } from '@/app/router';
+import { useMutation } from '@tanstack/vue-query';
+import { AuthService } from '@/services/api/auth/authService';
 
 const { form } = stepStore();
 
@@ -25,19 +26,17 @@ const terms = ref([
 ]);
 const isError = ref<boolean>(false);
 
+const {mutate: register} = useMutation({
+  mutationKey: ['register'],
+  mutationFn: () => new AuthService().RegisterAccount(form.value)
+})
+
 async function validateWholeForm() {
-  if (!terms.value[0].checked) {
-    // do something
-  }
-  if (!terms.value[1].checked) {
-    // do something
-  }
-  if (!terms.value[2].checked) {
-    return (isError.value = true);
-  }
+  isError.value = terms.value.some(term => !term.checked);
 
-  await RegisterAccount(form.value);
+  if (isError.value) return;
 
+  register();
   await router.push('/login');
 }
 </script>

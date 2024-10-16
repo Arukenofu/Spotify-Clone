@@ -11,7 +11,7 @@ import Range from '@/shared/components/Range.vue';
 import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
 import getRandomNumber from '@/shared/utils/getRandomNumber';
 import getActiveColor from '@/shared/utils/getActiveColor';
-import formatTime from '@/shared/utils/formatTime';
+import formatTime from '@/shared/utils/formatTimeMMSS';
 
 import { storeToRefs } from 'pinia';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
@@ -27,7 +27,7 @@ const { audio, isPlaying } = storeToRefs(musicStore);
 const { currentQueue } = storeToRefs(playlistStore);
 const { currentAudioIndexInQueue } = storeToRefs(currentMusicStore);
 
-const { toggleTrackPlaying, nextTrack, previousTrack, loadSong } =
+const { toggleTrackPlaying, nextTrack, previousTrack, loadSongFromCurrentQueue } =
   useMusicUtils();
 
 const userConfig = useUserSettings();
@@ -47,12 +47,16 @@ onMounted(() => {
 });
 
 async function onMusicEnded() {
+  if (!currentAudioIndexInQueue.value) {
+    return;
+  }
+
   if (currentRepeatMode.value === 'repeatCurrentMusic') {
     return audio.value?.play();
   }
 
   if (isShuffle.value) {
-    return loadSong(
+    return loadSongFromCurrentQueue(
       currentQueue.value[
         getRandomNumber(
           currentQueue.value.length - 1,

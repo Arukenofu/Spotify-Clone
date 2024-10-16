@@ -13,10 +13,10 @@ const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();
 const musicStore = useMusicStore();
 const { currentAudioData, currentAudioIndexInQueue } = storeToRefs(store);
-const { toggleTrackPlaying, loadSong } = useMusicUtils();
+const { toggleTrackPlaying, loadSongFromCurrentQueue } = useMusicUtils();
 
 const nextSongsInQueue = computed(() => {
-  if (!playlistStore.currentQueue.length) {
+  if (!playlistStore.currentQueue.length || currentAudioIndexInQueue.value == null) {
     return [];
   }
 
@@ -26,8 +26,8 @@ const nextSongsInQueue = computed(() => {
 const headTextValue = computed(() => {
   let output = 'Далее';
 
-  if (playlistStore.currentPlaylist?.name) {
-    output += ` из: ${playlistStore.currentPlaylist?.name}`;
+  if (playlistStore.currentPlaylistInfo?.name) {
+    output += ` из: ${playlistStore.currentPlaylistInfo?.name}`;
   } else {
     output += ':';
   }
@@ -45,7 +45,7 @@ const headTextValue = computed(() => {
     </PanelHeader>
 
     <ScrollableBlock class="content">
-      <div class="now-playing section">
+      <div v-if="currentAudioData" class="now-playing section">
         <div class="head-text">
           Сейчас играет
         </div>
@@ -80,7 +80,7 @@ const headTextValue = computed(() => {
             :music="music"
             :state="false"
             :style="`top: ${index * 64}px`"
-            @on-image-block-click="loadSong(music)"
+            @on-image-block-click="loadSongFromCurrentQueue(music)"
           />
         </div>
       </div>

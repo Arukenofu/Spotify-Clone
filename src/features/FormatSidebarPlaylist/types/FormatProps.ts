@@ -1,5 +1,5 @@
-import type { Playlist } from '@/shared/models/Playlist';
-import type { Entities } from '@/shared/models/Entities';
+import type { Playlist } from '@/services/types/Playlist';
+import type { Entities } from '@/services/types/Entities';
 
 export type FormatEntity = Exclude<Entities, 'Artist' | 'User'> | 'Folder'
 
