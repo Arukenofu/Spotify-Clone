@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-
+import { onMounted, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import RandomOrder from '@/UI/Icons/MediaPlayer/RandomOrder.vue';
 import Previous from '@/UI/Icons/MediaPlayer/Previous.vue';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import Next from '@/UI/Icons/MediaPlayer/Next.vue';
 import Repeat from '@/UI/Icons/MediaPlayer/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
-
 import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
 import getRandomNumber from '@/shared/utils/getRandomNumber';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import formatTime from '@/shared/utils/formatTimeMMSS';
-
-import { storeToRefs } from 'pinia';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
@@ -23,27 +20,28 @@ const musicStore = useMusicStore();
 const playlistStore = usePlaylistStore();
 const currentMusicStore = useCurrentMusicStore();
 
-const { audio, isPlaying } = storeToRefs(musicStore);
+const { audio, isPlaying, currentTime, duration } = storeToRefs(musicStore);
 const { currentQueue } = storeToRefs(playlistStore);
 const { currentAudioIndexInQueue } = storeToRefs(currentMusicStore);
 
-const { toggleTrackPlaying, nextTrack, previousTrack, loadSongFromCurrentQueue } =
-  useMusicUtils();
+const { toggleTrackPlaying, nextTrack, previousTrack, loadSongFromCurrentQueue } = useMusicUtils();
+const {loadMetaData, autoTimeUpdate} = musicStore;
 
 const userConfig = useUserSettings();
-const { isShuffle, currentRepeatMode, volume } = storeToRefs(userConfig);
-
-const currentTime = ref<number>(0);
-const duration = ref<number>(0);
+const { isShuffle, currentRepeatMode } = storeToRefs(userConfig);
 
 onMounted(() => {
   loadMetaData();
-  autoTimeUpdate();
+  autoTimeUpdate(onMusicEnded);
 
   setInterval(() => {
     loadMetaData();
-    autoTimeUpdate();
+    autoTimeUpdate(onMusicEnded);
   }, 1500);
+});
+
+watch(audio, () => {
+  loadMetaData();
 });
 
 async function onMusicEnded() {
@@ -73,31 +71,10 @@ async function onMusicEnded() {
   isPlaying.value = false;
 }
 
-function autoTimeUpdate() {
-  audio.value?.addEventListener('timeupdate', () => {
-    currentTime.value = audio.value!.currentTime;
-
-    if (currentTime.value === duration.value) {
-      onMusicEnded();
-    }
-  });
-}
-
 function timeUpdate(time: number) {
   audio.value!.currentTime = time;
   isPlaying.value = true;
 }
-
-function loadMetaData() {
-  audio.value?.addEventListener('loadedmetadata', () => {
-    audio.value!.volume = volume.value;
-    duration.value = audio.value!.duration;
-  });
-}
-
-watch(audio, () => {
-  loadMetaData();
-});
 </script>
 
 <template>

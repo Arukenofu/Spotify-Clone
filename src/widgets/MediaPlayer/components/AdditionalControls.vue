@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import {inject} from 'vue';
+import { router } from '@/app/router';
 import Range from '@/shared/components/Range.vue';
 import ShowQueue from '@/UI/Icons/MediaPlayerControls/ShowQueue.vue';
 import FullScreen from '@/UI/Icons/MediaPlayerControls/FullScreen.vue';
@@ -7,20 +10,12 @@ import ConnectToDevice from '@/UI/Icons/MediaPlayerControls/ConnectToDevice.vue'
 import Volume from '@/UI/Icons/MediaPlayerControls/Volume.vue';
 import VolumeSilent from '@/UI/Icons/MediaPlayerControls/VolumeSilent.vue';
 import NowPlaying from '@/UI/Icons/MediaPlayerControls/NowPlaying.vue';
-
-import { storeToRefs } from 'pinia';
-import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
-
-import { infoPanel } from '@/features/InfoPanel';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
-import { router } from '@/app/router';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import { infoPanel } from '@/features/InfoPanel';
 
 const musicStore = useMusicStore();
-const { audio } = storeToRefs(musicStore);
-
-const userConfig = useUserSettings();
-const { volume } = storeToRefs(userConfig);
+const { audio, volume } = storeToRefs(musicStore);
 
 const { currentPanelName, setNewPanel } = infoPanel();
 
@@ -63,6 +58,8 @@ function toggleLyricsPage() {
     router.back();
   }
 }
+
+const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
 </script>
 
 <template>
@@ -121,6 +118,7 @@ function toggleLyricsPage() {
       <FullScreen
         v-tooltip:end_top="'На весь экран'"
         class="icon"
+        @click="enableFullScreenFunc!"
       />
     </div>
   </div>

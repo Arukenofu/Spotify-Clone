@@ -59,7 +59,7 @@ const playingStateTooltip = computed(() => {
           <span>
             {{ artist.name }}
           </span>
-          <template v-if="index !== music.artists?.length || 1 - 1">, </template>
+          <template v-if="index !== music.artists?.length - 1">, </template>
         </RouterLink>
       </div>
     </div>

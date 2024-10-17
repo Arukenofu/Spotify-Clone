@@ -63,7 +63,7 @@ const emit = defineEmits<{
 <style lang="scss" scoped>
 .range-outer {
   height: 4px;
-  background-color: #4d4d4d;
+  background-color: hsla(0, 0%, 100%, .3);
   border-radius: 2px;
   position: relative;
 
@@ -146,7 +146,7 @@ const emit = defineEmits<{
   .thumb {
     opacity: 0;
     position: absolute;
-    top: 1px;
+    top: 1.6px;
     transform: translateY(-50%);
     left: calc(v-bind('progress'));
     height: 12px;

@@ -2,15 +2,19 @@
 import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue';
 import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue';
 import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue';
-import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNone.vue';
 import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue';
 import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
+import FullScreen from "@/widgets/MediaPlayer/components/FullScreen.vue";
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
+import useScreen from "@/shared/composables/useScreen";
+import {provide} from "vue";
 
 const musicStore = useMusicStore();
 
 const {toggleTrackPlaying} = useMusicUtils();
+const {isFullscreen, enableFullscreen, exitFullScreen} = useScreen();
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
   if (event.repeat) return;
@@ -20,10 +24,15 @@ window.addEventListener('keyup', (event: KeyboardEvent) => {
     event.preventDefault();
   }
 });
+
+provide('enableFullScreenFunc', enableFullscreen);
+provide('exitFullScreenFunc', exitFullScreen);
 </script>
 
 <template>
-  <div v-if="musicStore.audio" class="player">
+  <FullScreen v-if="isFullscreen" />
+
+  <div v-else-if="musicStore.audio" class="player">
     <TrackDetails />
     <TrackControls />
     <AdditionalControls />

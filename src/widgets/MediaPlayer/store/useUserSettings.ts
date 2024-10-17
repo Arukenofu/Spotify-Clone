@@ -14,11 +14,7 @@ export const useUserSettings = defineStore('useUserSettings', () => {
     ),
     isShuffle = useCachedRef<boolean>('isShuffle', false, {
       expectedTypes: ['boolean']
-    }),
-    volume = useCachedRef<number>('volume', 0.75, {
-      min: 0,
-      max: 1
-    });
+    })
 
   function toggleRepeatMode() {
     const repeatModes: RepeatModes[] = [
@@ -37,6 +33,6 @@ export const useUserSettings = defineStore('useUserSettings', () => {
     currentRepeatMode,
     isShuffle,
     toggleRepeatMode,
-    volume
+
   };
 });

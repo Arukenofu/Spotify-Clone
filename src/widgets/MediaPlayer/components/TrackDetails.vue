@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
+import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
 
 const store = useCurrentMusicStore();
 const { currentAudioData } = storeToRefs(store);
@@ -20,19 +21,10 @@ const { currentAudioData } = storeToRefs(store);
         {{ currentAudioData.name }}
       </a>
       <div class="track-artists">
-        <RouterLink
-          v-for="(artist, index) in currentAudioData.artists"
-          :key="artist.id"
-          :to="`/artist/${artist.id}`"
-          v-bind="$attrs"
-        >
-          <span>
-            {{ artist.name }}
-          </span>
-          <template v-if="index !== currentAudioData.artists?.length || 1 - 1">
-            ,
-          </template>
-        </RouterLink>
+        <CommaSeparatedArtistsLink
+          class="artists"
+          :artists="currentAudioData.artists"
+        />
       </div>
     </div>
   </div>
@@ -79,10 +71,10 @@ const { currentAudioData } = storeToRefs(store);
 
     .track-artists {
       font-size: 0.65em;
+      font-weight: 500;
 
-      a span {
+      :deep(a) {
         color: var(--text-soft);
-        font-weight: 500;
 
         &:hover {
           color: var(--white);
