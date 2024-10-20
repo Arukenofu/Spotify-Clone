@@ -241,6 +241,7 @@ const musicStore = useMusicStore();
     .text {
       display: flex;
       flex-direction: column;
+      gap: 5px;
       justify-items: center;
 
       a {
@@ -250,7 +251,7 @@ const musicStore = useMusicStore();
         -webkit-box-orient: vertical;
         white-space: unset;
         word-break: break-all;
-        font-weight: 500;
+        font-weight: 400;
 
         &:hover {
           text-decoration: underline;

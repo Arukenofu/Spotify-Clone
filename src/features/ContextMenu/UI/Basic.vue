@@ -84,7 +84,7 @@ button {
     gap: 12px;
 
     .text {
-      font-weight: 600;
+      font-weight: 500;
       font-size: 0.85rem;
       white-space: nowrap;
       text-align: left;

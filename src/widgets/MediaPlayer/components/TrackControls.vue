@@ -169,6 +169,7 @@ function timeUpdate(time: number) {
   }
 
   .progress {
+    height: 100%;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -184,9 +185,8 @@ function timeUpdate(time: number) {
       top: 1px;
       line-height: 0;
       color: var(--text-soft);
-      font-size: 1rem;
+      font-size: .75rem;
       font-weight: 500;
-      font-family: 'Zain', sans-serif;
     }
   }
 }

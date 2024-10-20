@@ -50,7 +50,7 @@ const tooltipArguments = computed(() => {
       class="toggle"
       @click="toggleSidebar()"
     >
-      <LibraryIcon class="icon" />
+      <LibraryIcon :state="!isMinimized" class="icon" />
 
       <span
         v-if="!isMinimized"
@@ -111,7 +111,7 @@ const tooltipArguments = computed(() => {
     }
 
     .text {
-      font-weight: 700;
+      font-weight: 900;
       font-size: 1rem;
     }
 

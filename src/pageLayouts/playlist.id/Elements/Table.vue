@@ -148,11 +148,11 @@ const {loadSongOrPlaylist} = useMusicUtils();
       align-items: center;
       color: var(--text-soft);
       font-size: 0.875rem;
+      font-weight: 500;
 
       &:first-child {
         justify-self: end;
         font-size: 1rem;
-        font-weight: 600;
       }
 
       & > div {

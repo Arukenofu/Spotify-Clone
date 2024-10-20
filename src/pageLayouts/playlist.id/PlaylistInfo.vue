@@ -100,6 +100,7 @@ defineProps<Props>();
         -webkit-line-clamp: 3;
         line-clamp: 3;
         user-select: none;
+        font-family: var(--title-font);
         font-size: 6em;
         font-weight: 900;
         white-space: nowrap;
@@ -109,12 +110,12 @@ defineProps<Props>();
         text-align: left;
         width: 100%;
         word-break: break-word;
-        margin-bottom: 12px;
       }
 
       .artists {
         color: var(--text-soft);
         font-size: .875em;
+        font-weight: 500;
         line-height: normal;
         overflow: hidden;
         text-align: left;
@@ -158,6 +159,7 @@ defineProps<Props>();
         span, .quantity {
           color: var(--text-soft);
           font-size: .875em;
+          font-weight: 500;
         }
 
         & > span {
@@ -191,7 +193,6 @@ defineProps<Props>();
 @container playlistInfo (max-width: 1000px) {
   .playlist_about_section .info .name {
     font-size: 3.5em !important;
-    margin-bottom: 9px !important;
   }
 }
 

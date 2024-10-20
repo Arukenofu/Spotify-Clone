@@ -39,7 +39,7 @@ withDefaults(defineProps<Props>(), {
       />
     </EntityAvatar1x1>
 
-    <span v-if="name">
+    <span v-if="name" class="b-600">
       {{ name }}
     </span>
 
@@ -106,7 +106,6 @@ withDefaults(defineProps<Props>(), {
   }
 
   span {
-    font-weight: 600;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;

@@ -86,8 +86,9 @@ section {
         -webkit-line-clamp: 1;
         line-clamp: 1;
         user-select: none;
+        font-family: var(--title-font);
         font-size: 1.5em;
-        font-weight: 900;
+        font-weight: 500;
         text-wrap: balance;
         align-items: flex-end;
 
@@ -101,7 +102,7 @@ section {
       margin-top: auto;
 
       a {
-        font-weight: 900;
+        font-weight: 500;
         font-size: 0.875rem;
         color: var(--white);
         white-space: nowrap;

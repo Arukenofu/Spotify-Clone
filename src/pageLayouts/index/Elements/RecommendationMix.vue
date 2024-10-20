@@ -80,7 +80,7 @@ defineEmits<Emits>();
       line-clamp: 2;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      font-weight: 700;
+      font-weight: 600;
       word-break: break-word;
       font-size: 1em;
     }
