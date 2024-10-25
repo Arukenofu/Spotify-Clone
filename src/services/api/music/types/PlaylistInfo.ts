@@ -4,15 +4,16 @@ import type {SimpleArtist} from "@/services/types/Artist";
 import type {Entities} from "@/services/types/Entities";
 
 export interface PlaylistInfoDossier {
-    playlistId: number;
-    name: string;
+    playlistId: number | string;
+    name: string | null;
     imageUrl?: string | null;
     type: Exclude<Entities, 'User'>;
     color: string;
     description?: string | null;
-    tracksAmount: number,
-    tracksDuration: number,
-    creator: SimpleUser | SimpleArtist
+    tracksAmount: number;
+    tracksDuration: number;
+    creator: SimpleUser[] | SimpleArtist[];
+    isAdded: boolean;
 }
 
 export interface PlaylistInfoQueue extends Music {

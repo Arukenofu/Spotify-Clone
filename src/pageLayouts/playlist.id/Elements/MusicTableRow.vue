@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
 import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue';
 import ThreeDots from '@/UI/Icons/Shared/ThreeDots.vue';
-import type { Music } from '@/services/types/Music';
-import formatTime from '../../shared/utils/formatTimeMMSS';
-import { computed } from 'vue';
+import formatTime from '../../../shared/utils/formatTimeMMSS';
 import getActiveColor from '@/shared/utils/getActiveColor';
-import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
+import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import type { Music } from '@/services/types/Music';
 
 interface Props extends Music {
   index: number,

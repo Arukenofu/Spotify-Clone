@@ -63,6 +63,7 @@ import Range from '@/shared/components/Range.vue';
     display: flex;
     justify-content: center;
     gap: 8px;
+    margin-bottom: 9px;
 
     .musicState {
       background-color: var(--white);
@@ -83,6 +84,7 @@ import Range from '@/shared/components/Range.vue';
   }
 
   .progress {
+    height: 100%;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -94,13 +96,10 @@ import Range from '@/shared/components/Range.vue';
 
     .currentTime,
     .duration {
-      position: relative;
-      top: 1px;
-      line-height: 0;
+      line-height: 1;
       color: var(--text-soft);
-      font-size: 1rem;
+      font-size: .75rem;
       font-weight: 500;
-      font-family: 'Zain', sans-serif;
     }
   }
 }

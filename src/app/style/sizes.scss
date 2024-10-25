@@ -11,6 +11,9 @@
   --sidebar-width-px: calc(var(--sidebar-width) * 1px);
   --panel-width-px: calc(var(--panel-width) * 1px);
 
+  --fluid-height: clamp(250px, 250px + (100vw - var(--sidebar-width) * 1px - var(--panel-width) * 1px - 600px) / 424 * 150, 400px);
+  --min-fluid-height: clamp(250px, 250px + (100vw - var(--sidebar-width) * 1px - var(--panel-width) * 1px - 600px) / 424 * 90, 340px);
+
   --info-panel-header-height: 64px;
 
   --content-spacing: clamp(16px, calc(16px + ((100vw - var(--sidebar-width-px, 0px) - var(--panel-width-px, 0px) - 600px) / 424) * 8), 24px);

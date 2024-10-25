@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
-import { computed, inject, ref } from 'vue';
+import { computed } from 'vue';
 
-const scrollY = inject('layoutScrollY', ref(0));
+interface Props {
+  title: string;
+  scrollY: number;
+  mask: string;
+  passingHeight?: number;
+}
 
-const passingHeight = 160;
+const {
+  scrollY,
+  passingHeight = 160,
+} = defineProps<Props>();
+
 const isHeightPassed = computed(() => {
-  return scrollY.value > passingHeight;
+  return scrollY > passingHeight;
 });
 </script>
 
@@ -22,7 +31,7 @@ const isHeightPassed = computed(() => {
 
       <template #default>
         <GreenPlayingButton class="button" :state="false" />
-        <div class="title">Микс дня #4</div>
+        <div class="title">{{title}}</div>
       </template>
     </StickyHeader>
   </Transition>
@@ -35,7 +44,7 @@ const isHeightPassed = computed(() => {
   background-color: #212121;
 
   .background {
-    background-color: var(--bg-mask);
+    background-color: v-bind(mask);
     height: 100%;
     width: 100%;
 

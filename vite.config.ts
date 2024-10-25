@@ -1,55 +1,32 @@
 import { fileURLToPath, URL } from 'node:url';
-import Router from 'unplugin-vue-router/vite';
 import { ClientSideLayout } from 'vite-plugin-vue-layouts';
-
 import { defineConfig } from 'vite';
+
+import Router from 'unplugin-vue-router/vite';
 import vue from '@vitejs/plugin-vue';
 import sassGlobImports from 'vite-plugin-sass-glob-import';
 import createTypesByFolder from './scripts/createTypesByFolder';
 
+import ScssConfig from "./config/scss.config";
+import RouterEnvConfig from "./config/routerEnv.config";
+import LayoutConfig from "./config/layout.config";
+import FolderTypesConfig from "./config/folderTypes.config";
+import ServerConfig from "./config/server.config";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    createTypesByFolder([
-      {
-        name: 'PanelsName',
-        path: 'src/features/InfoPanel/Panels',
-        extension: '.vue'
-      }
-    ]),
-    Router({
-      dts: '.generated/router.d.ts'
-    }),
+    createTypesByFolder(FolderTypesConfig),
+    Router(RouterEnvConfig),
     sassGlobImports(),
-    ClientSideLayout({
-      layoutDir: 'src/app/layouts',
-      defaultLayout: 'Default',
-      importMode: 'sync'
-    }),
+    ClientSideLayout(LayoutConfig),
     vue()
   ],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler'
-      }
-    }
-  },
-  build: {
-    rollupOptions: {
-      external: [
-        '.generated/**'
-      ]
-    }
-  },
+  css: ScssConfig,
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    cors: {
-      origin: 'http://localhost:5174'
-    }
-  }
+  server: ServerConfig
 });

@@ -7,7 +7,7 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
 import type { Music } from '@/services/types/Music';
-import type {PlaylistInfo} from "@/services/api/music/types/PlaylistInfo";
+import type {PlaylistInfo, PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 import {MusicInfoService} from "@/services/api/music/musicInfoService";
 
 export default function () {
@@ -60,7 +60,7 @@ export default function () {
       index: number = 0,
       play: boolean = true
   ) {
-    const isSamePlaylist = playlist.playlistInfoDossier.playlistId === currentPlaylistInfo.value?.playlistId;
+    const isSamePlaylist = playlist.playlistInfoDossier && playlist.playlistInfoDossier.playlistId === currentPlaylistInfo.value?.playlistId;
     const isSameTrack = index === currentAudioIndexInQueue.value;
 
     if (isSamePlaylist && isSameTrack) {
@@ -87,7 +87,7 @@ export default function () {
 
     setAudioUrl(data.url);
 
-    if ('mediaSession' in navigator && data.artists && data.avatar) {
+    if ('mediaSession' in navigator && data.artists && data.avatar)  {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: data.name,
         artist: getCommaSeparatedString(data.artists, 'name'),
@@ -139,12 +139,39 @@ export default function () {
     pauseAudio();
   }
 
+  function isThisMusic(musicId: number | null, playing: boolean = false) {
+    if (playing && !isPlaying.value) {
+      return false;
+    }
+
+    return musicId === currentAudioId.value;
+  }
+
+  function isThisPlaylist(playlistId: PlaylistInfoDossier['playlistId'] | null, playing: boolean = false) {
+    if (playing && !isPlaying.value || !currentPlaylistInfo.value) {
+      return false;
+    }
+
+    return playlistId === currentPlaylistInfo.value.playlistId;
+  }
+
+  function isThisPlaylistAndMusic(musicId: number | null, playlistId: PlaylistInfoDossier['playlistId'] | null, playing: boolean = false) {
+    if (playing && !isPlaying.value) {
+      return false;
+    }
+
+    return isThisMusic(musicId) && isThisPlaylist(playlistId);
+  }
+
   return {
     loadPlaylist,
     loadSongOrPlaylist,
     loadSongFromCurrentQueue,
     toggleTrackPlaying,
     nextTrack,
-    previousTrack
+    previousTrack,
+    isThisMusic,
+    isThisPlaylist,
+    isThisPlaylistAndMusic
   };
 }

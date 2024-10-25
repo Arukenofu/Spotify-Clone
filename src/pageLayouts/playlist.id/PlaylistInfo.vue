@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 import localizeEntities from "../../services/utils/localizeEntities";
 import readableTime from "../../shared/utils/readableTime";
+import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
+import getCommaSeparatedString from "../../shared/utils/getCommaSeparatedString";
 
 interface Props extends PlaylistInfoDossier {
 }
@@ -39,7 +40,7 @@ defineProps<Props>();
             <figure title="Spotify">
               <div><img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67757000003b8255c25988a6ac314394d3fbf5" alt="Spotify"></div>
             </figure>
-            <span>{{creator.name}}</span>
+            <span>{{getCommaSeparatedString(creator as [], 'name')}}</span>
           </div>
           <span class="dot">•</span>
           <div class="quantity">
@@ -53,13 +54,9 @@ defineProps<Props>();
 
 <style scoped lang="scss">
 .playlist_about {
-  --fluid-height: clamp(250px, 250px + (100vw - var(--sidebar-width) * 1px - var(--panel-width) * 1px - 600px) / 424 * 150, 400px);
-  --min-fluid-height: clamp(250px, 250px + (100vw - var(--sidebar-width) * 1px - var(--panel-width) * 1px - 600px) / 424 * 90, 340px);
-
   height: min(30vh, var(--fluid-height));
   max-height: 300px;
   min-height: var(--min-fluid-height);
-
   padding-bottom: var(--content-spacing);
   container: playlistInfo / inline-size;
 

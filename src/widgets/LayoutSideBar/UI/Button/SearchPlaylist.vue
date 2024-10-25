@@ -67,9 +67,11 @@ function onClickOutside() {
   align-items: center;
   justify-content: space-between;
   position: relative;
+  margin-right: 15px;
 
   &:has(.active) {
     width: 188px;
+    min-width: 188px;
   }
 
   input {
@@ -94,9 +96,9 @@ function onClickOutside() {
 
   .active {
     background-color: hsla(0, 0%, 100%, 0.1);
-    max-width: 188px !important;
     padding: 4px 32px;
     opacity: 1;
+    max-width: 188px !important;
   }
 
   .searchButton {

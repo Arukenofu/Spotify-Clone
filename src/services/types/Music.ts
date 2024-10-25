@@ -6,9 +6,11 @@ export interface Music {
   name: string;
   artists: SimpleArtist[];
   avatar?: string;
+  color?: string | null;
   url: string;
   uploadedDate: string;
-  duration: number,
+  duration: number;
+  listenings: number;
   album?: Playlist;
   isAdded?: boolean;
 }

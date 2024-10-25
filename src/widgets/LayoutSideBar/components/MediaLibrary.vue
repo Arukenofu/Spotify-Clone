@@ -57,6 +57,7 @@ const gridItemWidth = computed(() => {
         <SearchPlaylist v-model="search" />
 
         <FormatButton
+          class="formats"
           @click="
             showContextMenu($event, FormatContextMenu, {
               design: 'minimal',
@@ -102,8 +103,19 @@ const gridItemWidth = computed(() => {
       display: flex;
       justify-content: space-between;
       margin-top: 8px;
-      padding: 0 var(--medialib-padding-x);
       margin-bottom: 9px;
+      padding: 0 var(--medialib-padding-x);
+      overflow-x: scroll;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .formats {
+        transition: all .2s ease;
+      }
     }
 
     .playlists {
@@ -138,7 +150,7 @@ const gridItemWidth = computed(() => {
       display: grid;
       grid-template-columns: repeat(
         auto-fill,
-        minmax(v-bind('gridItemWidth'), 1fr)
+        minmax(v-bind(gridItemWidth), 1fr)
       );
       grid-auto-rows: min-content;
     }

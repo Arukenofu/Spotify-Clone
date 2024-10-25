@@ -23,7 +23,9 @@ const {data: recommendations} = useQuery({
       :key="music.playlistId"
       :playlist-id="music.playlistId"
       :type="recommendation.type"
+      :image="music.imageUrl"
       :name="music.name"
+      :color="music.color"
     >
       {{music.description}}
     </MusicCard>

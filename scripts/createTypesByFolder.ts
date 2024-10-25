@@ -6,13 +6,13 @@ import type { Plugin } from 'vite';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-interface Options {
+export interface CreateFolderOptions {
   name: string;
   path: string;
   extension: string;
 }
 
-export default function (options: Options[] = []) {
+export default function (options: CreateFolderOptions[] = []) {
   const declarationsFolder = path.resolve(__dirname, '../.generated');
 
   if (!fs.existsSync(declarationsFolder)) {

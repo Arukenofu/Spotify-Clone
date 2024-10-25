@@ -10,7 +10,8 @@ interface Props {
   playlistId: number;
   type?: EntitiesExpandedWithArtist;
   name?: string;
-  image?: string;
+  image?: string | null;
+  color?: string | null;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -26,8 +27,11 @@ withDefaults(defineProps<Props>(), {
   >
     <EntityAvatar1x1
       class="image"
+      :type="type"
       :image="image"
       :style="type === 'Artist' && 'border-radius: 50%'"
+      :loading-color="color"
+      loading="lazy"
     >
       <GreenPlayingButton
         v-if="type !== 'User'"

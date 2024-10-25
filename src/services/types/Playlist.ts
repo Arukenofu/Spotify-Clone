@@ -5,7 +5,7 @@ export interface Playlist {
   description?: string;
   musicQuantity?: number;
   totalDuration?: number;
-  image?: URL;
+  image?: string;
   saved?: number;
   owner?: string;
 }

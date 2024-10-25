@@ -149,6 +149,7 @@ function timeUpdate(time: number) {
     display: flex;
     justify-content: center;
     gap: 8px;
+    margin-bottom: 9px;
 
     .musicState {
       background-color: var(--white);
@@ -181,9 +182,7 @@ function timeUpdate(time: number) {
 
     .currentTime,
     .duration {
-      position: relative;
-      top: 1px;
-      line-height: 0;
+      line-height: 1;
       color: var(--text-soft);
       font-size: .75rem;
       font-weight: 500;

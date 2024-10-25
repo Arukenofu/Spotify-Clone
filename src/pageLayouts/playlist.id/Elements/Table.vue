@@ -2,7 +2,7 @@
 import { computed, inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
 import ClockIcon from '@/UI/Icons/Shared/ClockIcon.vue';
 import type { Ref } from 'vue';
-import MusicTableRow from '@/UI/Elements/MusicTableRow.vue';
+import MusicTableRow from '@/pageLayouts/playlist.id/Elements/MusicTableRow.vue';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
@@ -111,7 +111,8 @@ const {loadSongOrPlaylist} = useMusicUtils();
         :uploaded-date="music.uploadedDate"
         :url="'/'"
         :is-added="false"
-        :is-current="currentMusicStore.currentAudioId === music.id"
+        :is-current="currentMusicStore.currentAudioId == music.id"
+        :listenings="music.listenings"
         v-bind="computeTableLines"
         :style="computeGridLines"
         class="row"

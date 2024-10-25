@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import setTitle from '@/shared/utils/setTitle';
-import PlaylistHeader from '@/pageLayouts/playlist.id/PlaylistHeader.vue';
+import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfo.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
 import {MusicInfoService} from "@/services/api/music/musicInfoService";
-import {computed} from "vue";
+import {computed, inject, ref} from "vue";
 
 const routeId = Number(useRoute('/playlist/[id]').params.id);
 
@@ -19,12 +19,19 @@ const {data, isFetched} = useQuery({
 
 const dossier = computed(() => data.value?.playlistInfoDossier);
 const queue = computed(() => data.value?.playlistQueue);
-const bgColor = computed(() => data.value?.playlistInfoDossier.color);
+const bgColor = computed(() => data.value?.playlistInfoDossier.color ?? '#333333');
+
+const scrollY = inject('layoutScrollY', ref(0));
 
 </script>
 
 <template>
-  <PlaylistHeader :style="`--bg-mask: ${bgColor}`" />
+  <PlayHeader
+    v-if="dossier"
+    :title="dossier.name"
+    :scroll-y="scrollY"
+    :mask="bgColor"
+  />
 
   <div v-if="isFetched" class="playlist" :style="`--bg-mask: ${bgColor}`">
     <PlaylistInfo
@@ -38,6 +45,7 @@ const bgColor = computed(() => data.value?.playlistInfoDossier.color);
       :tracks-amount="dossier.tracksAmount"
       :tracks-duration="dossier.tracksDuration"
       :type="dossier.type"
+      :is-added="dossier.isAdded"
     />
 
     <PlaylistTable

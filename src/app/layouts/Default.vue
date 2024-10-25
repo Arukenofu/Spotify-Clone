@@ -26,6 +26,7 @@ router.beforeEach(() => {
   layout.value?.content.scrollTo({
     top: 0
   });
+  layoutScrollY.value = 0;
 });
 
 const { isMobile } = useResponsive();
@@ -62,19 +63,17 @@ watchEffect(() => {
       >
         <RouterView v-slot="{ Component }">
           <template v-if="Component">
-            <Transition mode="out-in">
-              <KeepAlive>
-                <Suspense>
-                  <div class="content">
-                    <Component :is="Component" />
-                  </div>
+            <Suspense>
+              <template #default>
+                <div class="content">
+                  <Component :is="Component" />
+                </div>
+              </template>
 
-                  <template #fallback>
-                    <Loading />
-                  </template>
-                </Suspense>
-              </KeepAlive>
-            </Transition>
+              <template #fallback>
+                <Loading />
+              </template>
+            </Suspense>
           </template>
         </RouterView>
       </ScrollableBlock>

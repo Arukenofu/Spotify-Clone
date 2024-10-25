@@ -17,7 +17,7 @@ defineProps<GridFormatProps>();
     class="block"
     :class="!minimized && 'unminimized'"
   >
-    <EntityAvatar1x1 class="picture" :image="image">
+    <EntityAvatar1x1 class="picture" :type="type" :image="image">
       <GreenPlayingButton
         v-if="!minimized && type !== 'Folder'"
         v-tooltip="`Слушать плейлист «${name}»`"

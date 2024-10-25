@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
+import LazyImage from "@/UI/Elements/LazyImage.vue";
 
 interface Props {
   playlistId: number;
   name: string;
   image: string;
   href: string | number;
-  state?: boolean;
+  state: boolean;
+  color: string;
 }
 
 type Emits = {
@@ -24,9 +26,9 @@ defineEmits<Emits>();
     class="album"
     @click="routerPushPrevent(`/playlist/${href}`)"
   >
-    <div
+    <LazyImage
+      :image="image"
       class="avatar"
-      :style="`background-image: url(${image})`"
     />
     <div class="other">
       <span class="album-name">
@@ -59,7 +61,7 @@ defineEmits<Emits>();
   .avatar {
     height: var(--album-item-height);
     aspect-ratio: 1/1;
-    background-color: #ffffff;
+    background-color: v-bind(color);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     background-position: center;
     background-size: cover;

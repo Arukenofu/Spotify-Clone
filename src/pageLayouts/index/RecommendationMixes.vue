@@ -2,14 +2,12 @@
 import RecommendationMix from '@/pageLayouts/index/Elements/RecommendationMix.vue';
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
-import useMusicStore from "@/features/MediaPlayer/store/useMusicStore";
 import {useMutation, useQuery} from '@tanstack/vue-query';
 import {RecommendationService} from '@/services/api/recommendations/recommendationService'
 
 const playlistStore = usePlaylistStore();
-const musicStore = useMusicStore();
 
-const {loadPlaylist} = useMusicUtils();
+const {loadPlaylist, isThisPlaylist} = useMusicUtils();
 
 defineEmits<{
   setColor: [color: null | string]
@@ -24,10 +22,6 @@ const {mutate: setNewMusic} = useMutation({
   mutationKey: ['playlistInfo', playlistStore.currentPlaylistInfo?.playlistId],
   mutationFn: async (id: number) => await loadPlaylist(id)
 });
-
-function isCurrent(value: number) {
-  return playlistStore.currentPlaylistInfo?.playlistId === value && musicStore.isPlaying;
-}
 </script>
 
 <template>
@@ -40,7 +34,8 @@ function isCurrent(value: number) {
         :name="rec.name"
         :image="rec.imageUrl"
         :href="rec.playlistId"
-        :state="isCurrent(rec.playlistId)"
+        :state="isThisPlaylist(rec.playlistId, true)"
+        :color="rec.color"
         class="album"
         @on-button-click="setNewMusic(rec.playlistId)"
         @mouseenter="$emit('setColor', (rec.color))"

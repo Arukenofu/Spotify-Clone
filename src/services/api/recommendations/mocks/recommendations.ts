@@ -11,7 +11,8 @@ export const recommendations = [
               name: 'Only for you',
               imageUrl: null,
               description: `Новые треки и редкие композиции в еженедельном миксе специально для тебя.
-               Лови обновление каждый понедельник.`
+               Лови обновление каждый понедельник.`,
+              color: null
           }
       ],
     },
@@ -25,6 +26,7 @@ export const recommendations = [
                 name: 'The Weeknd',
                 imageUrl: null,
                 description: 'Исполитель',
+                color: null
             }
         ]
     },
@@ -36,8 +38,9 @@ export const recommendations = [
             {
                 playlistId: 3,
                 name: 'Music',
-                imageUrl: null,
-                description: 'The greatest indie love songs of all time.'
+                imageUrl: 'https://cdns-images.dzcdn.net/images/cover/7c3cdaadce2fa2683bcf059155db1036/1900x1900-000000-80-0-0.jpg',
+                description: 'The greatest indie love songs of all time.',
+                color: '#ff5252'
             }
         ]
     }
