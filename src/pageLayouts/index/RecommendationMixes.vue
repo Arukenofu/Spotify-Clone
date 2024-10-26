@@ -19,7 +19,7 @@ const {data: mixes} = useQuery({
 });
 
 const {mutate: setNewMusic} = useMutation({
-  mutationKey: ['playlistInfo', playlistStore.currentPlaylistInfo?.playlistId],
+  mutationKey: ['playlistInfo', playlistStore.currentPlaylistInfo?.id],
   mutationFn: async (id: number) => await loadPlaylist(id)
 });
 </script>

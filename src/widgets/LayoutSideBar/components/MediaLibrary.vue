@@ -21,10 +21,9 @@ const { currentComponent, getComponentName } = usePlaylistFormat();
 
 const props: FormatProps = {
   id: 1,
-  to: '12',
   name: 'baur',
   owner: 'baur',
-  type: 'Playlist'
+  type: 'Album'
 };
 
 const { getCurrentWidth } = gridColumnWidth();

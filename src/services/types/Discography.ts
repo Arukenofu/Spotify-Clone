@@ -1,4 +1,4 @@
-import type {Music} from "@/services/types/Music";
+import type {Music} from "@/services/types/Entities/Music";
 
 export interface DiscographyAlbum {
     albumId: number;

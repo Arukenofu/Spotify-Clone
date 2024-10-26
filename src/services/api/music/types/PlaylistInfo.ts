@@ -1,18 +1,7 @@
-import type {Music} from "@/services/types/Music";
-import type {SimpleUser} from "@/services/types/User";
-import type {SimpleArtist} from "@/services/types/Artist";
-import type {Entities} from "@/services/types/Entities";
+import type {Music} from "@/services/types/Entities/Music";
+import type {Playlist} from "@/services/types/Entities/Playlist";
 
-export interface PlaylistInfoDossier {
-    playlistId: number | string;
-    name: string | null;
-    imageUrl?: string | null;
-    type: Exclude<Entities, 'User'>;
-    color: string;
-    description?: string | null;
-    tracksAmount: number;
-    tracksDuration: number;
-    creator: SimpleUser[] | SimpleArtist[];
+export interface PlaylistInfoDossier extends Playlist {
     isAdded: boolean;
 }
 

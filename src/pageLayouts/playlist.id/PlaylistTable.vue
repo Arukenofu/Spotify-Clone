@@ -33,7 +33,7 @@ const {
 } = useMusicUtils();
 
 function play() {
-  if (isThisPlaylist(playlistStore.currentPlaylistInfo?.playlistId ?? null)) {
+  if (isThisPlaylist(playlistStore.currentPlaylistInfo?.id ?? null)) {
     toggleTrackPlaying(); return;
   }
 
@@ -59,7 +59,7 @@ const tooltips = reactive({
 <template>
   <GeneralGradientSectionWithControls 
     :is-playing="isThisPlaylist(
-      playlistStore.currentPlaylistInfo?.playlistId ?? null,
+      playlistStore.currentPlaylistInfo?.id ?? null,
       true
     )"
     :tooltip-str="tooltips.options"

@@ -8,8 +8,7 @@ import formatTime from "@/shared/utils/formatTimeMMSS";
 import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
 import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue";
-import type {SimpleArtist} from "@/services/types/Artist";
-import {computed} from "vue";
+import type {SimpleArtist} from "@/services/types/Entities/Artist";
 
 interface Props {
   index: number;
@@ -17,30 +16,16 @@ interface Props {
   isPlaying: boolean;
   isAdded: boolean;
   musicId: number;
+  albumId: number;
   musicName: string;
   duration: number;
   artists: SimpleArtist[];
-  image: string | null;
+  showArtists?: boolean;
+  image?: string | null;
   color?: string | null;
-
-  first?: string;
-  main: string;
-  var1?: string,
-  var2?: string,
-  time: string,
 }
 
-const {first = '16px', main, var1 = '0', var2 = '0', time} = defineProps<Props>();
-
-const computeGridStyle = computed(() => {
-  return `grid-template-columns:
-      [index] ${first}
-      [main] ${main}
-      [var1] ${var1}
-      [var2] ${var2}
-      [time] ${time};
-  `
-});
+const {showArtists = true} = defineProps<Props>();
 
 type Emits = {
   setPlay: [],
@@ -52,19 +37,21 @@ defineEmits<Emits>();
 </script>
 
 <template>
-  <div class="row" :style="computeGridStyle" @click="$emit('setPlay')">
+  <div class="row" @click="$emit('setPlay')">
     <div class="index">
       <span class="order" :style="getActiveColor(isCurrent)">{{index}}</span>
       <button class="toggle">
-        <img v-if="isPlaying" src="/equalizer-animated.gif" alt="" />
+        <img v-if="isPlaying" src="/src/assets/images/equalizer-animated.gif" alt="" />
         <PlayingState v-else class="icon" />
       </button>
     </div>
     <div class="main">
-      <LazyImage v-if="image" :image="image" :color="color" class="image" />
-      <div v-else class="picture">
-        <NoMusicOrPlaylistAvatar class="icon" />
-      </div>
+      <template v-if="image !== undefined">
+        <LazyImage v-if="image !== null" :image="image" :color="color" class="image" />
+        <div v-else class="picture">
+          <NoMusicOrPlaylistAvatar class="icon" />
+        </div>
+      </template>
       <div class="text">
         <RouterLink
           v-tooltip="musicName"
@@ -75,6 +62,19 @@ defineEmits<Emits>();
         >
           {{musicName}}
         </RouterLink>
+        <span
+          v-if="showArtists"
+          class="artists"
+          @click.stop
+        >
+          <RouterLink
+            v-for="artist in artists"
+            :key="artist.id"
+            :to="`/artist/${artist.id}`"
+          >
+            {{artist.name}}
+          </RouterLink>
+        </span>
       </div>
     </div>
 
@@ -138,7 +138,8 @@ defineEmits<Emits>();
       }
 
       .toggle {
-        display: block;
+        display: grid;
+        place-items: center;
 
         .icon {
           display: block;
@@ -178,7 +179,6 @@ defineEmits<Emits>();
     .toggle {
       display: none;
       position: relative;
-      left: 3px;
       width: 16px;
       height: 16px;
       background: none;
@@ -250,6 +250,23 @@ defineEmits<Emits>();
         color: var(--white);
         text-decoration: none;
         font-size: 1rem;
+      }
+
+      .artists {
+        display: flex;
+
+        a {
+          color: var(--text-soft);
+          font-size: .875rem;
+
+          &:hover {
+            color: var(--white) !important;
+          }
+
+          &:not(:last-child)::after {
+            content: ",\00a0";
+          }
+        }
       }
     }
   }

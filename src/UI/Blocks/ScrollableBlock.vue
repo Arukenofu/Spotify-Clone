@@ -179,7 +179,6 @@ onUnmounted(() => {
       right: 0;
       width: v-bind('scrollbarWidth');
       background-color: var(--scrollbar-bg);
-      cursor: pointer;
       user-select: none;
       opacity: 0;
       transition: opacity 0.5s;

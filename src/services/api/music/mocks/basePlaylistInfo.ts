@@ -2,14 +2,15 @@ import type {PlaylistInfo} from "@/services/api/music/types/PlaylistInfo";
 
 export const basePlaylistInfo = {
     playlistInfoDossier: {
-        playlistId: 0,
+        id: 0,
         name: 'Базовая коллекция',
         imageUrl: null,
-        type: 'Playlist',
         color: 'rgb(240, 64, 112)',
         description: 'asd',
-        tracksAmount: 2,
-        tracksDuration: 820,
+        additional: {
+            tracksQuantity: 2,
+            totalDuration: 820,
+        },
         creator: [{
             id: 1,
             name: 'baur',
@@ -41,7 +42,8 @@ export const basePlaylistInfo = {
             url: '/Мосты.mp3',
             avatar:
                 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
-            listenings: 12000
+            listenings: 12000,
+            albumId: 1
         },
         {
             id: 2,
@@ -58,7 +60,8 @@ export const basePlaylistInfo = {
             uploadedDate: '12-31-2024',
             url: '/Moldanazar.mp3',
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
-            listenings: 12000
+            listenings: 12000,
+            albumId: 1
         }
     ]
 } satisfies PlaylistInfo

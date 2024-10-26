@@ -2,7 +2,7 @@
 import {computed, inject, ref} from "vue";
 import { useRoute } from 'vue-router';
 import setTitle from '@/shared/utils/setTitle';
-import {useQuery} from "@tanstack/vue-query";
+import {useMutation, useQuery} from "@tanstack/vue-query";
 import {ArtistService} from "@/services/api/artist/artistService";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import ArtistInfoHeader from "@/pageLayouts/artist.id/ArtistInfoHeader.vue";
@@ -11,11 +11,12 @@ import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSecti
 import MusicRow from "@/UI/Elements/MusicRow.vue";
 import readableNumber from "../../shared/utils/readableNumber";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import type {SimpleArtist} from "@/services/types/Artist";
 import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
+
+const isExpanded = ref<boolean>(false);
 
 // Temporarily using id parameter
 setTitle(`${route.params.id} | Spotify`);
@@ -25,7 +26,22 @@ const {data: artistInfo, isFetched} = useQuery({
   queryFn: async () => await new ArtistService().getFullArtistInfo(Number(route.params.id))
 });
 
-const isExpanded = ref<boolean>(false);
+const {mutate: toggleArtistSubscription} = useMutation({
+  mutationFn: async () => {
+    if (artistInfo.value?.isSubscribed === undefined) {
+      return;
+    }
+
+    const data = await new ArtistService().toggleArtistSubscription(
+        artistInfo.value.isSubscribed,
+        Number(route.params.id)
+    );
+
+    if (data.message === 'OK') {
+      (artistInfo.value.isSubscribed as boolean) = artistInfo.value.isSubscribed as boolean;
+    }
+  }
+})
 
 const popularMusic = computed(() => {
   if (!isExpanded.value) {
@@ -37,17 +53,18 @@ const popularMusic = computed(() => {
 
 const {loadSongOrPlaylist, isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
 
-function createCustomPlaylist(id: string, creator: SimpleArtist[], index: number) {
+function createCustomPlaylist(id: string, index: number) {
   const dossier: PlaylistInfoDossier = {
-    playlistId: id,
-    name: null,
+    id: id,
+    name: '',
     imageUrl: null,
-    type: 'Playlist',
-    color: '#333333',
+    color: null,
     description: null,
-    tracksAmount: 0,
-    tracksDuration: 0,
-    creator: creator,
+    additional: {
+      tracksQuantity: 0,
+      totalDuration: 0,
+    },
+    creator: [],
     isAdded: false
   };
 
@@ -64,6 +81,8 @@ function createCustomPlaylist(id: string, creator: SimpleArtist[], index: number
       :title="artistInfo.profile.artistName"
       :scroll-y="layoutScrollY"
       :mask="artistInfo.profile.color"
+      :is-playing="isThisPlaylist(`popular:${artistInfo.profile.artistName}`, true)"
+      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, 0)"
     />
     <Component
       :is="artistInfo.profile.coverImage ? ArtistInfoHeader : ArtistInfoHeaderNoCover"
@@ -85,11 +104,11 @@ function createCustomPlaylist(id: string, creator: SimpleArtist[], index: number
         }
       }"
       :bg-color="artistInfo.profile.color"
-      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, [], 0)"
+      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, 0)"
     >
       <template #main-options>
-        <button class="subscription">
-          Подписаться
+        <button class="subscription" @click="toggleArtistSubscription()">
+          {{artistInfo.isSubscribed ? 'Уже подписаны' : 'Подписаться'}}
         </button>
       </template>
     </GeneralGradientSectionWithControls>
@@ -102,22 +121,25 @@ function createCustomPlaylist(id: string, creator: SimpleArtist[], index: number
           :key="music.id"
           :index="index + 1"
           :is-current="isThisPlaylistAndMusic(music.id, `popular:${artistInfo.profile.artistName}`)"
-          :is-added="false"
           :is-playing="isThisPlaylistAndMusic(music.id, `popular:${artistInfo.profile.artistName}`, true)"
           :music-id="music.id"
+          :album-id="music.albumId"
           :music-name="music.name"
           :duration="music.duration"
           :artists="music.artists"
           :image="music.avatar"
           :color="music.color"
-          main="4fr"
-          var1="2fr"
-          time="1fr"
-          @set-play="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, music.artists, index)"
+          :is-added="false"
+          :show-artists="false"
+          class="row"
+          @set-play="createCustomPlaylist(
+            `popular:${artistInfo.profile.artistName}`,
+            index
+          )"
         >
           <template #var1>
             <span class="var1">
-              {{readableNumber(100000)}}
+              {{readableNumber(artistInfo.listenersQuantityPerMonth)}}
             </span>
           </template>
         </MusicRow>
@@ -169,6 +191,22 @@ function createCustomPlaylist(id: string, creator: SimpleArtist[], index: number
     }
 
     .wrapper {
+      container: wrapper / inline-size;
+      
+      @container wrapper (max-width: 620px) {
+        .row {
+          grid-template-columns: [index] 16px [main] minmax(120px, 4fr) [var1] 0 [var2] 0 [time] minmax(120px, 1fr) !important;
+        }
+
+        .var1 {
+          display: none;
+        }
+      }
+
+      .row {
+        grid-template-columns: [index] 16px [main] minmax(120px, 4fr) [var1] minmax(120px, 2fr) [var2] 0 [time] minmax(120px, 1fr);
+      }
+
       .var1 {
         font-size: .875rem;
       }

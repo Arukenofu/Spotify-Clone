@@ -4,6 +4,7 @@ import {
   BackgroundNoise,
   useBackgroundNoise
 } from '@/features/BackgroundNoise';
+import DesktopImage from '@/assets/images/desktop-app.png';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import setTitle from '@/shared/utils/setTitle';
 
@@ -34,7 +35,7 @@ const computeOpacity = computed<number>(() => {
 
   <section>
     <img
-      src="https://open.spotifycdn.com/cdn/images/devices/mac.3fbeb8c6.png"
+      :src="DesktopImage"
       alt="Desktop image"
     >
     <h1>Установи приложение Spotify и слушай любимую музыку на компьютере.</h1>

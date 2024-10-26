@@ -21,4 +21,5 @@ export interface Artist {
     countryShortName: string;
     listenersQuantity: number
   }[];
+  isSubscribed: boolean;
 }

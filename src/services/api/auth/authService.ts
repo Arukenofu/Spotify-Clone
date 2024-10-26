@@ -46,8 +46,8 @@ export class AuthService {
       body: {
         email: email
       },
-      onRequestError: ({ error }) => {
-        throw new Error(error.message);
+      onResponseError: ({ error }) => {
+        throw new Error(error?.message);
       }
     });
   }

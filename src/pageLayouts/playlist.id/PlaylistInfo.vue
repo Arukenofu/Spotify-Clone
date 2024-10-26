@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import localizeEntities from "../../services/utils/localizeEntities";
 import readableTime from "../../shared/utils/readableTime";
-import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 import getCommaSeparatedString from "../../shared/utils/getCommaSeparatedString";
+import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 
 interface Props extends PlaylistInfoDossier {
 }
@@ -26,7 +25,7 @@ defineProps<Props>();
 
       <div class="info">
         <span class="type">
-          {{localizeEntities(type)}}
+          Плейлист
         </span>
 
         <h1 class="name">{{name}}</h1>
@@ -44,7 +43,7 @@ defineProps<Props>();
           </div>
           <span class="dot">•</span>
           <div class="quantity">
-            {{tracksAmount}} треков, примерно {{readableTime(tracksDuration)}}
+            {{additional.tracksQuantity}} треков, примерно {{readableTime(additional.totalDuration)}}
           </div>
         </div>
       </div>

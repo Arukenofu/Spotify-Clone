@@ -29,7 +29,7 @@ const isCurrent = computed(() => {
     return currentStore.currentAudioId === props.trackId;
   }
 
-  return playlistStore.currentPlaylistInfo?.playlistId === props.albumId;
+  return playlistStore.currentPlaylistInfo?.id === props.albumId;
 });
 
 function toggleMusic() {

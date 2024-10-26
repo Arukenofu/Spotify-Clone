@@ -28,6 +28,7 @@ const scrollY = inject('layoutScrollY', ref(0));
 <template>
   <PlayHeader
     v-if="dossier"
+    :is-playing="false"
     :title="dossier.name"
     :scroll-y="scrollY"
     :mask="bgColor"
@@ -36,15 +37,13 @@ const scrollY = inject('layoutScrollY', ref(0));
   <div v-if="isFetched" class="playlist" :style="`--bg-mask: ${bgColor}`">
     <PlaylistInfo
       v-if="dossier"
-      :playlist-id="dossier.playlistId"
+      :id="dossier.id"
       :name="dossier.name"
       :image-url="dossier.imageUrl"
       :color="dossier.color"
       :creator="dossier.creator"
       :description="dossier.description"
-      :tracks-amount="dossier.tracksAmount"
-      :tracks-duration="dossier.tracksDuration"
-      :type="dossier.type"
+      :additional="dossier.additional"
       :is-added="dossier.isAdded"
     />
 

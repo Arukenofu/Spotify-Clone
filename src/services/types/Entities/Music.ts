@@ -1,5 +1,4 @@
-import type { SimpleArtist } from '@/services/types/Artist';
-import type { Playlist } from '@/services/types/Playlist';
+import type { SimpleArtist } from '@/services/types/Entities/Artist';
 
 export interface Music {
   id: number;
@@ -11,6 +10,6 @@ export interface Music {
   uploadedDate: string;
   duration: number;
   listenings: number;
-  album?: Playlist;
+  albumId: number;
   isAdded?: boolean;
 }

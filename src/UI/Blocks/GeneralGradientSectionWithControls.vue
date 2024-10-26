@@ -6,7 +6,7 @@ import type {BindingValues} from "@/app/directives/Tooltip/types/BindingTypes";
 interface Props {
   isPlaying: boolean;
   tooltipStr: BindingValues;
-  bgColor: string;
+  bgColor?: string | null;
 }
 
 type Emit = {

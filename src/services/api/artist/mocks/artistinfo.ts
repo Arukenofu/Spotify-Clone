@@ -33,6 +33,7 @@ export const artistInfo = {
             {
                 id: 1,
                 name: 'Мосты',
+                albumId: 1,
                 artists: [
                     {
                         id: 1,
@@ -57,6 +58,7 @@ export const artistInfo = {
             {
                 id: 2,
                 name: 'Ozin Gana',
+                albumId: 1,
                 artists: [
                     {
                         id: 3,
@@ -75,6 +77,7 @@ export const artistInfo = {
             {
                 id: 3,
                 name: 'Мосты',
+                albumId: 1,
                 artists: [
                     {
                         id: 1,
@@ -99,6 +102,7 @@ export const artistInfo = {
             {
                 id: 4,
                 name: 'Ozin Gana',
+                albumId: 1,
                 artists: [
                     {
                         id: 3,
@@ -117,6 +121,7 @@ export const artistInfo = {
             {
                 id: 5,
                 name: 'Мосты',
+                albumId: 1,
                 artists: [
                     {
                         id: 1,
@@ -141,6 +146,7 @@ export const artistInfo = {
             {
                 id: 6,
                 name: 'Ozin Gana',
+                albumId: 1,
                 artists: [
                     {
                         id: 3,
@@ -159,6 +165,7 @@ export const artistInfo = {
             {
                 id: 7,
                 name: 'Ozin Gana',
+                albumId: 1,
                 artists: [
                     {
                         id: 3,
@@ -177,6 +184,7 @@ export const artistInfo = {
             {
                 id: 8,
                 name: 'Мосты',
+                albumId: 1,
                 artists: [
                     {
                         id: 1,
@@ -201,6 +209,7 @@ export const artistInfo = {
             {
                 id: 9,
                 name: 'Ozin Gana',
+                albumId: 1,
                 artists: [
                     {
                         id: 3,
@@ -219,6 +228,7 @@ export const artistInfo = {
             {
                 id: 10,
                 name: 'Ozin Gana',
+                albumId: 1,
                 artists: [
                     {
                         id: 3,
@@ -235,5 +245,6 @@ export const artistInfo = {
                 color: '#46ceb9'
             }
         ]
-    }
+    },
+    isSubscribed: false,
 } satisfies ArtistInfoWithMusic;

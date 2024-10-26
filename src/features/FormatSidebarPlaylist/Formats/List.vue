@@ -9,7 +9,7 @@ defineProps<FormatProps>();
 <template>
   <RouterLink
     class="list"
-    :to="`/playlist/${to}`"
+    :to="`/playlist/${id}`"
   >
     <EntityAvatar1x1 :image="image" type="Folder" />
 

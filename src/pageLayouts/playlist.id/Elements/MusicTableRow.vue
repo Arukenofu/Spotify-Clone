@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import EqualizerAnimated from '@/assets/images/equalizer-animated.gif';
 import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
@@ -9,22 +10,24 @@ import formatTime from '../../../shared/utils/formatTimeMMSS';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
-import type { Music } from '@/services/types/Music';
+import type {SimpleArtist} from "@/services/types/Entities/Artist";
 
-interface Props extends Music {
-  index: number,
-  album: Exclude<Music['album'], undefined>,
-  artists: Exclude<Music['artists'], undefined>
-  uploadedDate: string,
-  duration: number,
+interface Props {
+  id: number;
+  index: number;
+  format: 'Компактный'| 'Список';
+  name: string;
+  artists: SimpleArtist[];
+  album: {id: number; name: string};
+  duration: number;
+  uploadedDate: string;
+  listenings: number;
 
-  isAlbum?: boolean,
-  isDate?: boolean,
+  isAdded: boolean;
+  isCurrent: boolean;
 
-  format: 'Компактный'| 'Список',
-
-  isAdded: boolean,
-  isCurrent: boolean,
+  isAlbum: boolean;
+  isDate: boolean;
 }
 
 const {format} = defineProps<Props>();
@@ -46,7 +49,7 @@ const musicStore = useMusicStore();
     <div class="state">
       <span class="order" :style="getActiveColor(isCurrent)">{{index}}</span>
       <button class="toggle">
-        <img v-if="isCurrent && musicStore.isPlaying" src="/equalizer-animated.gif" alt="" />
+        <img v-if="isCurrent && musicStore.isPlaying" :src="EqualizerAnimated" alt="" />
         <PlayingState v-else class="icon" />
       </button>
     </div>
@@ -80,7 +83,7 @@ const musicStore = useMusicStore();
       </div>
     </div>
     <div v-if="isAlbum" class="album">
-      <RouterLink v-if="isListFormat" v-tooltip="album.name" :to="`/playlist/${album.to}`" @click.stop>
+      <RouterLink v-if="isListFormat" v-tooltip="album.name" :to="`/playlist/${album.id}`" @click.stop>
         {{album.name}}
       </RouterLink>
 

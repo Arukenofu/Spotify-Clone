@@ -6,7 +6,7 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 
 import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
-import type { Music } from '@/services/types/Music';
+import type { Music } from '@/services/types/Entities/Music';
 import type {PlaylistInfo, PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 import {MusicInfoService} from "@/services/api/music/musicInfoService";
 
@@ -48,7 +48,7 @@ export default function () {
   }
 
   async function loadPlaylist(id: number) {
-    if (id === playlistStore.currentPlaylistInfo?.playlistId) {
+    if (id === playlistStore.currentPlaylistInfo?.id) {
       toggleTrackPlaying(); return;
     }
 
@@ -60,7 +60,7 @@ export default function () {
       index: number = 0,
       play: boolean = true
   ) {
-    const isSamePlaylist = playlist.playlistInfoDossier && playlist.playlistInfoDossier.playlistId === currentPlaylistInfo.value?.playlistId;
+    const isSamePlaylist = playlist.playlistInfoDossier && playlist.playlistInfoDossier.id === currentPlaylistInfo.value?.id;
     const isSameTrack = index === currentAudioIndexInQueue.value;
 
     if (isSamePlaylist && isSameTrack) {
@@ -147,15 +147,15 @@ export default function () {
     return musicId === currentAudioId.value;
   }
 
-  function isThisPlaylist(playlistId: PlaylistInfoDossier['playlistId'] | null, playing: boolean = false) {
+  function isThisPlaylist(playlistId: PlaylistInfoDossier['id'] | null, playing: boolean = false) {
     if (playing && !isPlaying.value || !currentPlaylistInfo.value) {
       return false;
     }
 
-    return playlistId === currentPlaylistInfo.value.playlistId;
+    return playlistId === currentPlaylistInfo.value.id;
   }
 
-  function isThisPlaylistAndMusic(musicId: number | null, playlistId: PlaylistInfoDossier['playlistId'] | null, playing: boolean = false) {
+  function isThisPlaylistAndMusic(musicId: number | null, playlistId: PlaylistInfoDossier['id'] | null, playing: boolean = false) {
     if (playing && !isPlaying.value) {
       return false;
     }

@@ -1,1 +1,1 @@
-export type Entities = 'Playlist' | 'User' | 'Artist'
+export type Entities = 'Playlist' | 'User' | 'Artist' | 'Album' | 'Track';

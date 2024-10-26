@@ -1,6 +1,6 @@
 import {computed, shallowRef} from 'vue';
 import { defineStore } from 'pinia';
-import type { Music } from '@/services/types/Music';
+import type { Music } from '@/services/types/Entities/Music';
 import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 
 export default defineStore('usePlaylistStore', () => {

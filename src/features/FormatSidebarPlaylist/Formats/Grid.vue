@@ -13,7 +13,7 @@ defineProps<GridFormatProps>();
 
 <template>
   <RouterLink
-    :to="`/playlist/${to}`"
+    :to="`/playlist/${id}`"
     class="block"
     :class="!minimized && 'unminimized'"
   >

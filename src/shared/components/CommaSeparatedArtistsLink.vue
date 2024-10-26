@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {SimpleArtist} from "@/services/types/Artist";
+import type {SimpleArtist} from "@/services/types/Entities/Artist";
 
 defineProps<{
   artists: SimpleArtist[],

@@ -6,6 +6,7 @@ import { computed } from 'vue';
 interface Props {
   title: string;
   scrollY: number;
+  isPlaying: boolean;
   mask: string;
   passingHeight?: number;
 }
@@ -18,6 +19,11 @@ const {
 const isHeightPassed = computed(() => {
   return scrollY > passingHeight;
 });
+
+type Emits = {
+  playClick: []
+}
+defineEmits<Emits>();
 </script>
 
 <template>
@@ -30,7 +36,7 @@ const isHeightPassed = computed(() => {
       </template>
 
       <template #default>
-        <GreenPlayingButton class="button" :state="false" />
+        <GreenPlayingButton class="button" :state="isPlaying" @click="$emit('playClick')" />
         <div class="title">{{title}}</div>
       </template>
     </StickyHeader>

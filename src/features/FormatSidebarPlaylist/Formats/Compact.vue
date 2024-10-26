@@ -7,7 +7,7 @@ defineProps<FormatProps>();
 
 <template>
   <RouterLink
-    :to="`/playlist/${to}`"
+    :to="`/playlist/${id}`"
     class="compact-playlist"
   >
     {{ name }}
