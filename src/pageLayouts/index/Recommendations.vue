@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RecommendationSection from '@/pageLayouts/index/Elements/RecommendationSection.vue';
+import RecommendationSection from '@/UI/Blocks/EntitiesSection.vue';
 import MusicCard from '@/UI/Elements/MusicCard.vue';
 import {useQuery} from "@tanstack/vue-query";
 import {RecommendationService} from "@/services/api/recommendations/recommendationService";
@@ -20,8 +20,8 @@ const {data: recommendations} = useQuery({
   >
     <MusicCard
       v-for="music in recommendation.list"
-      :key="music.playlistId"
-      :playlist-id="music.playlistId"
+      :id="music.id"
+      :key="music.id"
       :type="recommendation.type"
       :image="music.imageUrl"
       :name="music.name"

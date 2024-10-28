@@ -1,12 +1,12 @@
 export interface SimpleArtist {
-  id: number;
+  id: number | string;
   name: string;
   avatar?: string | null;
   type: 'Artist';
 }
 
 export interface Artist {
-  id: number;
+  id: number | string;
   profile: {
     artistName: string;
     avatar?: string | null;

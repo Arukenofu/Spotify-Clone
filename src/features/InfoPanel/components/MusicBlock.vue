@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
-import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import type { Music } from '@/services/types/Entities/Music';
 

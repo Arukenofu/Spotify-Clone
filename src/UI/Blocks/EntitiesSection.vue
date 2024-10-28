@@ -4,13 +4,12 @@ import useResponsive from '@/shared/composables/useResponsive';
 interface Props {
   naming: string | null;
   headTitle?: string | null;
-  href: string;
+  href: string | null;
   isShowAll?: boolean;
+  columnWidth?: string;
 }
 
-withDefaults(defineProps<Props>(), {
-  isShowAll: true
-});
+const {isShowAll = true, columnWidth = '160px'} = defineProps<Props>();
 
 const { isMobile } = useResponsive();
 </script>
@@ -26,13 +25,17 @@ const { isMobile } = useResponsive();
           {{ headTitle }}
         </p>
 
-        <RouterLink :to="!isMobile ? href : ''">
+        <RouterLink v-if="href" class="naming" :to="!isMobile ? href : ''">
           {{ naming }}
         </RouterLink>
+
+        <span v-else class="naming">
+          {{ naming }}
+        </span>
       </div>
 
       <div
-        v-if="isShowAll && !isMobile"
+        v-if="href && isShowAll && !isMobile"
         class="show-all"
       >
         <RouterLink :to="href">
@@ -79,7 +82,7 @@ section {
         color: var(--text-soft);
       }
 
-      a {
+      .naming {
         display: -webkit-box;
         overflow: hidden;
         -moz-box-orient: vertical;
@@ -91,7 +94,9 @@ section {
         font-weight: 500;
         text-wrap: balance;
         align-items: flex-end;
+      }
 
+      a {
         &:hover {
           text-decoration: underline;
         }
@@ -115,12 +120,12 @@ section {
   }
 
   .main-area {
-    --rec-min-column-width: 160px;
+    --col-width: v-bind(columnWidth);
     margin-inline: -12px;
     display: grid;
     grid-template-columns: repeat(
       auto-fill,
-      minmax(var(--rec-min-column-width), 1fr)
+      minmax(var(--col-width), 1fr)
     );
     grid-template-rows: 1fr 0 0 0 0 0;
     overflow: hidden;
@@ -134,7 +139,7 @@ section {
 
 @container recommendation (min-width: 1205px) {
   .main-area {
-    --rec-min-column-width: 210px !important;
+    --col-width: 210px !important;
   }
 }
 </style>

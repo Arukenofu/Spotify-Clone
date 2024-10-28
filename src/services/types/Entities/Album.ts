@@ -1,13 +1,13 @@
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 
 export interface Album {
-    id: number;
+    id: number | string;
     name: string;
     image: string;
     color?: string | null;
     info: {
-        year: number;
-        musicQuantity: number;
+        uploadedDate: string;
+        savedQuantity: number;
         tracksAmount: number;
         totalDuration: number;
     };

@@ -10,7 +10,7 @@ import Range from '@/shared/components/Range.vue';
 import { useUserSettings } from '@/widgets/MediaPlayer/store/useUserSettings';
 import getRandomNumber from '@/shared/utils/getRandomNumber';
 import getActiveColor from '@/shared/utils/getActiveColor';
-import formatTime from '@/shared/utils/formatTimeMMSS';
+import formatTime from '@/shared/utils/format/formatTimeMMSS';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';

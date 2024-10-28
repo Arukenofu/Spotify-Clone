@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import readableTime from "../../shared/utils/readableTime";
-import getCommaSeparatedString from "../../shared/utils/getCommaSeparatedString";
+import readableTime from "../../shared/utils/format/readableTime";
+import getCommaSeparatedString from "../../shared/utils/format/getCommaSeparatedString";
 import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 
 interface Props extends PlaylistInfoDossier {

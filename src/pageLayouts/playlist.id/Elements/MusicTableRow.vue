@@ -6,14 +6,14 @@ import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
 import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue';
 import ThreeDots from '@/UI/Icons/Shared/ThreeDots.vue';
-import formatTime from '../../../shared/utils/formatTimeMMSS';
+import formatTime from '../../../shared/utils/format/formatTimeMMSS';
 import getActiveColor from '@/shared/utils/getActiveColor';
-import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 
 interface Props {
-  id: number;
+  id: number | string;
   index: number;
   format: 'Компактный'| 'Список';
   name: string;

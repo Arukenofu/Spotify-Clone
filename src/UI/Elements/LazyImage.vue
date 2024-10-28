@@ -24,6 +24,7 @@ function onImageLoad() {
       :class="isLoaded && 'v-img-loaded'"
       loading="lazy"
       class="image"
+      draggable="false"
       @load="onImageLoad"
     />
   </div>
@@ -32,6 +33,7 @@ function onImageLoad() {
 <style scoped lang="scss">
 .lazyImage {
   position: relative;
+  background-color: v-bind(color);
 
   .mask, .image {
     object-fit: cover;

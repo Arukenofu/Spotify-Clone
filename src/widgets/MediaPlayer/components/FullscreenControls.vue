@@ -14,7 +14,7 @@ import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
 import {inject, onMounted, ref, watch} from "vue";
 import getRandomNumber from "@/shared/utils/getRandomNumber";
-import formatTimeMMSS from "../../../shared/utils/formatTimeMMSS";
+import formatTimeMMSS from "../../../shared/utils/format/formatTimeMMSS";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import ShowText from "@/UI/Icons/MediaPlayerControls/ShowText.vue";
 import VolumeSilent from "@/UI/Icons/MediaPlayerControls/VolumeSilent.vue";

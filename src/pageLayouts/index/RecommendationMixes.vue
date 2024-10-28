@@ -29,8 +29,8 @@ const {mutate: setNewMusic} = useMutation({
     <div class="albums-wrap">
       <RecommendationMix
         v-for="rec in mixes"
+        :id="rec.playlistId"
         :key="rec.playlistId"
-        :playlist-id="rec.playlistId"
         :name="rec.name"
         :image="rec.imageUrl"
         :href="rec.playlistId"

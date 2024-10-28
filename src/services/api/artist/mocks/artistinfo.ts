@@ -1,4 +1,4 @@
-import type {ArtistInfoWithMusic} from "@/services/api/artist/types/ArtistInfoWithMusic";
+import type {FullArtistInfo} from "@/services/api/artist/types/FullArtistInfo";
 
 export const artistInfo = {
     id: 1,
@@ -7,7 +7,7 @@ export const artistInfo = {
         avatar: '',
         coverImage: 'https://i.scdn.co/image/ab67618600001016efea59bc08c5104388f4229c',
         color: '#535353',
-        description: 'Галымжан Молданазар — казахстанский певец, музыкант и солист группы Moldanazar. Родился 20 октября 1988 года в селе Караозек Кызылординской области Казахстана. Рос в среде, где культивировалась национальная культура и традиции. \n В детстве рисовал акварелью, занимался лепкой и вокалом, играл на гитаре. В 7–8 классе начал писать стихи. В 2006 году получил аттестат об окончании школы и отправился в Алматы. Чтобы поступить на факультет эстрадного вокала, начал самостоятельно изучать музыкальную грамоту. Параллельно учился на актерском факультете Академии искусств.'
+        description: 'Галымжан Молданазар — казахстанский певец, музыкант и солист группы Moldanazar. Родился 20 октября 1988 года в селе Караозек Кызылординской области Казахстана. Рос в среде, где культивировалась национальная культура и традиции.\nВ детстве рисовал акварелью, занимался лепкой и вокалом, играл на гитаре. В 7–8 классе начал писать стихи. В 2006 году получил аттестат об окончании школы и отправился в Алматы. Чтобы поступить на факультет эстрадного вокала, начал самостоятельно изучать музыкальную грамоту. Параллельно учился на актерском факультете Академии искусств.'
     },
     listenersQuantityPerMonth: 12300,
     subscriptionsTotalQuantity: 4900,
@@ -244,7 +244,38 @@ export const artistInfo = {
                 listenings: 12000,
                 color: '#46ceb9'
             }
+        ],
+        albums: [
+            {
+                id: 1,
+                name: 'Альбом #1',
+                image: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
+                color: '#6c2d2d',
+                info: {
+                    uploadedDate: '2021-24-24',
+                    savedQuantity: 123000,
+                    tracksAmount: 12,
+                    totalDuration: 1200,
+                },
+                creators: [{id: 1, name: 'Baur', type: 'Artist', avatar: ''}]
+            }
+        ],
+        recommended: [
+            {
+                sectionId: 1,
+                naming: 'Также от исполнителя',
+                type: 'Playlist',
+                list: [
+                    {
+                        id: 1,
+                        name: 'Плейлист #1',
+                        imageUrl: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
+                        description: 'Плейлист #1',
+                        color: '#6c2d2d'
+                    }
+                ]
+            }
         ]
     },
     isSubscribed: false,
-} satisfies ArtistInfoWithMusic;
+} satisfies FullArtistInfo;

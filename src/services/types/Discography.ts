@@ -1,23 +1,15 @@
 import type {Music} from "@/services/types/Entities/Music";
+import type {Album} from "@/services/types/Entities/Album";
+import type { Recommendation } from "../api/recommendations/types/Reccomendation";
 
-export interface DiscographyAlbum {
-    albumId: number;
-    name: string;
-    imageUrl: string | null;
-    description: string | null;
-    color: string | null;
-}
+export interface DiscographyAlbum extends Album {}
 
-export interface DiscographyPopularTracks extends Music {
+export interface DiscographyPopularTracks extends Music {}
 
-}
-
-export interface DiscographyLatestTracks extends Music {
-
-}
+export interface DiscographyRecommended extends Recommendation {}
 
 export interface Discography {
     albums?: DiscographyAlbum[],
     popularTracks?: DiscographyPopularTracks[],
-    latestTracks?: DiscographyLatestTracks[]
+    recommended?: DiscographyRecommended[]
 }

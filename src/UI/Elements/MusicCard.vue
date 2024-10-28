@@ -4,26 +4,28 @@ import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import type { Entities } from '@/services/types/Entities';
 
-type EntitiesExpandedWithArtist = Entities | 'Artist'
-
 interface Props {
-  playlistId: number;
-  type?: EntitiesExpandedWithArtist;
+  id: number | string;
+  type?: Entities;
   name?: string;
   image?: string | null;
   color?: string | null;
+  state?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
-  type: 'Playlist',
-  showName: true
-});
+const {type = 'Playlist'} = defineProps<Props>();
+
+type Emits = {
+  onPlayClick: []
+}
+
+defineEmits<Emits>();
 </script>
 
 <template>
   <div
     class="card"
-    @click="routerPushPrevent(`/${type}/${playlistId}`)"
+    @click="routerPushPrevent(`/${type}/${id}`)"
   >
     <EntityAvatar1x1
       class="image"
@@ -37,8 +39,8 @@ withDefaults(defineProps<Props>(), {
         v-if="type !== 'User'"
         v-tooltip="`Слушать плейлист «${name}»`"
         class="playingState"
-        :state="false"
-        @click.stop
+        :state="state ?? false"
+        @click.stop="$emit('onPlayClick')"
         @mousedown.prevent
       />
     </EntityAvatar1x1>

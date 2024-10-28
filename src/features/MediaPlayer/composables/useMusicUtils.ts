@@ -4,7 +4,7 @@ import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 
-import getCommaSeparatedString from '@/shared/utils/getCommaSeparatedString';
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
 import type { Music } from '@/services/types/Entities/Music';
 import type {PlaylistInfo, PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";

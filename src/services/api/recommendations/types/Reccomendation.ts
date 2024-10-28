@@ -1,5 +1,5 @@
 interface RecommendationList {
-    playlistId: number,
+    id: number,
     name: string,
     imageUrl: string | null,
     description: string | null,

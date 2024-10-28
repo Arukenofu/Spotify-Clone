@@ -4,7 +4,7 @@ import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import LazyImage from "@/UI/Elements/LazyImage.vue";
 
 interface Props {
-  playlistId: number;
+  id: number;
   name: string;
   image: string;
   href: string | number;

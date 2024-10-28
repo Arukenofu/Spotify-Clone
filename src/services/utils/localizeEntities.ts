@@ -10,4 +10,10 @@ export default function (entity: Entities) {
     if (entity === 'User') {
         return 'Пользователь'
     }
+    if (entity === 'Album') {
+        return 'Альбом'
+    }
+    if (entity === 'Track') {
+        return 'Песня'
+    }
 }

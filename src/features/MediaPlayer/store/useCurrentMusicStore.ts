@@ -5,7 +5,7 @@ import type { Music } from '@/services/types/Entities/Music';
 
 export default defineStore('useCurrentMusicStore', () => {
   const playlistStore = usePlaylistStore();
-  const currentAudioId = ref<number | null>(null);
+  const currentAudioId = ref<Music['id'] | null>(null);
 
   const currentAudioIndexInQueue = computed(() => {
     const index = playlistStore.currentQueue.findIndex(
