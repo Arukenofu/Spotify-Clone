@@ -16,6 +16,11 @@ export const basePlaylistInfo = {
             name: 'baur',
             avatar: null,
             type: 'User'
+        },{
+            id: 1,
+            name: 'baur',
+            avatar: null,
+            type: 'User'
         }],
         isAdded: true,
     },
@@ -43,7 +48,8 @@ export const basePlaylistInfo = {
             avatar:
                 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
-            albumId: 1
+            albumId: 1,
+            color: '#333333'
         },
         {
             id: 2,
@@ -61,7 +67,8 @@ export const basePlaylistInfo = {
             url: '/Moldanazar.mp3',
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
-            albumId: 1
+            albumId: 1,
+            color: '#333333'
         }
     ]
 } satisfies PlaylistInfo

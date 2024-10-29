@@ -1,5 +1,5 @@
 export interface HeaderProps {
-    mask: string,
+    mask: string | null,
     name: string,
     listenersPerMonth: number,
     image?: string,

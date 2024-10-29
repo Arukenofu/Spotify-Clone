@@ -5,7 +5,7 @@ export interface Music {
   name: string;
   artists: SimpleArtist[];
   avatar?: string;
-  color?: string | null;
+  color: string | null;
   url: string;
   uploadedDate: string;
   duration: number;

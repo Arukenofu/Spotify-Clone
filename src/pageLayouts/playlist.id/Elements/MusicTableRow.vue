@@ -360,9 +360,9 @@ const musicStore = useMusicStore();
 
   $classes: (
     'state' : 'index',
-    'main' : 'name',
-    'album' : 'var2',
-    'date' : 'var3',
+    'main' : 'main',
+    'album' : 'var1',
+    'date' : 'var2',
     'time' : 'time'
   );
 

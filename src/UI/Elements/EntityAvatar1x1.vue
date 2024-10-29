@@ -2,6 +2,7 @@
 import LazyImage from "@/UI/Elements/LazyImage.vue";
 import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
+import NoArtistAvatar from "@/UI/Icons/Shared/NoArtistAvatar.vue";
 import type { Entities } from '@/services/types/Entities';
 import type { Component } from 'vue';
 
@@ -33,6 +34,8 @@ defineProps<Props>();
       class="icon"
     />
 
+    <NoArtistAvatar v-else-if="type === 'Artist'" class="image" draggable="false" />
+
     <NoMusicOrPlaylistAvatar
       v-else
       class="icon"
@@ -54,7 +57,7 @@ defineProps<Props>();
   .image {
     width: 100%;
     aspect-ratio: 1/1;
-    border-radius: 4px;
+    border-radius: inherit;
   }
 
   .icon {

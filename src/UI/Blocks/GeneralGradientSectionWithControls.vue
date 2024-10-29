@@ -6,7 +6,7 @@ import type {BindingValues} from "@/app/directives/Tooltip/types/BindingTypes";
 interface Props {
   isPlaying: boolean;
   tooltipStr: BindingValues;
-  bgColor?: string | null;
+  bgColor: string | null;
 }
 
 type Emit = {
@@ -14,7 +14,7 @@ type Emit = {
   dotsClick: [];
 }
 
-defineProps<Props>();
+const {bgColor = '#333333'} = defineProps<Props>();
 defineEmits<Emit>();
 </script>
 
@@ -24,6 +24,7 @@ defineEmits<Emit>();
 
     <div class="controls">
       <GreenPlayingButton
+        v-tooltip="isPlaying ? 'Пауза' : 'Слушать'"
         class="playingButton"
         :state="isPlaying"
         @click="$emit('playClick')"

@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router';
 import setTitle from '@/shared/utils/setTitle';
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
-import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfo.vue';
+import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
 import {MusicInfoService} from "@/services/api/music/musicInfoService";
@@ -10,11 +10,15 @@ import {computed, inject, ref} from "vue";
 
 const routeId = Number(useRoute('/playlist/[id]').params.id);
 
-setTitle(`${routeId} | Spotify Playlist`);
-
 const {data, isFetched} = useQuery({
   queryKey: ['playlistInfo', routeId],
-  queryFn: async () => await new MusicInfoService().getPlaylistInfo(routeId),
+  queryFn: async () => {
+    const data = await new MusicInfoService().getPlaylistInfo(routeId)
+
+    setTitle(`${data.playlistInfoDossier.name} | Spotify Playlist`);
+
+    return data;
+  },
 });
 
 const dossier = computed(() => data.value?.playlistInfoDossier);

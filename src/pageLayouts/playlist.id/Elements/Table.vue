@@ -1,33 +1,25 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
-import ClockIcon from '@/UI/Icons/Shared/ClockIcon.vue';
+import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import MusicTableRow from '@/pageLayouts/playlist.id/Elements/MusicTableRow.vue';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
+import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 
-const stickyTableHead = useTemplateRef<HTMLElement>('stickyTableHead');
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
-const isSticky = ref<boolean>(false);
 const layoutWidth = ref<number>(0);
-
-function setIsSticky() {
-  isSticky.value = !!(stickyTableHead.value && stickyTableHead.value.getBoundingClientRect().top <= 128);
-}
 
 const widthObserver = new ResizeObserver(([entry]) => {
   layoutWidth.value = entry.contentRect.width;
 });
 
 onMounted(() => {
-  layoutContent!.value.content.addEventListener('scroll', setIsSticky);
   widthObserver.observe(layoutContent!.value.content);
 });
 
 onUnmounted(() => {
-  layoutContent!.value.content.removeEventListener('scroll', setIsSticky);
   widthObserver.unobserve(layoutContent!.value.content);
 });
 
@@ -45,23 +37,23 @@ const computeGridLines = computed(() => {
   if (!computeTableLines.value.isAlbum) {
     return `grid-template-columns:
       [index] 16px
-      [name] minmax(120px, 4fr)
+      [main] minmax(120px, 4fr)
       [time] minmax(120px, 1fr);`
   }
 
   if (!computeTableLines.value.isDate) {
     return `grid-template-columns:
       [index] 16px
-      [name] minmax(120px, 4fr)
-      [var2] minmax(120px, 2fr)
+      [main] minmax(120px, 4fr)
+      [var1] minmax(120px, 2fr)
       [time] minmax(120px, 1fr);`
   }
 
   return `grid-template-columns:
       [index] 16px
-      [name] minmax(120px, 6fr)
-      [var2] minmax(120px, 4fr)
-      [var3] minmax(120px, 3fr)
+      [main] minmax(120px, 6fr)
+      [var1] minmax(120px, 4fr)
+      [var2] minmax(120px, 3fr)
       [time] minmax(120px, 1fr);`
 });
 
@@ -79,23 +71,12 @@ const {loadSongOrPlaylist} = useMusicUtils();
 
 <template>
   <div class="playlist_table">
-    <div
-      ref="stickyTableHead"
-      :class="isSticky && 'stuck'"
+    <MusicRowHeader
+      :parent-element="layoutContent!.content"
+      :var1="format === 'Список' ? 'Альбом' : 'Исполнитель'"
+      :var2="'Дата добавления'"
       :style="computeGridLines"
-      class="playlist_table_head"
-    >
-      <div class="index">#</div>
-      <div class="name">Название</div>
-      <div v-if="false" class="var1">Исполнитель</div>
-      <div v-if="computeTableLines.isAlbum" class="var2">{{format === 'Список' ? 'Альбом' : 'Исполнитель'}}</div>
-      <div v-if="computeTableLines.isDate" class="var3">Дата добавления</div>
-      <div class="time">
-        <div v-tooltip:center_top="'Длительность'">
-          <ClockIcon class="icon" />
-        </div>
-      </div>
-    </div>
+    />
 
     <div class="playlistTableBody">
       <MusicTableRow
@@ -117,7 +98,7 @@ const {loadSongOrPlaylist} = useMusicUtils();
         class="row"
         @set-play="loadSongOrPlaylist({
           playlistInfoDossier: dossier,
-          playlistQueue: queue,
+          playlistQueue: queue
         }, index)"
       />
     </div>
@@ -172,7 +153,6 @@ const {loadSongOrPlaylist} = useMusicUtils();
       'name' : 'name',
       'var1' : 'var1',
       'var2' : 'var2',
-      'var3' : 'var3',
       'time' : 'time'
     );
 

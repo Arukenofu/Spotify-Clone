@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
 import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
+import { onMounted, onUnmounted } from "vue";
 
 const model = defineModel<boolean>({
   required: true
@@ -9,11 +10,25 @@ const model = defineModel<boolean>({
 const {to = 'body'} = defineProps<{
   to?: string;
 }>();
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown); 
+});
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    model.value = false;
+  }
+}
 </script>
 
 <template>
   <Teleport :to="to">
-    <Transition name="modal-background" appear>
+    <Transition name="modal-background">
       <div v-if="model" class="modal-background" @click.self="model = false">
         <Transition name="content" appear>
           <ScrollableBlock class="content" :allow-style-shadow="false" gap="0">
@@ -80,17 +95,23 @@ const {to = 'body'} = defineProps<{
   }
 }
 
-.content-enter-from {
+.content-enter-from, .content-leave-to {
   transform: translateY(25%) scale(.6);
 }
-.content-enter-active {
+.content-enter-to, .content-leave-from {
+  transform: translateY(0) scale(1);
+}
+.content-enter-active, .content-leave-active {
   transition: transform .3s ease-out;
 }
 
-.modal-background-enter-from {
+.modal-background-enter-from, .modal-background-leave-to {
   opacity: 0;
 }
-.modal-background-enter-active {
+.modal-background-enter-to, .modal-background-leave-from {
+  opacity: 1;
+}
+.modal-background-enter-active, .modal-background-leave-active {
   transition: opacity .3s linear;
 }
 </style>

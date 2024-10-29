@@ -164,7 +164,7 @@ defineEmits<Emits>();
 
     .order {
       color: var(--text-soft);
-      text-align: right;
+      margin: 0 auto;
     }
 
     &:has(.toggle img) {

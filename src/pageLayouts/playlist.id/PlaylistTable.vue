@@ -63,7 +63,7 @@ const tooltips = reactive({
       true
     )"
     :tooltip-str="tooltips.options"
-    :bg-color="dossier.color"
+    :bg-color="dossier.color ?? null"
     @play-click="play"
   >
     <template #main-options>

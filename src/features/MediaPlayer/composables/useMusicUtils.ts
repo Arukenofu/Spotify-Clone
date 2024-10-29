@@ -47,12 +47,16 @@ export default function () {
     });
   }
 
-  async function loadPlaylist(id: number) {
+  async function loadPlaylist(id: number, playlist?: PlaylistInfo) {
     if (id === playlistStore.currentPlaylistInfo?.id) {
       toggleTrackPlaying(); return;
     }
 
-    loadSongOrPlaylist(await new MusicInfoService().getPlaylistInfo(id));
+    if (!playlist) {
+      loadSongOrPlaylist(await new MusicInfoService().getPlaylistInfo(id)); return;
+    }
+
+    loadSongOrPlaylist(playlist);
   }
 
   function loadSongOrPlaylist(
