@@ -7,13 +7,14 @@ interface Props {
   title: string;
   scrollY: number;
   isPlaying: boolean;
-  mask: string;
+  mask: string | null;
   passingHeight?: number;
 }
 
 const {
   scrollY,
   passingHeight = 160,
+  mask = '#333333'
 } = defineProps<Props>();
 
 const isHeightPassed = computed(() => {

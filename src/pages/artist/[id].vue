@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
+import {computed, inject, ref, watch} from "vue";
 import { useRoute } from 'vue-router';
 import {useMutation, useQuery} from "@tanstack/vue-query";
 import {ArtistService} from "@/services/api/artist/artistService";
@@ -16,14 +16,19 @@ import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from '@/shared/utils/setTitle';
 import readableNumber from "@/shared/utils/format/readableNumber";
 import getDeclention from "@/shared/utils/getDeclention";
-import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
+import TracksSection from "@/UI/Blocks/TracksSection.vue";
+import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const isExpanded = ref<boolean>(false);
 
-const {data: artistInfo, isFetched} = useQuery({
+watch(() => route.params.id, () => {
+  refetch();
+})
+
+const {data: artistInfo, isFetched, isFetching, isError, refetch} = useQuery({
   queryKey: ['artistDetailed', route.params.id],
   queryFn: async () => {
     const data = await new ArtistService().getFullArtistInfo(Number(route.params.id));
@@ -59,40 +64,32 @@ const popularMusic = computed(() => {
   return artistInfo.value?.discography.popularTracks ?? [];
 });
 
-const {loadSongOrPlaylist, loadPlaylist, isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
-
-function createCustomPlaylist(id: string, index: number) {
-  const dossier: PlaylistInfoDossier = {
-    id: id,
-    name: '',
-    imageUrl: null,
-    color: null,
-    description: null,
-    additional: {
-      tracksQuantity: 0,
-      totalDuration: 0,
-    },
-    creator: [],
-    isAdded: false
-  };
-
-  loadSongOrPlaylist({
-    playlistInfoDossier: dossier,
-    playlistQueue: artistInfo.value!.discography.popularTracks
-  }, index);
-}
+const {
+  loadPlaylist,
+  isThisPlaylist,
+  isThisPlaylistAndMusic,
+  createCustomPlaylist
+} = useMusicUtils();
 
 const isModal = ref<boolean>(false);
 </script>
 
 <template>
-  <div v-if="isFetched && artistInfo" class="layout">
+  <HandleEntityLayoutStates
+    :is-fetching="isFetching"
+    :is-error="isError"
+    entity="трек"
+  />
+
+  <div v-if="artistInfo" class="layout">
     <PlayHeader
       :title="artistInfo.profile.artistName"
       :scroll-y="layoutScrollY"
       :mask="artistInfo.profile.color"
       :is-playing="isThisPlaylist(`popular:${artistInfo.profile.artistName}`, true)"
-      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, 0)"
+      @play-click="createCustomPlaylist(
+        `popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0
+      )"
     />
     <Component
       :is="artistInfo.profile.coverImage ? ArtistInfoHeader : ArtistInfoHeaderNoCover"
@@ -114,7 +111,7 @@ const isModal = ref<boolean>(false);
         }
       }"
       :bg-color="artistInfo.profile.color"
-      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, 0)"
+      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0)"
     >
       <template #main-options>
         <button class="subscription" @click="toggleArtistSubscription()">
@@ -123,8 +120,11 @@ const isModal = ref<boolean>(false);
       </template>
     </GeneralGradientSectionWithControls>
 
-    <section class="popular-tracks">
-      <h2>Популярные треки</h2>
+    <TracksSection
+      v-model:is-expanded="isExpanded"
+      class="popular-tracks"
+      naming="Популярные треки"
+    >
       <div class="wrapper">
         <MusicRow
           v-for="(music, index) of popularMusic"
@@ -143,8 +143,7 @@ const isModal = ref<boolean>(false);
           :show-artists="false"
           class="row"
           @set-play="createCustomPlaylist(
-            `popular:${artistInfo.profile.artistName}`,
-            index
+            `popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0
           )"
         >
           <template #var1>
@@ -154,10 +153,7 @@ const isModal = ref<boolean>(false);
           </template>
         </MusicRow>
       </div>
-      <button class="expand" @click="isExpanded = !isExpanded">
-        {{isExpanded ? 'Свернуть' : 'Ещё'}}
-      </button>
-    </section>
+    </TracksSection>
 
     <EntitiesSection
       class="albums"
@@ -292,19 +288,6 @@ const isModal = ref<boolean>(false);
       }
     }
 
-    .expand {
-      width: min-content;
-      padding: 16px;
-      background: transparent;
-      border: none;
-      font-weight: 700;
-      font-size: .875rem;
-      color: hsla(0,0%,100%,.7);
-
-      &:hover {
-        color: var(--white);
-      }
-    }
   }
 
   .albums, .recommended {

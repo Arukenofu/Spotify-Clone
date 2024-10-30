@@ -14,6 +14,6 @@ export default function (entity: Entities) {
         return 'Альбом'
     }
     if (entity === 'Track') {
-        return 'Песня'
+        return ''
     }
 }

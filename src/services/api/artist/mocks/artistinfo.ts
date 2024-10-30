@@ -53,7 +53,8 @@ export const artistInfo = {
                 url: '/Мосты.mp3',
                 avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 2,
@@ -72,7 +73,8 @@ export const artistInfo = {
                 url: '/Moldanazar.mp3',
                 avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 3,
@@ -97,7 +99,8 @@ export const artistInfo = {
                 url: '/Мосты.mp3',
                 avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 4,
@@ -116,7 +119,8 @@ export const artistInfo = {
                 url: '/Moldanazar.mp3',
                 avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 5,
@@ -141,7 +145,8 @@ export const artistInfo = {
                 url: '/Мосты.mp3',
                 avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 6,
@@ -160,7 +165,8 @@ export const artistInfo = {
                 url: '/Moldanazar.mp3',
                 avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 7,
@@ -179,7 +185,8 @@ export const artistInfo = {
                 url: '/Moldanazar.mp3',
                 avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 8,
@@ -204,7 +211,8 @@ export const artistInfo = {
                 url: '/Мосты.mp3',
                 avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 9,
@@ -223,7 +231,8 @@ export const artistInfo = {
                 url: '/Moldanazar.mp3',
                 avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             },
             {
                 id: 10,
@@ -242,7 +251,8 @@ export const artistInfo = {
                 url: '/Moldanazar.mp3',
                 avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                 listenings: 12000,
-                color: '#46ceb9'
+                color: '#46ceb9',
+                isAdded: false
             }
         ],
         albums: [
@@ -251,6 +261,7 @@ export const artistInfo = {
                 name: 'Альбом #1',
                 image: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
                 color: '#6c2d2d',
+                description: '',
                 info: {
                     uploadedDate: '2021-24-24',
                     savedQuantity: 123000,

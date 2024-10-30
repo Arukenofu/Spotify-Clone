@@ -9,7 +9,7 @@ interface Props {
   image: string | null;
   mask: string | null;
   name: string;
-  creator: PlaylistInfoDossier['creator'],
+  creator: PlaylistInfoDossier['creators'],
   tracksAmount: number;
   totalDuration: number;
 }

@@ -6,14 +6,19 @@ import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
 import {MusicInfoService} from "@/services/api/music/musicInfoService";
-import {computed, inject, ref} from "vue";
+import {computed, inject, ref, watch} from "vue";
+import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 
-const routeId = Number(useRoute('/playlist/[id]').params.id);
+const route = useRoute('/playlist/[id]');
 
-const {data, isFetched} = useQuery({
-  queryKey: ['playlistInfo', routeId],
+watch(() => route.params.id, () => {
+  refetch();
+});
+
+const {data, isFetched, isFetching, isError, refetch} = useQuery({
+  queryKey: ['playlistInfo', route.params.id],
   queryFn: async () => {
-    const data = await new MusicInfoService().getPlaylistInfo(routeId)
+    const data = await new MusicInfoService().getPlaylistInfo(Number(route.params.id));
 
     setTitle(`${data.playlistInfoDossier.name} | Spotify Playlist`);
 
@@ -26,10 +31,15 @@ const queue = computed(() => data.value?.playlistQueue);
 const bgColor = computed(() => data.value?.playlistInfoDossier.color ?? '#333333');
 
 const scrollY = inject('layoutScrollY', ref(0));
-
 </script>
 
 <template>
+  <HandleEntityLayoutStates
+    :is-fetching="isFetching"
+    :is-error="isError"
+    entity="плейлист"
+  />
+
   <PlayHeader
     v-if="dossier"
     :is-playing="false"
@@ -43,11 +53,11 @@ const scrollY = inject('layoutScrollY', ref(0));
       v-if="dossier"
       :id="dossier.id"
       :name="dossier.name"
-      :image-url="dossier.imageUrl"
+      :image="dossier.image"
       :color="dossier.color"
-      :creator="dossier.creator"
+      :creators="dossier.creators"
       :description="dossier.description"
-      :additional="dossier.additional"
+      :info="dossier.info"
       :is-added="dossier.isAdded"
     />
 

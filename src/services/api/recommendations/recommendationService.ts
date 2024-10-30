@@ -5,12 +5,12 @@ import type { RecommendationMixes } from './types/RecommendationMixes';
 
 export class RecommendationService {
   async getRecommendations() {
-    // return await api<Recommendations[]>('/recommendations/')
+    // GET /api/recommendations
     return recommendations satisfies Recommendation[];
   }
 
   async getRecommendationMixes() {
-    // return await api<RecommendationMixes[]>('/recommendations/mixes');
+    // GET /api/recommendations/mixes
     return mixes satisfies RecommendationMixes[];
   }
 

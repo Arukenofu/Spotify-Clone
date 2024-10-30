@@ -6,7 +6,6 @@ export interface PlaylistInfoDossier extends Playlist {
 }
 
 export interface PlaylistInfoQueue extends Music {
-
 }
 
 export interface PlaylistInfo {

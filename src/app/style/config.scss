@@ -20,6 +20,10 @@ body {
   overflow-x: hidden;
 }
 
+img {
+  user-select: none;
+}
+
 a {
   text-decoration: none;
   outline: none;

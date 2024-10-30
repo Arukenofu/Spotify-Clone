@@ -99,7 +99,7 @@ const {loadSongOrPlaylist} = useMusicUtils();
         @set-play="loadSongOrPlaylist({
           playlistInfoDossier: dossier,
           playlistQueue: queue
-        }, index)"
+        }, {index})"
       />
     </div>
   </div>

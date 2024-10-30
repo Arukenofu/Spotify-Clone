@@ -10,19 +10,29 @@ import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import AddToMediaLib from "@/UI/Buttons/AddToMediaLib.vue";
 import MusicRow from "@/UI/Elements/MusicRow.vue";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
-import {inject, type Ref, ref} from "vue";
+import {inject, type Ref, ref, watch} from "vue";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
+import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 
-const routeId = Number(useRoute('/playlist/[id]').params.id);
+const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
-const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent')
+const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
-const {data, isSuccess} = useQuery({
-  queryKey: ['playlistInfo', routeId],
+watch(() => route.params.id, () => {
+  refetch();
+})
+
+const {
+  data,
+  isFetching,
+  isError,
+  refetch
+} = useQuery({
+  queryKey: ['playlistInfo', route.params.id],
   queryFn: async () => {
-    const data = await new MusicInfoService().getPlaylistInfo(routeId);
+    const data = await new MusicInfoService().getPlaylistInfo(Number(route.params.id));
 
-    setTitle(`${data.playlistInfoDossier.name} - Album by ${getCommaSeparatedString(data.playlistInfoDossier.creator, 'name')} | Spotify`);
+    setTitle(`${data.playlistInfoDossier.name} - Album by ${getCommaSeparatedString(data.playlistInfoDossier.creators, 'name')} | Spotify`);
 
     return data;
   }
@@ -32,7 +42,13 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
 </script>
 
 <template>
-  <div v-if="isSuccess && data" class="layout">
+  <HandleEntityLayoutStates
+    :is-fetching="isFetching"
+    :is-error="isError"
+    entity="альбом"
+  />
+
+  <div v-if="data" class="layout">
     <PlayHeader
       :title="data.playlistInfoDossier.name"
       :scroll-y="scrollY"
@@ -41,18 +57,20 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
     />
 
     <AlbumInfoHeader
-      :image="data.playlistInfoDossier.imageUrl"
+      :image="data.playlistInfoDossier.image"
       :mask="data.playlistInfoDossier.color"
       :name="data.playlistInfoDossier.name"
-      :creator="data.playlistInfoDossier.creator"
-      :tracks-amount="data.playlistInfoDossier.additional.tracksQuantity"
-      :total-duration="data.playlistInfoDossier.additional.totalDuration"
+      :creator="data.playlistInfoDossier.creators"
+      :tracks-amount="data.playlistInfoDossier.info.tracksAmount"
+      :total-duration="data.playlistInfoDossier.info.totalDuration"
     />
     <GeneralGradientSectionWithControls
       :is-playing="isThisPlaylist(data.playlistInfoDossier.id, true)"
       :bg-color="data.playlistInfoDossier.color"
       :tooltip-str="`Открыть контекстное меню: ${data.playlistInfoDossier.name}`"
-      @play-click="loadPlaylist(data.playlistInfoDossier.id, data)"
+      @play-click="loadPlaylist(data.playlistInfoDossier.id, {
+        playlist: data
+      })"
     >
       <template #main-options>
         <AddToMediaLib

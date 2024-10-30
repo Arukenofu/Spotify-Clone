@@ -116,6 +116,7 @@ watchEffect(() => {
 
     .content {
       position: relative;
+      min-height: 100%;
       z-index: 1 !important;
     }
   }

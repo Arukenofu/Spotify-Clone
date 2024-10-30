@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes, handleHotUpdate } from 'vue-router/auto-routes';
-// @ts-ignore
 import { setupLayouts } from 'virtual:generated-layouts';
 
 export const router = createRouter({
@@ -11,5 +10,6 @@ export const router = createRouter({
 router.beforeEach(() => {});
 
 if (import.meta.hot) {
+  // @ts-ignore
   handleHotUpdate(setupLayouts(routes));
 }

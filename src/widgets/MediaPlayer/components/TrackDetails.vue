@@ -11,7 +11,7 @@ const { currentAudioData } = storeToRefs(store);
   <div v-if="currentAudioData" class="track-details">
     <div class="track-image-outer">
       <img
-        :src="currentAudioData.avatar"
+        :src="currentAudioData.avatar ?? ''"
         alt=""
       >
     </div>

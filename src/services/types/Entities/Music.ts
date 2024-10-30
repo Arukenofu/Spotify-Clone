@@ -4,12 +4,12 @@ export interface Music {
   id: number | string;
   name: string;
   artists: SimpleArtist[];
-  avatar?: string;
+  avatar: string | null;
   color: string | null;
   url: string;
   uploadedDate: string;
   duration: number;
   listenings: number;
   albumId: number;
-  isAdded?: boolean;
+  isAdded: boolean;
 }

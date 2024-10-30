@@ -6,6 +6,7 @@ import Router from 'unplugin-vue-router/vite';
 import vue from '@vitejs/plugin-vue';
 import sassGlobImports from 'vite-plugin-sass-glob-import';
 import createTypesByFolder from './scripts/createTypesByFolder';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 import ScssConfig from "./config/scss.config";
 import RouterEnvConfig from "./config/routerEnv.config";
@@ -20,6 +21,7 @@ export default defineConfig({
     Router(RouterEnvConfig),
     sassGlobImports(),
     ClientSideLayout(LayoutConfig),
+    vueDevTools(),
     vue()
   ],
   css: ScssConfig,

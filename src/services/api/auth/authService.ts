@@ -19,6 +19,7 @@ export class AuthService {
     }
     await this.validatePassword(password);
 
+    // POST /api/auth/login
     return await api('/api/auth/login', {
       body: form,
       method: 'POST',
@@ -29,6 +30,7 @@ export class AuthService {
   }
 
   async RegisterAccount(form: RegisterForm): Promise<void | Error> {
+    // POST /api/auth/register
     return await api('/api/auth/register', {
       body: form,
       method: 'POST'
@@ -40,6 +42,7 @@ export class AuthService {
       throw new Error('Неправильный формат почты.')
     }
 
+    // POST /api/auth/checkEmail
     return await api('/api/auth/checkEmail', {
       method: 'POST',
       body: {
@@ -62,6 +65,7 @@ export class AuthService {
       throw new Error(JSON.stringify(validation));
     }
 
+    // POST /api/auth/checkPassword
     return await api('/api/auth/checkPassword', {
       method: 'POST',
       body: {

@@ -7,8 +7,18 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
 import type { Music } from '@/services/types/Entities/Music';
-import type {PlaylistInfo, PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
+import type {PlaylistInfo, PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
 import {MusicInfoService} from "@/services/api/music/musicInfoService";
+
+interface LoadPlaylistOptions {
+  musicId?: number;
+  playlist?: PlaylistInfo;
+}
+
+interface LoadSongOrPlaylistOptions {
+  index?: number;
+  play?: boolean;
+}
 
 export default function () {
   const musicStore = useMusicStore();
@@ -47,13 +57,25 @@ export default function () {
     });
   }
 
-  async function loadPlaylist(id: number, playlist?: PlaylistInfo) {
+  async function loadPlaylist(
+      id: number,
+      options: LoadPlaylistOptions = {}
+  ) {
+    const playlist = options.playlist;
+    const musicId = options.musicId;
+
     if (id === playlistStore.currentPlaylistInfo?.id) {
       toggleTrackPlaying(); return;
     }
 
     if (!playlist) {
-      loadSongOrPlaylist(await new MusicInfoService().getPlaylistInfo(id)); return;
+      const music = await new MusicInfoService().getPlaylistInfo(id);
+      const index = music.playlistQueue.findIndex(({id}) => id === musicId) ?? 0;
+
+      loadSongOrPlaylist(music, {
+        index
+      });
+      return;
     }
 
     loadSongOrPlaylist(playlist);
@@ -61,9 +83,11 @@ export default function () {
 
   function loadSongOrPlaylist(
       playlist: PlaylistInfo,
-      index: number = 0,
-      play: boolean = true
+      options: LoadSongOrPlaylistOptions = {}
   ) {
+    const index = options.index ?? 0;
+    const play = options.play ?? true;
+
     const isSamePlaylist = playlist.playlistInfoDossier && playlist.playlistInfoDossier.id === currentPlaylistInfo.value?.id;
     const isSameTrack = index === currentAudioIndexInQueue.value;
 
@@ -143,7 +167,7 @@ export default function () {
     pauseAudio();
   }
 
-  function isThisMusic(musicId: number | null, playing: boolean = false) {
+  function isThisMusic(musicId: string | number | null, playing: boolean = false) {
     if (playing && !isPlaying.value) {
       return false;
     }
@@ -159,12 +183,35 @@ export default function () {
     return playlistId === currentPlaylistInfo.value.id;
   }
 
-  function isThisPlaylistAndMusic(musicId: number | null, playlistId: PlaylistInfoDossier['id'] | null, playing: boolean = false) {
+  function isThisPlaylistAndMusic(musicId: string | number | null, playlistId: PlaylistInfoDossier['id'] | null, playing: boolean = false) {
     if (playing && !isPlaying.value) {
       return false;
     }
 
     return isThisMusic(musicId) && isThisPlaylist(playlistId);
+  }
+
+  function createCustomPlaylist(id: string, queue: PlaylistInfoQueue[], index: number = 0) {
+    const dossier: PlaylistInfoDossier = {
+      id: id,
+      name: '',
+      image: null,
+      color: null,
+      description: null,
+      info: {
+        uploadedDate: '1970-01-01',
+        savedQuantity: 0,
+        tracksAmount: 0,
+        totalDuration: 0,
+      },
+      creators: [],
+      isAdded: false
+    };
+
+    loadSongOrPlaylist({
+      playlistInfoDossier: dossier,
+      playlistQueue: queue
+    }, {index});
   }
 
   return {
@@ -176,6 +223,7 @@ export default function () {
     previousTrack,
     isThisMusic,
     isThisPlaylist,
-    isThisPlaylistAndMusic
+    isThisPlaylistAndMusic,
+    createCustomPlaylist
   };
 }

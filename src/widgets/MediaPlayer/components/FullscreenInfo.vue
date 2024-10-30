@@ -23,7 +23,7 @@ const {currentAudioData} = storeToRefs(currentStore);
     </div>
     <div class="current-music">
       <div class="image">
-        <img :src="currentAudioData.avatar" alt="">
+        <img :src="currentAudioData.avatar ?? ''" alt="">
       </div>
       <div class="text">
         <div class="track-name">{{currentAudioData.name}}</div>

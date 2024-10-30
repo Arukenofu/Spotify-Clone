@@ -14,7 +14,7 @@ defineProps<Props>();
 <template>
   <EntityInfoHeader
     class="playlist_about"
-    :image="imageUrl ?? null"
+    :image="image ?? null"
     :mask="color ?? null"
     type="Album"
   >
@@ -33,11 +33,11 @@ defineProps<Props>();
         <figure title="Spotify">
           <div><img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67757000003b8255c25988a6ac314394d3fbf5" alt="Spotify"></div>
         </figure>
-        <span>{{getCommaSeparatedString(creator as [], 'name')}}</span>
+        <span>{{ getCommaSeparatedString(creators as [], 'name') }}</span>
       </div>
       <span class="dot">•</span>
       <div class="quantity">
-        {{additional.tracksQuantity}} треков, примерно {{readableTime(additional.totalDuration)}}
+        {{ info.tracksAmount }} треков, примерно {{ readableTime(info.totalDuration) }}
       </div>
     </div>
   </EntityInfoHeader>

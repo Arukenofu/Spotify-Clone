@@ -5,9 +5,10 @@ interface Props {
   image: string;
   alt?: string;
   color?: string | null;
+  loading?: 'lazy' | 'eager';
 }
 
-defineProps<Props>();
+const {loading = 'lazy'} = defineProps<Props>();
 
 const isLoaded = ref<boolean>(false);
 
@@ -22,7 +23,7 @@ function onImageLoad() {
       :src="image"
       :alt="alt"
       :class="isLoaded && 'v-img-loaded'"
-      loading="lazy"
+      :loading="loading"
       class="image"
       draggable="false"
       @load="onImageLoad"

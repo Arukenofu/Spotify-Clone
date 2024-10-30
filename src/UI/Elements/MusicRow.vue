@@ -15,14 +15,14 @@ interface Props {
   isCurrent: boolean;
   isPlaying: boolean;
   isAdded: boolean;
-  musicId: number;
+  musicId: string | number;
   albumId: number;
   musicName: string;
   duration: number;
   artists: SimpleArtist[];
   showArtists?: boolean;
-  image?: string | null;
-  color?: string | null;
+  image: string | null;
+  color: string | null;
 }
 
 const {showArtists = true} = defineProps<Props>();

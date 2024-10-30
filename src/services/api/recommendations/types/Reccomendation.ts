@@ -9,6 +9,6 @@ interface RecommendationList {
 export interface Recommendation {
     sectionId: number;
     naming: string | null;
-    type: 'Playlist' | 'Artist';
+    type: 'Playlist' | 'Album' | 'Artist';
     list: RecommendationList[];
 }

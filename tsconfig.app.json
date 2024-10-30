@@ -5,9 +5,7 @@
     "src/**/*",
     "src/**/*.vue",
     "src/app/global.d.ts",
-    ".generated/*.d.ts",
-    "vite-plugin-vue-layouts/client",
-    "unplugin-vue-router/client"
+    ".generated/*.d.ts"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
@@ -19,6 +17,10 @@
     "paths": {
       "@/*": ["./src/*"],
       "#imports": [".generated/imports"]
-    }
+    },
+    "types": [
+      "vite-plugin-vue-layouts/client",
+      "unplugin-vue-router/client"
+    ]
   }
 }
