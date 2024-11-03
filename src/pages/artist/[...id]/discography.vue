@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {useQuery} from "@tanstack/vue-query";
-import {ArtistService} from "@/services/api/artist/artistService";
+import artistService from "@/services/api/artist/apiArtistService";
 import {computed, inject, ref} from "vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
 import ListIcon from "@/UI/Icons/Shared/ListIcon.vue";
@@ -21,7 +21,7 @@ const layoutScrollY = inject('layoutScrollY', ref(0));
 const {data: artistInfo, isFetched} = useQuery({
   queryKey: ['artistDetailed', route.params.id],
   queryFn: async () => {
-    const data = await new ArtistService().getFullArtistInfo(Number(route.params.id));
+    const data = await artistService.getFullArtistInfo(Number(route.params.id));
 
     setTitle(`Spotify – ${data.profile.artistName}: дискография`);
 

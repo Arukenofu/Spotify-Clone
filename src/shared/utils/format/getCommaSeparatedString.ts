@@ -1,4 +1,4 @@
-export default function getCommaSeparatedString<T>(array: T[], pick?: keyof T) {
+export default function getCommaSeparatedString<T>(array: T[], pick?: keyof T, separator: string = `, `) {
   let result: string = '';
 
   array.map((value, index, array) => {
@@ -9,7 +9,7 @@ export default function getCommaSeparatedString<T>(array: T[], pick?: keyof T) {
     }
 
     if (index !== array.length - 1) {
-      result += `, `;
+      result += separator;
     }
   });
 

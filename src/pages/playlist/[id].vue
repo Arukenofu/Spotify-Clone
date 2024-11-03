@@ -5,7 +5,7 @@ import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
-import {MusicInfoService} from "@/services/api/music/musicInfoService";
+import musicInfoService from "@/services/api/music/apiMusicService";
 import {computed, inject, ref, watch} from "vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 
@@ -18,7 +18,7 @@ watch(() => route.params.id, () => {
 const {data, isFetched, isFetching, isError, refetch} = useQuery({
   queryKey: ['playlistInfo', route.params.id],
   queryFn: async () => {
-    const data = await new MusicInfoService().getPlaylistInfo(Number(route.params.id));
+    const data = await musicInfoService.getPlaylistInfo(Number(route.params.id));
 
     setTitle(`${data.playlistInfoDossier.name} | Spotify Playlist`);
 

@@ -2,7 +2,7 @@
 import {useRoute} from "vue-router";
 import {inject, ref, watch} from "vue";
 import {useQuery} from "@tanstack/vue-query";
-import {MusicInfoService} from "@/services/api/music/musicInfoService";
+import musicInfoService from "@/services/api/music/apiMusicService";
 import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
@@ -17,7 +17,6 @@ import AddToMediaLib from "@/UI/Buttons/AddToMediaLib.vue";
 import ArtistFullWidthBlock from "@/UI/Blocks/ArtistFullWidthBlock.vue";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import MusicRow from "@/UI/Elements/MusicRow.vue";
-import {artistInfo} from "@/services/api/artist/mocks/artistinfo";
 
 const route = useRoute('/track/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -34,7 +33,7 @@ const {
 } = useQuery({
   queryKey: ['trackInfo', route.params.id],
   queryFn: async () => {
-    const data = await new MusicInfoService().getTrackInfo(Number(route.params.id));
+    const data = await musicInfoService.getTrackInfo(Number(route.params.id));
 
     setTitle(`${data.trackInfoDossier.name} - song by ${getCommaSeparatedString(data.trackInfoDossier.artists, 'name')} | Spotify`);
 

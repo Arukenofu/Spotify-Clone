@@ -2,7 +2,7 @@
 import AlbumInfoHeader from "@/pageLayouts/album.id/AlbumInfoHeader.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {useRoute} from "vue-router";
-import {MusicInfoService} from "@/services/api/music/musicInfoService";
+import musicInfoService from "@/services/api/music/apiMusicService";
 import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
@@ -30,7 +30,7 @@ const {
 } = useQuery({
   queryKey: ['playlistInfo', route.params.id],
   queryFn: async () => {
-    const data = await new MusicInfoService().getPlaylistInfo(Number(route.params.id));
+    const data = await musicInfoService.getPlaylistInfo(Number(route.params.id));
 
     setTitle(`${data.playlistInfoDossier.name} - Album by ${getCommaSeparatedString(data.playlistInfoDossier.creators, 'name')} | Spotify`);
 

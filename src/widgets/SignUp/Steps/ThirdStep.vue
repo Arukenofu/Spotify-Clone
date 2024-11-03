@@ -6,7 +6,7 @@ import FormError from '@/UI/Form/FormError.vue';
 import stepStore from '@/widgets/SignUp/store/stepStore';
 import { router } from '@/app/router';
 import { useMutation } from '@tanstack/vue-query';
-import { AuthService } from '@/services/api/auth/authService';
+import authService from '@/services/api/auth/apiAuthService';
 
 const { form } = stepStore();
 
@@ -28,7 +28,7 @@ const isError = ref<boolean>(false);
 
 const {mutate: register} = useMutation({
   mutationKey: ['register'],
-  mutationFn: () => new AuthService().RegisterAccount(form.value)
+  mutationFn: () => authService.RegisterAccount(form.value)
 })
 
 async function validateWholeForm() {

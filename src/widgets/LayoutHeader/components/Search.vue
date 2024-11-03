@@ -40,7 +40,7 @@ watch(inputValue, () => {
       return;
     }
 
-    router.push(`/search?q=${inputValue.value}`);
+    router.push(`/search/${inputValue.value}`);
   }, 1000);
 });
 </script>

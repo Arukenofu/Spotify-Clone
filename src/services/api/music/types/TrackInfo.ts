@@ -1,4 +1,4 @@
-import type {Music} from "@/services/types/Entities/Music";
+import type {Music} from "@/services/types/Music";
 import type {Recommendation} from "@/services/api/recommendations/types/Reccomendation";
 
 export interface TrackInfoDossier extends Music {

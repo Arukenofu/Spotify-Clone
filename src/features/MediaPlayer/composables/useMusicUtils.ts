@@ -4,11 +4,11 @@ import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 
+import musicInfoService from "@/services/api/music/apiMusicService";
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
-import type { Music } from '@/services/types/Entities/Music';
+import type { Music } from '@/services/types/Music';
 import type {PlaylistInfo, PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
-import {MusicInfoService} from "@/services/api/music/musicInfoService";
 
 interface LoadPlaylistOptions {
   musicId?: number;
@@ -58,7 +58,7 @@ export default function () {
   }
 
   async function loadPlaylist(
-      id: number,
+      id: number | string,
       options: LoadPlaylistOptions = {}
   ) {
     const playlist = options.playlist;
@@ -69,8 +69,12 @@ export default function () {
     }
 
     if (!playlist) {
-      const music = await new MusicInfoService().getPlaylistInfo(id);
-      const index = music.playlistQueue.findIndex(({id}) => id === musicId) ?? 0;
+      const music = await musicInfoService.getPlaylistInfo(id);
+      let index = music.playlistQueue.findIndex(({id}) => id === musicId);
+
+      if (index < 0) {
+        index = 0;
+      }
 
       loadSongOrPlaylist(music, {
         index

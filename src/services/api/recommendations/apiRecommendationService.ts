@@ -3,7 +3,7 @@ import {recommendations} from "@/services/api/recommendations/mocks/recommendati
 import type { Recommendation } from './types/Reccomendation';
 import type { RecommendationMixes } from './types/RecommendationMixes';
 
-export class RecommendationService {
+class ApiRecommendationService {
   async getRecommendations() {
     // GET /api/recommendations
     return recommendations satisfies Recommendation[];
@@ -15,3 +15,6 @@ export class RecommendationService {
   }
 
 }
+
+const recommendationService = new ApiRecommendationService();
+export default recommendationService;

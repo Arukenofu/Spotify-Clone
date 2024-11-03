@@ -2,7 +2,7 @@ import api from '@/services/api';
 import type {LoginForm} from "@/services/api/auth/types/LoginForm";
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
 
-export class AuthService {
+class ApiAuthService {
   async LoginToAccount(form: LoginForm): Promise<void | Error> {
     const { email, password } = form;
 
@@ -77,3 +77,6 @@ export class AuthService {
     });
   }
 }
+
+const authService = new ApiAuthService();
+export default authService;

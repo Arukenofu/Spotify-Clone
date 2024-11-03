@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import type { Music } from '@/services/types/Entities/Music';
+import type { Music } from '@/services/types/Music';
 
 const props = defineProps<{
   music: Music;

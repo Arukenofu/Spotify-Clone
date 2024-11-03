@@ -1,4 +1,4 @@
-import type {Music} from "@/services/types/Entities/Music";
+import type {Music} from "@/services/types/Music";
 import type {Playlist} from "@/services/types/Entities/Playlist";
 
 export interface PlaylistInfoDossier extends Playlist {

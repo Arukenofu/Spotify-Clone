@@ -1,3 +1,4 @@
 export interface ResponseOK {
-    message: 'OK';
+    message: 'OK',
+    state: boolean;
 }

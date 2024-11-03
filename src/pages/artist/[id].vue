@@ -2,7 +2,7 @@
 import {computed, inject, ref, watch} from "vue";
 import { useRoute } from 'vue-router';
 import {useMutation, useQuery} from "@tanstack/vue-query";
-import {ArtistService} from "@/services/api/artist/artistService";
+import artistService from "@/services/api/artist/apiArtistService";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import ArtistInfoHeader from "@/pageLayouts/artist.id/ArtistInfoHeader.vue";
 import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue";
@@ -31,7 +31,7 @@ watch(() => route.params.id, () => {
 const {data: artistInfo, isFetched, isFetching, isError, refetch} = useQuery({
   queryKey: ['artistDetailed', route.params.id],
   queryFn: async () => {
-    const data = await new ArtistService().getFullArtistInfo(Number(route.params.id));
+    const data = await artistService.getFullArtistInfo(Number(route.params.id));
 
     setTitle(`${data.profile.artistName} | Spotify`);
     
@@ -45,13 +45,13 @@ const {mutate: toggleArtistSubscription} = useMutation({
       return;
     }
 
-    const data = await new ArtistService().toggleArtistSubscription(
+    const data = await artistService.toggleArtistSubscription(
         artistInfo.value.isSubscribed,
         Number(route.params.id)
     );
 
     if (data.message === 'OK') {
-      (artistInfo.value.isSubscribed as boolean) = artistInfo.value.isSubscribed as boolean;
+      (artistInfo.value.isSubscribed as boolean) = data.state;
     }
   }
 });

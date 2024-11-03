@@ -1,14 +1,10 @@
-interface RecommendationList {
-    id: number,
-    name: string,
-    imageUrl: string | null,
-    description: string | null,
-    color: string | null
+import type {EntityPreview} from "@/services/types/Entities/EntityPreview";
+
+interface RecommendationList extends EntityPreview {
 }
 
 export interface Recommendation {
     sectionId: number;
     naming: string | null;
-    type: 'Playlist' | 'Album' | 'Artist';
     list: RecommendationList[];
 }

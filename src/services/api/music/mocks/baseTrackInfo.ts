@@ -186,14 +186,14 @@ export const baseTrackInfo = {
         {
             sectionId: 1,
             naming: 'Также от исполнителя',
-            type: 'Playlist',
             list: [
                 {
                     id: 1,
                     name: 'Плейлист #1',
                     imageUrl: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
                     description: 'Плейлист #1',
-                    color: '#6c2d2d'
+                    color: '#6c2d2d',
+                    type: 'Playlist'
                 }
             ]
         }

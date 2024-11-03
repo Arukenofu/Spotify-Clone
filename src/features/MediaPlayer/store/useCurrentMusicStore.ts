@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
-import type { Music } from '@/services/types/Entities/Music';
+import type { Music } from '@/services/types/Music';
 
 export default defineStore('useCurrentMusicStore', () => {
   const playlistStore = usePlaylistStore();

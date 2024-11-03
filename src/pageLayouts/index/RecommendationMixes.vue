@@ -3,7 +3,7 @@ import RecommendationMix from '@/pageLayouts/index/Elements/RecommendationMix.vu
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import {useMutation, useQuery} from '@tanstack/vue-query';
-import {RecommendationService} from '@/services/api/recommendations/recommendationService'
+import recommendationService from '@/services/api/recommendations/apiRecommendationService'
 
 const playlistStore = usePlaylistStore();
 
@@ -15,7 +15,7 @@ defineEmits<{
 
 const {data: mixes} = useQuery({
   queryKey: ['mixes'],
-  queryFn: () => new RecommendationService().getRecommendationMixes()
+  queryFn: () => recommendationService.getRecommendationMixes()
 });
 
 const {mutate: setNewMusic} = useMutation({

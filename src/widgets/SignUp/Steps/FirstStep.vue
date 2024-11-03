@@ -10,7 +10,7 @@ import stepStore from '@/widgets/SignUp/store/stepStore';
 import type { FirstStepForm } from '@/widgets/SignUp/types/form';
 import Pin from '@/UI/Icons/Shared/Pin.vue';
 import { useMutation } from '@tanstack/vue-query';
-import { AuthService } from '@/services/api/auth/authService';
+import authService from '@/services/api/auth/apiAuthService';
 
 const { step, form } = stepStore();
 
@@ -67,7 +67,7 @@ const passwordRuleValidation = computed<{
 
 const {mutate: validate} = useMutation({
   mutationKey: ['registerPassword'],
-  mutationFn: () => new AuthService().validatePassword(currentForm.password),
+  mutationFn: async () => await authService.validatePassword(currentForm.password),
   onError: (error) => {
     errorForm.value = JSON.parse(error.message) as ErrorForm;
   },

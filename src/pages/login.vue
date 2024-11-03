@@ -10,7 +10,7 @@ import FormError from '@/UI/Form/FormError.vue';
 import setTitle from '@/shared/utils/setTitle';
 import { router } from '@/app/router';
 import { useMutation } from '@tanstack/vue-query';
-import { AuthService } from '@/services/api/auth/authService';
+import authService from '@/services/api/auth/apiAuthService';
 
 setTitle('Войти - Spotify');
 
@@ -27,7 +27,7 @@ const fieldErrors = reactive({
 
 const {mutate: login, error} = useMutation({
   mutationKey: ['login'],
-  mutationFn: () => new AuthService().LoginToAccount(form),
+  mutationFn: () => authService.LoginToAccount(form),
   onSuccess: () => {
     router.push('/');
   }

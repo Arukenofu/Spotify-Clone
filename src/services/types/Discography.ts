@@ -1,4 +1,4 @@
-import type {Music} from "@/services/types/Entities/Music";
+import type {Music} from "@/services/types/Music";
 import type {Album} from "@/services/types/Entities/Album";
 import type { Recommendation } from "../api/recommendations/types/Reccomendation";
 

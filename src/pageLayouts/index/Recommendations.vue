@@ -2,12 +2,24 @@
 import RecommendationSection from '@/UI/Blocks/EntitiesSection.vue';
 import MusicCard from '@/UI/Elements/MusicCard.vue';
 import {useQuery} from "@tanstack/vue-query";
-import {RecommendationService} from "@/services/api/recommendations/recommendationService";
+import recommendationService from "@/services/api/recommendations/apiRecommendationService";
+import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
+import type {Entities} from "@/services/types/Entities";
 
 const {data: recommendations} = useQuery({
   queryKey: ['recommendations'],
-  queryFn: () => new RecommendationService().getRecommendations()
+  queryFn: async () => await recommendationService.getRecommendations()
 });
+
+const {loadPlaylist, isThisPlaylist} = useMusicUtils();
+
+function onClick(type: Entities, id: number | string) {
+  if (type === 'Artist') {
+    return;
+  }
+
+  loadPlaylist(id);
+}
 </script>
 
 <template>
@@ -19,15 +31,17 @@ const {data: recommendations} = useQuery({
     :href="`/section/${recommendation.sectionId}`"
   >
     <MusicCard
-      v-for="music in recommendation.list"
-      :id="music.id"
-      :key="music.id"
-      :type="recommendation.type"
-      :image="music.imageUrl"
-      :name="music.name"
-      :color="music.color"
+      v-for="entity in recommendation.list"
+      :id="entity.id"
+      :key="entity.id"
+      :type="entity.type"
+      :image="entity.imageUrl"
+      :name="entity.name"
+      :color="entity.color"
+      :state="isThisPlaylist(entity.id, true)"
+      @on-play-click="onClick(entity.type, entity.id)"
     >
-      {{music.description}}
+      {{entity.description}}
     </MusicCard>
   </RecommendationSection>
 </template>

@@ -6,7 +6,7 @@ import { reactive } from 'vue';
 import stepStore from '@/widgets/SignUp/store/stepStore';
 import type { ZeroStepForm } from '@/widgets/SignUp/types/form';
 import { useMutation } from '@tanstack/vue-query';
-import { AuthService } from '@/services/api/auth/authService';
+import authService from '@/services/api/auth/apiAuthService';
 
 const { step, form } = stepStore();
 
@@ -16,7 +16,7 @@ const currentForm = reactive<ZeroStepForm>({
 
 const {mutate: register, error} = useMutation({
   mutationKey: ['registerEmail'],
-  mutationFn: () => new AuthService().validateEmail(currentForm.email),
+  mutationFn: async () => await authService.validateEmail(currentForm.email),
   onSuccess: () => {
     step.value++;
     form.value.email = currentForm.email;

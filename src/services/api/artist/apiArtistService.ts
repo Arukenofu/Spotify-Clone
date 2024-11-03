@@ -3,7 +3,7 @@ import api from "@/services/api";
 import type {ResponseOK} from "@/services/types/Responses";
 import type { FullArtistInfo } from "./types/FullArtistInfo";
 
-export class ArtistService {
+class ApiArtistService {
     async getFullArtistInfo(artistId: number) {
         // GET /api/artist/:id
         return artistInfo satisfies FullArtistInfo;
@@ -25,3 +25,6 @@ export class ArtistService {
         });
     }
 }
+
+const artistService = new ApiArtistService();
+export default artistService;
