@@ -1,6 +1,6 @@
 import { mixes } from '@/services/api/recommendations/mocks/mixes';
 import {recommendations} from "@/services/api/recommendations/mocks/recommendations";
-import type { Recommendation } from './types/Reccomendation';
+import type { Recommendation } from '@/services/types/Recommendation';
 import type { RecommendationMixes } from './types/RecommendationMixes';
 
 class ApiRecommendationService {

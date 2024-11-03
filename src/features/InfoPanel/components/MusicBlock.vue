@@ -3,10 +3,10 @@ import { computed } from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import type { Music } from '@/services/types/Music';
+import type { Track } from '@/services/types/Entities/Track';
 
 const props = defineProps<{
-  music: Music;
+  music: Track;
   state: boolean;
 }>();
 

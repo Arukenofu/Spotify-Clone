@@ -268,12 +268,13 @@ export const artistInfo = {
                     tracksAmount: 12,
                     totalDuration: 1200,
                 },
-                creators: [{id: 1, name: 'Baur', type: 'Artist', avatar: ''}]
+                creators: [{id: 1, name: 'Baur', type: 'Artist', avatar: ''}],
+                isAdded: false
             }
         ],
         recommended: [
             {
-                sectionId: 1,
+                id: 1,
                 naming: 'Также от исполнителя',
                 list: [
                     {

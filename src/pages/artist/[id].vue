@@ -178,7 +178,7 @@ const isModal = ref<boolean>(false);
 
     <EntitiesSection
       v-for="section in artistInfo.discography.recommended"
-      :key="section.sectionId"
+      :key="section.id"
       :naming="section.naming"
       :href="`/artist/${artistInfo.id}/recommended`"
       :column-width="'180px'"

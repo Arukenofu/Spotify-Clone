@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
-import type { Music } from '@/services/types/Music';
+import type { Track } from '@/services/types/Entities/Track';
 
 export default defineStore('useCurrentMusicStore', () => {
   const playlistStore = usePlaylistStore();
-  const currentAudioId = ref<Music['id'] | null>(null);
+  const currentAudioId = ref<Track['id'] | null>(null);
 
   const currentAudioIndexInQueue = computed(() => {
     const index = playlistStore.currentQueue.findIndex(
@@ -15,7 +15,7 @@ export default defineStore('useCurrentMusicStore', () => {
     return index !== -1 ? index : null;
   });
 
-  const currentAudioData = computed<Music | null>(() => {
+  const currentAudioData = computed<Track | null>(() => {
     if (currentAudioIndexInQueue.value === null) {
       return null;
     }

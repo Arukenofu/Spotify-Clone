@@ -1,8 +1,8 @@
-import type {Recommendation} from "@/services/api/recommendations/types/Reccomendation";
+import type {Recommendation} from "@/services/types/Recommendation";
 
 export const recommendations = [
     {
-      sectionId: 1,
+      id: 1,
       naming: null,
       list: [
           {
@@ -17,7 +17,7 @@ export const recommendations = [
       ],
     },
     {
-        sectionId: 2,
+        id: 2,
         naming: 'Популярные исполнители',
         list: [
             {
@@ -31,7 +31,7 @@ export const recommendations = [
         ]
     },
     {
-        sectionId: 3,
+        id: 3,
         naming: 'Вам должно понравиться',
         list: [
             {

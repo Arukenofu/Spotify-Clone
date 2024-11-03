@@ -25,10 +25,10 @@ function onClick(type: Entities, id: number | string) {
 <template>
   <RecommendationSection 
     v-for="recommendation in recommendations"
-    :key="recommendation.sectionId"
+    :key="recommendation.id"
     :naming="recommendation.naming"
     class="for-you"
-    :href="`/section/${recommendation.sectionId}`"
+    :href="`/section/${recommendation.id}`"
   >
     <MusicCard
       v-for="entity in recommendation.list"

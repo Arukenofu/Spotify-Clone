@@ -1,6 +1,6 @@
 import type { SimpleArtist } from '@/services/types/Entities/Artist';
 
-export interface Music {
+export interface Track {
   id: number | string;
   name: string;
   artists: SimpleArtist[];

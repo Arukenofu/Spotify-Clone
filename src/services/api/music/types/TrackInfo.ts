@@ -1,15 +1,15 @@
-import type {Music} from "@/services/types/Music";
-import type {Recommendation} from "@/services/api/recommendations/types/Reccomendation";
+import type {Track} from "@/services/types/Entities/Track";
+import type {Recommendation} from "@/services/types/Recommendation";
 
-export interface TrackInfoDossier extends Music {
+export interface TrackInfoDossier extends Track {
 }
 
-export interface RecommendedRelatedTracks extends Music {
+export interface RecommendedRelatedTracks extends Track {
 }
 
 export interface PopularArtistsTracks {
     artistName: string;
-    trackList: Music[];
+    trackList: Track[];
 }
 
 export interface OtherInfo extends Recommendation {

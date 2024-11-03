@@ -1,0 +1,808 @@
+openapi: 3.1.0
+info:
+  title: Spotify API
+  description: Spotify-Revamp backend API endpoints
+  version: 1.0.0
+
+servers:
+  - url: https://localhost:5000/
+
+tags:
+  - name: music
+  - name: artist
+  - name: recommendations
+  - name: auth
+  - name: search
+
+paths:
+  /api/music/playlist/{id}:
+    get:
+      tags:
+        - music
+      summary: 'Получить полные данные о плейлисте/альбоме и его очереди'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Получено все данные'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playlistInfoDossier:
+                    $ref: '#/components/schemas/Playlist'
+                  playlistQueue:
+                    $ref: '#/components/schemas/Track'
+
+  /api/music/track/{id}:
+    get:
+      tags:
+        - music
+      summary: 'Получить полные данные о треке а также рекомендации'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Получено все данные'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trackInfoDossier:
+                    description: 'Информация о текущей песне'
+                    $ref: '#/components/schemas/Track'
+                  recommendedRelatedTracks:
+                    type: array
+                    description: 'Похожие или связанные песни до 5'
+                    items:
+                      $ref: '#/components/schemas/Track'
+                  popularArtistsTracks:
+                    type: array
+                    description: 'Возвращает популярные песни текущ(их/его) артист(ов/а) которые исполнили его до 10'
+                    items:
+                      properties:
+                        artistName:
+                          type: string
+                        trackList:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Track'
+                  otherInfo:
+                    type: array
+                    description: 'Уже остальные рекомендации (типо: похожие артисты, альбомы текущего артиста, поклонникам тоже нравится) до 9'
+                    list:
+                      $ref: '#/components/schemas/Recommendation'
+
+  /api/artist/{id}:
+    get:
+      tags:
+        - artist
+      summary: 'Получить полные данные об исполнителе и его дискографии'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Получено все данные'
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/Artist'
+                  - type: object
+                    properties:
+                      discography:
+                        type: object
+                        properties:
+                          albums:
+                            type: array
+                            description: 'возвращает до 9 альбомов исполнителя'
+                            items:
+                              $ref: '#/components/schemas/Album'
+                          popularTracks:
+                            type: array
+                            description: 'возвращает до 10 популярных треков исполнителя'
+                            items:
+                              $ref: '#/components/schemas/Track'
+                          recommended:
+                            type: array
+                            description: 'возвращает массив рекомендации у которых значение list может иметь длину только до 9'
+                            items:
+                              $ref: '#/components/schemas/Recommendation'
+
+  /api/artist/subscribe:
+    post:
+      tags:
+        - artist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artistId:
+                  type: string
+              required:
+                - artistId
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'OK'
+
+  /api/artist/unsubscribe:
+    post:
+      tags:
+        - artist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artistId:
+                  type: string
+              required:
+                - artistId
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'OK'
+
+  /api/recommendations:
+    get:
+      tags:
+        - recommendations
+    description: 'Рекомендации главной страницы'
+    responses:
+      '200':
+        description: 'Получено все данные'
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Recommendation'
+
+  /api/recommendations/mixes:
+    get:
+      tags:
+        - recommendations
+      description: 'Предлагаемые миксы в главной странице'
+      responses:
+        '200':
+          description: 'Получены все данные'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  schema:
+                    description: 'Миксы которые не имеют фото или цвет не должны отправляться. Длина от 4 до 6.'
+                    type: object
+                    properties:
+                      playlistId:
+                        type: string
+                      name:
+                        type: string
+                      image:
+                        type: string
+                      color:
+                        type: string
+
+  /api/auth/login:
+    post:
+      tags:
+        - auth
+      summary: Create new account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - isRemember
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                  minLength: 6
+                  maxLength: 20
+                isRemember:
+                  type: boolean
+                  description: 'Определяет сессионные куки парсить или нет'
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Успешно вошли в систему'
+        '401':
+          description: 'Invalid password or login'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Неправильный пароль или логин.'
+        '400':
+          description: 'Invalid ${property} format'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Неправильный формат ${property}'
+
+
+  /api/auth/register:
+    post:
+      tags:
+        - auth
+      summary: Log in to account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - username
+                - day
+                - month
+                - year
+                - gender
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                  minLength: 6
+                  maxLength: 20
+                username:
+                  type: string
+                  minLength: 4
+                  maxLength: 20
+                day:
+                  type: number
+                  minLength: 2
+                  maxLength: 2
+                  example: 31
+                month:
+                  type: string
+                  enum:
+                    - 'Январь'
+                    - 'Февраль'
+                    - 'Март'
+                    - 'Апрель'
+                    - 'Май'
+                    - 'Июнь'
+                    - 'Июль'
+                    - 'Август'
+                    - 'Сентябрь'
+                    - 'Октябрь'
+                    - 'Ноябрь'
+                    - 'Декабрь'
+                year:
+                  type: number
+                  description: 'Возраст пользователя не должно быть меньше 16 и больше 100'
+                  minLength: 4
+                  maxLength: 4
+                gender:
+                  type: string
+                  enum:
+                    - 'Мужчина'
+                    - 'Женщина'
+                    - 'Другое'
+                    - 'Не хочу выбирать'
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Успешно создали аккаунт'
+        '400':
+          description: 'Invalid value ${key}'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Поле ${key} имеет неправильный формат'
+
+
+
+  /api/auth/checkEmail:
+    post:
+      tags:
+        - auth
+      summary: Check if email is available
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'OK'
+        '409':
+          description: 'Email already exists'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Email уже существует'
+        '400':
+          description: 'Invalid Email format'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Неправильный формат почты'
+
+  /api/auth/checkPassword:
+    post:
+      tags:
+        - auth
+      summary: Check if password validated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Password validation checks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length:
+                    type: boolean
+                    description: Indicates if the password meets the length requirement (6)
+                    example: true
+                  digitSpecial:
+                    type: boolean
+                    description: Indicates if the password contains digits and special characters
+                    example: true
+                  letter:
+                    type: boolean
+                    description: Indicates if the password contains at least one UPPERCASE letter
+                    example: true
+        '400':
+          description: Password validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length:
+                    type: boolean
+                    description: Indicates if the password meets the length requirement (6)
+                    example: false
+                  digitSpecial:
+                    type: boolean
+                    description: Indicates if the password contains digits and special characters
+                    example: false
+                  letter:
+                    type: boolean
+                    description: Indicates if the password contains at least one UPPERCASE letter (6)
+                    example: true
+                  message:
+                    type: string
+                    description: Error message explaining which checks failed
+                    example: "Своё отдельное сообщение"
+
+components:
+  schemas:
+    Entities:
+      type: string
+      enum:
+        - Playlist
+        - User
+        - Artist
+        - Album
+        - Track
+      example: "Playlist"
+
+    SimpleArtist:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: "Artist Name"
+        avatar:
+          type: string
+          nullable: true
+          example: "https://example.com/avatar.jpg"
+        type:
+          type: string
+          enum: [ 'Artist' ]
+          example: "Artist"
+      required:
+        - id
+        - name
+        - avatar
+        - type
+
+    SimpleUser:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "2"
+        name:
+          type: string
+          example: "User Name"
+        avatar:
+          type: string
+          nullable: true
+          example: "https://example.com/avatar.jpg"
+        type:
+          type: string
+          enum: [ 'User' ]
+          example: "User"
+      required:
+        - id
+        - name
+        - avatar
+        - type
+
+    Album:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "3"
+        name:
+          type: string
+          example: "Album Name"
+        image:
+          type: string
+          nullable: true
+          example: "https://example.com/image.jpg"
+        color:
+          type: string
+          nullable: true
+          example: "#ff5733"
+        description:
+          type: string
+          nullable: true
+          example: "A great album"
+        info:
+          type: object
+          properties:
+            uploadedDate:
+              type: string
+              format: date-time
+              example: "2023-05-16T00:00:00Z"
+            savedQuantity:
+              type: integer
+              example: 1000
+            tracksAmount:
+              type: integer
+              example: 10
+            totalDuration:
+              type: integer
+              example: 3600
+          required:
+            - uploadedDate
+            - savedQuantity
+            - tracksAmount
+            - totalDuration
+        creators:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleArtist'
+        isAdded:
+          type: boolean
+          example: true
+      required:
+        - id
+        - name
+        - image
+        - color
+        - description
+        - info
+        - creators
+        - isAdded
+
+    Artist:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "4"
+        profile:
+          type: object
+          properties:
+            artistName:
+              type: string
+              example: "Artist Name"
+            avatar:
+              type: string
+              nullable: true
+              example: "https://example.com/avatar.jpg"
+            coverImage:
+              type: string
+              nullable: true
+              example: "https://example.com/cover.jpg"
+            color:
+              type: string
+              example: "#ff5733"
+            description:
+              type: string
+              nullable: true
+              example: "Artist description"
+          required:
+            - artistName
+            - avatar
+            - coverImage
+            - color
+            - description
+        listenersQuantityPerMonth:
+          type: integer
+          example: 5000
+        subscriptionsTotalQuantity:
+          type: integer
+          example: 1200
+        cityPlaybackData:
+          type: array
+          items:
+            type: object
+            properties:
+              cityName:
+                type: string
+                example: "New York"
+              countryShortName:
+                type: string
+                example: "US"
+              listenersQuantity:
+                type: integer
+                example: 1000
+        isSubscribed:
+          type: boolean
+          example: true
+      required:
+        - id
+        - profile
+        - listenersQuantityPerMonth
+        - subscriptionsTotalQuantity
+        - cityPlaybackData
+        - isSubscribed
+
+    Track:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "5"
+        name:
+          type: string
+          example: "Song Title"
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleArtist'
+        avatar:
+          type: string
+          nullable: true
+          example: "https://example.com/song-avatar.jpg"
+        color:
+          type: string
+          nullable: true
+          example: "#ff5733"
+        url:
+          type: string
+          example: "https://example.com/song.mp3"
+        uploadedDate:
+          type: string
+          format: date-time
+          example: "2023-06-20T00:00:00Z"
+        duration:
+          type: integer
+          example: 240
+        listenings:
+          type: integer
+          example: 50000
+        albumId:
+          type: string
+          example: "3"
+        isAdded:
+          type: boolean
+          example: true
+      required:
+        - id
+        - name
+        - artists
+        - avatar
+        - color
+        - url
+        - uploadedDate
+        - duration
+        - listenings
+        - albumId
+        - isAdded
+
+    Playlist:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6"
+        name:
+          type: string
+          example: "My Playlist"
+        image:
+          type: string
+          nullable: true
+          example: "https://example.com/playlist.jpg"
+        color:
+          type: string
+          nullable: true
+          example: "#ff5733"
+        description:
+          type: string
+          nullable: true
+          example: "A collection of my favorite songs"
+        info:
+          type: object
+          properties:
+            uploadedDate:
+              type: string
+              format: date-time
+              example: "2023-07-01T00:00:00Z"
+            savedQuantity:
+              type: integer
+              example: 500
+            tracksAmount:
+              type: integer
+              example: 20
+            totalDuration:
+              type: integer
+              example: 4800
+          required:
+            - uploadedDate
+            - savedQuantity
+            - tracksAmount
+            - totalDuration
+        creators:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/SimpleArtist'
+              - $ref: '#/components/schemas/SimpleUser'
+        isAdded:
+          type: boolean
+          example: true
+      required:
+        - id
+        - name
+        - image
+        - color
+        - description
+        - info
+        - creators
+        - isAdded
+
+    RecommendationItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Recommended Item Name"
+        imageUrl:
+          type: string
+          nullable: true
+          example: "https://example.com/image.jpg"
+        description:
+          type: string
+          nullable: true
+          example: "A brief description of the item."
+        color:
+          type: string
+          nullable: true
+          example: "#ff5733"
+        type:
+          $ref: '#/components/schemas/Entities'
+      required:
+        - id
+        - name
+        - type
+
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "2"
+        naming:
+          type: string
+          nullable: true
+          example: "My Recommendations"
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationItem'
+      required:
+        - id
+        - naming
+        - list

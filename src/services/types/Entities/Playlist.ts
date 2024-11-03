@@ -12,6 +12,7 @@ export interface Playlist {
     savedQuantity: number;
     tracksAmount: number;
     totalDuration: number;
-  },
-  creators: (SimpleArtist | SimpleUser)[]
+  };
+  creators: (SimpleArtist | SimpleUser)[];
+  isAdded: boolean;
 }

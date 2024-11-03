@@ -184,7 +184,7 @@ export const baseTrackInfo = {
     ],
     otherInfo: [
         {
-            sectionId: 1,
+            id: 1,
             naming: 'Также от исполнителя',
             list: [
                 {

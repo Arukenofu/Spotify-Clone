@@ -12,5 +12,6 @@ export interface Album {
         tracksAmount: number;
         totalDuration: number;
     };
-    creators: SimpleArtist[]
+    creators: SimpleArtist[];
+    isAdded: boolean;
 }

@@ -7,7 +7,7 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 import musicInfoService from "@/services/api/music/apiMusicService";
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
-import type { Music } from '@/services/types/Music';
+import type { Track } from '@/services/types/Entities/Track';
 import type {PlaylistInfo, PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
 
 interface LoadPlaylistOptions {
@@ -109,7 +109,7 @@ export default function () {
     loadSongFromCurrentQueue(currentQueue.value[index], play);
   }
 
-  function loadSongFromCurrentQueue(data: Music, play: boolean = true) {
+  function loadSongFromCurrentQueue(data: Track, play: boolean = true) {
     currentAudioId.value = data.id;
 
     if (audio.value && audio.value.src) {

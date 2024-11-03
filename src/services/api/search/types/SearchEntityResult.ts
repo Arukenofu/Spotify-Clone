@@ -1,8 +1,8 @@
 import type {Entities} from "@/services/types/Entities";
-import type {Music} from "@/services/types/Music";
-import type {EntityPreview} from "@/services/types/Entities/EntityPreview";
+import type {Track} from "@/services/types/Entities/Track";
+import type {EntityPreview} from "@/services/types/Entities";
 
 export type SearchEntityResult<T extends Entities> =
     T extends 'Track'
-        ? Music[]
+        ? Track[]
         : EntityPreview[]
