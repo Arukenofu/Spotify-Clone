@@ -3,16 +3,36 @@ import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatP
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import localizeTypes from '../utils/localizeTypes';
+import {computed} from "vue";
 
 interface GridFormatProps extends FormatProps {
   minimized: boolean;
 }
 
-defineProps<GridFormatProps>();
+const {name, type} = defineProps<GridFormatProps>();
+
+const tooltip = computed(() => {
+  const titleStyle = 'font-weight: 400; font-size: 1rem; margin-bottom: 2px';
+  const bodyStyle = 'font-weight: 400; color: var(--text-soft); font-size: .875rem';
+
+  const content = `
+    <p style="${titleStyle}">${name}</p>
+    <p style="${bodyStyle}">${type}</p>
+  `;
+
+  return {
+    content,
+    html: true,
+    placement: 'right',
+    distance: 7,
+    delay: 10
+  }
+})
 </script>
 
 <template>
   <RouterLink
+    v-tooltip="tooltip"
     :to="`/playlist/${id}`"
     class="block"
     :class="!minimized && 'unminimized'"
@@ -112,5 +132,13 @@ defineProps<GridFormatProps>();
       color: var(--text-soft);
     }
   }
+}
+
+.v-tooltip-title {
+
+}
+
+.v-tooltip-body {
+
 }
 </style>

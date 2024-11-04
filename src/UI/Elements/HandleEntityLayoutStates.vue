@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LoadingBlock from "@/UI/Blocks/LoadingBlock.vue";
-import EntityErrorBlock from "@/UI/Blocks/EntityErrorBlock.vue";
+import EntityErrorBlock from "@/UI/Blocks/ErrorBlock.vue";
 
 interface Props {
   isFetching: boolean;
@@ -12,7 +12,11 @@ defineProps<Props>();
 
 <template>
   <LoadingBlock v-if="isFetching" />
-  <EntityErrorBlock v-else-if="isError" :entity />
+  <EntityErrorBlock
+    v-else-if="isError"
+    :title="`Не удалось найти ${entity}`"
+    :body="`Попробуй поискать что-нибудь другое`"
+  />
 </template>
 
 <style scoped lang="scss">

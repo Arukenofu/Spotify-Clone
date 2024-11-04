@@ -36,17 +36,21 @@ function toggleWidth() {
   }
 }
 
-const tooltipArguments = computed(() => {
-  return isMinimized.value ? 'right_center' : 'center_top';
+const tooltip= computed(() => {
+  const placement = isMinimized.value ? 'right' : 'top'
+  const content = isMinimized.value ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку';
+
+  return {
+    content,
+    placement
+  };
 });
 </script>
 
 <template>
   <div class="medialib">
     <button
-      v-tooltip:[tooltipArguments]="
-        isMinimized ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку'
-      "
+      v-tooltip="tooltip"
       class="toggle"
       @click="toggleSidebar()"
     >

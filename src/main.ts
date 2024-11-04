@@ -8,7 +8,8 @@ import { router } from './app/router';
 
 import ClickOutside from '@/app/directives/ClickOutside';
 import DisableChild from '@/app/directives/DisableChild';
-import { Tooltip } from '@/app/directives/Tooltip';
+import FloatingVue from "@/app/lib/FloatingVue";
+
 import { VueQueryPlugin } from '@tanstack/vue-query';
 
 const app = createApp(App);
@@ -16,9 +17,9 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(VueQueryPlugin);
+app.use(FloatingVue);
 
 app.directive('click-outside', ClickOutside);
 app.directive('disable-child', DisableChild);
-app.directive('tooltip', Tooltip);
 
 app.mount('#app');

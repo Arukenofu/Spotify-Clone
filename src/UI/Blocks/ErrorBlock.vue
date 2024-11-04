@@ -2,7 +2,8 @@
 import DangerIcon from "@/UI/Icons/Shared/DangerIcon.vue";
 
 interface Props {
-  entity: string;
+  title: string;
+  body: string;
 }
 
 defineProps<Props>();
@@ -11,8 +12,8 @@ defineProps<Props>();
 <template>
   <div class="v-error">
     <DangerIcon class="icon" />
-    <h1 class="title">Не удалось найти {{entity}}</h1>
-    <p class="body">Попробуй поискать что-нибудь другое.</p>
+    <h1 class="title">{{title}}</h1>
+    <p class="body">{{body}}</p>
   </div>
 </template>
 

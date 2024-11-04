@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import Logo from "@/UI/Icons/Shared/Logo.vue";
 </script>
 
