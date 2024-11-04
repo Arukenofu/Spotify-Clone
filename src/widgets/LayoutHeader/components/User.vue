@@ -1,25 +1,31 @@
 <script setup lang="ts">
+import { Dropdown } from 'floating-vue'
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
+import UserProfileMenu from "@/widgets/LayoutHeader/contextmenu/UserProfileMenu.vue";
+
 </script>
 
 <template>
-  <RoundButton
-    v-tooltip:end_bottom="{
-      content: 'Бауыржан Алкенов',
-      distance: 5
-    }"
-    v-disable-child
-    class="user-avatar"
-    @click="
-      $router.push('/signup');
-    "
-  >
-    <div
-      class="picture"
-      :class="'no-picture'"
-      data-char="Б"
-    />
-  </RoundButton>
+  <Dropdown :distance="7">
+    <RoundButton
+      v-tooltip="{
+        content: 'Бауыржан Алкенов',
+        distance: 5
+      }"
+      v-disable-child
+      class="user-avatar"
+    >
+      <div
+        class="picture"
+        :class="'no-picture'"
+        data-char="Б"
+      />
+    </RoundButton>
+
+    <template #popper>
+      <UserProfileMenu />
+    </template>
+  </Dropdown>
 </template>
 
 <style lang="scss" scoped>

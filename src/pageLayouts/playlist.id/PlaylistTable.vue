@@ -83,28 +83,28 @@ const tooltips = reactive({
 
 <style scoped lang="scss">
 .state {
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      margin-right: var(--content-spacing);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  margin-right: var(--content-spacing);
 
-      .add {
-        fill: var(--text-soft);
+  .add {
+    fill: var(--text-soft);
 
-        &:hover {
-          fill: var(--white);
-          scale: 1.05;
-        }
-      }
-
-      .remove {
-        fill: var(--main-color);
-
-        &:hover {
-          scale: 1.05;
-        }
-      }
+    &:hover {
+      fill: var(--white);
+      scale: 1.05;
     }
+  }
+
+  .remove {
+    fill: var(--main-color);
+
+    &:hover {
+      scale: 1.05;
+    }
+  }
+}
 </style>

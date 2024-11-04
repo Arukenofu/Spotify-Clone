@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
 import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
-import type {BindingValues} from "@/app/directives/Tooltip/types/BindingTypes";
 
 interface Props {
   isPlaying: boolean;
-  tooltipStr: BindingValues;
+  tooltipStr: string | object;
   bgColor: string | null;
 }
 

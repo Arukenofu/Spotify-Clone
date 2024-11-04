@@ -4,14 +4,14 @@ import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue';
 import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
-import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/formatContextMenu.vue';
+import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
 import {
   gridColumnWidth,
   usePlaylistFormat,
   useSidebarWidthStore
 } from '@/features/FormatSidebarPlaylist';
 import type {FormatProps} from '@/features/FormatSidebarPlaylist';
-import { showContextMenu } from '@/features/ContextMenu';
+import {Dropdown} from "floating-vue";
 
 const search = ref<string>('');
 
@@ -55,15 +55,15 @@ const gridItemWidth = computed(() => {
       >
         <SearchPlaylist v-model="search" />
 
-        <FormatButton
-          class="formats"
-          @click="
-            showContextMenu($event, FormatContextMenu, {
-              design: 'minimal',
-              stickOn: 'mousePosition'
-            })
-          "
-        />
+        <Dropdown placement="bottom" distance="4">
+          <FormatButton
+            class="formats"
+          />
+
+          <template #popper>
+            <FormatContextMenu />
+          </template>
+        </Dropdown>
       </div>
 
       <div

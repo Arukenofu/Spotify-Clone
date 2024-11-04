@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import {
-  BasicContextMenuItem,
-  BasicContextMenuView
-} from '@/features/ContextMenu';
-
 import PlusMusic from '@/UI/Icons/Shared/PlusMusic.vue';
 import Folder from '@/UI/Icons/Shared/Folder.vue';
+import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
+import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 </script>
 
 <template>

@@ -8,8 +8,8 @@ defineProps<{
 </script>
 
 <template>
-  <RouterLink v-for="(artist, index) in artists" :key="artist.id" :to="`/artist/${artist.id}`" class="v-link" v-bind="$attrs">
-    {{artist.name}}<template v-if="index !== artists?.length - 1">, </template>
+  <RouterLink v-for="artist in artists" :key="artist.id" :to="`/artist/${artist.id}`" class="v-link" v-bind="$attrs">
+    {{artist.name}}
   </RouterLink>
 </template>
 

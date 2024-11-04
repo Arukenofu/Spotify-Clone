@@ -51,7 +51,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
     );
 
     if (data.message === 'OK') {
-      (artistInfo.value.isSubscribed as boolean) = data.state;
+      (artistInfo.value.isSubscribed as boolean) = !artistInfo.value.isSubscribed;
     }
   }
 });

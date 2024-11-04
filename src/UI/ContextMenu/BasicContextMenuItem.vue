@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type Component, computed } from 'vue';
-import Index from '@/features/ContextMenu/core/index.vue';
 
 defineOptions({
   inheritAttrs: false
@@ -9,6 +8,7 @@ defineOptions({
 interface Props {
   text: string;
 
+  as?: Component | string;
   svgIcon?: Component;
   underline?: boolean;
   isActive?: boolean;
@@ -16,17 +16,19 @@ interface Props {
   subTree?: Component;
 }
 
-const props = defineProps<Props>();
+const {underline, isActive, as = 'button'} = defineProps<Props>();
 
 const computedClasses = computed(() => {
-  return [props.underline && 'underline', props.isActive && 'active'];
+  return [underline && 'underline', isActive && 'active'];
 });
 </script>
 
 <template>
-  <button
-    v-bind="$attrs"
+  <Component
+    :is="as"
     :class="computedClasses"
+    class="c-menu-item"
+    v-bind="$attrs"
   >
     <span class="block">
       <Component
@@ -47,16 +49,11 @@ const computedClasses = computed(() => {
         class="icon"
       />
     </span>
-
-    <Index
-      v-if="subTree"
-      v-bind="subTree"
-    />
-  </button>
+  </Component>
 </template>
 
 <style lang="scss" scoped>
-button {
+.c-menu-item {
   width: 100%;
   background: none;
   border: none;
@@ -85,7 +82,7 @@ button {
 
     .text {
       font-weight: 500;
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       white-space: nowrap;
       text-align: left;
     }
