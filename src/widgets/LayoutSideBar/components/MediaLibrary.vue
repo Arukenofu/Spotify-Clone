@@ -44,32 +44,20 @@ const gridItemWidth = computed(() => {
   <div class="media-library">
     <MediaLibButton />
 
-    <ScrollableBlock
-      :key="currentWidth"
-      class="block"
-      :gap="isMinimized ? '0px' : '7px'"
-    >
-      <div
-        v-if="!isMinimized"
-        class="controls"
-      >
-        <SearchPlaylist v-model="search" />
+    <div v-if="!isMinimized" class="controls">
+      <SearchPlaylist v-model="search" />
 
-        <Dropdown placement="bottom" distance="4">
-          <FormatButton
-            class="formats"
-          />
+      <Dropdown class="container" placement="bottom" distance="4">
+        <FormatButton class="formats" />
 
-          <template #popper>
-            <FormatContextMenu />
-          </template>
-        </Dropdown>
-      </div>
+        <template #popper>
+          <FormatContextMenu />
+        </template>
+      </Dropdown>
+    </div>
 
-      <div
-        class="playlists"
-        :class="playlistsComputedClasses"
-      >
+    <ScrollableBlock :key="currentWidth" class="block" :gap="isMinimized ? '0px' : '7px'">
+      <div class="playlists" :class="playlistsComputedClasses">
         <Component
           v-bind="props"
           :is="currentComponent"
@@ -92,30 +80,35 @@ const gridItemWidth = computed(() => {
   flex-direction: column;
   max-height: 100%;
 
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 0 var(--medialib-padding-x);
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+    }
+
+    .formats {
+      transition: all .2s ease;
+    }
+  }
+
   .block {
     flex: 1;
     border-bottom-right-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
     height: auto;
-
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 8px;
-      margin-bottom: 9px;
-      padding: 0 var(--medialib-padding-x);
-      overflow-x: scroll;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-
-      .formats {
-        transition: all .2s ease;
-      }
-    }
 
     .playlists {
       padding: 0 var(--medialib-padding-x) 21px;
