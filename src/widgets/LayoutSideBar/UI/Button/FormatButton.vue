@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { usePlaylistFormat } from '@/features/FormatSidebarPlaylist';
+import { usePlaylistFormat } from '@/features/MedialibSidebar';
 import GridIcon from '@/UI/Icons/Shared/GridIcon.vue';
 import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
 import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';

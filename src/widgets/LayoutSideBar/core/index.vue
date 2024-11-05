@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Resizer from '@/shared/components/Resizer.vue';
 import MediaLibrary from '@/widgets/LayoutSideBar/components/MediaLibrary.vue';
-import { useSidebarWidthStore } from '@/features/FormatSidebarPlaylist';
+import { useSidebarWidthStore } from '@/features/MedialibSidebar';
 import max from '@/widgets/LayoutSideBar/constants/max';
 import min from '@/widgets/LayoutSideBar/constants/min';
 

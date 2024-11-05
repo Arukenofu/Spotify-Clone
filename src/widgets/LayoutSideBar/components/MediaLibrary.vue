@@ -5,19 +5,15 @@ import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue';
 import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
 import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
-import {
-  gridColumnWidth,
-  usePlaylistFormat,
-  useSidebarWidthStore
-} from '@/features/FormatSidebarPlaylist';
-import type {FormatProps} from '@/features/FormatSidebarPlaylist';
+import {useSidebarWidthStore, usePlaylistFormat, useGridWidth} from '@/features/MedialibSidebar';
+import type {FormatProps} from '@/features/MedialibSidebar';
 import {Dropdown} from "floating-vue";
 
 const search = ref<string>('');
 
 const { currentWidth, isMinimized } = useSidebarWidthStore();
 
-const { currentComponent, getComponentName } = usePlaylistFormat();
+const { currentComponent, getComponentName, setComponent } = usePlaylistFormat();
 
 const props: FormatProps = {
   id: 1,
@@ -26,7 +22,7 @@ const props: FormatProps = {
   type: 'Album'
 };
 
-const { getCurrentWidth } = gridColumnWidth();
+const { gridWidth, setGridWidth } = useGridWidth();
 
 const playlistsComputedClasses = computed(() => {
   return {
@@ -36,7 +32,7 @@ const playlistsComputedClasses = computed(() => {
 });
 
 const gridItemWidth = computed(() => {
-  return `${getCurrentWidth.value}px`;
+  return `${gridWidth.value}px`;
 });
 </script>
 
@@ -51,7 +47,12 @@ const gridItemWidth = computed(() => {
         <FormatButton class="formats" />
 
         <template #popper>
-          <FormatContextMenu />
+          <FormatContextMenu
+            :component-name="getComponentName"
+            :grid-width="gridWidth"
+            @set-component-name="setComponent"
+            @set-grid-width="setGridWidth"
+          />
         </template>
       </Dropdown>
     </div>
@@ -63,7 +64,7 @@ const gridItemWidth = computed(() => {
           :is="currentComponent"
           v-for="a in 12"
           :key="a"
-          :minimized="getCurrentWidth < 135 || isMinimized"
+          :minimized="gridWidth < 135 || isMinimized"
         />
       </div>
     </ScrollableBlock>

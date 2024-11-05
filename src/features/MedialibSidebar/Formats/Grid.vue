@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
+import type { FormatProps } from '../types/FormatProps';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import localizeTypes from '../utils/localizeTypes';
 import {computed} from "vue";
+import localizeEntities from "../../../services/utils/localizeEntities";
 
 interface GridFormatProps extends FormatProps {
   minimized: boolean;
@@ -51,7 +51,7 @@ const tooltip = computed(() => {
       class="text"
     >
       <span class="name">{{ name }}</span>
-      <span class="info">{{ localizeTypes(type) }} • {{ owner }}</span>
+      <span class="info">{{ localizeEntities(type) }} • {{ owner }}</span>
     </div>
   </RouterLink>
 </template>

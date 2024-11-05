@@ -7,7 +7,7 @@ import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue';
 import defaultWidth from '@/widgets/LayoutSideBar/constants/defaultWidth';
 import max from '@/widgets/LayoutSideBar/constants/max';
-import { useSidebarWidthStore } from '@/features/FormatSidebarPlaylist';
+import { useSidebarWidthStore } from '@/features/MedialibSidebar';
 import {Dropdown} from "floating-vue";
 
 const { isMinimized, currentWidth } = useSidebarWidthStore();

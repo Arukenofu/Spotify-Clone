@@ -1,6 +1,6 @@
 import type {Entities} from "@/services/types/Entities";
 
-export default function (entity: Entities) {
+export default function (entity: Entities | 'Folder') {
     if (entity === 'Playlist') {
         return 'Плейлист'
     }
@@ -14,6 +14,9 @@ export default function (entity: Entities) {
         return 'Альбом'
     }
     if (entity === 'Track') {
-        return ''
+        return 'Трек'
+    }
+    if (entity === 'Folder') {
+        return 'Папка'
     }
 }

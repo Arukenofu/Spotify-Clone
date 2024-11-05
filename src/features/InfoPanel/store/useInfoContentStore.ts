@@ -9,8 +9,6 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
     expectedTypes: ['string']
   });
 
-  const currentPanelNamePrivate = readonly(currentPanelName);
-
   const currentPanelComponent = computed<Component | null>(() => {
     if (!currentPanelName.value) {
       return null;
@@ -40,7 +38,7 @@ const useInfoStore = defineStore('useInfoContentStore', () => {
   }
 
   return {
-    currentPanelName: currentPanelNamePrivate,
+    currentPanelName: readonly(currentPanelName),
     currentPanelComponent,
     setNewPanel,
     removePanel

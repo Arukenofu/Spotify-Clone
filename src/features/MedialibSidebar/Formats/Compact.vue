@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FormatProps } from '@/features/FormatSidebarPlaylist/types/FormatProps';
-import localizeTypes from '../utils/localizeTypes';
+import type { FormatProps } from '../types/FormatProps';
+import localizeEntities from "../../../services/utils/localizeEntities";
 
 defineProps<FormatProps>();
 </script>
@@ -18,7 +18,7 @@ defineProps<FormatProps>();
       </div>
 
       <div class="type">
-        {{ localizeTypes(type) }}
+        {{ localizeEntities(type) }}
       </div>
     </template>
   </RouterLink>

@@ -1,14 +1,14 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { type Component, computed } from 'vue';
 
-import Grid from '@/features/FormatSidebarPlaylist/Formats/Grid.vue';
-import Compact from '@/features/FormatSidebarPlaylist/Formats/Compact.vue';
-import List from '@/features/FormatSidebarPlaylist/Formats/List.vue';
+import Grid from '@/features/MedialibSidebar/Formats/Grid.vue';
+import Compact from '@/features/MedialibSidebar/Formats/Compact.vue';
+import List from '@/features/MedialibSidebar/Formats/List.vue';
 
 import useCachedRef from '@/shared/composables/useCachedRef';
-import formats from '@/features/FormatSidebarPlaylist/constants/formats';
-import { useSidebarWidthStore } from '@/features/FormatSidebarPlaylist';
-import type { FormatTypes } from '@/features/FormatSidebarPlaylist/types/FormatTypes';
+import formats from '../constants/formats';
+import { useSidebarWidthStore } from '@/features/MedialibSidebar';
+import type { FormatTypes } from '@/features/MedialibSidebar/types/FormatTypes';
 
 const formatStore = defineStore('usePlaylistFormat', () => {
   const currentComponentName = useCachedRef<FormatTypes>('format', 'Grid', {
