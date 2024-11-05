@@ -37,7 +37,7 @@ onUnmounted(() => {
     <div class="var1">{{var1}}</div>
     <div class="var2">{{var2}}</div>
     <div class="time">
-      <div v-tooltip:center_top="'Длительность'">
+      <div v-tooltip="'Длительность'">
         <ClockIcon class="icon" />
       </div>
     </div>

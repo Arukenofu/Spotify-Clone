@@ -16,7 +16,7 @@ const { removePanel } = useInfoContentStore();
       <slot name="options" />
 
       <RoundButton
-        v-tooltip:end_top="'Закрыть'"
+        v-tooltip="'Закрыть'"
         @click="removePanel()"
       >
         <CloseIconRound class="icon" />

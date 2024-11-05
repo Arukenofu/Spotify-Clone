@@ -116,7 +116,7 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
       </div>
 
       <FullScreen
-        v-tooltip:end_top="'На весь экран'"
+        v-tooltip="'На весь экран'"
         class="icon"
         @click="enableFullScreenFunc!"
       />

@@ -72,7 +72,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
             <div class="additional">
               <span class="type">Альбом</span>
               <span class="dot">•</span>
-              <span v-tooltip:center_top="'27 Декабря 2024'" class="year">
+              <span v-tooltip="'27 Декабря 2024'" class="year">
                 2024
               </span>
               <span class="dot">•</span>

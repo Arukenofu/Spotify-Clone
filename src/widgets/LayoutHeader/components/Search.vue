@@ -18,7 +18,7 @@ const { currentRoutePath } = useCurrentRoutePath();
 
 function onSearchClick() {
   if (!/^\/search/.test(route.path)) {
-    router.push('/search');
+    router.push(`/search${inputValue.value && `/${inputValue.value}`}`);
   }
 
   input.value?.focus();
@@ -63,7 +63,7 @@ watch(inputValue, () => {
 
     <div
       v-if="!inputValue?.length"
-      v-tooltip:center_bottom="{
+      v-tooltip="{
         content: 'Обзор',
         distance: 5,
         style: {
@@ -81,7 +81,7 @@ watch(inputValue, () => {
 
     <div
       v-else
-      v-tooltip:bottom="'Очистить строку поиска'"
+      v-tooltip="'Очистить строку поиска'"
       class="icon-container-delete"
       @click="inputValue = ''"
     >

@@ -19,7 +19,7 @@ const { currentRoutePath } = useCurrentRoutePath('path');
 
     <div class="left-side">
       <RoundButton
-        v-tooltip:center_bottom="'Главная'"
+        v-tooltip="'Главная'"
         class="homeButton"
         @click="$router.push('/')"
       >
@@ -50,7 +50,7 @@ const { currentRoutePath } = useCurrentRoutePath('path');
       </button>
 
       <div
-        v-tooltip:center_bottom="'Что нового'"
+        v-tooltip="'Что нового'"
         class="notification"
         @click="$router.push('/content-feed')"
       >

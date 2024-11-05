@@ -84,6 +84,8 @@ function timeUpdate(time: number) {
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 const isHover = ref<boolean>(false);
 
+onMouseMove();
+
 function onMouseMove() {
   clearTimeout(timeoutId!);
   isHover.value = true;

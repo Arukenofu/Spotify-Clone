@@ -19,16 +19,24 @@ const computeStickyHeaderStyle = computed(() => ({
   transition: 'background-color .25s, opacity .4s ease-out'
 }));
 
+function isDefaultColor(success: any, fail: any = currentColor) {
+  return currentColor === 'var(--ui)' ? success : fail;
+}
+
 const { currentRoutePath } = useCurrentRoutePath('fullPath');
 </script>
 
 <template>
-  <BackgroundNoise :current-color="currentColor" />
+  <BackgroundNoise :current-color="isDefaultColor('rgb(83, 83, 83)')" />
 
   <StickyHeader
     :underlay-style="computeStickyHeaderStyle"
     class="header"
   >
+    <template v-if="isDefaultColor(false, true)" #filter>
+      <div class="filter" />
+    </template>
+
     <button
       :class="currentRoutePath !== '/' && 'inactive'"
       @click="$router.push(''); $emit('setColor', null)"
@@ -49,6 +57,11 @@ const { currentRoutePath } = useCurrentRoutePath('fullPath');
 .header {
   padding: 0 var(--content-spacing);
 
+  .filter {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
   button {
     padding: 8px 12px;
     border: none;
@@ -59,6 +72,7 @@ const { currentRoutePath } = useCurrentRoutePath('fullPath');
     cursor: pointer;
     transition: all 0.2s;
     color: var(--black);
+    line-height: 1.2;
 
     &:active {
       opacity: 0.7;

@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
 export default function (defaultColor?: string) {
-  const base = 'rgb(83, 83, 83)';
+  const base = 'var(--ui)';
   const currentColor = ref<Readonly<string>>(defaultColor || base);
 
   function setColor(color: string | null): void {
