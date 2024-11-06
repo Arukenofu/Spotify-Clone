@@ -26,7 +26,6 @@ defineProps<HeaderProps>()
 
   .artist-name {
     font-size: 6rem;
-    font-family: var(--title-font);
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;

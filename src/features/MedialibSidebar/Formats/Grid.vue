@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import type { FormatProps } from '../types/FormatProps';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import {computed} from "vue";
-import localizeEntities from "../../../services/utils/localizeEntities";
+import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
+import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
 
-interface GridFormatProps extends FormatProps {
+type GridFormatProps = {
   minimized: boolean;
-}
+} & MediaLibEntityProps;
 
-const {name, type} = defineProps<GridFormatProps>();
+const props = defineProps<GridFormatProps>();
 
 const tooltip = computed(() => {
+  if (!props.minimized) {
+    return;
+  }
+
   const titleStyle = 'font-weight: 400; font-size: 1rem; margin-bottom: 2px';
   const bodyStyle = 'font-weight: 400; color: var(--text-soft); font-size: .875rem';
 
   const content = `
-    <p style="${titleStyle}">${name}</p>
-    <p style="${bodyStyle}">${type}</p>
+    <p style="${titleStyle}">${props.name}</p>
+    <p style="${bodyStyle}">${props.type}</p>
   `;
 
   return {
@@ -27,17 +31,16 @@ const tooltip = computed(() => {
     distance: 7,
     delay: 10
   }
-})
+});
 </script>
 
 <template>
-  <RouterLink
+  <button
     v-tooltip="tooltip"
-    :to="`/playlist/${id}`"
     class="block"
     :class="!minimized && 'unminimized'"
   >
-    <EntityAvatar1x1 class="picture" :type="type" :image="image">
+    <EntityAvatar1x1 class="picture" :type="type!" :image="image">
       <GreenPlayingButton
         v-if="!minimized && type !== 'Folder'"
         v-tooltip="`Слушать плейлист «${name}»`"
@@ -46,20 +49,18 @@ const tooltip = computed(() => {
       />
     </EntityAvatar1x1>
 
-    <div
-      v-if="!minimized"
-      class="text"
-    >
+    <div v-if="!minimized" class="text">
       <span class="name">{{ name }}</span>
-      <span class="info">{{ localizeEntities(type) }} • {{ owner }}</span>
+      <EntityInfo v-bind="props" class="info" />
     </div>
-  </RouterLink>
+  </button>
 </template>
 
 <style lang="scss" scoped>
 .unminimized {
   padding: 12px !important;
   position: relative;
+  text-align: left;
 
   .picture {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -106,39 +107,44 @@ const tooltip = computed(() => {
   height: 100%;
   padding: 4px;
   transition: all 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--ui-highlight);
+  }
+
+  &:active {
+    background-color: var(--black);
+  }
 
   .text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
     align-items: flex-start;
     flex-basis: 100%;
     z-index: 1;
 
-    span {
-      overflow: hidden;
+    .name, .info {
       display: -webkit-box;
       -webkit-line-clamp: 1;
       line-clamp: 1;
+      -moz-box-orient: vertical;
+      overflow: hidden;
     }
 
     .name {
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .info {
       font-size: 0.875rem;
+      font-weight: 500;
       color: var(--text-soft);
     }
   }
-}
-
-.v-tooltip-title {
-
-}
-
-.v-tooltip-body {
-
 }
 </style>

@@ -3,12 +3,13 @@ import LazyImage from "@/UI/Elements/LazyImage.vue";
 import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.vue';
 import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
 import NoArtistAvatar from "@/UI/Icons/Shared/NoArtistAvatar.vue";
+import LikedSongs from '@/assets/images/liked-songs.png';
 import type { Entities } from '@/services/types/Entities';
 import type { Component } from 'vue';
 
 interface Props {
   image?: string | null,
-  type: Entities | 'Folder',
+  type: Entities | 'Folder' | 'Collection',
   as?: Component | string,
   loading?: 'lazy' | 'eager',
   loadingColor?: string | null
@@ -21,6 +22,7 @@ defineProps<Props>();
   <Component
     :is="as ?? 'div'"
     class="v-picture"
+    :class="type === 'User' || type === 'Artist' && 'round'"
   >
     <LazyImage
       v-if="image"
@@ -35,6 +37,8 @@ defineProps<Props>();
     />
 
     <NoArtistAvatar v-else-if="type === 'Artist'" class="image" draggable="false" />
+
+    <LazyImage v-else-if="type === 'Collection'" :image="LikedSongs" class="image" />
 
     <NoMusicOrPlaylistAvatar
       v-else
@@ -66,5 +70,9 @@ defineProps<Props>();
     fill: var(--text-soft);
     background-color: #333333;
   }
+}
+
+.round {
+  border-radius: 50%;
 }
 </style>

@@ -16,7 +16,7 @@ defineProps<Props>();
     class="playlist_about"
     :image="image ?? null"
     :mask="color ?? null"
-    type="Album"
+    type="Playlist"
   >
     <span class="type">
       Плейлист
@@ -58,7 +58,6 @@ defineProps<Props>();
     -webkit-line-clamp: 3;
     line-clamp: 3;
     user-select: none;
-    font-family: var(--title-font);
     font-size: 6em;
     font-weight: 900;
     white-space: nowrap;

@@ -52,7 +52,6 @@ defineProps<Props>();
     }
 
     .name {
-      font-family: var(--title-font);
       font-size: 1rem;
       font-weight: 700;
 

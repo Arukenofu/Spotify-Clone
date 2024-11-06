@@ -4,14 +4,19 @@ import DangerIcon from "@/UI/Icons/Shared/DangerIcon.vue";
 interface Props {
   title: string;
   body: string;
+  isIcon?: boolean;
+  size?: 'regular' | 'small';
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  isIcon: true,
+  size: 'regular'
+});
 </script>
 
 <template>
-  <div class="v-error">
-    <DangerIcon class="icon" />
+  <div class="v-error" :class="size">
+    <DangerIcon v-if="isIcon" class="icon" />
     <h1 class="title">{{title}}</h1>
     <p class="body">{{body}}</p>
   </div>
@@ -35,15 +40,30 @@ defineProps<Props>();
   }
 
   .title {
-    font-family: var(--title-font);
     font-weight: 700;
     text-wrap: balance;
-    font-size: 2rem;
   }
 
   .body {
+    font-weight: 500;
+  }
+}
+
+.regular {
+  .title {
+    font-size: 1.5rem;
+  }
+  .body {
     font-size: 1rem;
-    font-weight: 400;
+  }
+}
+
+.small {
+  .title {
+    font-size: 1rem;
+  }
+  .body {
+    font-size: .875rem;
   }
 }
 </style>

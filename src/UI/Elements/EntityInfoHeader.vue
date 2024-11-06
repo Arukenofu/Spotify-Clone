@@ -54,7 +54,6 @@ const {mask = '#333333'} = defineProps<Props>();
         height: 100%;
         object-fit: cover;
         object-position: center center;
-        border-radius: 50%;
         box-shadow: 0 4px 60px rgba(0,0,0,.02);
         user-select: none;
       }

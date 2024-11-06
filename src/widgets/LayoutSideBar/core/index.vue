@@ -15,7 +15,7 @@ function onMinimizeTooMany(newWidth: number, max: number, min: number) {
 </script>
 
 <template>
-  <aside :style="`width: ${currentWidth}px;`">
+  <aside :style="``">
     <MediaLibrary />
   </aside>
   <Resizer
@@ -30,6 +30,7 @@ function onMinimizeTooMany(newWidth: number, max: number, min: number) {
 aside {
   display: flex;
   flex-direction: column;
+  width: var(--sidebar-width-px);
   gap: var(--layout-gap);
   max-height: 100%;
 }

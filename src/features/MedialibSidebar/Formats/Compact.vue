@@ -1,47 +1,61 @@
 <script setup lang="ts">
-import type { FormatProps } from '../types/FormatProps';
-import localizeEntities from "../../../services/utils/localizeEntities";
+import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
+import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
 
-defineProps<FormatProps>();
+const props = defineProps<MediaLibEntityProps>();
 </script>
 
 <template>
-  <RouterLink
-    :to="`/playlist/${id}`"
-    class="compact-playlist"
-  >
-    {{ name }}
+  <button class="compact-playlist">
+    {{ props.name }}
 
-    <template v-if="type === 'Playlist'">
+    <div class="info">
       <div class="divider">
         •
       </div>
 
-      <div class="type">
-        {{ localizeEntities(type) }}
-      </div>
-    </template>
-  </RouterLink>
+      <EntityInfo v-bind="props" />
+    </div>
+  </button>
 </template>
 
 <style lang="scss" scoped>
 .compact-playlist {
+  background: none;
+  border: none;
   height: 32px;
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 5px;
   padding: 0 8px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   user-select: none;
+  text-align: left;
 
-  .type,
+  &:hover {
+    background-color: var(--ui-highlight);
+  }
+
+  &:active {
+    background-color: var(--black);
+  }
+
+  .info {
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    :deep(span) {
+      font-weight: 500;
+      color: var(--text-soft);
+    }
+  }
+
   .divider {
     color: var(--text-soft);
-    font-size: 0.9rem;
-    font-weight: 600;
+    margin: 0 4px;
   }
 }
 </style>

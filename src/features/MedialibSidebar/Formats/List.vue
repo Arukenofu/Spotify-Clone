@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import type { FormatProps } from '../types/FormatProps';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import localizeEntities from "../../../services/utils/localizeEntities";
+import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
+import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
 
-defineProps<FormatProps>();
+const props = defineProps<MediaLibEntityProps>();
 </script>
 
 <template>
-  <RouterLink
-    class="list"
-    :to="`/playlist/${id}`"
-  >
-    <EntityAvatar1x1 :image="image" type="Folder" />
+  <button class="list">
+    <EntityAvatar1x1 :image="props.image" :type="props.type!" />
 
     <div class="text">
       <span class="playlist-name">
-        {{ name }}
+        {{ props.name }}
       </span>
 
-      <span class="info"> {{ localizeEntities(type) }} • {{ owner }} </span>
+      <EntityInfo v-bind="props" class="info" />
     </div>
-  </RouterLink>
+  </button>
 </template>
 
 <style lang="scss" scoped>
@@ -32,6 +29,17 @@ defineProps<FormatProps>();
   padding: 8px;
   border-radius: 6px;
   user-select: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--ui-highlight);
+  }
+
+  &:active {
+    background-color: var(--black);
+  }
 
   .picture {
     height: 100%;
@@ -54,6 +62,7 @@ defineProps<FormatProps>();
     flex-direction: column;
     justify-content: center;
     gap: 4px;
+    text-align: left;
 
     .playlist-name {
       font-size: 1rem;

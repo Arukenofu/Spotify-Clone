@@ -13,11 +13,11 @@ const model = defineModel<string>({
 });
 
 function handleToggle() {
-  state.value = !state.value;
-
   if (state.value) {
-    input.value?.focus();
+    return;
   }
+  input.value?.focus();
+  state.value = !state.value;
 }
 
 function handleClose() {
@@ -31,14 +31,27 @@ function onClickOutside() {
   }
 
   state.value = false;
+  model.value = '';
 }
 </script>
 
 <template>
   <div class="search-section">
+    <div
+      v-if="state"
+      v-click-outside="onClickOutside"
+      class="overlay"
+      @click="handleToggle()"
+    >
+      <CloseIconRound
+        v-if="state && model.length"
+        class="icon"
+        @click="handleClose()"
+      />
+    </div>
+
     <RoundButton
       v-tooltip="'Искать в медиатеке'"
-      v-click-outside="onClickOutside"
       class="searchButton"
       @click="handleToggle()"
     >
@@ -51,12 +64,6 @@ function onClickOutside() {
       :class="state && 'active'"
       placeholder="Искать в медиатеке"
     >
-
-    <CloseIconRound
-      v-if="state && model.length"
-      class="icon"
-      @click="handleClose()"
-    />
   </div>
 </template>
 
@@ -68,6 +75,19 @@ function onClickOutside() {
   justify-content: space-between;
   position: relative;
   margin-right: 15px;
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1 !important;
+    cursor: text;
+
+    .icon {
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+    }
+  }
 
   &:has(.active) {
     width: 188px;
@@ -88,6 +108,7 @@ function onClickOutside() {
     outline: none;
     color: var(--text-soft);
     font-size: 0.8rem;
+    font-weight: 500;
     background-color: var(--ui);
     max-width: 0;
     padding: 0;

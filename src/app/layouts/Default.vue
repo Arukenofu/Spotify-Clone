@@ -22,7 +22,7 @@ const layoutScrollY = ref<number>(0);
 provide('layoutScrollY', layoutScrollY);
 provide('layoutContent', layout)
 
-router.beforeEach(() => {
+router.afterEach(() => {
   layout.value?.content.scrollTo({
     top: 0
   });

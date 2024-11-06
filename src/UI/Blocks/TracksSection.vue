@@ -42,7 +42,6 @@ const isExpanded = defineModel<boolean | null>('isExpanded', {
     .naming {
       font-size: 1.5rem;
       font-weight: 700;
-      font-family: var(--title-font);
       width: 100%;
     }
 

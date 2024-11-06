@@ -83,7 +83,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
 
             <div class="controls">
               <button
-                v-tooltip="true ? 'Пауза' : 'Слушать'"
+                v-tooltip="isThisPlaylist(album.id, true) ? 'Пауза' : 'Слушать'"
                 class="playingState"
                 @click="loadPlaylist(album.id)"
               >
@@ -139,7 +139,6 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
     z-index: 2 !important;
 
     a {
-      font-family: var(--title-font);
       font-size: 1.5rem;
       font-weight: 700;
       text-wrap: balance;
@@ -206,7 +205,6 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
           -webkit-box-orient: vertical;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-family: var(--title-font);
           font-weight: 700;
           font-size: 2rem;
           text-wrap: balance;

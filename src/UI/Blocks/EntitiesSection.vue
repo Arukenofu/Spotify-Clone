@@ -89,7 +89,6 @@ section {
         -webkit-line-clamp: 1;
         line-clamp: 1;
         user-select: none;
-        font-family: var(--title-font);
         font-size: 1.5em;
         font-weight: 500;
         text-wrap: balance;

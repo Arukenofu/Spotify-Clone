@@ -12,7 +12,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   min: 0,
-  step: 1,
+  step: 0,
   thumbFix: 2
 });
 

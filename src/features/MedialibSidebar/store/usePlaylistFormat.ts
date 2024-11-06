@@ -8,7 +8,7 @@ import List from '@/features/MedialibSidebar/Formats/List.vue';
 import useCachedRef from '@/shared/composables/useCachedRef';
 import formats from '../constants/formats';
 import { useSidebarWidthStore } from '@/features/MedialibSidebar';
-import type { FormatTypes } from '@/features/MedialibSidebar/types/FormatTypes';
+import type { FormatTypes } from '#imports';
 
 const formatStore = defineStore('usePlaylistFormat', () => {
   const currentComponentName = useCachedRef<FormatTypes>('format', 'Grid', {

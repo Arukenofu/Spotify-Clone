@@ -235,7 +235,6 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
       text-align: left;
       user-select: none;
       font-weight: 800;
-      font-family: var(--title-font);
       text-wrap: nowrap;
       margin-bottom: 8px;
       line-height: 1.2;

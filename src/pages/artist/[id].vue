@@ -261,7 +261,6 @@ const isModal = ref<boolean>(false);
     h2 {
       font-size: 1.5rem;
       font-weight: 700;
-      font-family: var(--title-font);
       width: 100%;
       margin-bottom: 16px;
     }
@@ -303,7 +302,6 @@ const isModal = ref<boolean>(false);
     h2 {
       font-size: 1.5rem;
       font-weight: 700;
-      font-family: var(--title-font);
       margin-bottom: 16px;
     }
 

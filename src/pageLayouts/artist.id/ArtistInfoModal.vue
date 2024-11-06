@@ -66,7 +66,6 @@ defineProps<Props>();
       gap: 6px;
 
       .title {
-        font-family: var(--title-font);
         font-weight: 700;
         font-size: 2rem;
         text-wrap: balance;
@@ -87,7 +86,6 @@ defineProps<Props>();
       gap: 7px;
 
       .title {
-        font-family: var(--title-font);
         font-weight: 700;
         font-size: .875rem;
         text-wrap: balance;

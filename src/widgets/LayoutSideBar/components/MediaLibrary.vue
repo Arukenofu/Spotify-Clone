@@ -6,23 +6,21 @@ import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue
 import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
 import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
 import {useSidebarWidthStore, usePlaylistFormat, useGridWidth} from '@/features/MedialibSidebar';
-import type {FormatProps} from '@/features/MedialibSidebar';
 import {Dropdown} from "floating-vue";
+import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
+import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
+import {useQuery} from "@tanstack/vue-query";
+import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
+import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import routerPushPrevent from "@/shared/utils/routerPushPrevent";
+import {useRoute} from "vue-router";
 
 const search = ref<string>('');
-
-const { currentWidth, isMinimized } = useSidebarWidthStore();
-
+const { isMinimized } = useSidebarWidthStore();
 const { currentComponent, getComponentName, setComponent } = usePlaylistFormat();
-
-const props: FormatProps = {
-  id: 1,
-  name: 'baur',
-  owner: 'baur',
-  type: 'Album'
-};
-
 const { gridWidth, setGridWidth } = useGridWidth();
+
+const route = useRoute();
 
 const playlistsComputedClasses = computed(() => {
   return {
@@ -34,6 +32,30 @@ const playlistsComputedClasses = computed(() => {
 const gridItemWidth = computed(() => {
   return `${gridWidth.value}px`;
 });
+
+const {data: mediaLibs, isSuccess} = useQuery({
+  queryKey: ['mediaLib'],
+  queryFn: async () => await apiMedialibService.getMediaLib()
+});
+
+async function handleMedialibClick(id: string | number, type: MediaLibTypes['type']) {
+  if (type === 'Folder') {
+    return;
+  }
+  if (type === 'Collection') {
+    await routerPushPrevent(`/${type}`); return;
+  }
+
+  await routerPushPrevent(`/${type}/${id}`);
+}
+
+function handleIsMedialibActive(id: string | number, type: MediaLibTypes['type']) {
+  if (type === 'Collection') {
+    return route.path === '/collection';
+  }
+
+  return route.path === `/${type}/${id}`.toLowerCase();
+}
 </script>
 
 <template>
@@ -57,14 +79,22 @@ const gridItemWidth = computed(() => {
       </Dropdown>
     </div>
 
-    <ScrollableBlock :key="currentWidth" class="block" :gap="isMinimized ? '0px' : '7px'">
-      <div class="playlists" :class="playlistsComputedClasses">
+    <ScrollableBlock v-if="isSuccess" class="block" :gap="isMinimized ? '0px' : '7px'">
+      <QueryNotFound v-if="search && !isMinimized" :query="search" />
+
+      <NoMediaLib
+        v-else-if="!mediaLibs || mediaLibs.length === 0"
+      />
+
+      <div v-else class="playlists" :class="playlistsComputedClasses">
         <Component
-          v-bind="props"
+          v-bind="mediaLib"
           :is="currentComponent"
-          v-for="a in 12"
-          :key="a"
+          v-for="mediaLib in mediaLibs"
+          :key="mediaLib.type"
           :minimized="gridWidth < 135 || isMinimized"
+          :class="handleIsMedialibActive(mediaLib.id, mediaLib.type) && 'active'"
+          @click="handleMedialibClick(mediaLib.id, mediaLib.type)"
         />
       </div>
     </ScrollableBlock>
@@ -112,20 +142,10 @@ const gridItemWidth = computed(() => {
     height: auto;
 
     .playlists {
-      padding: 0 var(--medialib-padding-x) 21px;
+      padding: 0 0 21px;
       height: 100%;
 
-      &:deep(a) {
-        &:hover {
-          background-color: var(--ui-highlight);
-        }
-
-        &:active {
-          background-color: var(--black);
-        }
-      }
-
-      .router-link-active {
+      .active {
         background-color: var(--ui-highlight);
 
         &:after {

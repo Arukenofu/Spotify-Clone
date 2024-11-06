@@ -7,6 +7,7 @@ import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
 import BellIcon from '@/widgets/LayoutHeader/UI/BellIcon.vue';
 import User from '@/widgets/LayoutHeader/components/User.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
+import LongRoundButton from "@/UI/Buttons/LongRoundButton.vue";
 
 const { currentRoutePath } = useCurrentRoutePath('path');
 </script>
@@ -33,21 +34,21 @@ const { currentRoutePath } = useCurrentRoutePath('path');
     </div>
 
     <div class="right-side">
-      <button
+      <LongRoundButton
         v-if="currentRoutePath !== '/search'"
         class="premium-button"
         @click="$router.push('/premium')"
       >
         Узнать больше о Premium
-      </button>
+      </LongRoundButton>
 
-      <button
+      <LongRoundButton
         class="desktop-app-button"
         @click="$router.push('/download')"
       >
         <DownloadIcon class="icon" />
         <span> Установить приложение </span>
-      </button>
+      </LongRoundButton>
 
       <div
         v-tooltip="'Что нового'"
@@ -121,61 +122,27 @@ header {
     gap: 8px;
 
     .premium-button {
-      height: 32px;
-      flex-shrink: 0;
-      font-weight: 800;
-      font-size: 0.875rem;
       background-color: var(--white);
       color: var(--black);
-      padding: 4px 16px;
-      border: none;
-      transition-property: opacity, scale;
-      transition-duration: 33ms;
-      border-radius: 500px;
-      cursor: pointer;
 
       @media screen and (max-width: 1050px) {
         & {
           display: none;
         }
       }
-
-      &:hover {
-        scale: 1.04;
-      }
-
-      &:active {
-        opacity: 0.8;
-        scale: 1;
-      }
     }
 
     .desktop-app-button {
+      background-color: transparent;
+      color: var(--white);
       display: flex;
       align-items: center;
       gap: 6px;
-      height: 32px;
-      flex-shrink: 0;
-      font-size: 0.875rem;
-      background-color: var(--black);
-      color: var(--white);
-      border: none;
-      padding: 4px 16px;
-      cursor: pointer;
-      transition-property: opacity, scale;
-      transition-duration: 33ms;
 
       &:hover {
-        scale: 1.04;
-
         span {
           text-decoration: underline;
         }
-      }
-
-      &:active {
-        opacity: 0.8;
-        scale: 1;
       }
 
       span {

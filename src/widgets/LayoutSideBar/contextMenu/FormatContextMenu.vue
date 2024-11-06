@@ -7,7 +7,7 @@ import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
 import BasicContextMenuTitle from "@/UI/ContextMenu/BasicContextMenuTitle.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 import {gridColumnMaxWidth, gridColumnMinWidth} from "@/features/MedialibSidebar"
-import type {FormatTypes} from "@/features/MedialibSidebar/types/FormatTypes";
+import type {FormatTypes} from "#imports";
 
 defineProps<{
   componentName: FormatTypes;
