@@ -1,41 +1,28 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { usePlaylistFormat } from '@/features/MedialibSidebar';
-import GridIcon from '@/UI/Icons/Shared/GridIcon.vue';
-import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
-import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
+import {defineAsyncComponent} from 'vue';
+import type {FormatTypes} from "#imports";
+import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
 
-const sortTypes = [
-  'Недавно прослушано',
-  'Недавно добавленные',
-  'По алфавиту',
-  'По автору',
-  'Свой порядок'
-];
+interface Props {
+  formatComponentName: FormatTypes;
+  sortName: sortOption;
+}
 
-const { getComponentName } = usePlaylistFormat();
+const {formatComponentName} = defineProps<Props>();
 
-const getFormatButtonIcon = computed(() => {
-  if (getComponentName.value === 'Grid') {
-    return GridIcon;
-  }
-
-  if (getComponentName.value === 'Compact') {
-    return CompactIcon;
-  }
-
-  return ListIcon;
-});
+function getFormatButtonIcon(formatName: FormatTypes) {
+  return defineAsyncComponent(() => import(`@/UI/Icons/Shared/${formatName}Icon.vue`));
+}
 </script>
 
 <template>
   <button class="format">
     <span class="text">
-      {{ sortTypes[0] }}
+      {{ sortName }}
     </span>
 
     <span class="icon">
-      <Component :is="getFormatButtonIcon" />
+      <Component :is="getFormatButtonIcon(formatComponentName)" />
     </span>
   </button>
 </template>

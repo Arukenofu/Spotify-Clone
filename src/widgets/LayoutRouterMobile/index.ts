@@ -1,1 +1,1 @@
-export { default as LayoutMobileRouter } from './core/index.vue';
+export { default as LayoutMobileRouter } from './core/LayoutRouterMobile.vue';

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onUnmounted, ref, watch} from 'vue';
 
 import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
+
+import useDebounce from "@/shared/composables/useDebounce";
 
 const state = ref<boolean>(false);
 const input = ref<HTMLInputElement>();
@@ -12,17 +14,35 @@ const model = defineModel<string>({
   required: true
 });
 
+const inputValue = ref<string>('');
+const {debounce, clear} = useDebounce();
+
+watch(inputValue, (value) => {
+  if (!value) {
+    clear();
+    model.value = '';
+    return;
+  }
+
+  debounce(() => {
+    model.value = value;
+  }, 500);
+});
+
 function handleToggle() {
+  input.value?.focus();
+
   if (state.value) {
     return;
   }
-  input.value?.focus();
+
   state.value = !state.value;
 }
 
 function handleClose() {
   state.value = false;
   model.value = '';
+  inputValue.value = '';
 }
 
 function onClickOutside() {
@@ -30,9 +50,12 @@ function onClickOutside() {
     return;
   }
 
-  state.value = false;
-  model.value = '';
+  handleClose();
 }
+
+onUnmounted(() => {
+  model.value = '';
+})
 </script>
 
 <template>
@@ -60,7 +83,7 @@ function onClickOutside() {
 
     <input
       ref="input"
-      v-model="model"
+      v-model="inputValue"
       :class="state && 'active'"
       placeholder="Искать в медиатеке"
     >

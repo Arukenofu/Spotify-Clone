@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoadingComponent from "@/features/InfoPanel/components/LoadingComponent.vue";
+import LoadingComponent from "@/widgets/LayoutInfoPanel/components/LoadingComponent.vue";
 </script>
 
 <template>

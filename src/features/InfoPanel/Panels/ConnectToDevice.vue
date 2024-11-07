@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PanelHeader from '@/features/InfoPanel/components/PanelHeader.vue';
+import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import PCDeviceIcon from '@/UI/Icons/Shared/PCDeviceIcon.vue';
 import WifiIcon from '@/UI/Icons/Shared/WifiIcon.vue';

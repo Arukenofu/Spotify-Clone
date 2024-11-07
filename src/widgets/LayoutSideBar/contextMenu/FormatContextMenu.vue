@@ -6,17 +6,21 @@ import Range from '@/shared/components/Range.vue';
 import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
 import BasicContextMenuTitle from "@/UI/ContextMenu/BasicContextMenuTitle.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
-import {gridColumnMaxWidth, gridColumnMinWidth} from "@/features/MedialibSidebar"
+import {gridColumnMaxWidth, gridColumnMinWidth, sorts} from "@/features/MedialibSidebar"
 import type {FormatTypes} from "#imports";
+import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
+import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
 
 defineProps<{
   componentName: FormatTypes;
   gridWidth: number;
+  sortName: sortOption;
 }>();
 
 const emit = defineEmits<{
   setComponentName: [name: FormatTypes];
-  setGridWidth: [width: number]
+  setGridWidth: [width: number],
+  setSortName: [newValue: sortOption]
 }>();
 
 function setComponentName(name: FormatTypes): void {
@@ -26,18 +30,23 @@ function setComponentName(name: FormatTypes): void {
 function setGridWidth(width: number): void {
   emit('setGridWidth', width);
 }
+
+function setSortName(name: sortOption): void {
+  emit('setSortName', name);
+}
 </script>
 
 <template>
-  <BasicContextMenuView>
+  <BasicContextMenuView class="menu">
     <BasicContextMenuTitle text="Сортировка" />
-    <BasicContextMenuItem text="Недавно прослушано" />
-    <BasicContextMenuItem text="Недавно добавленные" />
-    <BasicContextMenuItem text="По алфавиту" />
     <BasicContextMenuItem
-      text="По автору"
-      :underline="true"
-      :is-active="true"
+      v-for="(sort, index) in sorts"
+      :key="index"
+      :text="sort"
+      :underline="index === sorts.length - 1"
+      :is-active="sortName === sort"
+      :additional-s-v-g="sortName === sort && CheckIcon"
+      @click="setSortName(sort)"
     />
 
     <BasicContextMenuTitle text="Формат Библеотеки" />
@@ -45,18 +54,21 @@ function setGridWidth(width: number): void {
       text="Компактный"
       :svg-icon="CompactIcon"
       :is-active="componentName === 'Compact'"
+      :additional-s-v-g="componentName === 'Compact' && CheckIcon"
       @click="setComponentName('Compact')"
     />
     <BasicContextMenuItem
       text="Список"
       :svg-icon="ListIcon"
       :is-active="componentName === 'List'"
+      :additional-s-v-g="componentName === 'List' && CheckIcon"
       @click="setComponentName('List')"
     />
     <BasicContextMenuItem
       text="Сетка"
       :svg-icon="GridIcon"
       :is-active="componentName === 'Grid'"
+      :additional-s-v-g="componentName === 'Grid' && CheckIcon"
       @click="setComponentName('Grid')"
     />
 
@@ -71,4 +83,8 @@ function setGridWidth(width: number): void {
   </BasicContextMenuView>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.menu {
+  width: 200px;
+}
+</style>

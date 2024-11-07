@@ -10,16 +10,29 @@ defineProps<{
 <template>
   <ErrorBlock
     class="not-found"
-    :title="`По запросу «${query}» ничего не найдено`"
-    :body="`Проверь, нет ли опечаток, или попробуй ввести другой запрос.`"
     :is-icon="false"
     :size="'small'"
-  />
+  >
+    <template #title>
+      По запросу «<span>{{query}}</span>» ничего не найдено
+    </template>
+    <template #body>
+      Проверь, нет ли опечаток, или попробуй ввести другой запрос.
+    </template>
+  </ErrorBlock>
 </template>
 
 <style scoped lang="scss">
 .not-found {
   max-width: 90%;
   margin: 0 auto;
+
+  span {
+
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 </style>

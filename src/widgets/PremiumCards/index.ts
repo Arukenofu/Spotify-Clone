@@ -1,1 +1,1 @@
-export { default as PremiumCards } from './core/index.vue';
+export { default as PremiumCards } from './core/PremiumCards.vue';

@@ -14,9 +14,14 @@ defineProps<Props>();
   <LoadingBlock v-if="isFetching" />
   <EntityErrorBlock
     v-else-if="isError"
-    :title="`Не удалось найти ${entity}`"
-    :body="`Попробуй поискать что-нибудь другое`"
-  />
+  >
+    <template #title>
+      Не удалось найти {{entity}}
+    </template>
+    <template #body>
+      Попробуй поискать что-нибудь другое
+    </template>
+  </EntityErrorBlock>
 </template>
 
 <style scoped lang="scss">

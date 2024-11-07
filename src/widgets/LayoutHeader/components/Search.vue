@@ -24,8 +24,9 @@ function onSearchClick() {
   input.value?.focus();
 }
 
+const { debounce, clear } = useDebounce();
+
 watch(inputValue, () => {
-  const { debounce, clear } = useDebounce();
   const cachedCurrentRoute = currentRoutePath.value;
 
   if (!inputValue.value) {

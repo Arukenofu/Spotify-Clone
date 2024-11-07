@@ -41,7 +41,7 @@ const computedClasses = computed(() => {
     </span>
 
     <span
-      v-if="additionalSVG"
+      v-show="additionalSVG"
       class="additionalSvg"
     >
       <Component
@@ -64,6 +64,7 @@ const computedClasses = computed(() => {
   user-select: none;
   border-radius: 2px;
   position: relative;
+  gap: 12px;
 
   &:hover {
     background-color: hsla(0, 0%, 100%, 0.1);

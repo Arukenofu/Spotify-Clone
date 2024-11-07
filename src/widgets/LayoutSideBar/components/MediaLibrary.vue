@@ -1,61 +1,53 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import {Dropdown} from "floating-vue";
+import {useRoute} from "vue-router";
 import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchPlaylist.vue';
+import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchMedialib.vue';
 import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
 import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
-import {useSidebarWidthStore, usePlaylistFormat, useGridWidth} from '@/features/MedialibSidebar';
-import {Dropdown} from "floating-vue";
+import {
+  useSidebarWidthStore,
+  usePlaylistFormat,
+  useGridWidth,
+  handleIsMedialibActive,
+  handleMedialibClick,
+  handleMedialibSortAndSearch, useMedialibsSort
+} from '@/features/MedialibSidebar';
 import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
 import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
 import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
-import routerPushPrevent from "@/shared/utils/routerPushPrevent";
-import {useRoute} from "vue-router";
 
 const search = ref<string>('');
 const { isMinimized } = useSidebarWidthStore();
+
 const { currentComponent, getComponentName, setComponent } = usePlaylistFormat();
 const { gridWidth, setGridWidth } = useGridWidth();
+const { currentSort, setSort } = useMedialibsSort();
 
 const route = useRoute();
 
-const playlistsComputedClasses = computed(() => {
-  return {
-    grid: getComponentName.value === 'Grid',
-    minimized: isMinimized.value
-  };
-});
+const playlistsComputedClasses = computed(() => ({
+  grid: getComponentName.value === 'Grid',
+  minimized: isMinimized.value
+}));
 
-const gridItemWidth = computed(() => {
-  return `${gridWidth.value}px`;
-});
-
-const {data: mediaLibs, isSuccess} = useQuery({
+const {data: mediaLibs, isSuccess} = useQuery<MediaLibTypes[]>({
   queryKey: ['mediaLib'],
   queryFn: async () => await apiMedialibService.getMediaLib()
 });
 
-async function handleMedialibClick(id: string | number, type: MediaLibTypes['type']) {
-  if (type === 'Folder') {
-    return;
-  }
-  if (type === 'Collection') {
-    await routerPushPrevent(`/${type}`); return;
-  }
+const mediaLibsFiltered = computed(() => {
+  if (!mediaLibs.value || mediaLibs.value.length < 1) return [];
 
-  await routerPushPrevent(`/${type}/${id}`);
-}
-
-function handleIsMedialibActive(id: string | number, type: MediaLibTypes['type']) {
-  if (type === 'Collection') {
-    return route.path === '/collection';
-  }
-
-  return route.path === `/${type}/${id}`.toLowerCase();
-}
+  return handleMedialibSortAndSearch(mediaLibs.value, {
+    searchQuery: search.value,
+    sortBy: currentSort.value
+  });
+})
 </script>
 
 <template>
@@ -66,35 +58,41 @@ function handleIsMedialibActive(id: string | number, type: MediaLibTypes['type']
       <SearchPlaylist v-model="search" />
 
       <Dropdown class="container" placement="bottom" distance="4">
-        <FormatButton class="formats" />
+        <FormatButton
+          :sort-name="currentSort"
+          :format-component-name="getComponentName"
+          class="formats"
+        />
 
         <template #popper>
           <FormatContextMenu
             :component-name="getComponentName"
             :grid-width="gridWidth"
+            :sort-name="currentSort"
             @set-component-name="setComponent"
             @set-grid-width="setGridWidth"
+            @set-sort-name="setSort"
           />
         </template>
       </Dropdown>
     </div>
 
     <ScrollableBlock v-if="isSuccess" class="block" :gap="isMinimized ? '0px' : '7px'">
-      <QueryNotFound v-if="search && !isMinimized" :query="search" />
-
       <NoMediaLib
-        v-else-if="!mediaLibs || mediaLibs.length === 0"
+        v-if="!mediaLibs || mediaLibs.length === 0"
       />
+
+      <QueryNotFound v-else-if="search && !isMinimized && !mediaLibsFiltered.length" :query="search" />
 
       <div v-else class="playlists" :class="playlistsComputedClasses">
         <Component
           v-bind="mediaLib"
           :is="currentComponent"
-          v-for="mediaLib in mediaLibs"
+          v-for="mediaLib in mediaLibsFiltered"
           :key="mediaLib.type"
           :minimized="gridWidth < 135 || isMinimized"
-          :class="handleIsMedialibActive(mediaLib.id, mediaLib.type) && 'active'"
-          @click="handleMedialibClick(mediaLib.id, mediaLib.type)"
+          :class="handleIsMedialibActive(mediaLib.id, mediaLib.type, route) && 'active'"
+          @click="handleMedialibClick(mediaLib.id, mediaLib.type, () => {})"
         />
       </div>
     </ScrollableBlock>
@@ -163,7 +161,7 @@ function handleIsMedialibActive(id: string | number, type: MediaLibTypes['type']
       display: grid;
       grid-template-columns: repeat(
         auto-fill,
-        minmax(v-bind(gridItemWidth), 1fr)
+        minmax(calc(v-bind(gridWidth) * 1px), 1fr)
       );
       grid-auto-rows: min-content;
     }

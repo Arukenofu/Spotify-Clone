@@ -2,8 +2,6 @@
 import DangerIcon from "@/UI/Icons/Shared/DangerIcon.vue";
 
 interface Props {
-  title: string;
-  body: string;
   isIcon?: boolean;
   size?: 'regular' | 'small';
 }
@@ -17,8 +15,12 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div class="v-error" :class="size">
     <DangerIcon v-if="isIcon" class="icon" />
-    <h1 class="title">{{title}}</h1>
-    <p class="body">{{body}}</p>
+    <h1 class="title">
+      <slot name="title" />
+    </h1>
+    <p class="body">
+      <slot name="body" />
+    </p>
   </div>
 </template>
 
