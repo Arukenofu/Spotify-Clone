@@ -6,10 +6,10 @@ import Range from '@/shared/components/Range.vue';
 import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
 import BasicContextMenuTitle from "@/UI/ContextMenu/BasicContextMenuTitle.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
+import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
 import {gridColumnMaxWidth, gridColumnMinWidth, sorts} from "@/features/MedialibSidebar"
 import type {FormatTypes} from "#imports";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
-import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
 
 defineProps<{
   componentName: FormatTypes;

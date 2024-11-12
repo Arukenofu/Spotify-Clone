@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Dropdown } from 'floating-vue'
-import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import UserProfileMenu from "@/widgets/LayoutHeader/contextmenu/UserProfileMenu.vue";
+import RoundButton from "@/UI/Buttons/RoundButton.vue";
+import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
 
 </script>
 
 <template>
-  <Dropdown :distance="7">
+  <ContextMenu trigger="click" :offset="[0, 7]">
     <RoundButton
       v-tooltip="{
         content: 'Бауыржан Алкенов',
@@ -22,10 +22,10 @@ import UserProfileMenu from "@/widgets/LayoutHeader/contextmenu/UserProfileMenu.
       />
     </RoundButton>
 
-    <template #popper>
+    <template #menu>
       <UserProfileMenu />
     </template>
-  </Dropdown>
+  </ContextMenu>
 </template>
 
 <style lang="scss" scoped>

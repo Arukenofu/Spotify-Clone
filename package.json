@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.59.13",
-    "floating-vue": "^5.2.2",
     "ofetch": "^1.4.1",
     "pinia": "^2.2.4",
     "vue": "^3.5.11",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue-tippy": "^6.5.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",

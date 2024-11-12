@@ -6,7 +6,7 @@ import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
 import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
 import BasicContextMenuTitle from "@/UI/ContextMenu/BasicContextMenuTitle.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
-import {Dropdown} from "floating-vue";
+import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
 
 type Format = 'Компактный'| 'Список';
 
@@ -51,13 +51,17 @@ function setFormat(newValue: Format) {
 </script>
 
 <template>
-  <Dropdown class="container">
+  <ContextMenu
+    class="container"
+    trigger="click"
+    placement="bottom-end"
+  >
     <button v-disable-child class="setFormat">
       <span>{{format}}</span>
       <Component :is="currentIcon" class="icon" />
     </button>
 
-    <template #popper>
+    <template #menu>
       <BasicContextMenuView class="contextMenu">
         <BasicContextMenuTitle text="Формат библеотеки" />
         <BasicContextMenuItem
@@ -71,7 +75,7 @@ function setFormat(newValue: Format) {
         />
       </BasicContextMenuView>
     </template>
-  </Dropdown>
+  </ContextMenu>
 </template>
 
 <style scoped lang="scss">

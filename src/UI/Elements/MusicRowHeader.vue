@@ -7,6 +7,8 @@ interface Props {
   passingHeight?: number;
   var1?: any;
   var2?: any;
+  isVar1?: boolean;
+  isVar2?: boolean;
 }
 
 const {
@@ -34,8 +36,8 @@ onUnmounted(() => {
   <div ref="stickyTableHead" class="v-music-row" :class="isSticky && 'stuck'">
     <div class="index">#</div>
     <div class="name">Название</div>
-    <div class="var1">{{var1}}</div>
-    <div class="var2">{{var2}}</div>
+    <div v-if="isVar1" class="var1">{{var1}}</div>
+    <div v-if="isVar2" class="var2">{{var2}}</div>
     <div class="time">
       <div v-tooltip="'Длительность'">
         <ClockIcon class="icon" />

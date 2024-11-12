@@ -5,10 +5,10 @@ import PlusIcon from '@/UI/Icons/Shared/PlusIcon.vue';
 import ArrowIcon from '@/UI/Icons/Shared/ArrowIcon.vue';
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue';
+import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
 import defaultWidth from '@/widgets/LayoutSideBar/constants/defaultWidth';
 import max from '@/widgets/LayoutSideBar/constants/max';
 import { useSidebarWidthStore } from '@/features/MedialibSidebar';
-import {Dropdown} from "floating-vue";
 
 const { isMinimized, currentWidth } = useSidebarWidthStore();
 
@@ -66,7 +66,10 @@ const tooltip= computed(() => {
       v-if="!isMinimized"
       class="other-controls"
     >
-      <Dropdown>
+      <ContextMenu
+        trigger="click"
+        placement="bottom-end"
+      >
         <RoundButton
           v-tooltip="'Создать плейлист или папку'"
           class="createPlaylist"
@@ -74,10 +77,10 @@ const tooltip= computed(() => {
           <PlusIcon class="icon" />
         </RoundButton>
 
-        <template #popper>
+        <template #menu>
           <CreatePlaylistContextMenu />
         </template>
-      </Dropdown>
+      </ContextMenu>
 
       <RoundButton
         v-tooltip="currentWidth < 450 ? 'Развернуть' : 'Свернуть'"

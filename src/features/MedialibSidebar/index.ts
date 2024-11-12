@@ -12,3 +12,5 @@ export {default as gridColumnMinWidth} from './constants/gridColumnMinWidth'
 export {default as gridColumnMaxWidth} from './constants/gridColumnMaxWidth'
 
 export {default as sorts} from './constants/sorts';
+
+export type {MediaLibEntityProps} from './types/MediaLibEntityProps'

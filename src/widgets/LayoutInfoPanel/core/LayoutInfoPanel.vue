@@ -19,7 +19,6 @@ const { currentPanelWidth } = useInfoPanelWidth();
   <aside
     v-if="currentPanelComponent"
     class="info"
-    :style="`width: ${currentPanelWidth}px;`"
   >
     <Suspense>
       <template #fallback>
@@ -37,5 +36,6 @@ const { currentPanelWidth } = useInfoPanelWidth();
   background-color: var(--ui);
   max-height: 100%;
   border-radius: var(--border-radius);
+  width: var(--panel-width-px);
 }
 </style>

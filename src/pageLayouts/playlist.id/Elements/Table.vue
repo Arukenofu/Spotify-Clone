@@ -75,6 +75,8 @@ const {loadSongOrPlaylist} = useMusicUtils();
       :parent-element="layoutContent!.content"
       :var1="format === 'Список' ? 'Альбом' : 'Исполнитель'"
       :var2="'Дата добавления'"
+      :is-var1="computeTableLines.isAlbum"
+      :is-var2="computeTableLines.isDate"
       :style="computeGridLines"
     />
 

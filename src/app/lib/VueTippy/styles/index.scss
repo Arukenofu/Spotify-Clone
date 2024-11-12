@@ -1,0 +1,26 @@
+.tippy-box {
+  max-width: 40ch;
+
+  &[data-theme=context] {
+    transition-duration: 0s !important;
+
+    .tippy-content {
+      padding: 4px !important;
+    }
+  }
+
+  .tippy-content {
+    background-color: var(--ui-highlight);
+    padding: 5px 7px;
+    box-shadow:
+            0 16px 24px rgba(0, 0, 0, 0.3),
+            0 6px 8px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+
+  &[data-state=hidden] {
+    opacity: 0;
+  }
+}

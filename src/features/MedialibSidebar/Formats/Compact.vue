@@ -7,15 +7,16 @@ const props = defineProps<MediaLibEntityProps>();
 
 <template>
   <button class="compact-playlist">
-    {{ props.name }}
+    <span class="main">
+      {{ props.name }}
+      <span class="info">
+        <span class="divider">
+          •
+        </span>
 
-    <div class="info">
-      <div class="divider">
-        •
-      </div>
-
-      <EntityInfo v-bind="props" />
-    </div>
+        <EntityInfo v-bind="props" />
+      </span>
+    </span>
   </button>
 </template>
 
@@ -24,15 +25,18 @@ const props = defineProps<MediaLibEntityProps>();
   background: none;
   border: none;
   height: 32px;
-  width: 100%;
-  display: flex;
-  align-items: center;
   padding: 0 8px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   user-select: none;
   text-align: left;
+  display: inline;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: calc(var(--sidebar-width-px) - (7px * 2));
+  color: var(--text-soft);
 
   &:hover {
     background-color: var(--ui-highlight);
@@ -42,10 +46,14 @@ const props = defineProps<MediaLibEntityProps>();
     background-color: var(--black);
   }
 
+  .main {
+    color: var(--white);
+  }
+
   .info {
-    display: flex;
     font-size: 0.875rem;
     font-weight: 500;
+    white-space: nowrap;
 
     :deep(span) {
       font-weight: 500;
@@ -54,8 +62,8 @@ const props = defineProps<MediaLibEntityProps>();
   }
 
   .divider {
+    text-align: center;
     color: var(--text-soft);
-    margin: 0 4px;
   }
 }
 </style>

@@ -2,6 +2,11 @@
 import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 import {RouterLink} from "vue-router";
+import {router} from "@/app/router";
+
+function exitFromAccount() {
+  router.push(`/signup`)
+}
 </script>
 
 <template>
@@ -9,7 +14,7 @@ import {RouterLink} from "vue-router";
     <BasicContextMenuItem text="Аккаунт" />
     <BasicContextMenuItem :as="RouterLink" to="/user/asd" text="Профиль" />
     <BasicContextMenuItem :as="RouterLink" to="/preferences" text="Настройки" :underline="true" />
-    <BasicContextMenuItem text="Выйти" />
+    <BasicContextMenuItem text="Выйти" @click="exitFromAccount" />
   </BasicContextMenuView>
 </template>
 

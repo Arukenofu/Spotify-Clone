@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import {Dropdown} from "floating-vue";
 import {useRoute} from "vue-router";
 import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
@@ -13,13 +12,15 @@ import {
   useGridWidth,
   handleIsMedialibActive,
   handleMedialibClick,
-  handleMedialibSortAndSearch, useMedialibsSort
+  handleMedialibSortAndSearch,
+  useMedialibsSort
 } from '@/features/MedialibSidebar';
 import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
 import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
 import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
 
 const search = ref<string>('');
 const { isMinimized } = useSidebarWidthStore();
@@ -47,7 +48,7 @@ const mediaLibsFiltered = computed(() => {
     searchQuery: search.value,
     sortBy: currentSort.value
   });
-})
+});
 </script>
 
 <template>
@@ -57,14 +58,18 @@ const mediaLibsFiltered = computed(() => {
     <div v-if="!isMinimized" class="controls">
       <SearchPlaylist v-model="search" />
 
-      <Dropdown class="container" placement="bottom" distance="4">
+      <ContextMenu
+        trigger="click"
+        placement="bottom-end"
+        class="container"
+      >
         <FormatButton
           :sort-name="currentSort"
           :format-component-name="getComponentName"
           class="formats"
         />
 
-        <template #popper>
+        <template #menu>
           <FormatContextMenu
             :component-name="getComponentName"
             :grid-width="gridWidth"
@@ -74,7 +79,7 @@ const mediaLibsFiltered = computed(() => {
             @set-sort-name="setSort"
           />
         </template>
-      </Dropdown>
+      </ContextMenu>
     </div>
 
     <ScrollableBlock v-if="isSuccess" class="block" :gap="isMinimized ? '0px' : '7px'">
@@ -111,6 +116,7 @@ const mediaLibsFiltered = computed(() => {
 
   .controls {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-top: 8px;
     margin-bottom: 8px;

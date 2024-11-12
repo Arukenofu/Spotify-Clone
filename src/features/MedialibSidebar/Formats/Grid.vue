@@ -4,6 +4,7 @@ import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import {computed} from "vue";
 import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
+import type {TippyOptions} from "vue-tippy";
 
 type GridFormatProps = {
   minimized: boolean;
@@ -11,9 +12,9 @@ type GridFormatProps = {
 
 const props = defineProps<GridFormatProps>();
 
-const tooltip = computed(() => {
+const tooltip = computed<TippyOptions>(() => {
   if (!props.minimized) {
-    return;
+    return {};
   }
 
   const titleStyle = 'font-weight: 400; font-size: 1rem; margin-bottom: 2px';
@@ -26,10 +27,9 @@ const tooltip = computed(() => {
 
   return {
     content,
-    html: true,
     placement: 'right',
-    distance: 7,
-    delay: 10
+    delay: 100,
+    allowHTML: true
   }
 });
 </script>
