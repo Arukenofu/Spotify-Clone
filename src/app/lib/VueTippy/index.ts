@@ -5,7 +5,7 @@ import VueTippy, {type TippyPluginOptions} from 'vue-tippy'
 const VueTippyConfig: TippyPluginOptions = {
     directive: 'tooltip',
     defaultProps: {
-        theme: 'spotify',
+        theme: 'tooltip',
         arrow: false,
         interactiveBorder: 7,
         popperOptions: {

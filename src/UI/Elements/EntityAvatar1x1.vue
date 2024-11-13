@@ -53,10 +53,10 @@ defineProps<Props>();
 .v-picture {
   border-radius: 4px;
   aspect-ratio: 1/1;
-  background-color: #333333;
   display: grid;
   place-items: center;
   z-index: 1;
+  background-color: #333333;
 
   .image {
     width: 100%;
@@ -68,7 +68,7 @@ defineProps<Props>();
     height: 50%;
     width: 50%;
     fill: var(--text-soft);
-    background-color: #333333;
+    background-color: inherit;
   }
 }
 

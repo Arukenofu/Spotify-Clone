@@ -6,14 +6,9 @@ defineOptions({
 });
 
 interface Props {
-  text: string;
-
   as?: Component | string;
-  svgIcon?: Component;
   underline?: boolean;
   isActive?: boolean;
-  additionalSVG?: Component | false;
-  subTree?: Component;
 }
 
 const {underline, isActive, as = 'button'} = defineProps<Props>();
@@ -31,23 +26,19 @@ const computedClasses = computed(() => {
     v-bind="$attrs"
   >
     <span class="block">
-      <Component
-        :is="svgIcon"
-        class="icon"
-      />
+      <div v-if="$slots.icon" class="icon">
+        <slot name="icon" />
+      </div>
       <span class="text">
-        {{ text }}
+        <slot />
       </span>
     </span>
 
     <span
-      v-show="additionalSVG"
+      v-if="$slots.additionalIcon"
       class="additionalSvg"
     >
-      <Component
-        :is="additionalSVG"
-        class="icon"
-      />
+      <slot name="additionalIcon" />
     </span>
   </Component>
 </template>
@@ -57,7 +48,7 @@ const computedClasses = computed(() => {
   width: 100%;
   background: none;
   border: none;
-  height: 40px;
+  height: 43.2px;
   padding: 12px;
   display: flex;
   align-items: center;
@@ -93,6 +84,9 @@ const computedClasses = computed(() => {
     margin-left: auto;
     display: grid;
     place-items: center;
+    width: 16px;
+    height: 16px;
+    fill: var(--text-soft);
   }
 }
 
@@ -102,6 +96,10 @@ const computedClasses = computed(() => {
     color: var(--main-color);
     fill: var(--main-color);
   }
+}
+
+.active-icon .icon {
+  fill: var(--main-color);
 }
 
 .underline::before {

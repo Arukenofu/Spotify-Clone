@@ -11,10 +11,18 @@ function exitFromAccount() {
 
 <template>
   <BasicContextMenuView class="modal">
-    <BasicContextMenuItem text="Аккаунт" />
-    <BasicContextMenuItem :as="RouterLink" to="/user/asd" text="Профиль" />
-    <BasicContextMenuItem :as="RouterLink" to="/preferences" text="Настройки" :underline="true" />
-    <BasicContextMenuItem text="Выйти" @click="exitFromAccount" />
+    <BasicContextMenuItem>
+      Аккаунт
+    </BasicContextMenuItem>
+    <BasicContextMenuItem :as="RouterLink" to="/user/asd">
+      Профиль
+    </BasicContextMenuItem>
+    <BasicContextMenuItem :as="RouterLink" to="/preferences" underline>
+      Настройки
+    </BasicContextMenuItem>
+    <BasicContextMenuItem @click="exitFromAccount">
+      Выйти
+    </BasicContextMenuItem>
   </BasicContextMenuView>
 </template>
 

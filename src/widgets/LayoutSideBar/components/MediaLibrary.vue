@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import {computed, defineComponent, h, ref} from 'vue';
 import {useRoute} from "vue-router";
 import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchMedialib.vue';
 import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
 import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
+import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
+import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
+import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
 import {
   useSidebarWidthStore,
   usePlaylistFormat,
@@ -13,14 +16,15 @@ import {
   handleIsMedialibActive,
   handleMedialibClick,
   handleMedialibSortAndSearch,
-  useMedialibsSort
+  useMedialibsSort,
+  type MediaLibEntityProps
 } from '@/features/MedialibSidebar';
-import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
-import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
 import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
-import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
+import {useTippy} from "vue-tippy";
+import EntityAction from "@/widgets/LayoutSideBar/contextMenu/EntityAction.vue";
+import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 
 const search = ref<string>('');
 const { isMinimized } = useSidebarWidthStore();
@@ -49,6 +53,35 @@ const mediaLibsFiltered = computed(() => {
     sortBy: currentSort.value
   });
 });
+
+const contextMenuProps = ref<EntityActionContextMenuProps | null>(null);
+
+const {setProps} = useTippy(() => document.body, {
+  content: defineComponent(() => {
+    return () => h(EntityAction, {
+      ...contextMenuProps.value as EntityActionContextMenuProps
+    });
+  }),
+  trigger: 'contextmenu',
+  placement: 'bottom-start',
+  theme: 'context',
+  interactive: true
+});
+
+function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
+  contextMenuProps.value = props;
+
+  setProps({
+    getReferenceClientRect: () => ({
+      width: 0,
+      height: 0,
+      top: event.clientY,
+      bottom: event.clientY,
+      left: event.clientX,
+      right: event.clientX
+    })
+  });
+}
 </script>
 
 <template>
@@ -94,10 +127,11 @@ const mediaLibsFiltered = computed(() => {
           v-bind="mediaLib"
           :is="currentComponent"
           v-for="mediaLib in mediaLibsFiltered"
-          :key="mediaLib.type"
+          :key="mediaLib.id"
           :minimized="gridWidth < 135 || isMinimized"
           :class="handleIsMedialibActive(mediaLib.id, mediaLib.type, route) && 'active'"
           @click="handleMedialibClick(mediaLib.id, mediaLib.type, () => {})"
+          @contextmenu.prevent="onContextMenu($event, mediaLib)"
         />
       </div>
     </ScrollableBlock>
@@ -157,8 +191,8 @@ const mediaLibsFiltered = computed(() => {
           background: none;
         }
 
-        &:hover {
-          background-color: var(--ui-highlight-active) !important;
+        &:hover::after, &:hover {
+          background-color: hsla(0,0%,100%,.14);
         }
       }
     }

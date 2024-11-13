@@ -2,20 +2,30 @@
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
+import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
+import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 
 const props = defineProps<MediaLibEntityProps>();
 </script>
 
 <template>
   <button class="list">
-    <EntityAvatar1x1 :image="props.image" :type="props.type!" />
+    <div class="avatar">
+      <EntityAvatar1x1 class="image" :image="props.image" :type="props.type!" />
+      <div v-if="type !== 'Folder'" class="overlay">
+        <PlayingState class="icon" />
+      </div>
+    </div>
 
     <div class="text">
       <span class="playlist-name">
         {{ props.name }}
       </span>
 
-      <EntityInfo v-bind="props" class="info" />
+      <span class="playlist-info">
+        <PinnedComponent v-if="isPinned" class="pinned" />
+        <EntityInfo v-bind="props" class="info" />
+      </span>
     </div>
   </button>
 </template>
@@ -34,25 +44,44 @@ const props = defineProps<MediaLibEntityProps>();
   cursor: pointer;
 
   &:hover {
-    background-color: var(--ui-highlight);
+    background-color: hsla(0,0%,100%,.1);
+
+    .avatar .overlay {
+      opacity: 1;
+    }
   }
 
   &:active {
     background-color: var(--black);
   }
 
-  .picture {
+  .avatar {
     height: 100%;
     aspect-ratio: 1/1;
-    background-color: #272727;
     border-radius: 4px;
     display: grid;
     place-items: center;
+    position: relative;
 
-    .noAvatar {
-      height: 24px;
-      width: 24px;
-      fill: var(--text-soft);
+    .image {
+      background-color: #262626;
+    }
+
+    .overlay {
+      z-index: 1 !important;
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+
+      .icon {
+        fill: var(--white);
+        height: 24px;
+        width: 24px;
+      }
     }
   }
 
@@ -61,18 +90,25 @@ const props = defineProps<MediaLibEntityProps>();
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4px;
+    gap: 5px;
     text-align: left;
 
     .playlist-name {
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 500;
     }
 
-    .info {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-soft);
+    .playlist-info {
+
+      .pinned {
+        margin-right: 4px;
+      }
+
+      .info {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-soft);
+      }
     }
   }
 }

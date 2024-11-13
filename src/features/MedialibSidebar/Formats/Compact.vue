@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
+import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
 
 const props = defineProps<MediaLibEntityProps>();
 </script>
 
 <template>
   <button class="compact-playlist">
+    <PinnedComponent v-if="isPinned" class="pinned" />
+
     <span class="main">
       {{ props.name }}
       <span class="info">
@@ -48,6 +51,10 @@ const props = defineProps<MediaLibEntityProps>();
 
   .main {
     color: var(--white);
+  }
+
+  .pinned {
+    margin-right: 8px;
   }
 
   .info {

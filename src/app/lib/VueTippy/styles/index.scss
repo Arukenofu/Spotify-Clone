@@ -9,9 +9,18 @@
     }
   }
 
+  &[data-theme=tooltip] {
+    .tippy-content {
+      padding: 5px 7px;
+    }
+
+    .tippy-content:has(span:empty) {
+      padding: 0 !important;
+    }
+  }
+
   .tippy-content {
-    background-color: var(--ui-highlight);
-    padding: 5px 7px;
+    background-color: #282828;
     box-shadow:
             0 16px 24px rgba(0, 0, 0, 0.3),
             0 6px 8px rgba(0, 0, 0, 0.2);

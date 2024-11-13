@@ -8,7 +8,7 @@ import FormButton from '@/UI/Form/FormButton.vue';
 import stepStore from '@/widgets/SignUp/store/stepStore';
 
 import type { FirstStepForm } from '@/widgets/SignUp/types/form';
-import Pin from '@/UI/Icons/Shared/Pin.vue';
+import Pin from '@/UI/Icons/Shared/RoundCheckIcon.vue';
 import { useMutation } from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 

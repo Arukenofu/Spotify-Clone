@@ -25,6 +25,10 @@ export default function (
             }
             return a.isPinned ? -1 : 1;
         });
+    } else {
+        result.sort((a) => {
+            return a.isPinned ? -1 : 1;
+        })
     }
 
     return result;

@@ -63,16 +63,23 @@ function setFormat(newValue: Format) {
 
     <template #menu>
       <BasicContextMenuView class="contextMenu">
-        <BasicContextMenuTitle text="Формат библеотеки" />
+        <BasicContextMenuTitle>
+          Формат библеотеки
+        </BasicContextMenuTitle>
         <BasicContextMenuItem
           v-for="{text, svgIcon} in formats"
           :key="text"
-          :text="text"
-          :svg-icon="svgIcon"
           :is-active="format === text"
-          :additional-s-v-g="format === text && CheckIcon"
           @click="setFormat(text)"
-        />
+        >
+          {{text}}
+          <template #icon>
+            <Component :is="svgIcon" />
+          </template>
+          <template #additionalIcon>
+            {{format === text && CheckIcon}}
+          </template>
+        </BasicContextMenuItem>
       </BasicContextMenuView>
     </template>
   </ContextMenu>

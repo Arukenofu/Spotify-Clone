@@ -73,6 +73,7 @@ header {
   display: flex;
   align-items: center;
   position: relative;
+  margin-bottom: var(--layout-gap);
 
   .logo {
     height: 72px;

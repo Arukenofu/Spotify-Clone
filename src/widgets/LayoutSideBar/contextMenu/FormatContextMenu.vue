@@ -38,39 +38,64 @@ function setSortName(name: sortOption): void {
 
 <template>
   <BasicContextMenuView class="menu">
-    <BasicContextMenuTitle text="Сортировка" />
+    <BasicContextMenuTitle>
+      Сортировка
+    </BasicContextMenuTitle>
     <BasicContextMenuItem
       v-for="(sort, index) in sorts"
       :key="index"
-      :text="sort"
       :underline="index === sorts.length - 1"
       :is-active="sortName === sort"
-      :additional-s-v-g="sortName === sort && CheckIcon"
       @click="setSortName(sort)"
-    />
+    >
+      {{sort}}
+      <template v-if="sortName === sort" #additionalIcon>
+        <CheckIcon />
+      </template>
+    </BasicContextMenuItem>
 
-    <BasicContextMenuTitle text="Формат Библеотеки" />
+    <BasicContextMenuTitle>
+      Формат библеотеки
+    </BasicContextMenuTitle>
     <BasicContextMenuItem
-      text="Компактный"
-      :svg-icon="CompactIcon"
       :is-active="componentName === 'Compact'"
-      :additional-s-v-g="componentName === 'Compact' && CheckIcon"
       @click="setComponentName('Compact')"
-    />
+    >
+      Компактный
+      <template #icon>
+        <CompactIcon />
+      </template>
+      <template v-if="componentName === 'Compact'" #additionalIcon>
+        <CheckIcon />
+      </template>
+    </BasicContextMenuItem>
+
     <BasicContextMenuItem
-      text="Список"
-      :svg-icon="ListIcon"
       :is-active="componentName === 'List'"
-      :additional-s-v-g="componentName === 'List' && CheckIcon"
       @click="setComponentName('List')"
-    />
+    >
+      Список
+      <template #icon>
+        <ListIcon />
+      </template>
+      <template v-if="componentName === 'List'" #additionalIcon>
+        <CheckIcon />
+      </template>
+    </BasicContextMenuItem>
+
     <BasicContextMenuItem
-      text="Сетка"
-      :svg-icon="GridIcon"
       :is-active="componentName === 'Grid'"
-      :additional-s-v-g="componentName === 'Grid' && CheckIcon"
       @click="setComponentName('Grid')"
-    />
+    >
+      Сетка
+      <template #icon>
+        <GridIcon />
+      </template>
+      <template v-if="componentName === 'Grid'" #additionalIcon>
+        <CheckIcon />
+      </template>
+    </BasicContextMenuItem>
+
 
     <Range
       v-if="componentName === 'Grid'"

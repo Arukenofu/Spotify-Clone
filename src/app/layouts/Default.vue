@@ -8,8 +8,9 @@ import { LayoutHeader } from '@/widgets/LayoutHeader';
 import { router } from '@/app/router';
 import useResponsive from '@/shared/composables/useResponsive';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import Loading from '@/shared/components/Loading.vue';
+import SpotifyView from "@/app/components/SpotifyView.vue";
 import type { Ref } from 'vue';
+import PageFooter from "@/app/components/PageFooter.vue";
 
 interface ScrollableWithExpose
   extends Ref<InstanceType<typeof ScrollableBlock>> {
@@ -48,42 +49,47 @@ watchEffect(() => {
 
 <template>
   <div class="root">
-    <LayoutHeader v-if="!isMobile" />
+    <template v-if="!isMobile">
+      <LayoutHeader />
 
-    <div class="main">
-      <LayoutSideBar v-if="!isMobile" />
+      <div class="main">
+        <LayoutSideBar />
 
-      <ScrollableBlock
-        is="main"
-        ref="layout"
-        v-model="layoutScrollY"
-        gap="0"
-        :scrollbar-width="isMobile ? '5px' : '12px'"
-        :allow-style-shadow="false"
-      >
-        <RouterView v-slot="{ Component }">
-          <template v-if="Component">
-            <Suspense>
-              <template #default>
-                <div class="content">
-                  <Component :is="Component" />
-                </div>
-              </template>
+        <ScrollableBlock
+          is="main"
+          ref="layout"
+          v-model="layoutScrollY"
+          gap="0"
+          scrollbar-width="12px"
+          :allow-style-shadow="false"
+        >
+          <SpotifyView />
 
-              <template #fallback>
-                <Loading />
-              </template>
-            </Suspense>
-          </template>
-        </RouterView>
-      </ScrollableBlock>
+          <PageFooter />
+        </ScrollableBlock>
 
-      <LayoutInfoContent />
-    </div>
+        <LayoutInfoContent />
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="main">
+        <ScrollableBlock
+          is="main"
+          ref="layout"
+          v-model="layoutScrollY"
+          gap="0"
+          scrollbar-width="5px"
+          :allow-style-shadow="false"
+        >
+          <SpotifyView />
+        </ScrollableBlock>
+      </div>
+    </template>
   </div>
 
   <LayoutMobileRouter v-if="isMobile" />
-  <MediaPlayer v-if="!isMobile" />
+  <MediaPlayer v-else />
 </template>
 
 <style lang="scss" scoped>
@@ -91,7 +97,6 @@ watchEffect(() => {
   width: 100dvw;
   display: grid;
   padding: var(--layout-gap);
-  gap: var(--layout-gap);
   background-color: var(--black);
 
   .main {

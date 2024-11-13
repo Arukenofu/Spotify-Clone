@@ -13,10 +13,12 @@ import RouterEnvConfig from "./config/routerEnv.config";
 import LayoutConfig from "./config/layout.config";
 import FolderTypesConfig from "./config/folderTypes.config";
 import ServerConfig from "./config/server.config";
+import compression from "vite-plugin-compression2";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    compression(),
     createTypesByFolder(FolderTypesConfig),
     Router(RouterEnvConfig),
     sassGlobImports(),

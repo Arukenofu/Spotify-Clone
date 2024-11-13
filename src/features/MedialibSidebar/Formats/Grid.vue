@@ -1,42 +1,24 @@
 <script setup lang="ts">
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import {computed} from "vue";
 import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
-import type {TippyOptions} from "vue-tippy";
+import {Tippy} from "vue-tippy";
+import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
 
 type GridFormatProps = {
   minimized: boolean;
 } & MediaLibEntityProps;
 
 const props = defineProps<GridFormatProps>();
-
-const tooltip = computed<TippyOptions>(() => {
-  if (!props.minimized) {
-    return {};
-  }
-
-  const titleStyle = 'font-weight: 400; font-size: 1rem; margin-bottom: 2px';
-  const bodyStyle = 'font-weight: 400; color: var(--text-soft); font-size: .875rem';
-
-  const content = `
-    <p style="${titleStyle}">${props.name}</p>
-    <p style="${bodyStyle}">${props.type}</p>
-  `;
-
-  return {
-    content,
-    placement: 'right',
-    delay: 100,
-    allowHTML: true
-  }
-});
 </script>
 
 <template>
-  <button
-    v-tooltip="tooltip"
+  <Tippy
+    tag="button"
+    placement="right"
+    :delay="100"
+    :allow-html="true"
     class="block"
     :class="!minimized && 'unminimized'"
   >
@@ -51,9 +33,22 @@ const tooltip = computed<TippyOptions>(() => {
 
     <div v-if="!minimized" class="text">
       <span class="name">{{ name }}</span>
-      <EntityInfo v-bind="props" class="info" />
+      <span class="body">
+        <PinnedComponent v-if="isPinned" class="pinned" />
+        <EntityInfo v-bind="props" class="info" />
+      </span>
     </div>
-  </button>
+
+    <template #content>
+      <div v-if="minimized" class="tooltip">
+        <p class="title">{{name}}</p>
+        <p class="body">
+          <PinnedComponent v-if="isPinned" class="pinned" />
+          <EntityInfo class="info" v-bind="props" />
+        </p>
+      </div>
+    </template>
+  </Tippy>
 </template>
 
 <style lang="scss" scoped>
@@ -112,7 +107,7 @@ const tooltip = computed<TippyOptions>(() => {
   cursor: pointer;
 
   &:hover {
-    background-color: var(--ui-highlight);
+    background-color: var(--ui-highlight) !important;
   }
 
   &:active {
@@ -135,6 +130,14 @@ const tooltip = computed<TippyOptions>(() => {
       overflow: hidden;
     }
 
+    .body {
+      display: inline-flex;
+
+      .pinned {
+        margin-right: 4px;
+      }
+    }
+
     .name {
       font-size: 1rem;
       font-weight: 500;
@@ -142,6 +145,29 @@ const tooltip = computed<TippyOptions>(() => {
 
     .info {
       font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-soft);
+    }
+  }
+}
+
+.tooltip {
+  display: grid;
+  gap: 6px;
+  padding: 2px 1px;
+
+  .title {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .body {
+    .pinned {
+      margin-right: 4px;
+    }
+
+    &:deep(span) {
+      font-size: .875rem;
       font-weight: 500;
       color: var(--text-soft);
     }

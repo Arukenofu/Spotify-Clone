@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import {defineAsyncComponent} from 'vue';
+import {computed} from 'vue';
 import type {FormatTypes} from "#imports";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
+import GridIcon from "@/UI/Icons/Shared/GridIcon.vue";
+import CompactIcon from "@/UI/Icons/Shared/CompactIcon.vue";
+import ListIcon from "@/UI/Icons/Shared/ListIcon.vue";
 
 interface Props {
   formatComponentName: FormatTypes;
@@ -10,9 +13,15 @@ interface Props {
 
 const {formatComponentName} = defineProps<Props>();
 
-function getFormatButtonIcon(formatName: FormatTypes) {
-  return defineAsyncComponent(() => import(`@/UI/Icons/Shared/${formatName}Icon.vue`));
-}
+const currentComponent = computed(() => {
+  if (formatComponentName === 'Grid') {
+    return GridIcon;
+  }
+  if (formatComponentName === 'Compact') {
+    return CompactIcon;
+  }
+  return ListIcon;
+})
 </script>
 
 <template>
@@ -22,7 +31,7 @@ function getFormatButtonIcon(formatName: FormatTypes) {
     </span>
 
     <span class="icon">
-      <Component :is="getFormatButtonIcon(formatComponentName)" />
+      <Component :is="currentComponent" />
     </span>
   </button>
 </template>
