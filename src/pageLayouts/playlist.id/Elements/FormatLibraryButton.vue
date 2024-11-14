@@ -3,10 +3,7 @@ import {type Component, computed} from 'vue';
 import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
 import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
 import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
-import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
-import BasicContextMenuTitle from "@/UI/ContextMenu/BasicContextMenuTitle.vue";
-import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
-import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
+import {BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView, ContextMenu} from "@/features/ContextMenu";
 
 type Format = 'Компактный'| 'Список';
 

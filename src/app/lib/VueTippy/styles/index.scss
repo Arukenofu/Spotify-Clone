@@ -6,6 +6,10 @@
 
     .tippy-content {
       padding: 4px !important;
+
+      &:empty {
+        padding: 0 !important;
+      }
     }
   }
 

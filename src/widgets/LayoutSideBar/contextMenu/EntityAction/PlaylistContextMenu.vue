@@ -1,74 +1,41 @@
 <script setup lang="ts">
-import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
-import PlusMusicIcon from "@/UI/Icons/Shared/PlusMusicIcon.vue";
-import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
-import RoundCrossIcon from "@/UI/Icons/Shared/RoundCrossIcon.vue";
-import FolderIcon from "@/UI/Icons/Shared/FolderIcon.vue";
-import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
+import {
+  AddToMedialibState,
+  AddToProfileState,
+  CreateFolder,
+  CreatePlaylist,
+  ExcludeFromMusicPreferences,
+  MoveTo,
+  Share
+} from "@/features/ContextMenu";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
-import WithSubtree from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/WithSubtree.vue";
-import RoundAvatarIcon from "@/UI/Icons/Shared/RoundAvatarIcon.vue";
-import RoundCheckIcon from "@/UI/Icons/Shared/RoundCheckIcon.vue";
-import Share from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Share.vue";
 import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
+import removeEntityFromMedialib from "@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib";
+import {useQueryClient} from "@tanstack/vue-query";
 
-defineProps<EntityActionContextMenuProps>();
+defineProps<EntityActionContextMenuProps & {
+  type: 'Playlist'
+}>();
+
+const queryClient = useQueryClient();
 </script>
 
 <template>
-  <BasicContextMenuItem>
-    Добавить в профиль
-    <template #icon>
-      <RoundAvatarIcon />
-    </template>
-  </BasicContextMenuItem>
+  <AddToProfileState state />
 
-  <BasicContextMenuItem underline>
-    Удалить из медиетеки
-    <template #icon>
-      <RoundCheckIcon achieve="yes" />
-    </template>
-  </BasicContextMenuItem>
+  <AddToMedialibState state underline @click="removeEntityFromMedialib(id, queryClient, type)" />
 
-  <BasicContextMenuItem>
-    Создать плейлист
-    <template #icon>
-      <PlusMusicIcon />
-    </template>
-  </BasicContextMenuItem>
+  <CreatePlaylist />
 
-  <BasicContextMenuItem>
-    Создать папку
-    <template #icon>
-      <PlusIcon />
-    </template>
-  </BasicContextMenuItem>
+  <CreateFolder />
 
-  <BasicContextMenuItem>
-    Исключить из музыкальных предпочтений
-    <template #icon>
-      <RoundCrossIcon />
-    </template>
-  </BasicContextMenuItem>
+  <ExcludeFromMusicPreferences />
 
-  <WithSubtree>
-    <BasicContextMenuItem>
-      Переместить
-      <template #icon>
-        <FolderIcon />
-      </template>
-      <template #additionalIcon>
-        <TriangleIcon />
-      </template>
-    </BasicContextMenuItem>
-
-    <template #context>
-    </template>
-  </WithSubtree>
+  <MoveTo />
 
   <Pin :id="id" type="Folder" :is-pinned="isPinned" underline />
 
-  <Share />
+  <Share :type />
 </template>
 
 <style scoped lang="scss">

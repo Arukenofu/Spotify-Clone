@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import {type Component, computed} from 'vue';
+import {computed} from 'vue';
+import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
 
 defineOptions({
   inheritAttrs: false
 });
 
-interface Props {
-  as?: Component | string;
-  underline?: boolean;
-  active?: 'active' | 'active-icon' | 'active-additional' | false;
-}
-
-const {underline, active, as = 'button'} = defineProps<Props>();
+const {underline, active, as = 'button'} = defineProps<BaseItemProps>();
 
 const computedClasses = computed(() => {
   return [underline && 'underline', active && active];

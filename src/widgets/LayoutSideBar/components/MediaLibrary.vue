@@ -8,7 +8,7 @@ import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
 import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
 import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
 import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
-import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
+import {ContextMenu} from "@/features/ContextMenu";
 import {
   handleIsMedialibActive,
   handleMedialibClick,
@@ -63,6 +63,7 @@ const {setProps, show, hide} = useTippy(() => document.body, {
       onClick: hide
     });
   }),
+  offset: [1, 1],
   trigger: 'manual',
   placement: 'bottom-start',
   theme: 'context',

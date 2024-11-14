@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
+import {BasicContextMenuItem, CreateFolder, MoveTo} from "@/features/ContextMenu";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
 import PencilIcon from "@/UI/Icons/Shared/PencilIcon.vue";
 import DangerIcon2 from "@/UI/Icons/Shared/DangerIcon2.vue";
-import PlusMusicIcon from "@/UI/Icons/Shared/PlusMusicIcon.vue";
-import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
-import FolderIcon from "@/UI/Icons/Shared/FolderIcon.vue";
-import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
-import WithSubtree from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/WithSubtree.vue";
 import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
+import {useQueryClient} from "@tanstack/vue-query";
+import removeEntityFromMedialib from "@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib";
 
 defineProps<EntityActionContextMenuProps>();
+
+const queryClient = useQueryClient();
 </script>
 
 <template>
@@ -20,42 +19,17 @@ defineProps<EntityActionContextMenuProps>();
       <PencilIcon />
     </template>
   </BasicContextMenuItem>
-  <BasicContextMenuItem :svg-icon="DangerIcon2" underline>
+  <BasicContextMenuItem :svg-icon="DangerIcon2" underline @click="removeEntityFromMedialib(id, queryClient, type)">
     Удалить
     <template #icon>
       <DangerIcon2 />
     </template>
   </BasicContextMenuItem>
   <Pin :id="id" :is-pinned="isPinned" :type="type" />
-  <BasicContextMenuItem>
-    Создать плейлист
 
-    <template #icon>
-      <PlusMusicIcon />
-    </template>
-  </BasicContextMenuItem>
-  <BasicContextMenuItem>
-    Создать папку
+  <CreateFolder />
 
-    <template #icon>
-      <PlusIcon />
-    </template>
-  </BasicContextMenuItem>
-  <WithSubtree>
-    <BasicContextMenuItem>
-      Переместить
-
-      <template #icon>
-        <FolderIcon />
-      </template>
-      <template #additionalIcon>
-        <TriangleIcon />
-      </template>
-    </BasicContextMenuItem>
-
-    <template #context>
-    </template>
-  </WithSubtree>
+  <MoveTo />
 </template>
 
 <style scoped lang="scss">

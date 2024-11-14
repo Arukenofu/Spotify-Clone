@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import readableNumber from "@/shared/utils/format/readableNumber";
 import getDeclention from "@/shared/utils/getDeclention";
-import Modal from "@/UI/Blocks/Modal.vue";
 import type {Artist} from "@/services/types/Entities/Artist";
+import {DefaultModal, Modal} from "@/features/Modal";
 
 const model = defineModel<boolean>({
   required: true
@@ -20,33 +20,34 @@ defineProps<Props>();
 
 <template>
   <Modal v-model="model">
-    <div class="modal-content">
-      <div class="left-clm">
-        <div class="stat">
-          <div class="title">{{readableNumber(subscriptions)}}</div>
-          <div class="body">Подписчики</div>
-        </div>
-        <div class="stat">
-          <div class="title">{{readableNumber(listeners)}}</div>
-          <div class="body">Слушатели за месяц</div>
-        </div>
+    <DefaultModal @close="model = false">
+      <div class="modal-content">
+        <div class="left-clm">
+          <div class="stat">
+            <div class="title">{{readableNumber(subscriptions)}}</div>
+            <div class="body">Подписчики</div>
+          </div>
+          <div class="stat">
+            <div class="title">{{readableNumber(listeners)}}</div>
+            <div class="body">Слушатели за месяц</div>
+          </div>
 
-        <div v-for="data in cityPlaybackData" :key="data.cityName" class="city">
-          <div class="title">{{`${data.cityName}, ${data.countryShortName}`}}</div>
-          <div class="body">{{getDeclention(data.listenersQuantity, 'слушатель', 'слушателя', 'слушателей', 'readable')}}</div>
+          <div v-for="data in cityPlaybackData" :key="data.cityName" class="city">
+            <div class="title">{{`${data.cityName}, ${data.countryShortName}`}}</div>
+            <div class="body">{{getDeclention(data.listenersQuantity, 'слушатель', 'слушателя', 'слушателей', 'readable')}}</div>
+          </div>
+        </div>
+        <div class="right-clm">
+          <p v-if="description">
+            {{description}}
+          </p>
         </div>
       </div>
-      <div class="right-clm">
-        <p v-if="description">
-          {{description}}
-        </p>
-      </div>
-    </div>
+    </DefaultModal>
   </Modal>
 </template>
 
 <style scoped lang="scss">
-
 .modal-content {
   padding: 40px;
   display: flex;

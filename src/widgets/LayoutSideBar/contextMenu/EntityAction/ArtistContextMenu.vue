@@ -1,32 +1,23 @@
 <script setup lang="ts">
-import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
-import DangerIcon3 from "@/UI/Icons/Shared/DangerIcon3.vue";
+import {Share, SubscribeActionState} from "@/features/ContextMenu";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
-import Share from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Share.vue";
 import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
+import removeEntityFromMedialib from "@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib";
+import {useQueryClient} from "@tanstack/vue-query";
 
-defineProps<EntityActionContextMenuProps>();
+defineProps<EntityActionContextMenuProps & {
+  type: 'Artist'
+}>();
+
+const queryClient = useQueryClient();
 </script>
 
 <template>
-  <BasicContextMenuItem class="active-icon">
-    Отписаться
-    <template #icon>
-      <CloseIcon />
-    </template>
-  </BasicContextMenuItem>
-
-  <BasicContextMenuItem>
-    Не включать треки этого исполнителя
-    <template #icon>
-      <DangerIcon3 />
-    </template>
-  </BasicContextMenuItem>
+  <SubscribeActionState state @click="removeEntityFromMedialib(id, queryClient, type)" />
 
   <Pin :id="id" type="Artist" :is-pinned="isPinned" />
 
-  <Share />
+  <Share :type />
 </template>
 
 <style scoped lang="scss">

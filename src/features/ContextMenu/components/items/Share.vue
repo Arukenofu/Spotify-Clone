@@ -2,10 +2,29 @@
 import CopyLinkIcon from "@/UI/Icons/Shared/CopyLinkIcon.vue";
 import CodeBlockIcon from "@/UI/Icons/Shared/CodeBlockIcon.vue";
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
-import WithSubtree from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/WithSubtree.vue";
-import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
+import WithSubtree from "@/features/ContextMenu/components/helpers/WithSubtree.vue";
+import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
 import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
 import {addToast} from "@/widgets/Toast";
+import type {Entities} from "@/services/types/Entities";
+
+type Type = Exclude<Entities, 'Track'>
+
+defineProps<{
+  type: Type
+}>();
+
+function localize(entity: Type) {
+  if (entity === 'Playlist') {
+    return 'плейлист'
+  }
+  if (entity === 'Artist') {
+    return 'исполнителя'
+  }
+  if (entity === 'Album') {
+    return 'альбом'
+  }
+}
 </script>
 
 <template>
@@ -20,9 +39,9 @@ import {addToast} from "@/widgets/Toast";
       </template>
     </BasicContextMenuItem>
 
-    <template #context>
+    <template v-if="type !== 'User'" #context>
       <BasicContextMenuItem @click="addToast('Ссылка скопирована в буфер обмена')">
-        Копировать ссылку URI
+        Копировать ссылку на {{localize(type)}}
         <template #icon>
           <CopyLinkIcon />
         </template>

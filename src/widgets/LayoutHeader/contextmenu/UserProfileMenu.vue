@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
-import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
+import {BasicContextMenuItem, BasicContextMenuView} from "@/features/ContextMenu";
 import {RouterLink} from "vue-router";
 import {router} from "@/app/router";
 

@@ -6,7 +6,7 @@ import CollectionContextMenu from "@/widgets/LayoutSideBar/contextMenu/EntityAct
 import FolderContextMenu from "@/widgets/LayoutSideBar/contextMenu/EntityAction/FolderContextMenu.vue";
 import PlaylistContextMenu from "@/widgets/LayoutSideBar/contextMenu/EntityAction/PlaylistContextMenu.vue";
 import {type Component, computed} from "vue";
-import BasicContextMenuView from "@/UI/ContextMenu/BasicContextMenuView.vue";
+import {BasicContextMenuView} from "@/features/ContextMenu";
 
 const props = defineProps<EntityActionContextMenuProps>();
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 import LibraryIcon from '@/UI/Icons/Shared/LibraryIcon.vue';
 import PlusIcon from '@/UI/Icons/Shared/PlusIcon.vue';
 import ArrowIcon from '@/UI/Icons/Shared/ArrowIcon.vue';
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue';
-import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
+import {ContextMenu} from "@/features/ContextMenu/";
 import defaultWidth from '@/widgets/LayoutSideBar/constants/defaultWidth';
 import max from '@/widgets/LayoutSideBar/constants/max';
-import { useSidebarWidthStore } from '@/features/MedialibSidebar';
+import {useSidebarWidthStore} from '@/features/MedialibSidebar';
 
 const { isMinimized, currentWidth } = useSidebarWidthStore();
 
