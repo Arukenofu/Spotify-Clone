@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Component, computed } from 'vue';
+import {type Component, computed} from 'vue';
 import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
 import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
 import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
@@ -69,15 +69,15 @@ function setFormat(newValue: Format) {
         <BasicContextMenuItem
           v-for="{text, svgIcon} in formats"
           :key="text"
-          :is-active="format === text"
+          :active="format === text && 'active'"
           @click="setFormat(text)"
         >
           {{text}}
           <template #icon>
             <Component :is="svgIcon" />
           </template>
-          <template #additionalIcon>
-            {{format === text && CheckIcon}}
+          <template v-if="format === text" #additionalIcon>
+            <CheckIcon />
           </template>
         </BasicContextMenuItem>
       </BasicContextMenuView>
