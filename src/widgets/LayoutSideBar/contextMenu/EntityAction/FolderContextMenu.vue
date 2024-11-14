@@ -7,8 +7,8 @@ import PlusMusicIcon from "@/UI/Icons/Shared/PlusMusicIcon.vue";
 import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
 import FolderIcon from "@/UI/Icons/Shared/FolderIcon.vue";
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
-import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 import WithSubtree from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/WithSubtree.vue";
+import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 
 defineProps<EntityActionContextMenuProps>();
 </script>
@@ -26,7 +26,7 @@ defineProps<EntityActionContextMenuProps>();
       <DangerIcon2 />
     </template>
   </BasicContextMenuItem>
-  <Pin :is-pinned="isPinned" :type="type" />
+  <Pin :id="id" :is-pinned="isPinned" :type="type" />
   <BasicContextMenuItem>
     Создать плейлист
 

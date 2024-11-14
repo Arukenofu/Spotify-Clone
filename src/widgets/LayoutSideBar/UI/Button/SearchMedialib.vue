@@ -45,14 +45,6 @@ function handleClose() {
   inputValue.value = '';
 }
 
-function onClickOutside() {
-  if (model.value.length && !state.value) {
-    return;
-  }
-
-  handleClose();
-}
-
 onUnmounted(() => {
   model.value = '';
 })
@@ -62,7 +54,6 @@ onUnmounted(() => {
   <div class="search-section">
     <div
       v-if="state"
-      v-click-outside="onClickOutside"
       class="overlay"
       @click="handleToggle()"
     >

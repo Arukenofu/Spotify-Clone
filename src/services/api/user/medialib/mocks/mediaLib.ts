@@ -3,6 +3,7 @@ import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTyp
 export default [
     {
         id: 1,
+        entityId: 1,
         name: "My Favorite Playlist",
         image: null,
         type: "Playlist",
@@ -13,6 +14,7 @@ export default [
     },
     {
         id: 2,
+        entityId: 2,
         name: "Top Artist",
         image: null,
         type: "Artist",
@@ -21,6 +23,7 @@ export default [
     },
     {
         id: 3,
+        entityId: 3,
         name: "Top Hits Album",
         image: null,
         type: "Album",
@@ -31,6 +34,7 @@ export default [
     },
     {
         id: 4,
+        entityId: 4,
         name: "Work Folder",
         image: null,
         type: "Folder",
@@ -40,6 +44,7 @@ export default [
     },
     {
         id: 5,
+        entityId: 5,
         name: "My Collection",
         image: null,
         type: "Collection",
@@ -48,6 +53,7 @@ export default [
     },
     {
         id: 6,
+        entityId: 6,
         name: "Evening Chill",
         image: null,
         type: "Playlist",
@@ -58,6 +64,7 @@ export default [
     },
     {
         id: 7,
+        entityId: 7,
         name: "Rock Legends",
         image: null,
         type: "Album",
@@ -68,6 +75,7 @@ export default [
     },
     {
         id: 8,
+        entityId: 8,
         name: "Pop Hits",
         image: null,
         type: "Playlist",
@@ -78,6 +86,7 @@ export default [
     },
     {
         id: 9,
+        entityId: 9,
         name: "Jazz Classics",
         image: null,
         type: "Playlist",
@@ -88,6 +97,7 @@ export default [
     },
     {
         id: 10,
+        entityId: 10,
         name: "Best of 2023",
         image: null,
         type: "Artist",
@@ -96,6 +106,7 @@ export default [
     },
     {
         id: 11,
+        entityId: 11,
         name: "Relaxing Instrumentals",
         image: null,
         type: "Playlist",
@@ -106,6 +117,7 @@ export default [
     },
     {
         id: 12,
+        entityId: 12,
         name: "Hip-Hop Vault",
         image: null,
         type: "Folder",
@@ -115,6 +127,7 @@ export default [
     },
     {
         id: 13,
+        entityId: 13,
         name: "Indie Mix",
         image: null,
         type: "Album",
@@ -125,6 +138,7 @@ export default [
     },
     {
         id: 14,
+        entityId: 14,
         name: "Classical",
         image: null,
         type: "Playlist",
@@ -135,6 +149,7 @@ export default [
     },
     {
         id: 15,
+        entityId: 15,
         name: "Folk Tunes",
         image: null,
         type: "Artist",

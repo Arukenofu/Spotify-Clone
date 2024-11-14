@@ -1,22 +1,9 @@
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 export default function () {
-  const isMobile = ref<boolean>(
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    )
-  );
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   const screenWidth = ref<number>(window.innerWidth);
   const screenHeight = ref<number>(window.innerHeight);
-
-  function update() {
-    isMobile.value =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-    screenWidth.value = window.innerWidth;
-    screenHeight.value = window.innerHeight;
-  }
 
   function getOs() {
     const userAgent = window.navigator.userAgent.toLowerCase();
@@ -43,7 +30,6 @@ export default function () {
     isMobile,
     screenWidth,
     screenHeight,
-    update,
     getOs
   }
 }

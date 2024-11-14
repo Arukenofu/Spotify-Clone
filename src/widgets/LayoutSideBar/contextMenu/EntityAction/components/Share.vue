@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
 import CopyLinkIcon from "@/UI/Icons/Shared/CopyLinkIcon.vue";
 import CodeBlockIcon from "@/UI/Icons/Shared/CodeBlockIcon.vue";
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
 import WithSubtree from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/WithSubtree.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
+import {addToast} from "@/widgets/Toast";
 </script>
 
 <template>
@@ -21,7 +21,7 @@ import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
     </BasicContextMenuItem>
 
     <template #context>
-      <BasicContextMenuItem>
+      <BasicContextMenuItem @click="addToast('Ссылка скопирована в буфер обмена')">
         Копировать ссылку URI
         <template #icon>
           <CopyLinkIcon />

@@ -2,24 +2,24 @@
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 import RoundCheckIcon from "@/UI/Icons/Shared/RoundCheckIcon.vue";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
-import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 import WithSubtree from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/WithSubtree.vue";
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
 import Share from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Share.vue";
 import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
+import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 
 defineProps<EntityActionContextMenuProps>();
 </script>
 
 <template>
-  <BasicContextMenuItem underline>
+  <BasicContextMenuItem>
     Удалить из медиатеки
     <template #icon>
       <RoundCheckIcon achieve="yes" />
     </template>
   </BasicContextMenuItem>
 
-  <Pin type="Album" :is-pinned="isPinned" />
+  <Pin :id="id" type="Album" :is-pinned="isPinned" />
 
   <WithSubtree>
     <BasicContextMenuItem underline>

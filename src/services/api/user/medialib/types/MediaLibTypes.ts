@@ -4,6 +4,7 @@ export type MedialibEntities = Exclude<Entities, 'User' | 'Track'> | 'Folder' | 
 
 interface MediaLibBase<T extends MedialibEntities> {
   id: string | number;
+  entityId: string | number;
   name: string;
   image: string | null;
   type: T;

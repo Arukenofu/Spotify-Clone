@@ -3,8 +3,8 @@ import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
 import DangerIcon3 from "@/UI/Icons/Shared/DangerIcon3.vue";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
-import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 import Share from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Share.vue";
+import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 
 defineProps<EntityActionContextMenuProps>();
 </script>
@@ -24,7 +24,7 @@ defineProps<EntityActionContextMenuProps>();
     </template>
   </BasicContextMenuItem>
 
-  <Pin type="Artist" :is-pinned="isPinned" />
+  <Pin :id="id" type="Artist" :is-pinned="isPinned" />
 
   <Share />
 </template>

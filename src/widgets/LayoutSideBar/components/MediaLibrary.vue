@@ -10,14 +10,14 @@ import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
 import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
 import ContextMenu from "@/UI/ContextMenu/ContextMenu.vue";
 import {
-  useSidebarWidthStore,
-  usePlaylistFormat,
-  useGridWidth,
   handleIsMedialibActive,
   handleMedialibClick,
   handleMedialibSortAndSearch,
+  type MediaLibEntityProps,
+  useGridWidth,
   useMedialibsSort,
-  type MediaLibEntityProps
+  usePlaylistFormat,
+  useSidebarWidthStore
 } from '@/features/MedialibSidebar';
 import {useQuery} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
@@ -56,13 +56,14 @@ const mediaLibsFiltered = computed(() => {
 
 const contextMenuProps = ref<EntityActionContextMenuProps | null>(null);
 
-const {setProps} = useTippy(() => document.body, {
+const {setProps, show, hide} = useTippy(() => document.body, {
   content: defineComponent(() => {
-    return () => h(EntityAction, {
-      ...contextMenuProps.value as EntityActionContextMenuProps
+    return () => contextMenuProps.value && h( EntityAction, {
+      ...contextMenuProps.value as EntityActionContextMenuProps,
+      onClick: hide
     });
   }),
-  trigger: 'contextmenu',
+  trigger: 'manual',
   placement: 'bottom-start',
   theme: 'context',
   interactive: true
@@ -81,6 +82,8 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
       right: event.clientX
     })
   });
+
+  show();
 }
 </script>
 

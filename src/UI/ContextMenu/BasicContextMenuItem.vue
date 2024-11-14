@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Component, computed } from 'vue';
+import {type Component, computed} from 'vue';
 
 defineOptions({
   inheritAttrs: false
@@ -8,13 +8,13 @@ defineOptions({
 interface Props {
   as?: Component | string;
   underline?: boolean;
-  isActive?: boolean;
+  active?: 'active' | 'active-icon' | 'active-additional' | false;
 }
 
-const {underline, isActive, as = 'button'} = defineProps<Props>();
+const {underline, active, as = 'button'} = defineProps<Props>();
 
 const computedClasses = computed(() => {
-  return [underline && 'underline', isActive && 'active'];
+  return [underline && 'underline', active && active];
 });
 </script>
 
@@ -91,14 +91,13 @@ const computedClasses = computed(() => {
 }
 
 .active {
-  .icon,
-  span {
+  .icon, span, .additionalSvg {
     color: var(--main-color);
     fill: var(--main-color);
   }
 }
 
-.active-icon .icon {
+.active-icon .icon, .active-additionalIcon .additionalSvg {
   fill: var(--main-color);
 }
 

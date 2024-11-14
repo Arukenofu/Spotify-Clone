@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
-import type { Ref } from 'vue';
+import type {Ref} from 'vue';
+import {computed, inject, onMounted, onUnmounted, ref} from 'vue';
 import MusicTableRow from '@/pageLayouts/playlist.id/Elements/MusicTableRow.vue';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
@@ -101,7 +101,7 @@ const {loadSongOrPlaylist} = useMusicUtils();
         @set-play="loadSongOrPlaylist({
           playlistInfoDossier: dossier,
           playlistQueue: queue
-        }, {index})"
+        }, {index: index})"
       />
     </div>
   </div>

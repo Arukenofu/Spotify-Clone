@@ -10,6 +10,7 @@ import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
 import {gridColumnMaxWidth, gridColumnMinWidth, sorts} from "@/features/MedialibSidebar"
 import type {FormatTypes} from "#imports";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
+import type {Component} from "vue";
 
 defineProps<{
   componentName: FormatTypes;
@@ -34,6 +35,30 @@ function setGridWidth(width: number): void {
 function setSortName(name: sortOption): void {
   emit('setSortName', name);
 }
+
+interface FormatMap {
+  id: FormatTypes,
+  text: string,
+  icon: Component
+}
+
+const formatMap: FormatMap[] = [
+  {
+    id: 'Compact',
+    text: 'Компактный',
+    icon: CompactIcon,
+  },
+  {
+    id: 'List',
+    text: 'Список',
+    icon: ListIcon,
+  },
+  {
+    id: 'Grid',
+    text: 'Сетка',
+    icon: GridIcon
+  }
+]
 </script>
 
 <template>
@@ -45,7 +70,7 @@ function setSortName(name: sortOption): void {
       v-for="(sort, index) in sorts"
       :key="index"
       :underline="index === sorts.length - 1"
-      :is-active="sortName === sort"
+      :active="sortName === sort && 'active'"
       @click="setSortName(sort)"
     >
       {{sort}}
@@ -58,44 +83,19 @@ function setSortName(name: sortOption): void {
       Формат библеотеки
     </BasicContextMenuTitle>
     <BasicContextMenuItem
-      :is-active="componentName === 'Compact'"
-      @click="setComponentName('Compact')"
+      v-for="format in formatMap"
+      :key="format.id"
+      :active="componentName === format.id && 'active'"
+      @click="setComponentName(format.id)"
     >
-      Компактный
+      {{format.text}}
       <template #icon>
-        <CompactIcon />
+        <Component :is="format.icon" />
       </template>
-      <template v-if="componentName === 'Compact'" #additionalIcon>
+      <template v-if="componentName === format.id" #additionalIcon>
         <CheckIcon />
       </template>
     </BasicContextMenuItem>
-
-    <BasicContextMenuItem
-      :is-active="componentName === 'List'"
-      @click="setComponentName('List')"
-    >
-      Список
-      <template #icon>
-        <ListIcon />
-      </template>
-      <template v-if="componentName === 'List'" #additionalIcon>
-        <CheckIcon />
-      </template>
-    </BasicContextMenuItem>
-
-    <BasicContextMenuItem
-      :is-active="componentName === 'Grid'"
-      @click="setComponentName('Grid')"
-    >
-      Сетка
-      <template #icon>
-        <GridIcon />
-      </template>
-      <template v-if="componentName === 'Grid'" #additionalIcon>
-        <CheckIcon />
-      </template>
-    </BasicContextMenuItem>
-
 
     <Range
       v-if="componentName === 'Grid'"

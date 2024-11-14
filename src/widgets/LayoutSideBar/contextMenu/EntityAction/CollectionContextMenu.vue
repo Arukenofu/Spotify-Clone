@@ -3,10 +3,11 @@ import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/E
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
 
 defineProps<EntityActionContextMenuProps>();
+
 </script>
 
 <template>
-  <Pin :type="type" :is-pinned="isPinned" />
+  <Pin :id="id" type="Collection" :is-pinned="isPinned" />
 </template>
 
 <style scoped lang="scss">

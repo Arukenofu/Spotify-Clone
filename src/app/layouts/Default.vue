@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import { provide, ref, watchEffect } from 'vue';
-import { LayoutMobileRouter } from '@/widgets/LayoutRouterMobile';
-import { MediaPlayer } from '@/widgets/MediaPlayer';
-import { LayoutSideBar } from '@/widgets/LayoutSideBar';
-import { LayoutInfoContent } from '@/widgets/LayoutInfoPanel';
-import { LayoutHeader } from '@/widgets/LayoutHeader';
-import { router } from '@/app/router';
+import {onMounted, provide, ref} from 'vue';
+import {LayoutMobileRouter} from '@/widgets/LayoutRouterMobile';
+import {MediaPlayer} from '@/widgets/MediaPlayer';
+import {LayoutSideBar} from '@/widgets/LayoutSideBar';
+import {LayoutInfoContent} from '@/widgets/LayoutInfoPanel';
+import {LayoutHeader} from '@/widgets/LayoutHeader';
+import {router} from '@/app/router';
 import useResponsive from '@/shared/composables/useResponsive';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
 import SpotifyView from "@/app/components/SpotifyView.vue";
-import type { Ref } from 'vue';
 import PageFooter from "@/app/components/PageFooter.vue";
+import {Toast} from "@/widgets/Toast";
 
-interface ScrollableWithExpose
-  extends Ref<InstanceType<typeof ScrollableBlock>> {
-  content: HTMLElement;
-}
-
-const layout = ref<ScrollableWithExpose>();
+const layout = ref();
 const layoutScrollY = ref<number>(0);
 
 provide('layoutScrollY', layoutScrollY);
@@ -32,12 +27,12 @@ router.afterEach(() => {
 
 const { isMobile } = useResponsive();
 
-watchEffect(() => {
+onMounted(() => {
   function setStyleVar(property: string, value: string) {
     document.documentElement.style.setProperty(property, value);
   }
 
-  if (isMobile.value) {
+  if (isMobile) {
     setStyleVar('--content-height', 'calc(100dvh - var(--mobile-router-height))');
     setStyleVar('--layout-gap', '0px');
   } else {
@@ -86,6 +81,8 @@ watchEffect(() => {
         </ScrollableBlock>
       </div>
     </template>
+
+    <Toast />
   </div>
 
   <LayoutMobileRouter v-if="isMobile" />
@@ -98,6 +95,7 @@ watchEffect(() => {
   display: grid;
   padding: var(--layout-gap);
   background-color: var(--black);
+  position: relative;
 
   .main {
     height: var(--content-height);

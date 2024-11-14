@@ -2,12 +2,40 @@
 import PinIcon from "@/UI/Icons/Shared/PinIcon.vue";
 import BasicContextMenuItem from "@/UI/ContextMenu/BasicContextMenuItem.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar";
+import {useMutation, useQueryClient} from "@tanstack/vue-query";
+import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
+import {addToast} from "@/widgets/Toast";
 
 interface Props {
+  id: string | number;
   type: MediaLibEntityProps['type'],
   isPinned: boolean
 }
-defineProps<Props>();
+const {id, isPinned} = defineProps<Props>();
+
+const queryClient = useQueryClient();
+
+const {mutate: togglePinState} = useMutation({
+  mutationFn: async () => await apiMedialibService.toggleEntityPinnedState(id, isPinned),
+  onSuccess: () => {
+    queryClient.setQueryData(['mediaLib'], (oldData: MediaLibTypes[]) => {
+      const itemIndex = oldData.findIndex(item => item.id === id);
+      if (itemIndex === -1) return oldData;
+
+      const newData = [...oldData];
+      newData[itemIndex] = {
+        ...newData[itemIndex],
+        isPinned: !newData[itemIndex].isPinned
+      };
+
+      return newData;
+    });
+  },
+  onError: () => {
+    addToast(`Не удалось открепить медиатеку`);
+  }
+});
 
 function localizePinState(type: MediaLibEntityProps['type']) {
   if (type === 'Artist') {
@@ -29,7 +57,11 @@ function localizePinState(type: MediaLibEntityProps['type']) {
 </script>
 
 <template>
-  <BasicContextMenuItem v-bind="$attrs" :class="isPinned && 'active-icon'">
+  <BasicContextMenuItem
+    v-bind="$attrs"
+    :class="isPinned && 'active-icon'"
+    @click="togglePinState"
+  >
     {{`${isPinned ? 'Открепить' : 'Закрепить'} ${localizePinState(type)}`}}
     <template #icon><PinIcon /></template>
   </BasicContextMenuItem>

@@ -66,7 +66,7 @@ defineProps<EntityActionContextMenuProps>();
     </template>
   </WithSubtree>
 
-  <Pin type="Folder" :is-pinned="isPinned" underline />
+  <Pin :id="id" type="Folder" :is-pinned="isPinned" underline />
 
   <Share />
 </template>
