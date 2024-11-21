@@ -8,7 +8,11 @@ export default [
         image: null,
         type: "Playlist",
         isPinned: true,
-        ownerName: "John Doe",
+        owner: {
+            id: 2,
+            name: "John Doe",
+            type: 'User',
+        },
         addedDateTime: "2024-11-01T12:00:00Z",
         playbackDateTime: "2024-11-02T12:30:00Z",
     },
@@ -28,7 +32,11 @@ export default [
         image: null,
         type: "Album",
         isPinned: true,
-        ownerName: "Jane Doe",
+        owner: {
+            id: 2,
+            name: "Jane Doe",
+            type: 'User',
+        },
         addedDateTime: "2024-10-25T14:20:00Z",
         playbackDateTime: "2024-10-26T08:00:00Z",
     },
@@ -58,7 +66,11 @@ export default [
         image: null,
         type: "Playlist",
         isPinned: false,
-        ownerName: "Alice Smith",
+        owner: {
+            id: 3,
+            name: "Alice Smith",
+                type: 'User',
+        },
         addedDateTime: "2024-11-04T21:00:00Z",
         playbackDateTime: "2024-11-04T22:15:00Z",
     },
@@ -69,7 +81,11 @@ export default [
         image: null,
         type: "Album",
         isPinned: true,
-        ownerName: "Bob Johnson",
+        owner: {
+            id: 4,
+            name: "Bob Johnson",
+            type: 'User'
+        },
         addedDateTime: "2024-10-27T13:00:00Z",
         playbackDateTime: "2024-10-28T16:00:00Z",
     },
@@ -80,7 +96,11 @@ export default [
         image: null,
         type: "Playlist",
         isPinned: false,
-        ownerName: "Spotify",
+        owner: {
+            id: 1,
+            name: "Spotify",
+            type: 'User'
+        },
         addedDateTime: '2024-08-15T14:20:00Z',
         playbackDateTime: "2024-08-16T08:00:00Z"
     },
@@ -91,7 +111,11 @@ export default [
         image: null,
         type: "Playlist",
         isPinned: false,
-        ownerName: "Emily White",
+        owner: {
+            id: 5,
+            name: "Emily White",
+            type: 'User'
+        },
         addedDateTime: "2024-10-31T10:00:00Z",
         playbackDateTime: "2024-11-01T10:30:00Z",
     },
@@ -111,7 +135,11 @@ export default [
         image: null,
         type: "Playlist",
         isPinned: false,
-        ownerName: "Liam Brown",
+        owner: {
+            id: 6,
+            name: "Liam Brown",
+            type: 'User'
+        },
         addedDateTime: "2024-09-12T11:30:00Z",
         playbackDateTime: "2024-09-13T08:00:00Z",
     },
@@ -132,7 +160,11 @@ export default [
         image: null,
         type: "Album",
         isPinned: false,
-        ownerName: "Sophia Green",
+        owner: {
+            id: 7,
+            name: "Sophia Green",
+            type: 'User'
+        },
         addedDateTime: "2024-08-15T14:20:00Z",
         playbackDateTime: "2024-08-16T08:00:00Z",
     },
@@ -143,7 +175,11 @@ export default [
         image: null,
         type: "Playlist",
         isPinned: true,
-        ownerName: "Baurzhan",
+        owner: {
+            id: 8,
+            name: "Baurzhan",
+            type: 'User'
+        },
         addedDateTime: '2024-08-15T14:20:00Z',
         playbackDateTime: "2024-08-16T08:00:00Z"
     },

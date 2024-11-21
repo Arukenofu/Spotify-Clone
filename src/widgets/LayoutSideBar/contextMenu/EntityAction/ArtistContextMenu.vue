@@ -17,7 +17,7 @@ const queryClient = useQueryClient();
 
   <Pin :id="id" type="Artist" :is-pinned="isPinned" />
 
-  <Share :type />
+  <Share :entity-id :type />
 </template>
 
 <style scoped lang="scss">

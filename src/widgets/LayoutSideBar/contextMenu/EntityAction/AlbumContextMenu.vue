@@ -19,7 +19,7 @@ const queryClient = useQueryClient();
 
   <AddToPlaylist />
 
-  <Share :type="type" />
+  <Share :entity-id :type />
 </template>
 
 <style scoped lang="scss">

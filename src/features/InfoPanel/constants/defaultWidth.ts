@@ -1,1 +1,1 @@
-export default 350;
+export default (window.innerWidth * .25);

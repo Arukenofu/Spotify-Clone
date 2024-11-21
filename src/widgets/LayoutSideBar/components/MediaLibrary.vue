@@ -58,8 +58,8 @@ const contextMenuProps = ref<EntityActionContextMenuProps | null>(null);
 
 const {setProps, show, hide} = useTippy(() => document.body, {
   content: defineComponent(() => {
-    return () => contextMenuProps.value && h( EntityAction, {
-      ...contextMenuProps.value as EntityActionContextMenuProps,
+    return () => contextMenuProps.value && h(EntityAction, {
+      ...contextMenuProps.value,
       onClick: hide
     });
   }),

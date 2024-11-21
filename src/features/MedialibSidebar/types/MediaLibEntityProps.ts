@@ -1,10 +1,8 @@
-export interface MediaLibEntityProps {
-    id: string | number;
-    name: string;
-    image: string | null;
-    type: 'Playlist' | 'Artist' | 'Album' | 'Folder' | 'Collection';
-    isPinned: boolean;
-    ownerName?: string;
+import type {MediaLibBase} from "@/services/api/user/medialib/types/MediaLibTypes";
+import type {SimpleUser} from "@/services/types/Entities/User";
+
+export interface MediaLibEntityProps extends MediaLibBase<'Playlist' | 'Artist' | 'Album' | 'Folder' | 'Collection'> {
+    owner?: SimpleUser;
     addedDateTime?: string;
     playbackDateTime?: string;
     itemsCount?: number;

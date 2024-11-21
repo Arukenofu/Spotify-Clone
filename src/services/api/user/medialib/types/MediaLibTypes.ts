@@ -1,8 +1,9 @@
 import type {Entities} from "@/services/types/Entities";
+import type {SimpleUser} from "@/services/types/Entities/User";
 
 export type MedialibEntities = Exclude<Entities, 'User' | 'Track'> | 'Folder' | 'Collection';
 
-interface MediaLibBase<T extends MedialibEntities> {
+export interface MediaLibBase<T extends MedialibEntities> {
   id: string | number;
   entityId: string | number;
   name: string;
@@ -11,8 +12,9 @@ interface MediaLibBase<T extends MedialibEntities> {
   isPinned: boolean;
 }
 
+
 interface Playlist extends MediaLibBase<'Playlist'>{
-  ownerName: string;
+  owner: SimpleUser;
   addedDateTime: string;
   playbackDateTime: string;
 }
@@ -22,7 +24,7 @@ interface Artist extends MediaLibBase<'Artist'>{
 }
 
 interface Album extends MediaLibBase<'Album'>{
-  ownerName: string;
+  owner: SimpleUser;
   addedDateTime: string;
   playbackDateTime: string;
 }

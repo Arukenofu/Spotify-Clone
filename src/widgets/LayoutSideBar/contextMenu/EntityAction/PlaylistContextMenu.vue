@@ -35,7 +35,7 @@ const queryClient = useQueryClient();
 
   <Pin :id="id" type="Folder" :is-pinned="isPinned" underline />
 
-  <Share :type />
+  <Share :entity-id :type />
 </template>
 
 <style scoped lang="scss">

@@ -9,7 +9,7 @@ const props = defineProps<MediaLibEntityProps>();
 <template>
   <span>
     <template v-if="props.type === 'Playlist' || props.type === 'Album'">
-      {{ localizeEntities(props.type) }} • {{ props.ownerName }}
+      {{ localizeEntities(props.type) }} • {{ props.owner.name }}
     </template>
     <template v-if="props.type === 'Artist'">
       Исполнитель
