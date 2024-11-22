@@ -2,13 +2,14 @@
 import FormButton from '@/UI/Form/FormButton.vue';
 import FormField from '@/UI/Form/FormField.vue';
 import FormLabel from '@/UI/Form/FormLabel.vue';
-import { reactive } from 'vue';
-import stepStore from '@/widgets/SignUp/store/stepStore';
-import type { ZeroStepForm } from '@/widgets/SignUp/types/form';
-import { useMutation } from '@tanstack/vue-query';
+import {inject, reactive} from 'vue';
+import type {ZeroStepForm} from '@/pageLayouts/signup/types/form';
+import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
+import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
 
-const { step, form } = stepStore();
+const nextStep = inject<Function>('nextStep');
+const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
 
 const currentForm = reactive<ZeroStepForm>({
   email: ''
@@ -18,8 +19,8 @@ const {mutate: register, error} = useMutation({
   mutationKey: ['registerEmail'],
   mutationFn: async () => await authService.validateEmail(currentForm.email),
   onSuccess: () => {
-    step.value++;
-    form.value.email = currentForm.email;
+    nextStep!();
+    globalRegisterForm!.email = currentForm.email;
   }
 });
 

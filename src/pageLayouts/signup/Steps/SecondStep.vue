@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import {computed, inject, reactive, ref} from 'vue';
 
 import FormLabel from '@/UI/Form/FormLabel.vue';
 import FormInput from '@/UI/Form/FormInput.vue';
@@ -9,17 +9,29 @@ import FormRadio from '@/UI/Form/FormRadio.vue';
 import FormButton from '@/UI/Form/FormButton.vue';
 import FormError from '@/UI/Form/FormError.vue';
 
-import months from '@/widgets/SignUp/constants/months';
-import stepStore from '@/widgets/SignUp/store/stepStore';
-import getCurrentAge from '@/widgets/SignUp/helpers/getCurrentAge';
+import type {SecondStepForm} from '@/pageLayouts/signup/types/form';
+import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
 
-import type { SecondStepForm } from '@/widgets/SignUp/types/form';
-
-const { step, form: storeForm } = stepStore();
+const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
+const nextStep = inject<Function>('nextStep');
 
 const genders = ['Мужчина', 'Женщина', 'Другое', 'Не хочу выбирать'];
+const months = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь'
+];
 
-const form = reactive<SecondStepForm>({
+const currentForm = reactive<SecondStepForm>({
   username: '',
   day: null,
   month: 'Месяц',
@@ -31,9 +43,24 @@ const formErrors = ref({
   gender: false
 });
 
+function getCurrentAge(birthDay: number, birthMonthStr: string, birthYear: number) {
+  const birthMonth = months.indexOf(birthMonthStr);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthYear;
+  const monthDifference = today.getMonth() - birthMonth;
+  const dayDifference = today.getDate() - birthDay;
+
+  if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+    age--;
+  }
+
+  return age;
+}
+
 const birthdayValidate = computed(() => {
   const errors: { message: string; field: 'day' | 'month' | 'year' }[] = [];
-  const { day, month, year } = form;
+  const { day, month, year } = currentForm;
 
   const isDayFill = String(day).length !== 0;
   const isMonthFill = month !== 'Месяц';
@@ -51,7 +78,7 @@ const birthdayValidate = computed(() => {
   }
 
   const today = new Date();
-  const userCurrentAge = getCurrentAge(form.day!, form.month, form.year!);
+  const userCurrentAge = getCurrentAge(currentForm.day!, currentForm.month, currentForm.year!);
 
   if (today.getFullYear() <= year!) {
     errors.push({
@@ -73,7 +100,6 @@ const birthdayValidate = computed(() => {
       field: 'year',
       message: 'Год рождения должен быть не ранее 1900 г.'
     });
-    console.log(userCurrentAge);
   }
 
   return errors;
@@ -85,22 +111,23 @@ function validateCurrentStep() {
     gender: false
   };
 
-  if (!form.username.length) {
+  if (!currentForm.username.length) {
     return (formErrors.value.username = true);
   }
-  if (!form.gender) {
+  if (!currentForm.gender) {
     return (formErrors.value.gender = true);
   }
   if (birthdayValidate.value.length) {
     return;
   }
 
-  storeForm.value.username = form.username;
-  storeForm.value.gender = form.gender;
-  storeForm.value.day = form.day;
-  storeForm.value.month = form.month;
-  storeForm.value.year = form.year;
-  step.value++;
+  globalRegisterForm!.username = currentForm.username;
+  globalRegisterForm!.gender = currentForm.gender;
+  globalRegisterForm!.day = currentForm.day;
+  globalRegisterForm!.month = currentForm.month;
+  globalRegisterForm!.year = currentForm.year;
+
+  nextStep!();
 }
 </script>
 
@@ -118,7 +145,7 @@ function validateCurrentStep() {
         Ваше имя появится в профиле.
       </FormLabel>
       <FormField
-        v-model="form.username"
+        v-model="currentForm.username"
         type="text"
         :error="formErrors.username"
       >
@@ -133,7 +160,7 @@ function validateCurrentStep() {
 
       <div class="inputs">
         <FormInput
-          v-model.number="form.day"
+          v-model.number="currentForm.day"
           class="day"
           type="text"
           max-length="2"
@@ -142,7 +169,7 @@ function validateCurrentStep() {
         />
 
         <FormSelect
-          v-model="form.month"
+          v-model="currentForm.month"
           text="Месяц"
           class="month"
         >
@@ -155,7 +182,7 @@ function validateCurrentStep() {
         </FormSelect>
 
         <FormInput
-          v-model.number="form.year"
+          v-model.number="currentForm.year"
           class="year"
           max-length="4"
           :only-number="true"
@@ -185,6 +212,7 @@ function validateCurrentStep() {
         color="var(--text-soft)"
         font-size=".85rem"
         font-weight="600"
+        line-height="1.15"
       >
         Мы учитываем пол при подборе персональных рекомендаций и рекламы.
       </FormLabel>
@@ -193,7 +221,7 @@ function validateCurrentStep() {
         <FormRadio
           v-for="(gender, index) in genders"
           :key="index"
-          v-model="form.gender"
+          v-model="currentForm.gender"
           :index="gender"
           :text="gender"
           name="gender"
@@ -266,6 +294,10 @@ form {
     .error {
       margin-top: 5px;
     }
+  }
+
+  option {
+    font-family: 'ProductSans', sans-serif;
   }
 
   .button {

@@ -5,12 +5,14 @@ withDefaults(
     margin?: string;
     fontWeight?: number | string;
     fontSize?: string;
+    lineHeight?: number | string;
   }>(),
   {
     color: 'inherit',
     margin: '0 0 9px',
     fontWeight: 700,
-    fontSize: '.9rem'
+    fontSize: '.9rem',
+    lineHeight: 'auto',
   }
 );
 </script>
@@ -27,5 +29,6 @@ label {
   font-weight: v-bind('fontWeight');
   margin: v-bind('margin');
   font-size: v-bind('fontSize');
+  line-height: v-bind('lineHeight');
 }
 </style>

@@ -69,6 +69,11 @@ const model = defineModel<string>();
     }
   }
 
+  option {
+    font-family: 'ProductSans', sans-serif;
+    color: var(--text-soft);
+  }
+
   svg {
     width: 16px;
     position: absolute;

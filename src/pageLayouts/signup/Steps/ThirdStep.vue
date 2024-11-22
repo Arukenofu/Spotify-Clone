@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import FormCheckbox from '@/UI/Form/FormCheckbox.vue';
 import FormButton from '@/UI/Form/FormButton.vue';
-import { ref } from 'vue';
+import {inject, ref} from 'vue';
 import FormError from '@/UI/Form/FormError.vue';
-import stepStore from '@/widgets/SignUp/store/stepStore';
-import { router } from '@/app/router';
-import { useMutation } from '@tanstack/vue-query';
+import {router} from '@/app/router';
+import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
+import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
 
-const { form } = stepStore();
+const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
 
 const terms = ref([
   {
@@ -28,7 +28,10 @@ const isError = ref<boolean>(false);
 
 const {mutate: register} = useMutation({
   mutationKey: ['register'],
-  mutationFn: () => authService.RegisterAccount(form.value)
+  mutationFn: () => authService.RegisterAccount(globalRegisterForm!),
+  onSuccess: async () => {
+    await router.push('/login');
+  }
 })
 
 async function validateWholeForm() {
@@ -37,7 +40,6 @@ async function validateWholeForm() {
   if (isError.value) return;
 
   register();
-  await router.push('/login');
 }
 </script>
 

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import stepStore from '@/widgets/SignUp/store/stepStore';
+import {inject} from "vue";
 
-const { step } = stepStore();
+const step = inject<number>('step');
+const previousStep = inject<Function>('previousStep');
 </script>
 
 <template>
   <div class="steps">
     <button
       class="previous"
-      @click="step--"
+      @click="previousStep!()"
     >
       <span
         aria-hidden="true"

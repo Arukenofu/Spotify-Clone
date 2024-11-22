@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import stepStore from '@/widgets/SignUp/store/stepStore';
+import {inject} from "vue";
 
-const { step } = stepStore();
+const step = inject<number>('step');
 </script>
 
 <template>
   <div class="progress-bar">
     <div
       class="progress-bar-inner"
-      :style="`width: ${Math.ceil(33.3333333 * step)}%`"
+      :style="`width: ${Math.ceil(33.3333333 * step!)}%`"
     />
   </div>
 </template>

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import {computed, inject, reactive, ref} from 'vue';
 
 import FormLabel from '@/UI/Form/FormLabel.vue';
 import FormInput from '@/UI/Form/FormInput.vue';
 import FormButton from '@/UI/Form/FormButton.vue';
 
-import stepStore from '@/widgets/SignUp/store/stepStore';
-
-import type { FirstStepForm } from '@/widgets/SignUp/types/form';
+import type {FirstStepForm} from '@/pageLayouts/signup/types/form';
 import Pin from '@/UI/Icons/Shared/RoundCheckIcon.vue';
-import { useMutation } from '@tanstack/vue-query';
+import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
+import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
 
-const { step, form } = stepStore();
+const nextStep = inject<Function>('nextStep');
+const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
 
 const currentForm = reactive<FirstStepForm>({
   password: ''
@@ -72,15 +72,15 @@ const {mutate: validate} = useMutation({
     errorForm.value = JSON.parse(error.message) as ErrorForm;
   },
   onSuccess: () => {
-    step.value++;
-    form.value.password = currentForm.password;
+    nextStep!();
+    globalRegisterForm!.password = currentForm.password;
   }
 })
 </script>
 
 <template>
   <form @submit.prevent="validate()">
-    <FormLabel>Пароль</FormLabel>
+    <FormLabel class="label">Пароль</FormLabel>
     <FormInput
       v-model="currentForm.password"
       class="input"
@@ -90,7 +90,7 @@ const {mutate: validate} = useMutation({
     />
 
     <div class="rules">
-      <label>Пароль должен содержать как минимум:</label>
+      <FormLabel class="label">Пароль должен содержать как минимум:</FormLabel>
       <div
         v-for="(rule) in passwordRuleValidation"
         :key="rule.text"
@@ -115,7 +115,8 @@ const {mutate: validate} = useMutation({
 
 <style lang="scss" scoped>
 form {
-  label {
+  .label {
+    display: block;
     margin-bottom: 9px;
     font-weight: 700;
     font-size: 0.9em;
