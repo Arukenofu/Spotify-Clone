@@ -1,5 +1,5 @@
-import mediaLib from "@/services/api/user/medialib/mocks/mediaLib";
-import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import mediaLib from "@/services/api/medialib/mocks/mediaLib";
+import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import api from "@/services/api";
 import type {ResponseOK} from "@/services/types/Responses/ResponseOK";
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ConfirmationModal, Modal} from "@/features/Modal";
 import {ref} from "vue";
-import type {MedialibEntities} from "@/services/api/user/medialib/types/MediaLibTypes";
+import type {MedialibEntities} from "@/services/api/medialib/types/MediaLibTypes";
 import localizeEntities from "@/services/utils/localizeEntities";
 
 const model = ref(true);

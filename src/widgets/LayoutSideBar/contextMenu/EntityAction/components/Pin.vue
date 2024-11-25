@@ -3,8 +3,8 @@ import PinIcon from "@/UI/Icons/Shared/PinIcon.vue";
 import {BasicContextMenuItem} from "@/features/ContextMenu";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar";
 import {useMutation, useQueryClient} from "@tanstack/vue-query";
-import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
-import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
+import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
+import apiMedialibService from "@/services/api/medialib/apiMedialibService";
 import {addToast} from "@/widgets/Toast";
 
 interface Props {

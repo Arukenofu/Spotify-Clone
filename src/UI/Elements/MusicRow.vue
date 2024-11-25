@@ -11,12 +11,11 @@ import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 
 interface Props {
-  index: number;
+  index?: number;
   isCurrent: boolean;
   isPlaying: boolean;
   isAdded: boolean;
   musicId: string | number;
-  albumId: number;
   musicName: string;
   duration: number;
   artists: SimpleArtist[];
@@ -38,7 +37,7 @@ defineEmits<Emits>();
 
 <template>
   <div class="row" @click="$emit('setPlay')">
-    <div class="index">
+    <div v-if="index" class="index">
       <span class="order" :style="getActiveColor(isCurrent)">{{index}}</span>
       <button class="toggle">
         <img v-if="isPlaying" src="/src/assets/images/equalizer-animated.gif" alt="" />
@@ -46,12 +45,22 @@ defineEmits<Emits>();
       </button>
     </div>
     <div class="main">
-      <template v-if="image !== undefined">
-        <LazyImage v-if="image !== null" :image="image" :color="color" class="image" />
-        <div v-else class="picture">
+      <div class="image-wrapper" :class="!index && 'noindex'">
+        <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
+
+        <LazyImage
+          v-if="image !== null"
+          :image="image"
+          :color="color"
+          class="image"
+        />
+        <div
+          v-else
+          class="icon image"
+        >
           <NoMusicOrPlaylistAvatar class="icon" />
         </div>
-      </template>
+      </div>
       <div class="text">
         <RouterLink
           v-tooltip="musicName"
@@ -147,6 +156,28 @@ defineEmits<Emits>();
       }
     }
 
+    .main {
+      .noindex {
+        ::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-color: rgba(0, 0, 0, 0.26);
+          border-radius: 4px;
+        }
+
+        .state-icon {
+          opacity: 1;
+        }
+      }
+
+      .text {
+        .artists a {
+          color: var(--white);
+        }
+      }
+    }
+
     .time {
       button {
         display: block;
@@ -205,31 +236,50 @@ defineEmits<Emits>();
     gap: 12px;
     height: 100%;
 
-    .image {
-      height: 40px;
-      aspect-ratio: 1/1;
-      border-radius: 4px;
-    }
-
-    .picture {
-      width: 40px;
-      height: 40px;
-      border-radius: 4px;
-      background-color: #333333;
+    .noindex {
+      position: relative;
       display: grid;
       place-items: center;
 
+      .state-icon {
+        opacity: 0;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        fill: var(--white);
+        z-index: 1;
+      }
+    }
+
+    .image-wrapper {
+      position: relative;
+
+      .image {
+        height: 40px;
+        aspect-ratio: 1/1;
+        border-radius: 4px;
+      }
+
       .icon {
-        fill: var(--text-soft);
-        width: 50%;
-        height: 50%;
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        background-color: #333333;
+        display: grid;
+        place-items: center;
+
+        .icon {
+          fill: var(--text-soft);
+          width: 50%;
+          height: 50%;
+        }
       }
     }
 
     .text {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 3px;
       justify-items: center;
 
       a {
@@ -258,6 +308,7 @@ defineEmits<Emits>();
         a {
           color: var(--text-soft);
           font-size: .875rem;
+          font-weight: 400;
 
           &:hover {
             color: var(--white) !important;

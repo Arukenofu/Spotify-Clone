@@ -4,8 +4,9 @@ import NoMusicOrPlaylistAvatar from '@/UI/Icons/Shared/NoMusicOrPlaylistAvatar.v
 import NoFolderAvatar from '@/UI/Icons/Shared/NoFolderAvatar.vue';
 import NoArtistAvatar from "@/UI/Icons/Shared/NoArtistAvatar.vue";
 import LikedSongs from '@/assets/images/liked-songs.png';
-import type { Entities } from '@/services/types/Entities';
-import type { Component } from 'vue';
+import type {Entities} from '@/services/types/Entities';
+import type {Component} from 'vue';
+import NoUserAvatar from "@/UI/Icons/Shared/NoUserAvatar.vue";
 
 interface Props {
   image?: string | null,
@@ -38,6 +39,8 @@ defineProps<Props>();
 
     <NoArtistAvatar v-else-if="type === 'Artist'" class="image" draggable="false" />
 
+    <NoUserAvatar v-else-if="type === 'User'" class="user" draggable="false" />
+
     <LazyImage v-else-if="type === 'Collection'" :image="LikedSongs" class="image" />
 
     <NoMusicOrPlaylistAvatar
@@ -64,6 +67,11 @@ defineProps<Props>();
     border-radius: inherit;
   }
 
+  .user {
+    width: 64px;
+    fill: var(--white);
+  }
+
   .icon {
     height: 50%;
     width: 50%;
@@ -73,6 +81,6 @@ defineProps<Props>();
 }
 
 .round {
-  border-radius: 50%;
+  border-radius: 50% !important;
 }
 </style>

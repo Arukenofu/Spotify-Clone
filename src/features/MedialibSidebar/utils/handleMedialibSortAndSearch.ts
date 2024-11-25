@@ -1,4 +1,4 @@
-import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
 
 interface Options {

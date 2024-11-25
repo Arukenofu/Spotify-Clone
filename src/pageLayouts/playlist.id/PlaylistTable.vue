@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
 import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue';
-import FormatLibraryButton from './Elements/FormatLibraryButton.vue';
+import FormatLibraryButton from '../../UI/Buttons/FormatLibraryButton.vue';
 import Table from '@/pageLayouts/playlist.id/Elements/Table.vue';
 import useCachedRef from '@/shared/composables/useCachedRef';
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
@@ -17,7 +17,7 @@ interface Props {
 
 const {dossier, queue} = defineProps<Props>();
 
-type Format = 'Компактный'| 'Список';
+type Format = 'Компактный' | 'Список';
 
 const format = useCachedRef<Format>('playlistFormat', 'Список', {
   expectedTypes: ['string'],

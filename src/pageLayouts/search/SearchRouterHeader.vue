@@ -5,7 +5,7 @@ import {useRoute} from 'vue-router';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import BubbleButton from '@/UI/Buttons/BubbleButton.vue';
 
-const route = useRoute('/search/[...query]');
+const route = useRoute('/search/[...query]/');
 
 const param = computed(() => {
   return route.params.query.split('/')[0];
@@ -70,6 +70,7 @@ function getActiveColor(path: typeof filters[number]['path']) {
   padding: 12px var(--content-spacing);
   display: flex;
   gap: 9px;
+  background-color: var(--ui);
 
   .button {
     height: 100%;

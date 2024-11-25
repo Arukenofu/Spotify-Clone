@@ -85,7 +85,7 @@ defineEmits<Emits>();
   .card-title {
     font-size: 2rem;
     font-weight: 900;
-    width: min-content;
+    line-height: 1.15;
 
     &:hover {
       text-decoration: underline;

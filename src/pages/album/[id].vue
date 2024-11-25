@@ -13,6 +13,8 @@ import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import {inject, type Ref, ref, watch} from "vue";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
+import useCachedRef from "@/shared/composables/useCachedRef";
+import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
 
 const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
@@ -20,14 +22,9 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
 
 watch(() => route.params.id, () => {
   refetch();
-})
+});
 
-const {
-  data,
-  isFetching,
-  isError,
-  refetch
-} = useQuery({
+const {data, isFetching, isError, refetch} = useQuery({
   queryKey: ['playlistInfo', route.params.id],
   queryFn: async () => {
     const data = await musicInfoService.getPlaylistInfo(Number(route.params.id));
@@ -36,6 +33,13 @@ const {
 
     return data;
   }
+});
+
+type Format = 'Компактный'| 'Список';
+
+const format = useCachedRef<Format>('playlistFormat', 'Список', {
+  expectedTypes: ['string'],
+  expectedValues: ['Компактный', 'Список']
 });
 
 const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist} = useMusicUtils();
@@ -78,6 +82,9 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
           :state="true"
         />
       </template>
+      <template #additional-options>
+        <FormatLibraryButton :format @set-format="(newValue: Format) => format = newValue" />
+      </template>
     </GeneralGradientSectionWithControls>
 
     <MusicRowHeader class="row-header" :parent-element="layout!.content" />
@@ -90,7 +97,6 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
         :is-current="isThisPlaylistAndMusic(music.id, data.playlistInfoDossier.id)"
         :is-playing="isThisPlaylistAndMusic(music.id, data.playlistInfoDossier.id, true)"
         :music-id="music.id"
-        :album-id="music.albumId"
         :music-name="music.name"
         :duration="music.duration"
         :artists="music.artists"

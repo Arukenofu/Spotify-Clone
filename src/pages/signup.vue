@@ -12,6 +12,12 @@ import {provide, reactive, ref} from "vue";
 
 setTitle('Зарегестрироваться - Spotify');
 
+definePage({
+  meta: {
+    layout: false
+  },
+});
+
 const step = ref(0);
 
 function nextStep(): void {
@@ -114,8 +120,3 @@ main {
   }
 }
 </style>
-
-<route lang="yaml">
-meta:
-  layout: false
-</route>

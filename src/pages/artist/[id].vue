@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, inject, ref, watch} from "vue";
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
 import {useMutation, useQuery} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
@@ -133,7 +133,6 @@ const isModal = ref<boolean>(false);
           :is-current="isThisPlaylistAndMusic(music.id, `popular:${artistInfo.profile.artistName}`)"
           :is-playing="isThisPlaylistAndMusic(music.id, `popular:${artistInfo.profile.artistName}`, true)"
           :music-id="music.id"
-          :album-id="music.albumId"
           :music-name="music.name"
           :duration="music.duration"
           :artists="music.artists"
@@ -188,7 +187,7 @@ const isModal = ref<boolean>(false);
         v-for="item in section.list"
         :id="item.id"
         :key="item.id"
-        :image="item.imageUrl"
+        :image="item.image"
         :type="'Playlist'"
         :name="item.name"
         :color="item.color"

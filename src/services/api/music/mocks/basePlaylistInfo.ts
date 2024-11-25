@@ -50,7 +50,7 @@ export const basePlaylistInfo = {
             avatar:
                 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
-            albumId: 1,
+            album: {id: 1, name: 'Album Name'},
             color: '#333333',
             isAdded: false
         },
@@ -70,7 +70,7 @@ export const basePlaylistInfo = {
             url: '/Moldanazar.mp3',
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
-            albumId: 1,
+            album: {id: 1, name: 'Album Name'},
             color: '#333333',
             isAdded: false
         }

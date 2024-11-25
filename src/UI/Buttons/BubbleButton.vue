@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    design?: 'default' | 'active' | 'none';
+    design?: 'default' | 'active' | 'none' | 'green';
   }>(),
   {
     design: 'default'
@@ -56,6 +56,20 @@ withDefaults(
 
   &:active {
     background-color: #c7c7c7;
+  }
+}
+
+.green {
+  background-color: var(--main-color);
+  color: var(--black);
+
+  &:hover {
+    scale: 1.04;
+  }
+
+  &:active {
+    scale: 1;
+    opacity: .9;
   }
 }
 

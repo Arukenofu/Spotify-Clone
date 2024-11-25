@@ -21,6 +21,9 @@ withDefaults(defineProps<Props>(), {
     <p class="body">
       <slot name="body" />
     </p>
+    <div class="controls">
+      <slot name="controls" />
+    </div>
   </div>
 </template>
 

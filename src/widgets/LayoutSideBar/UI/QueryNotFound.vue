@@ -28,7 +28,6 @@ defineProps<{
   margin: 0 auto;
 
   span {
-
     text-align: center;
     white-space: nowrap;
     overflow: hidden;

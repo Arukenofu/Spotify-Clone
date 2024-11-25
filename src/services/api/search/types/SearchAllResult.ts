@@ -1,7 +1,7 @@
 import type {Entities} from "@/services/types/Entities";
-import type {Artist} from "@/services/types/Entities/Artist";
-import type {Track} from "@/services/types/Entities/Track";
+import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import type {RecommendationItem} from "@/services/types/Recommendation";
+import type {SimpleTrack} from "@/services/types/Entities/Track";
 
 interface EntityPreviewWithType<T extends Entities> extends RecommendationItem {
     type: T;
@@ -14,11 +14,13 @@ export interface SearchAllResult {
         image: string | null;
         color: string | null;
         type: Entities;
-        artists?: Artist[];
+        artists?: SimpleArtist[];
     };
-    tracks: Track[];
-    playlists: EntityPreviewWithType<'Playlist'>[];
-    artists: EntityPreviewWithType<'Artist'>[];
-    albums: EntityPreviewWithType<'Album'>[];
-    users: EntityPreviewWithType<'User'>[];
+    bestResultTracks: SimpleTrack[];
+    entities: {
+        playlists: EntityPreviewWithType<'Playlist'>[];
+        artists: EntityPreviewWithType<'Artist'>[];
+        albums: EntityPreviewWithType<'Album'>[];
+        users: EntityPreviewWithType<'User'>[];
+    }
 }

@@ -36,8 +36,8 @@ onUnmounted(() => {
   <div ref="stickyTableHead" class="v-music-row" :class="isSticky && 'stuck'">
     <div class="index">#</div>
     <div class="name">Название</div>
-    <div v-if="isVar1" class="var1">{{var1}}</div>
-    <div v-if="isVar2" class="var2">{{var2}}</div>
+    <div v-if="var1" class="var1">{{var1}}</div>
+    <div v-if="var2" class="var2">{{var2}}</div>
     <div class="time">
       <div v-tooltip="'Длительность'">
         <ClockIcon class="icon" />

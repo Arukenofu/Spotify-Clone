@@ -23,7 +23,7 @@ export const baseTrackInfo = {
         url: '/Мосты.mp3',
         avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
         listenings: 12000,
-        albumId: 1,
+        album: {id: 1, name: 'Album Name'},
         color: '#333333',
         isAdded: false
     },
@@ -51,7 +51,7 @@ export const baseTrackInfo = {
             avatar:
                 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
-            albumId: 1,
+            album: {id: 1, name: 'Album Name'},
             color: '#333333',
             isAdded: false
         },
@@ -71,7 +71,7 @@ export const baseTrackInfo = {
             url: '/Moldanazar.mp3',
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
-            albumId: 1,
+            album: {id: 1, name: 'Album Name'},
             color: '#333333',
             isAdded: false
         }
@@ -103,7 +103,7 @@ export const baseTrackInfo = {
                     avatar:
                         'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
                     listenings: 12000,
-                    albumId: 1,
+                    album: {id: 1, name: 'Album Name'},
                     color: '#333333',
                     isAdded: false
                 },
@@ -123,7 +123,7 @@ export const baseTrackInfo = {
                     url: '/Moldanazar.mp3',
                     avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                     listenings: 12000,
-                    albumId: 1,
+                    album: {id: 1, name: 'Album Name'},
                     color: '#333333',
                     isAdded: false
                 }
@@ -155,7 +155,7 @@ export const baseTrackInfo = {
                     avatar:
                         'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
                     listenings: 12000,
-                    albumId: 1,
+                    album: {id: 1, name: 'Album Name'},
                     color: '#333333',
                     isAdded: false
                 },
@@ -175,7 +175,7 @@ export const baseTrackInfo = {
                     url: '/Moldanazar.mp3',
                     avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
                     listenings: 12000,
-                    albumId: 1,
+                    album: {id: 1, name: 'Album Name'},
                     color: '#333333',
                     isAdded: false
                 }
@@ -190,7 +190,7 @@ export const baseTrackInfo = {
                 {
                     id: 1,
                     name: 'Плейлист #1',
-                    imageUrl: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
+                    image: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
                     description: 'Плейлист #1',
                     color: '#6c2d2d',
                     type: 'Playlist'

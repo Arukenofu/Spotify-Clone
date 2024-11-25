@@ -1,4 +1,14 @@
-import type { SimpleArtist } from '@/services/types/Entities/Artist';
+import type {SimpleArtist} from '@/services/types/Entities/Artist';
+
+export interface SimpleTrack {
+  id: number | string;
+  name: string;
+  image: string | null;
+  color: string | null;
+  artists: SimpleArtist[];
+  isAdded: boolean;
+  duration: number;
+}
 
 export interface Track {
   id: number | string;
@@ -10,6 +20,9 @@ export interface Track {
   uploadedDate: string;
   duration: number;
   listenings: number;
-  albumId: number;
   isAdded: boolean;
+  album: {
+    id: number | string;
+    name: string;
+  }
 }

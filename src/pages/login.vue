@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 import Logo from '@/UI/Icons/Shared/Logo.vue';
 import FormLabel from '@/UI/Form/FormLabel.vue';
 import FormInput from '@/UI/Form/FormInput.vue';
@@ -8,11 +8,17 @@ import FormButton from '@/UI/Form/FormButton.vue';
 import ErrorIcon from '@/UI/Icons/Shared/ErrorIcon.vue';
 import FormError from '@/UI/Form/FormError.vue';
 import setTitle from '@/shared/utils/setTitle';
-import { router } from '@/app/router';
-import { useMutation } from '@tanstack/vue-query';
+import {router} from '@/app/router';
+import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 
 setTitle('Войти - Spotify');
+
+definePage({
+  meta: {
+    layout: false
+  },
+});
 
 const form = reactive({
   email: '',
@@ -260,8 +266,3 @@ main {
   }
 }
 </style>
-
-<route lang="yaml">
-meta:
-  layout: false
-</route>

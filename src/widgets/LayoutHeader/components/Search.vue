@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import {ref, useTemplateRef} from 'vue';
+import {useRoute} from 'vue-router';
 
 import SearchReviewIcon from '@/UI/Icons/Shared/SearchReviewIcon.vue';
 import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
@@ -8,42 +8,52 @@ import CloseIcon from '@/UI/Icons/Shared/CloseIcon.vue';
 
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import useDebounce from '@/shared/composables/useDebounce';
-import { router } from '@/app/router';
+import {router} from '@/app/router';
 
-const route = useRoute();
-const input = ref<HTMLInputElement>();
+const route = useRoute('/search/[...query]/[...path]');
+const input = useTemplateRef('input');
 const inputValue = ref<string>('');
 
 const { currentRoutePath } = useCurrentRoutePath();
 
 function onSearchClick() {
-  if (!/^\/search/.test(route.path)) {
-    router.push(`/search${inputValue.value && `/${inputValue.value}`}`);
+  if (!route.fullPath.startsWith('/search')) {
+    router.push('/search');
   }
 
-  input.value?.focus();
+  input.value!.focus();
 }
 
-const { debounce, clear } = useDebounce();
+const {debounce, clear} = useDebounce();
 
-watch(inputValue, () => {
-  const cachedCurrentRoute = currentRoutePath.value;
+function setInputValue(value: string) {
+  inputValue.value = value;
 
-  if (!inputValue.value) {
+  if (!value) {
     clear();
     router.push('/search');
     return;
   }
 
   debounce(() => {
-    if (cachedCurrentRoute !== currentRoutePath.value) {
-      clear();
-      return;
-    }
+    const path = route.params.path ? `/${route.params.path}` : '';
 
-    router.push(`/search/${inputValue.value}`);
+    router.push(`/search/${value}${path}`);
   }, 1000);
-});
+}
+
+function clearAll() {
+  input.value!.value = '';
+  router.push('/search');
+  inputValue.value = '';
+}
+
+router.beforeEach((to, from) => {
+  if (from.path.startsWith('/search') && !to.path.startsWith('/search')) {
+    input.value!.value = '';
+    clear();
+  }
+})
 </script>
 
 <template>
@@ -53,10 +63,10 @@ watch(inputValue, () => {
   >
     <input
       ref="input"
-      v-model="inputValue"
       type="text"
       placeholder="Что хочешь включить?"
       @keyup="onSearchClick()"
+      @input="setInputValue(($event.target as HTMLInputElement).value)"
     >
     <div class="icon-container-search">
       <SearchIcon class="icon" />
@@ -66,10 +76,7 @@ watch(inputValue, () => {
       v-if="!inputValue?.length"
       v-tooltip="{
         content: 'Обзор',
-        distance: 5,
-        style: {
-          marginLeft: '6px'
-        }
+        distance: 5
       }"
       class="icon-container-box"
     >
@@ -84,7 +91,7 @@ watch(inputValue, () => {
       v-else
       v-tooltip="'Очистить строку поиска'"
       class="icon-container-delete"
-      @click="inputValue = ''"
+      @click="clearAll()"
     >
       <CloseIcon class="icon" />
     </div>
@@ -181,7 +188,7 @@ watch(inputValue, () => {
     height: 100%;
     width: 100%;
     border-radius: 500px;
-    padding-left: 48px;
+    padding: 0 48px;
     background: none;
     border: none;
     font-size: 0.95rem;

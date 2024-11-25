@@ -3,8 +3,8 @@ import type {Entities} from "@/services/types/Entities";
 export interface RecommendationItem {
     id: number,
     name: string,
-    imageUrl: string | null,
-    description: string | null,
+    image: string | null,
+    description?: string | null,
     color: string | null,
     type: Entities;
 }

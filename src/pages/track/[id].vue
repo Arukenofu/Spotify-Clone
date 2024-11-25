@@ -51,7 +51,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
       :scroll-y="layoutScrollY"
       :mask="null"
       :is-playing="isThisMusic(trackInfo.trackInfoDossier.id, true)"
-      @play-click="loadPlaylist(trackInfo.trackInfoDossier.albumId, {
+      @play-click="loadPlaylist(trackInfo.trackInfoDossier.id, {
         musicId: trackInfo.trackInfoDossier.id
       })"
     />
@@ -128,7 +128,6 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
           :is-current="isThisPlaylistAndMusic(music.id, `related:${trackInfo.trackInfoDossier.name}`)"
           :is-playing="isThisPlaylistAndMusic(music.id, `related:${trackInfo.trackInfoDossier.name}`, true)"
           :music-id="music.id"
-          :album-id="music.albumId"
           :music-name="music.name"
           :duration="music.duration"
           :artists="music.artists"
@@ -167,7 +166,6 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
           :is-current="isThisPlaylistAndMusic(music.id, `popular:${popular.artistName}`)"
           :is-playing="isThisPlaylistAndMusic(music.id, `popular:${popular.artistName}`, true)"
           :music-id="music.id"
-          :album-id="music.albumId"
           :music-name="music.name"
           :duration="music.duration"
           :artists="music.artists"

@@ -20,8 +20,8 @@ import {
   useSidebarWidthStore
 } from '@/features/MedialibSidebar';
 import {useQuery} from "@tanstack/vue-query";
-import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
-import type {MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import apiMedialibService from "@/services/api/medialib/apiMedialibService";
+import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import {useTippy} from "vue-tippy";
 import EntityAction from "@/widgets/LayoutSideBar/contextMenu/EntityAction.vue";
 import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";

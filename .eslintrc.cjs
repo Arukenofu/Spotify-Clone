@@ -17,5 +17,8 @@ module.exports = {
     'vue/singleline-html-element-content-newline': 0,
     'vue/max-attributes-per-line': 0,
     'vue/html-self-closing': 0
+  },
+  globals: {
+    'definePage': 'readonly',
   }
 };

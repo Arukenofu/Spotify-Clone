@@ -8,7 +8,7 @@ export const recommendations = [
           {
               id: 1,
               name: 'Only for you',
-              imageUrl: null,
+              image: null,
               description: `Новые треки и редкие композиции в еженедельном миксе специально для тебя.
                Лови обновление каждый понедельник.`,
               color: null,
@@ -23,8 +23,8 @@ export const recommendations = [
             {
                 id: 2,
                 name: 'The Weeknd',
-                imageUrl: null,
-                description: 'Исполитель',
+                image: null,
+                description: 'Исполнитель',
                 color: null,
                 type: 'Artist',
             }
@@ -37,7 +37,7 @@ export const recommendations = [
             {
                 id: 3,
                 name: 'Music',
-                imageUrl: 'https://cdns-images.dzcdn.net/images/cover/7c3cdaadce2fa2683bcf059155db1036/1900x1900-000000-80-0-0.jpg',
+                image: 'https://cdns-images.dzcdn.net/images/cover/7c3cdaadce2fa2683bcf059155db1036/1900x1900-000000-80-0-0.jpg',
                 description: 'The greatest indie love songs of all time.',
                 color: '#ff5252',
                 type: 'Playlist',

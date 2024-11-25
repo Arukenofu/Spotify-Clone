@@ -1,4 +1,4 @@
-import type {MediaLibBase} from "@/services/api/user/medialib/types/MediaLibTypes";
+import type {MediaLibBase} from "@/services/api/medialib/types/MediaLibTypes";
 import type {SimpleUser} from "@/services/types/Entities/User";
 
 export interface MediaLibEntityProps extends MediaLibBase<'Playlist' | 'Artist' | 'Album' | 'Folder' | 'Collection'> {

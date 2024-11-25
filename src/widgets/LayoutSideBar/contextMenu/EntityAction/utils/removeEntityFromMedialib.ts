@@ -1,10 +1,10 @@
 import {type QueryClient} from "@tanstack/vue-query";
-import type {MedialibEntities, MediaLibTypes} from "@/services/api/user/medialib/types/MediaLibTypes";
+import type {MedialibEntities, MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import {useTippy} from "vue-tippy";
 import {h} from "vue";
 import EntityConfirmationModal
     from "@/widgets/LayoutSideBar/contextMenu/EntityAction/modals/EntityConfirmationModal.vue";
-import apiMedialibService from "@/services/api/user/medialib/apiMedialibService";
+import apiMedialibService from "@/services/api/medialib/apiMedialibService";
 import {addToast} from "@/widgets/Toast";
 
 const {setContent, destroy, mount} = useTippy(() => document.body, {

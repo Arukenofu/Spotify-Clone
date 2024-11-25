@@ -2,18 +2,18 @@
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
-import type { Entities } from '@/services/types/Entities';
+import type {Entities} from '@/services/types/Entities';
 
 interface Props {
   id: number | string;
-  type?: Entities;
-  name?: string;
+  type: Entities;
+  name: string;
   image?: string | null;
   color?: string | null;
   state?: boolean;
 }
 
-const {type = 'Playlist'} = defineProps<Props>();
+defineProps<Props>();
 
 type Emits = {
   onPlayClick: []
@@ -31,7 +31,7 @@ defineEmits<Emits>();
       class="image"
       :type="type"
       :image="image"
-      :style="type === 'Artist' && 'border-radius: 50%'"
+      :style="type === 'Artist' || type === 'User' && 'border-radius: 50%'"
       :loading-color="color"
       loading="lazy"
     >
@@ -93,7 +93,7 @@ defineEmits<Emits>();
     border-radius: 6px;
     position: relative;
     margin-bottom: 3px;
-    transition: all 0.2s ease-out;
+    transition: background-color 0.2s ease-out;
 
     .noImage {
       width: 64px;

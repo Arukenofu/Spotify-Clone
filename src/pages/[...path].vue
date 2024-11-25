@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import setTitle from '@/shared/utils/setTitle';
 
+definePage({
+  meta: {
+    layout: false
+  },
+});
+
 setTitle('Страница не найдена');
 </script>
 
@@ -77,8 +83,3 @@ setTitle('Страница не найдена');
   }
 }
 </style>
-
-<route lang="yaml">
-meta:
-  layout: false
-</route>

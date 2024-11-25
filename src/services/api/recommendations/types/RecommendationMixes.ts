@@ -1,6 +1,6 @@
 export interface RecommendationMixes {
   playlistId: number;
   name: string;
-  imageUrl: string | null;
+  image: string | null;
   color: string;
 }

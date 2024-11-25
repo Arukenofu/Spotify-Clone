@@ -35,7 +35,7 @@ function onClick(type: Entities, id: number | string) {
       :id="entity.id"
       :key="entity.id"
       :type="entity.type"
-      :image="entity.imageUrl"
+      :image="entity.image"
       :name="entity.name"
       :color="entity.color"
       :state="isThisPlaylist(entity.id, true)"
