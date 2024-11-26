@@ -104,6 +104,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
         :color="music.color"
         :is-added="false"
         :show-artists="true"
+        :compact="format === 'Компактный'"
         class="row"
         @set-play="loadSongOrPlaylist(data)"
       />

@@ -22,6 +22,8 @@ interface Props {
   showArtists?: boolean;
   image: string | null;
   color: string | null;
+
+  compact?: boolean;
 }
 
 const {showArtists = true} = defineProps<Props>();
@@ -36,16 +38,28 @@ defineEmits<Emits>();
 </script>
 
 <template>
-  <div class="row" @click="$emit('setPlay')">
-    <div v-if="index" class="index">
-      <span class="order" :style="getActiveColor(isCurrent)">{{index}}</span>
+  <div
+    class="row"
+    :class="compact && 'row-compact'"
+    @click="$emit('setPlay')"
+  >
+    <div
+      v-if="index"
+      class="index"
+    >
+      <span
+        class="order"
+        :style="getActiveColor(isCurrent)"
+      >
+        {{index}}
+      </span>
       <button class="toggle">
         <img v-if="isPlaying" src="/src/assets/images/equalizer-animated.gif" alt="" />
         <PlayingState v-else class="icon" />
       </button>
     </div>
     <div class="main">
-      <div class="image-wrapper" :class="!index && 'noindex'">
+      <div v-if="!compact" class="image-wrapper" :class="!index && 'noindex'">
         <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
 
         <LazyImage
@@ -72,7 +86,7 @@ defineEmits<Emits>();
           {{musicName}}
         </RouterLink>
         <span
-          v-if="showArtists"
+          v-if="showArtists && !compact"
           class="artists"
           @click.stop
         >
@@ -126,6 +140,10 @@ defineEmits<Emits>();
 </template>
 
 <style scoped lang="scss">
+.row-compact {
+  height: 32px !important;
+}
+
 .row {
   height: 56px;
   width: 100%;
@@ -137,6 +155,7 @@ defineEmits<Emits>();
   border-radius: 4px;
   user-select: none;
   padding: 0 16px;
+  cursor: pointer;
 
   &:hover {
     background-color: hsla(0, 0%, 100%, .1);

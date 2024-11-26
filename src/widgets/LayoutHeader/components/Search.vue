@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import {ref, useTemplateRef} from 'vue';
+import {onMounted, ref, useTemplateRef} from 'vue';
 import {useRoute} from 'vue-router';
 
 import SearchReviewIcon from '@/UI/Icons/Shared/SearchReviewIcon.vue';
 import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
 import CloseIcon from '@/UI/Icons/Shared/CloseIcon.vue';
 
-import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import useDebounce from '@/shared/composables/useDebounce';
 import {router} from '@/app/router';
 
 const route = useRoute('/search/[...query]/[...path]');
 const input = useTemplateRef('input');
 const inputValue = ref<string>('');
-
-const { currentRoutePath } = useCurrentRoutePath();
 
 function onSearchClick() {
   if (!route.fullPath.startsWith('/search')) {
@@ -26,9 +23,13 @@ function onSearchClick() {
 
 const {debounce, clear} = useDebounce();
 
-function setInputValue(value: string) {
-  inputValue.value = value;
+onMounted(() => {
+  if (route.fullPath.startsWith('/search/') && route.params.query) {
+    inputValue.value = route.params.query;
+  }
+})
 
+function onInput(value: string) {
   if (!value) {
     clear();
     router.push('/search');
@@ -43,14 +44,13 @@ function setInputValue(value: string) {
 }
 
 function clearAll() {
-  input.value!.value = '';
   router.push('/search');
   inputValue.value = '';
 }
 
 router.beforeEach((to, from) => {
   if (from.path.startsWith('/search') && !to.path.startsWith('/search')) {
-    input.value!.value = '';
+    inputValue.value = '';
     clear();
   }
 })
@@ -63,10 +63,11 @@ router.beforeEach((to, from) => {
   >
     <input
       ref="input"
+      v-model="inputValue"
       type="text"
       placeholder="Что хочешь включить?"
       @keyup="onSearchClick()"
-      @input="setInputValue(($event.target as HTMLInputElement).value)"
+      @input="onInput(($event.target as HTMLInputElement).value)"
     >
     <div class="icon-container-search">
       <SearchIcon class="icon" />
@@ -81,8 +82,8 @@ router.beforeEach((to, from) => {
       class="icon-container-box"
     >
       <SearchReviewIcon
-        :style="currentRoutePath === '/search' && 'fill: var(--white)'"
-        :state="currentRoutePath === '/search'"
+        :style="route.path === '/search' && 'fill: var(--white)'"
+        :state="route.path === '/search'"
         class="icon"
       />
     </div>

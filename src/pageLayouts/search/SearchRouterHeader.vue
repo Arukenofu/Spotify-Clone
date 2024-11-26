@@ -5,7 +5,7 @@ import {useRoute} from 'vue-router';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import BubbleButton from '@/UI/Buttons/BubbleButton.vue';
 
-const route = useRoute('/search/[...query]/');
+const route = useRoute('/search/[...query]/[...path]');
 
 const param = computed(() => {
   return route.params.query.split('/')[0];
@@ -42,21 +42,22 @@ function setFilterRoute(path: typeof filters[number]['path']) {
   router.push(`/search/${param.value}${path}`);
 }
 
-function getActiveColor(path: typeof filters[number]['path']) {
-  if (`/search/${param.value}${path}` === route.path) {
-    return 'active';
+const getActiveColorIndex = computed(() => {
+  if (!route.params.path) {
+    return 0;
   }
-  return 'default';
-}
+
+  return filters.findIndex(({path}) => path === `/${route.params.path}`);
+});
 </script>
 
 <template>
   <StickyHeader class="sticky-header">
     <BubbleButton
-      v-for="{ name, path } in filters"
+      v-for="({ name, path }, index) in filters"
       :key="name"
       class="button"
-      :design="getActiveColor(path)"
+      :design="getActiveColorIndex === index ? 'active' : 'default'"
       @click="setFilterRoute(path)"
     >
       {{ name }}

@@ -23,6 +23,5 @@ app.use(VueTippy, VueTippyConfig);
 
 app.directive('click-outside', ClickOutside);
 app.directive('disable-child', DisableChild);
-app.directive('tooltip');
 
 app.mount('#app');
