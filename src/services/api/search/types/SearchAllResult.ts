@@ -3,7 +3,7 @@ import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import type {RecommendationItem} from "@/services/types/Recommendation";
 import type {SimpleTrack} from "@/services/types/Entities/Track";
 
-interface EntityPreviewWithType<T extends Entities> extends RecommendationItem {
+interface EntityPreviewWithType<T extends Exclude<Entities, 'Track'>> extends RecommendationItem {
     type: T;
 }
 

@@ -52,7 +52,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
     entity="альбом"
   />
 
-  <div v-if="data" class="layout">
+  <div v-if="data" class="recommended-cards">
     <PlayHeader
       :title="data.playlistInfoDossier.name"
       :scroll-y="scrollY"
@@ -113,7 +113,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
 </template>
 
 <style scoped lang="scss">
-.layout {
+.recommended-cards {
 
   .add {
     height: 32px;

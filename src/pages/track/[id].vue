@@ -45,7 +45,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
 </script>
 
 <template>
-  <div v-if="trackInfo" class="layout">
+  <div v-if="trackInfo" class="recommended-cards">
     <PlayHeader
       :title="trackInfo.trackInfoDossier.name"
       :scroll-y="layoutScrollY"
@@ -197,7 +197,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
 </template>
 
 <style scoped lang="scss">
-.layout {
+.recommended-cards {
 
   .info {
     container: trackInfo / inline-size;

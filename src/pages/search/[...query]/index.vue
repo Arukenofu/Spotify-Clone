@@ -3,7 +3,7 @@ import EntityCard from "@/UI/Elements/EntityCard.vue";
 import {useQuery} from "@tanstack/vue-query";
 import MusicRow from "@/UI/Elements/MusicRow.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import EntitiesSection from "@/UI/Blocks/EntitiesSection.vue";
+import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import {computed} from "vue";
 import LoadingBlock from "@/UI/Blocks/LoadingBlock.vue";
@@ -29,7 +29,7 @@ const {isThisMusic} = useMusicUtils();
 <template>
   <LoadingBlock v-if="isLoading" />
 
-  <div v-else-if="isSuccess && data" class="layout">
+  <div v-else-if="isSuccess && data" class="recommended-cards">
     <section class="top-result">
       <div class="best-result">
         <div class="title">
@@ -67,37 +67,37 @@ const {isThisMusic} = useMusicUtils();
       </div>
     </section>
 
-    <EntitiesSection
+    <EntitiesSectionWithHeading
       v-if="data.entities.artists?.length"
       naming="Исполнители"
       :href="`/search/${searchQuery}/artists`"
     >
       <SearchCardComponent :item="data.entities.artists" />
-    </EntitiesSection>
+    </EntitiesSectionWithHeading>
 
-    <EntitiesSection
+    <EntitiesSectionWithHeading
       v-if="data.entities.albums?.length"
       naming="Альбомы"
       :href="`/search/${searchQuery}/albums`"
     >
       <SearchCardComponent :item="data.entities.albums" />
-    </EntitiesSection>
+    </EntitiesSectionWithHeading>
 
-    <EntitiesSection
+    <EntitiesSectionWithHeading
       v-if="data.entities.playlists?.length"
       naming="Плейлисты"
       :href="`/search/${searchQuery}/playlists`"
     >
       <SearchCardComponent :item="data.entities.playlists" />
-    </EntitiesSection>
+    </EntitiesSectionWithHeading>
 
-    <EntitiesSection
+    <EntitiesSectionWithHeading
       v-if="data.entities.users?.length"
       naming="Профили"
       :href="`/search/${searchQuery}/users`"
     >
       <SearchCardComponent :item="data.entities.users" />
-    </EntitiesSection>
+    </EntitiesSectionWithHeading>
   </div>
 
   <SearchNotFound v-else-if="isSuccess && !data" :query="searchQuery" />
@@ -106,7 +106,7 @@ const {isThisMusic} = useMusicUtils();
 </template>
 
 <style scoped lang="scss">
-.layout {
+.recommended-cards {
   gap: 32px 12px;
   margin-top: 45px;
   padding: 0 var(--content-spacing);

@@ -52,6 +52,8 @@ defineEmits<Emits>();
     <div class="textInfo">
       <slot />
     </div>
+
+    <slot name="underlay" />
   </div>
 </template>
 
@@ -66,6 +68,7 @@ defineEmits<Emits>();
   cursor: pointer;
   transition: all ease 0.1s;
   user-select: none;
+  position: relative;
 
   &:hover {
     background-color: var(--ui-highlight);

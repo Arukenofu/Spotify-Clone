@@ -1,12 +1,12 @@
 import type {Entities} from "@/services/types/Entities";
 
 export interface RecommendationItem {
-    id: number,
-    name: string,
-    image: string | null,
-    description?: string | null,
-    color: string | null,
-    type: Entities;
+    id: number | string;
+    name: string;
+    image: string | null;
+    description?: string | null;
+    color: string | null;
+    type: Exclude<Entities, 'Track'>;
 }
 
 export interface Recommendation {

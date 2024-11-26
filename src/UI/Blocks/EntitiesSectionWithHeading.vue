@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import useResponsive from '@/shared/composables/useResponsive';
+import EntitiesSectionWrapper from "@/UI/Blocks/EntitiesSectionWrapper.vue";
 
 interface Props {
   naming: string | null;
   headTitle?: string | null;
   href: string | null;
   isShowAll?: boolean;
-  columnWidth?: string;
+  minColumnWidth?: string;
+  minRows?: number | 'auto';
 }
 
-const {isShowAll = true, columnWidth = '160px'} = defineProps<Props>();
+const {
+  isShowAll = true,
+  minColumnWidth = '180px',
+  minRows = 1
+} = defineProps<Props>();
 
 const { isMobile } = useResponsive();
 </script>
@@ -44,9 +50,12 @@ const { isMobile } = useResponsive();
       </div>
     </div>
 
-    <div class="main-area">
+    <EntitiesSectionWrapper
+      :min-column-width="minColumnWidth"
+      :min-rows="minRows"
+    >
       <slot />
-    </div>
+    </EntitiesSectionWrapper>
   </section>
 </template>
 
@@ -90,9 +99,10 @@ section {
         line-clamp: 1;
         user-select: none;
         font-size: 1.5em;
-        font-weight: 500;
+        font-weight: 600;
         text-wrap: balance;
         align-items: flex-end;
+        line-height: 1.375;
       }
 
       a {
@@ -115,23 +125,6 @@ section {
       &:hover a {
         text-decoration: underline;
       }
-    }
-  }
-
-  .main-area {
-    --col-width: v-bind(columnWidth);
-    margin-inline: -12px;
-    display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(var(--col-width), 1fr)
-    );
-    grid-template-rows: 1fr 0 0 0 0 0;
-    overflow: hidden;
-    grid-auto-rows: min-content;
-
-    .item {
-      grid-row: 1;
     }
   }
 }

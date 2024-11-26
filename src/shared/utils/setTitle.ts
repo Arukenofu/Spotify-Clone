@@ -1,22 +1,24 @@
+let tempTitle: string;
+
 export default function (title: string, options?: Options) {
   const isTemporarily = options?.temporarily || false;
 
   if (isTemporarily) {
     if (!title) {
-      document.title = window.tempTitle;
-      window.tempTitle = '';
+      document.title = tempTitle;
+      tempTitle = '';
 
       return;
     }
 
-    window.tempTitle = document.title;
+    tempTitle = document.title;
     document.title = title;
 
     return;
   }
 
-  if (window.tempTitle) {
-    window.tempTitle = title;
+  if (tempTitle) {
+    tempTitle = title;
 
     return;
   }

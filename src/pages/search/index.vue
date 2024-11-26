@@ -1,12 +1,74 @@
 <script setup lang="ts">
 import setTitle from '@/shared/utils/setTitle';
+import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
+import CardRemoveWrapper from "@/UI/Elements/CardRemoveWrapper.vue";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
+import apiSearchService from "@/services/api/search/apiSearchService";
+import MusicCard from "@/UI/Elements/MusicCard.vue";
+import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
+import {addToast} from "@/widgets/Toast";
+import type {Entities} from "@/services/types/Entities";
 
 setTitle('Spotify — Поиск');
+
+const {data: history} = useQuery({
+  queryKey: ['searchHistory'],
+  queryFn: async () => {
+    return await apiSearchService.getSearchHistory();
+  },
+  staleTime: 60000
+});
+
+const queryClient = useQueryClient();
+
+const {mutate: removeFromHistory} = useMutation({
+  mutationFn: async ([id, type, index]: [string | number, Exclude<Entities, 'Track'>, number]) => {
+    const data = await apiSearchService.removeFromSearchHistory(id, type);
+
+    if (data.message !== 'OK') {
+      throw new Error(data.message);
+    }
+
+    queryClient.setQueryData(['searchHistory'], (oldData: GetSearchHistoryResult[]) => {
+      const newData = [...oldData];
+
+      newData.splice(index, 1);
+
+      return newData;
+    })
+  },
+  onError: () => {
+      addToast('Ошибка при удалении из истории');
+  }
+});
 </script>
 
 <template>
   <section class="searchSection">
-    <div class="layout">
+    <EntitiesSectionWithHeading
+      v-if="history && history.length"
+      class="history"
+      naming="История поиска"
+      href="/recent-searches"
+    >
+      <CardRemoveWrapper
+        v-for="(entity, index) in history"
+        :key="index"
+        @on-remove="removeFromHistory([entity.id, entity.type, index])"
+      >
+        <MusicCard
+          :id="entity.id"
+          :type="entity.type"
+          :name="entity.name"
+          :image="entity.image"
+          :color="entity.color"
+        >
+          {{entity.description}}
+        </MusicCard>
+      </CardRemoveWrapper>
+    </EntitiesSectionWithHeading>
+
+    <div class="recommended-cards">
       <h1 class="title">
         Всё остальное
       </h1>
@@ -37,7 +99,11 @@ setTitle('Spotify — Поиск');
 .searchSection {
   width: 100%;
 
-  .layout {
+  .history {
+    padding: 0 var(--content-spacing);
+  }
+
+  .recommended-cards {
     padding: 0 var(--content-spacing);
     --min-column-width: 300px;
 

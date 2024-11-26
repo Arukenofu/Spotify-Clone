@@ -9,7 +9,7 @@ import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoC
 import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
 import MusicRow from "@/UI/Elements/MusicRow.vue";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
-import EntitiesSection from "@/UI/Blocks/EntitiesSection.vue";
+import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
 import ArtistInfoModal from "@/pageLayouts/artist.id/ArtistInfoModal.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
@@ -81,7 +81,7 @@ const isModal = ref<boolean>(false);
     entity="трек"
   />
 
-  <div v-if="artistInfo" class="layout">
+  <div v-if="artistInfo" class="recommended-cards">
     <PlayHeader
       :title="artistInfo.profile.artistName"
       :scroll-y="layoutScrollY"
@@ -154,7 +154,7 @@ const isModal = ref<boolean>(false);
       </div>
     </TracksSection>
 
-    <EntitiesSection
+    <EntitiesSectionWithHeading
       class="albums"
       naming="Музыка"
       :href="`/artist/${artistInfo.id}/discography`"
@@ -173,9 +173,9 @@ const isModal = ref<boolean>(false);
       >
         {{album.info.uploadedDate}}
       </MusicCard>
-    </EntitiesSection>
+    </EntitiesSectionWithHeading>
 
-    <EntitiesSection
+    <EntitiesSectionWithHeading
       v-for="section in artistInfo.discography.recommended"
       :key="section.id"
       :naming="section.naming"
@@ -196,7 +196,7 @@ const isModal = ref<boolean>(false);
       >
         {{item.description}}
       </MusicCard>
-    </EntitiesSection>
+    </EntitiesSectionWithHeading>
 
     <section class="about-artist" @click="isModal = true">
       <h2>Об исполнителе</h2>
@@ -226,7 +226,7 @@ const isModal = ref<boolean>(false);
 </template>
 
 <style lang="scss" scoped>
-.layout {
+.recommended-cards {
   height: auto;
   position: relative;
   margin-bottom: 21px;

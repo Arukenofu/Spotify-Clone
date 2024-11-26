@@ -1,9 +1,9 @@
 import type {Entities} from "@/services/types/Entities";
-import api from "@/services/api";
 import type {SearchAllResult} from "@/services/api/search/types/SearchAllResult";
-import type {ResponseOK} from "@/services/types/Responses/ResponseOK";
 import searchAllResult from "@/services/api/search/mocks/searchAllResult";
 import searchEntityResult from "@/services/api/search/mocks/searchEntityResult";
+import getSeachHistoryResult from "@/services/api/search/mocks/getSeachHistoryResult";
+import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
 
 class ApiSearchService {
     async searchAll(query: string) {
@@ -30,41 +30,47 @@ class ApiSearchService {
     }
 
     async getSearchHistory() {
-        return await api('/api/search/history', {
-            method: "GET"
-        });
+        return getSeachHistoryResult satisfies GetSearchHistoryResult[];
+
+        // return await api('/api/search/history', {
+        //     method: "GET"
+        // });
     }
 
     async addToSearchHistory<T extends Exclude<Entities, 'Track'>>(
-        entityId: string,
+        entityId: string | number,
         entityType: T,
     ) {
-        return await api<ResponseOK>('/api/search/history', {
-            method: "POST",
-            body: {
-                entityId: entityId,
-                entityType: entityType,
-            }
-        });
+        return {message: 'OK'}
+        // return await api<ResponseOK>('/api/search/history', {
+        //     method: "POST",
+        //     body: {
+        //         entityId: entityId,
+        //         entityType: entityType,
+        //     }
+        // });
     }
 
-    async removeFromSearchHistory<T extends Exclude<Entities, 'Track'>>(
-        entityId: string,
-        entityType: T,
+    async removeFromSearchHistory(
+        id: number | string,
+        type: Exclude<Entities, 'Track'>
     ) {
-        return await api<ResponseOK>('/api/search/history', {
-            method: "DELETE",
-            body: {
-                entityId: entityId,
-                entityType: entityType,
-            }
-        });
+        return {message: 'OK'}
+        // return await api<ResponseOK>('/api/search/history', {
+        //     method: "DELETE",
+        //     body: {
+        //         id,
+        //         type
+        //     }
+        // });
     }
 
     async cleanSearchHistory() {
-        return await api<ResponseOK>('/api/search/history/clean', {
-            method: "DELETE"
-        });
+        return {message: 'OK'}
+
+        // return await api<ResponseOK>('/api/search/history/clean', {
+        //     method: "DELETE"
+        // });
     }
 }
 

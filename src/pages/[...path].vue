@@ -11,7 +11,7 @@ setTitle('Страница не найдена');
 </script>
 
 <template>
-  <div class="layout">
+  <div class="recommended-cards">
     <div class="center">
       <div class="logo">
         <img
@@ -30,7 +30,7 @@ setTitle('Страница не найдена');
 </template>
 
 <style lang="scss" scoped>
-.layout {
+.recommended-cards {
   width: 100dvw;
   height: 100dvh;
   cursor: pointer;

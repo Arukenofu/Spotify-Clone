@@ -36,7 +36,7 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
 
 <template>
   <LoadingBlock v-if="isLoading" />
-  <div v-else-if="data && data.length" class="layout">
+  <div v-else-if="data && data.length" class="recommended-cards">
     <div v-if="'type' in data[0]" class="entities-wrapper">
       <SearchCardComponent
         :item="data as RecommendationItem[]"
@@ -85,7 +85,7 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
 </template>
 
 <style scoped lang="scss">
-.layout {
+.recommended-cards {
   margin-top: 24px;
 
   .entities-wrapper {

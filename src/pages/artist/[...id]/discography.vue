@@ -45,7 +45,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
 </script>
 
 <template>
-  <div v-if="isFetched && artistInfo" class="layout">
+  <div v-if="isFetched && artistInfo" class="recommended-cards">
     <div class="heading" :style="layoutHeadingStyle">
       <RouterLink :to="`/artist/${artistInfo.id}`" draggable="false">
         {{artistInfo.profile.artistName}}
@@ -123,7 +123,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
 </template>
 
 <style scoped lang="scss">
-.layout {
+.recommended-cards {
   height: auto;
   margin-bottom: 21px;
 

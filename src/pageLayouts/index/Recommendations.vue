@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RecommendationSection from '@/UI/Blocks/EntitiesSection.vue';
+import EntitiesSectionWithHeading from '@/UI/Blocks/EntitiesSectionWithHeading.vue';
 import MusicCard from '@/UI/Elements/MusicCard.vue';
 import {useQuery} from "@tanstack/vue-query";
 import recommendationService from "@/services/api/recommendations/apiRecommendationService";
@@ -23,7 +23,7 @@ function onClick(type: Entities, id: number | string) {
 </script>
 
 <template>
-  <RecommendationSection 
+  <EntitiesSectionWithHeading
     v-for="recommendation in recommendations"
     :key="recommendation.id"
     :naming="recommendation.naming"
@@ -43,7 +43,7 @@ function onClick(type: Entities, id: number | string) {
     >
       {{entity.description}}
     </MusicCard>
-  </RecommendationSection>
+  </EntitiesSectionWithHeading>
 </template>
 
 <style scoped lang="scss">
