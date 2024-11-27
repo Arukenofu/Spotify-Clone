@@ -9,8 +9,8 @@ export interface Artist {
   id: number | string;
   profile: {
     artistName: string;
-    avatar?: string | null;
-    coverImage?: string | null;
+    avatar: string | null;
+    coverImage: string | null;
     color: string;
     description: string | null;
   };

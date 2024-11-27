@@ -119,7 +119,11 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
       </ContextMenu>
     </div>
 
-    <ScrollableBlock v-if="isSuccess" class="block" :gap="isMinimized ? '0px' : '7px'">
+    <ScrollableBlock
+      v-if="isSuccess"
+      class="block"
+      :content-padding="isMinimized ? '0' : '0 8px'"
+    >
       <NoMediaLib
         v-if="!mediaLibs || mediaLibs.length === 0"
       />

@@ -16,7 +16,7 @@ import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSecti
 import AddToMediaLib from "@/UI/Buttons/AddToMediaLib.vue";
 import ArtistFullWidthBlock from "@/UI/Blocks/ArtistFullWidthBlock.vue";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
-import MusicRow from "@/UI/Elements/MusicRow.vue";
+import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 
 const route = useRoute('/track/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));

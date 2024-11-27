@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import type { Track } from '@/services/types/Entities/Track';
+import type {Track} from '@/services/types/Entities/Track';
 
 const props = defineProps<{
   music: Track;

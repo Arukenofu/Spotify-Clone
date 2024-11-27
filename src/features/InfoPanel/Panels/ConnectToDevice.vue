@@ -35,7 +35,7 @@ const connectionPossibilities = [
 
     <ScrollableBlock
       class="block"
-      gap="16px"
+      content-padding="0 16px"
     >
       <div class="currentDeviceWidget">
         <div class="line1">

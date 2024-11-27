@@ -9,7 +9,7 @@ import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import type {RecommendationItem} from "@/services/types/Recommendation";
-import MusicRow from "@/UI/Elements/MusicRow.vue";
+import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import type {Track} from "@/services/types/Entities/Track";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 

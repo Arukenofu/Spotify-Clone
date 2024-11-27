@@ -8,7 +8,7 @@ import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedStri
 import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import AddToMediaLib from "@/UI/Buttons/AddToMediaLib.vue";
-import MusicRow from "@/UI/Elements/MusicRow.vue";
+import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import {inject, type Ref, ref, watch} from "vue";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";

@@ -1,14 +1,30 @@
-import {artistInfo} from "@/services/api/artist/mocks/artistinfo";
 import api from "@/services/api";
-import type { FullArtistInfo } from "./types/FullArtistInfo";
+import {artistInfo} from "@/services/api/artist/mocks/artistinfo";
 import type {ResponseOK} from "@/services/types/Responses/ResponseOK";
+import {artistDiscography} from "@/services/api/artist/mocks/artistDiscography";
 
 class ApiArtistService {
-    async getFullArtistInfo(artistId: number) {
-        return artistInfo satisfies FullArtistInfo;
+    async getArtistInfo(artistId: string | number) {
+        // GET /api/artist/:id/info
+        return artistInfo;
     }
 
-    async toggleArtistSubscription(state: boolean, artistId: number) {
+    async getArtistDiscography(artistId: string | number) {
+        // GET /api/artist/:id/discography
+        return artistDiscography;
+    }
+
+    async getFullArtistInfoWithDiscography(artistId: string | number) {
+        const artistInfo = await this.getArtistInfo(artistId);
+        const artistDiscography = await this.getArtistDiscography(artistId);
+
+        return {
+            ...artistInfo,
+            discography: artistDiscography,
+        }
+    }
+
+    async toggleArtistSubscription(state: boolean, artistId: string | number) {
         const endpoint = state ? 'unsubscribe' : 'subscribe';
 
         return await api<ResponseOK>(`/api/artist/${endpoint}`, {

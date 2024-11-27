@@ -39,6 +39,9 @@ const { removePanel } = useInfoContentStore();
   }
   .panel-options {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .icon {
     width: 16px;

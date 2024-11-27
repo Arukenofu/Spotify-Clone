@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import {nextTick, onMounted, onUnmounted, ref} from 'vue';
-import type { Component } from 'vue';
+import type {Component} from 'vue';
+import {type CSSProperties, nextTick, onMounted, onUnmounted, ref} from 'vue';
 
 interface Props {
   is?: Component | string;
-  gap?: string;
+  contentPadding?: CSSProperties['padding'];
   scrollbarWidth?: string;
   allowStyleShadow?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   is: 'div',
-  gap: '15px',
   scrollbarWidth: '12px',
   allowStyleShadow: true
 });
@@ -128,7 +127,7 @@ onUnmounted(() => {
       ref="content"
       class="scrollable-content"
       :class="isScrolled && allowStyleShadow && 'scrolled'"
-      :style="`padding: 0 ${gap}`"
+      :style="`padding: ${contentPadding}`"
       @scroll="updateScrollBar"
     >
       <slot />
@@ -157,7 +156,6 @@ onUnmounted(() => {
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-right: v-bind('gap');
     scrollbar-width: none !important;
   }
 

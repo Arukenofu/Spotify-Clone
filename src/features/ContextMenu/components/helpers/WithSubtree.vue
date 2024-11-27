@@ -6,7 +6,7 @@ import {Tippy} from "vue-tippy";
   <Tippy
     :offset="[0, 1]"
     theme="context"
-    placement="right-start"
+    placement="auto-start"
     interactive
   >
     <slot />

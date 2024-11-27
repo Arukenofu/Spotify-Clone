@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
+import {computed} from 'vue';
+import {storeToRefs} from 'pinia';
 import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import MusicBlock from '@/widgets/LayoutInfoPanel/components/MusicBlock.vue';
+import MusicBlock from '@/UI/Elements/Track/TrackBlock.vue';
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
 import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
+import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 
 const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();
@@ -15,12 +16,16 @@ const musicStore = useMusicStore();
 const { currentAudioData, currentAudioIndexInQueue } = storeToRefs(store);
 const { toggleTrackPlaying, loadSongFromCurrentQueue } = useMusicUtils();
 
+const isNoQueue = computed(() => {
+  return !playlistStore.currentQueue.length || currentAudioIndexInQueue.value == null
+})
+
 const nextSongsInQueue = computed(() => {
-  if (!playlistStore.currentQueue.length || currentAudioIndexInQueue.value == null) {
+  if (isNoQueue.value) {
     return [];
   }
 
-  return playlistStore.currentQueue.slice(currentAudioIndexInQueue.value + 1);
+  return playlistStore.currentQueue.slice(currentAudioIndexInQueue.value! + 1);
 });
 
 const headTextValue = computed(() => {
@@ -37,7 +42,9 @@ const headTextValue = computed(() => {
 </script>
 
 <template>
-  <div class="panel">
+  <NoQueue v-if="isNoQueue" />
+
+  <div v-else class="panel">
     <PanelHeader>
       <template #name>
         Очередь

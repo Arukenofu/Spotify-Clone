@@ -19,9 +19,9 @@ const route = useRoute('/artist/[...id]/discography');
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const {data: artistInfo, isFetched} = useQuery({
-  queryKey: ['artistDetailed', route.params.id],
+  queryKey: ['artistFullInfo', route.params.id],
   queryFn: async () => {
-    const data = await artistService.getFullArtistInfo(Number(route.params.id));
+    const data = await artistService.getFullArtistInfoWithDiscography(Number(route.params.id));
 
     setTitle(`Spotify – ${data.profile.artistName}: дискография`);
 

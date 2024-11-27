@@ -3,11 +3,15 @@ import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/Bas
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
 import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
 import WithSubtree from "../helpers/WithSubtree.vue";
+
+defineProps<{
+  underline?: boolean,
+}>();
 </script>
 
 <template>
   <WithSubtree>
-    <BasicContextMenuItem underline>
+    <BasicContextMenuItem :underline>
       Добавить в плейлист
       <template #icon>
         <PlusIcon />

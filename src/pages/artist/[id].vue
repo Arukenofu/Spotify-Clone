@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {computed, inject, ref, watch} from "vue";
 import {useRoute} from 'vue-router';
-import {useMutation, useQuery} from "@tanstack/vue-query";
+import {useQuery} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import ArtistInfoHeader from "@/pageLayouts/artist.id/ArtistInfoHeader.vue";
 import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue";
 import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
-import MusicRow from "@/UI/Elements/MusicRow.vue";
+import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
 import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
@@ -18,6 +18,7 @@ import readableNumber from "@/shared/utils/format/readableNumber";
 import getDeclention from "@/shared/utils/getDeclention";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
+import SubscribeToArtistButton from "@/UI/Buttons/SubscribeToArtistButton.vue";
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -29,30 +30,13 @@ watch(() => route.params.id, () => {
 })
 
 const {data: artistInfo, isFetched, isFetching, isError, refetch} = useQuery({
-  queryKey: ['artistDetailed', route.params.id],
+  queryKey: ['artistFullInfo', route.params.id],
   queryFn: async () => {
-    const data = await artistService.getFullArtistInfo(Number(route.params.id));
+    const data = await artistService.getFullArtistInfoWithDiscography(Number(route.params.id));
 
     setTitle(`${data.profile.artistName} | Spotify`);
     
     return data;
-  }
-});
-
-const {mutate: toggleArtistSubscription} = useMutation({
-  mutationFn: async () => {
-    if (artistInfo.value?.isSubscribed === undefined) {
-      return;
-    }
-
-    const data = await artistService.toggleArtistSubscription(
-        artistInfo.value.isSubscribed,
-        Number(route.params.id)
-    );
-
-    if (data.message === 'OK') {
-      (artistInfo.value.isSubscribed as boolean) = !artistInfo.value.isSubscribed;
-    }
   }
 });
 
@@ -114,9 +98,11 @@ const isModal = ref<boolean>(false);
       @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0)"
     >
       <template #main-options>
-        <button class="subscription" @click="toggleArtistSubscription()">
-          {{artistInfo.isSubscribed ? 'Уже подписаны' : 'Подписаться'}}
-        </button>
+        <SubscribeToArtistButton
+          v-model="artistInfo.isSubscribed"
+          :artist-id="artistInfo.id"
+          class="subscribe"
+        />
       </template>
     </GeneralGradientSectionWithControls>
 
@@ -234,21 +220,8 @@ const isModal = ref<boolean>(false);
   .controls {
     padding: 6px 0;
 
-    .subscription {
-      font-size: .875rem;
-      font-weight: 700;
-      background: transparent;
-      border: 1px solid #7c7c7c;
-      border-radius: 500px;
-      padding: 4px 16px;
-      height: 32px;
-      cursor: pointer;
+    .subscribe {
       margin-right: var(--content-spacing);
-
-      &:hover {
-        transform: scale(1.04);
-        border: 1px solid var(--white);
-      }
     }
   }
 

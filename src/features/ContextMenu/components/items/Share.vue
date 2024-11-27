@@ -5,17 +5,15 @@ import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
 import WithSubtree from "@/features/ContextMenu/components/helpers/WithSubtree.vue";
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
 import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
-import {addToast} from "@/widgets/Toast";
 import type {Entities} from "@/services/types/Entities";
-
-type Type = Exclude<Entities, 'Track'>
+import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
 
 defineProps<{
   entityId: string | number;
-  type: Type;
+  type: Entities;
 }>();
 
-function localize(entity: Type) {
+function localize(entity: Entities) {
   if (entity === 'Playlist') {
     return 'плейлист'
   }
@@ -25,17 +23,13 @@ function localize(entity: Type) {
   if (entity === 'Album') {
     return 'альбом'
   }
+  if (entity === 'Track') {
+    return 'трек'
+  }
 }
 
-function copyLink(id: string | number, entity: Type) {
-  navigator.clipboard
-      .writeText(`${window.location.host}/${entity.toLowerCase()}/${id}`)
-      .then(() => {
-        addToast('Ссылка скопирована в буфер обмена');
-      })
-      .catch(() => {
-        addToast('Не удалось скопировать ссылку');
-      });
+function copyLink(id: string | number, entity: Entities) {
+  copyLinkToClipboard(`${window.location.host}/${entity.toLowerCase()}/${id}`);
 }
 </script>
 

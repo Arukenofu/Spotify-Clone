@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
+import {storeToRefs} from 'pinia';
 import {inject} from 'vue';
-import { router } from '@/app/router';
+import {router} from '@/app/router';
 import Range from '@/shared/components/Range.vue';
 import ShowQueue from '@/UI/Icons/MediaPlayerControls/ShowQueue.vue';
 import FullScreen from '@/UI/Icons/MediaPlayerControls/FullScreen.vue';
@@ -12,7 +12,7 @@ import VolumeSilent from '@/UI/Icons/MediaPlayerControls/VolumeSilent.vue';
 import NowPlaying from '@/UI/Icons/MediaPlayerControls/NowPlaying.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
-import { infoPanel } from '@/features/InfoPanel';
+import {infoPanel} from '@/features/InfoPanel';
 
 const musicStore = useMusicStore();
 const { audio, volume } = storeToRefs(musicStore);
@@ -68,6 +68,8 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
       <NowPlaying
         v-tooltip="'Экран «Сейчас играет»'"
         class="icon"
+        :class="currentPanelName === 'CurrentTrackInfo' && 'active'"
+        @click="setNewPanel('CurrentTrackInfo')"
       />
 
       <ShowText

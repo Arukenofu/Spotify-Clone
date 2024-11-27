@@ -54,7 +54,6 @@ onMounted(() => {
           is="main"
           ref="layout"
           v-model="layoutScrollY"
-          gap="0"
           scrollbar-width="12px"
           :allow-style-shadow="false"
         >
@@ -73,7 +72,6 @@ onMounted(() => {
           is="main"
           ref="layout"
           v-model="layoutScrollY"
-          gap="0"
           scrollbar-width="5px"
           :allow-style-shadow="false"
         >

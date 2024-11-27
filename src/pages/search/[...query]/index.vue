@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EntityCard from "@/UI/Elements/EntityCard.vue";
 import {useQuery} from "@tanstack/vue-query";
-import MusicRow from "@/UI/Elements/MusicRow.vue";
+import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";

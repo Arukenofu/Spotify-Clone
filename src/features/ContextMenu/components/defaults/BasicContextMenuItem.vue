@@ -85,6 +85,10 @@ const computedClasses = computed(() => {
   }
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 .active {
   .icon, span, .additionalSvg {
     color: var(--main-color);

@@ -12,7 +12,7 @@ defineEmits<{
 }>();
 
 defineProps<{
-  type: MedialibEntities
+  type: MedialibEntities,
 }>();
 </script>
 

@@ -17,7 +17,7 @@ const queryClient = useQueryClient();
 
   <Pin :id="id" type="Album" :is-pinned="isPinned" />
 
-  <AddToPlaylist />
+  <AddToPlaylist underline />
 
   <Share :entity-id :type />
 </template>
