@@ -1,16 +1,16 @@
 import {computed, shallowRef} from 'vue';
-import { defineStore } from 'pinia';
-import type { Track } from '@/services/types/Entities/Track';
-import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
+import {defineStore} from 'pinia';
+import type {Track} from '@/services/types/Entities/Track';
+import type {Playlist} from "@/services/types/Entities/Playlist";
 
 export default defineStore('usePlaylistStore', () => {
-  const currentPlaylistInfo = shallowRef<PlaylistInfoDossier | null>(
+  const currentPlaylistInfo = shallowRef<Playlist | null>(
     null
   );
 
   const currentQueue = shallowRef<Track[]>([]);
 
-  function setCurrentPlaylistInfo(playlist: PlaylistInfoDossier | null) {
+  function setCurrentPlaylistInfo(playlist: Playlist | null) {
     currentPlaylistInfo.value = playlist;
   }
 

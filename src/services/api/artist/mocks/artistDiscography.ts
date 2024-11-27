@@ -26,7 +26,7 @@ export const artistDiscography = {
             avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 2,
@@ -46,7 +46,7 @@ export const artistDiscography = {
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 3,
@@ -72,7 +72,7 @@ export const artistDiscography = {
             avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 4,
@@ -92,7 +92,7 @@ export const artistDiscography = {
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 5,
@@ -118,7 +118,7 @@ export const artistDiscography = {
             avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 6,
@@ -138,7 +138,7 @@ export const artistDiscography = {
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 7,
@@ -158,7 +158,7 @@ export const artistDiscography = {
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 8,
@@ -184,7 +184,7 @@ export const artistDiscography = {
             avatar: 'https://images.genius.com/fa191dad617f50d53659774740e3bc6d.500x500x1.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 9,
@@ -204,7 +204,7 @@ export const artistDiscography = {
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 10,
@@ -224,7 +224,7 @@ export const artistDiscography = {
             avatar: 'https://i1.sndcdn.com/avatars-000061514491-975jfo-t1080x1080.jpg',
             listenings: 12000,
             color: '#46ceb9',
-            isAdded: false
+            isAddedToFavorites: false
         }
     ],
         albums: [

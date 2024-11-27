@@ -20,7 +20,7 @@ class ApiSearchService {
     async searchEntity<T extends Entities>(query: string, entity: T) {
         return searchEntityResult(entity);
 
-        // return await api<SearchEntityResult<T>>('/api/search', {
+        // return await api<SearchEntityResult<T>>('/api/searchByEntity', {
         //     method: "POST",
         //     body: {
         //         query: query,
@@ -52,15 +52,15 @@ class ApiSearchService {
     }
 
     async removeFromSearchHistory(
-        id: number | string,
-        type: Exclude<Entities, 'Track'>
+        entityId: number | string,
+        entityType: Exclude<Entities, 'Track'>
     ) {
         return {message: 'OK'}
         // return await api<ResponseOK>('/api/search/history', {
         //     method: "DELETE",
         //     body: {
-        //         id,
-        //         type
+        //         entityId: entityId,
+        //         entityType: entityType
         //     }
         // });
     }

@@ -14,7 +14,7 @@ export interface SearchAllResult {
         image: string | null;
         color: string | null;
         type: Entities;
-        artists?: SimpleArtist[];
+        artists: SimpleArtist[];
     };
     bestResultTracks: SimpleTrack[];
     entities: {

@@ -24,7 +24,7 @@ export default {
                 name: 'artist',
                 type: 'Artist'
             }],
-            isAdded: false,
+            isAddedToFavorites: false,
             duration: 123,
         },
         {
@@ -37,7 +37,7 @@ export default {
                 name: 'artist',
                 type: 'Artist'
             }],
-            isAdded: false,
+            isAddedToFavorites: false,
             duration: 123,
         },
         {
@@ -50,7 +50,7 @@ export default {
                 name: 'artist',
                 type: 'Artist'
             }],
-            isAdded: false,
+            isAddedToFavorites: false,
             duration: 123,
         },
         {
@@ -63,7 +63,7 @@ export default {
                 name: 'artist',
                 type: 'Artist'
             }],
-            isAdded: false,
+            isAddedToFavorites: false,
             duration: 123,
         },
     ],

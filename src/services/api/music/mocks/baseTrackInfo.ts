@@ -25,7 +25,7 @@ export const baseTrackInfo = {
         listenings: 12000,
         album: {id: 1, name: 'Album Name'},
         color: '#333333',
-        isAdded: false
+        isAddedToFavorites: false
     },
     recommendedRelatedTracks: [
         {
@@ -53,7 +53,7 @@ export const baseTrackInfo = {
             listenings: 12000,
             album: {id: 1, name: 'Album Name'},
             color: '#333333',
-            isAdded: false
+            isAddedToFavorites: false
         },
         {
             id: 2,
@@ -73,7 +73,7 @@ export const baseTrackInfo = {
             listenings: 12000,
             album: {id: 1, name: 'Album Name'},
             color: '#333333',
-            isAdded: false
+            isAddedToFavorites: false
         }
     ],
     popularArtistsTracks: [
@@ -105,7 +105,7 @@ export const baseTrackInfo = {
                     listenings: 12000,
                     album: {id: 1, name: 'Album Name'},
                     color: '#333333',
-                    isAdded: false
+                    isAddedToFavorites: false
                 },
                 {
                     id: 2,
@@ -125,7 +125,7 @@ export const baseTrackInfo = {
                     listenings: 12000,
                     album: {id: 1, name: 'Album Name'},
                     color: '#333333',
-                    isAdded: false
+                    isAddedToFavorites: false
                 }
             ]
         },
@@ -157,7 +157,7 @@ export const baseTrackInfo = {
                     listenings: 12000,
                     album: {id: 1, name: 'Album Name'},
                     color: '#333333',
-                    isAdded: false
+                    isAddedToFavorites: false
                 },
                 {
                     id: 2,
@@ -177,7 +177,7 @@ export const baseTrackInfo = {
                     listenings: 12000,
                     album: {id: 1, name: 'Album Name'},
                     color: '#333333',
-                    isAdded: false
+                    isAddedToFavorites: false
                 }
             ]
         }

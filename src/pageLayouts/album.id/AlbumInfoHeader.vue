@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
-import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 import getDeclention from "../../shared/utils/getDeclention";
 import readableTime from "../../shared/utils/format/readableTime";
+import type {Playlist} from "@/services/types/Entities/Playlist";
 
 interface Props {
   image: string | null;
   mask: string | null;
   name: string;
-  creator: PlaylistInfoDossier['creators'],
+  creator: Playlist['creators'],
   tracksAmount: number;
   totalDuration: number;
 }

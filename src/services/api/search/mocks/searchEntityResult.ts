@@ -43,7 +43,7 @@ const tracks: Track[] = [
         listenings: 12000,
         album: {id: 1, name: 'Album Name'},
         color: '#333333',
-        isAdded: false,
+        isAddedToFavorites: false,
     }
 ];
 

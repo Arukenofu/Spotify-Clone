@@ -5,7 +5,7 @@ import {artistDiscography} from "@/services/api/artist/mocks/artistDiscography";
 
 class ApiArtistService {
     async getArtistInfo(artistId: string | number) {
-        // GET /api/artist/:id/info
+        // GET /api/artist/:id
         return artistInfo;
     }
 
@@ -26,9 +26,10 @@ class ApiArtistService {
 
     async toggleArtistSubscription(state: boolean, artistId: string | number) {
         const endpoint = state ? 'unsubscribe' : 'subscribe';
+        const method = state ? 'DELETE' : 'POST';
 
         return await api<ResponseOK>(`/api/artist/${endpoint}`, {
-            method: 'POST',
+            method: method,
             body: {
                 artistId: artistId,
             },

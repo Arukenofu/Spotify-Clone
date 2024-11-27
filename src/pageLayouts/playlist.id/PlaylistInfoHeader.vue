@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import readableTime from "../../shared/utils/format/readableTime";
 import getCommaSeparatedString from "../../shared/utils/format/getCommaSeparatedString";
-import type {PlaylistInfoDossier} from "@/services/api/music/types/PlaylistInfo";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
+import type {Playlist} from "@/services/types/Entities/Playlist";
 
-interface Props extends PlaylistInfoDossier {
+interface Props extends Playlist {
 }
 
 defineProps<Props>();

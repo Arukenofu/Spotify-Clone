@@ -6,7 +6,7 @@ export interface SimpleTrack {
   image: string | null;
   color: string | null;
   artists: SimpleArtist[];
-  isAdded: boolean;
+  isAddedToFavorites: boolean;
   duration: number;
 }
 
@@ -20,7 +20,7 @@ export interface Track {
   uploadedDate: string;
   duration: number;
   listenings: number;
-  isAdded: boolean;
+  isAddedToFavorites: boolean;
   album: {
     id: number | string;
     name: string;

@@ -16,7 +16,7 @@ const store = useCurrentMusicStore();
 <template>
   <BasicContextMenuView class="contextmenu">
     <AddToPlaylist />
-    <AddToFavouriteTracksState :state="store.currentAudioData!.isAdded" />
+    <AddToFavouriteTracksState :state="store.currentAudioData!.isAddedToFavorites" />
     <AddToQueue underline />
     <ToTheArtist :artists="store.currentAudioData!.artists" />
     <ToTheAlbum :to="`/album/${store.currentAudioData!.album.id}`" underline />

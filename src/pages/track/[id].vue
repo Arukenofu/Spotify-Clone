@@ -104,7 +104,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
       <template #main-options>
         <AddToMediaLib
           class="add"
-          :state="trackInfo.trackInfoDossier.isAdded"
+          :state="trackInfo.trackInfoDossier.isAddedToFavorites"
         />
       </template>
     </GeneralGradientSectionWithControls>

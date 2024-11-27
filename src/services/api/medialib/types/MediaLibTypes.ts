@@ -12,7 +12,6 @@ export interface MediaLibBase<T extends MedialibEntities> {
   isPinned: boolean;
 }
 
-
 interface Playlist extends MediaLibBase<'Playlist'>{
   owner: SimpleUser;
   addedDateTime: string;

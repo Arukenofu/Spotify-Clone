@@ -7,12 +7,13 @@ import Table from '@/pageLayouts/playlist.id/Elements/Table.vue';
 import useCachedRef from '@/shared/composables/useCachedRef';
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
-import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
 import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
+import type {Playlist} from "@/services/types/Entities/Playlist";
+import type {Track} from "@/services/types/Entities/Track";
 
 interface Props {
-  queue: PlaylistInfoQueue[],
-  dossier: PlaylistInfoDossier
+  queue: Track[],
+  dossier: Playlist
 }
 
 const {dossier, queue} = defineProps<Props>();

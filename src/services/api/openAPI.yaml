@@ -7,216 +7,100 @@ info:
 servers:
   - url: https://localhost:5000/
 
-tags:
-  - name: music
-  - name: artist
-  - name: recommendations
-  - name: auth
-  - name: search
-
+#tags:
+#  - name: music
+#  - name: artist
+#  - name: recommendations
+#  - name: auth
+#  - name: search
 paths:
-  /api/music/playlist/{id}:
-    get:
-      tags:
-        - music
-      summary: 'Получить полные данные о плейлисте/альбоме и его очереди'
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Получено все данные'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  playlistInfoDossier:
-                    $ref: '#/components/schemas/Playlist'
-                  playlistQueue:
-                    $ref: '#/components/schemas/Track'
-
-  /api/music/track/{id}:
-    get:
-      tags:
-        - music
-      summary: 'Получить полные данные о треке а также рекомендации'
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Получено все данные'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  trackInfoDossier:
-                    description: 'Информация о текущей песне'
-                    $ref: '#/components/schemas/Track'
-                  recommendedRelatedTracks:
-                    type: array
-                    description: 'Похожие или связанные песни до 5'
-                    items:
-                      $ref: '#/components/schemas/Track'
-                  popularArtistsTracks:
-                    type: array
-                    description: 'Возвращает популярные песни текущ(их/его) артист(ов/а) которые исполнили его до 10'
-                    items:
-                      properties:
-                        artistName:
-                          type: string
-                        trackList:
-                          type: array
-                          items:
-                            $ref: '#/components/schemas/Track'
-                  otherInfo:
-                    type: array
-                    description: 'Уже остальные рекомендации (типо: похожие артисты, альбомы текущего артиста, поклонникам тоже нравится) до 9'
-                    list:
-                      $ref: '#/components/schemas/Recommendation'
-
-  /api/artist/{id}:
-    get:
-      tags:
-        - artist
-      summary: 'Получить полные данные об исполнителе и его дискографии'
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Получено все данные'
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/Artist'
-                  - type: object
-                    properties:
-                      discography:
-                        type: object
-                        properties:
-                          albums:
-                            type: array
-                            description: 'возвращает до 9 альбомов исполнителя'
-                            items:
-                              $ref: '#/components/schemas/Album'
-                          popularTracks:
-                            type: array
-                            description: 'возвращает до 10 популярных треков исполнителя'
-                            items:
-                              $ref: '#/components/schemas/Track'
-                          recommended:
-                            type: array
-                            description: 'возвращает массив рекомендации у которых значение list может иметь длину только до 9'
-                            items:
-                              $ref: '#/components/schemas/Recommendation'
-
-  /api/artist/subscribe:
-    post:
-      tags:
-        - artist
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                artistId:
-                  type: string
-              required:
-                - artistId
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'OK'
-
-  /api/artist/unsubscribe:
-    post:
-      tags:
-        - artist
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                artistId:
-                  type: string
-              required:
-                - artistId
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'OK'
-
+  # recommendations
   /api/recommendations:
     get:
       tags:
         - recommendations
-    description: 'Рекомендации главной страницы'
-    responses:
-      '200':
-        description: 'Получено все данные'
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Recommendation'
-
-  /api/recommendations/mixes:
-    get:
-      tags:
-        - recommendations
-      description: 'Предлагаемые миксы в главной странице'
+      summary: Получить рекомендации
+      description: Возвращает список рекомендаций.
       responses:
         '200':
-          description: 'Получены все данные'
+          description: Успешный ответ
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  schema:
-                    description: 'Миксы которые не имеют фото или цвет не должны отправляться. Длина от 4 до 6.'
-                    type: object
-                    properties:
-                      playlistId:
-                        type: string
-                      name:
-                        type: string
-                      image:
-                        type: string
-                      color:
-                        type: string
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Уникальный идентификатор рекомендации
+                    naming:
+                      type: string
+                      nullable: true
+                      description: Название рекомендации
+                    list:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            description: Уникальный идентификатор элемента
+                          name:
+                            type: string
+                            description: Название элемента
+                          image:
+                            type: string
+                            nullable: true
+                            description: URL изображения
+                          description:
+                            type: string
+                            nullable: true
+                            description: Описание элемента
+                          color:
+                            type: string
+                            nullable: true
+                            description: Цвет, связанный с элементом
+                          type:
+                            type: string
+                            enum:
+                              - Playlist
+                              - User
+                              - Artist
+                              - Album
+                            description: Тип элемента (исключая Track)
 
+  /api/recommendations/mixes:
+    get:
+      tags:
+        - recommendations
+      summary: Получить миксы рекомендаций
+      description: Возвращает список миксов рекомендаций.
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    playlistId:
+                      type: integer
+                      description: Идентификатор плейлиста
+                    name:
+                      type: string
+                      description: Название микса
+                    image:
+                      type: string
+                      nullable: true
+                      description: URL изображения микса
+                    color:
+                      type: string
+                      description: Цвет микса
+
+  # auth
   /api/auth/login:
     post:
       tags:
@@ -272,7 +156,6 @@ paths:
                   message:
                     type: string
                     example: 'Неправильный формат ${property}'
-
 
   /api/auth/register:
     post:
@@ -356,8 +239,6 @@ paths:
                   message:
                     type: string
                     example: 'Поле ${key} имеет неправильный формат'
-
-
 
   /api/auth/checkEmail:
     post:
@@ -465,8 +346,383 @@ paths:
                     description: Error message explaining which checks failed
                     example: "Своё отдельное сообщение"
 
+  # artist
+  /api/artist/subscribe:
+    post:
+      tags:
+        - artist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artistId:
+                  type: string
+              required:
+                - artistId
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'OK'
+
+  /api/artist/unsubscribe:
+    delete:
+      tags:
+        - artist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artistId:
+                  type: string
+              required:
+                - artistId
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'OK'
+
+  /api/artist/{id}:
+    get:
+      tags:
+        - artist
+      summary: Получить информацию об артисте
+      description: Возвращает подробную информацию об артисте по его идентификатору.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор артиста
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'
+        '404':
+          description: Артист не найден
+
+  /api/artist/{id}/discography:
+    get:
+      tags:
+        - artist
+      summary: Получить дискографию артиста
+      description: Возвращает дискографию артиста, включая альбомы, популярные треки и рекомендации.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор артиста
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discography'
+        '404':
+          description: Артист не найден
+
+  # music
+  /api/music/playlist/{id}:
+    get:
+      tags:
+        - music
+      summary: Получить информацию о плейлисте
+      description: Возвращает информацию о плейлисте, включая данные плейлиста и очередь треков.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор плейлиста
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playlistInfoDossier:
+                    $ref: '#/components/schemas/Playlist'
+                    description: Данные о плейлисте
+                  playlistQueue:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Track'
+                    description: Очередь треков в плейлисте
+        '404':
+          description: Плейлист не найден
+
+  /api/music/track/{id}:
+    get:
+      tags:
+        - music
+      summary: Получить информацию о треке
+      description: Возвращает информацию о треке, рекомендованные связанные треки, популярные треки артистов и другие рекомендации.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор трека
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trackInfoDossier:
+                    $ref: '#/components/schemas/Track'
+                    description: Данные о треке
+                  recommendedRelatedTracks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Track'
+                    description: Рекомендованные связанные треки
+                  popularArtistsTracks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        artistName:
+                          type: string
+                          description: Имя артиста
+                        trackList:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Track'
+                          description: Список популярных треков артиста
+                  otherInfo:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Recommendation'
+                    description: Другие рекомендации для трека
+        '404':
+          description: Трек не найден
+
+  # search
+  /api/search:
+    post:
+      tags:
+        - search
+      summary: Поиск по запросу
+      description: Выполняет поиск по запросу и возвращает лучшие результаты и связанные сущности.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Поисковый запрос
+                  example: "rock music"
+      responses:
+        '200':
+          description: Успешный ответ с результатами поиска
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bestResult:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Уникальный идентификатор лучшего результата
+                      title:
+                        type: string
+                        description: Название лучшего результата
+                      image:
+                        type: string
+                        nullable: true
+                        description: Изображение лучшего результата
+                      color:
+                        type: string
+                        nullable: true
+                        description: Цвет лучшего результата
+                      type:
+                        $ref: '#/components/schemas/Entities'
+                        description: Тип лучшего результата (например, Playlist, Artist, etc.)
+                      artists:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SimpleArtist'
+                        description: Список артистов для лучшего результата
+                  bestResultTracks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimpleTrack'
+                    description: Список лучших треков, соответствующих запросу
+                  entities:
+                    type: object
+                    properties:
+                      playlists:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/RecommendationItem'
+                        description: Рекомендации для плейлистов
+                      artists:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/RecommendationItem'
+                        description: Рекомендации для артистов
+                      albums:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/RecommendationItem'
+                        description: Рекомендации для альбомов
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/RecommendationItem'
+                        description: Рекомендации для пользователей
+        '400':
+          description: Некорректный запрос
+
+  /api/searchByEntity:
+    post:
+      tags:
+        - search
+      summary: Поиск по сущности
+      description: Выполняет поиск по запросу и возвращает данные в зависимости от указанной сущности.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Поисковый запрос
+                  example: "Imagine Dragons"
+                entity:
+                  $ref: '#/components/schemas/Entities'
+                  description: Тип сущности, по которой производится поиск
+      responses:
+        '200':
+          description: Успешный ответ с результатами поиска
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    description: Если `entity` равно `Track`, возвращает список треков
+                    items:
+                      $ref: '#/components/schemas/Track'
+                  - type: array
+                    description: В остальных случаях возвращает список RecommendationItem
+                    items:
+                      $ref: '#/components/schemas/RecommendationItem'
+        '400':
+          description: Некорректный запрос
+
+  # history
+  /api/search/history:
+    get:
+      tags:
+        - history
+      summary: Получить историю поиска
+      description: Возвращает список объектов из истории поиска.
+      responses:
+        '200':
+          description: Успешный ответ с историей поиска
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecommendationItem'
+    post:
+      tags:
+        - history
+      summary: Добавить элемент в историю поиска
+      description: Добавляет новый элемент в историю поиска на основе его идентификатора и типа.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entityId:
+                  type: string
+                  description: Уникальный идентификатор сущности
+                  example: "12345"
+                entityType:
+                  $ref: '#/components/schemas/Entities'
+                  description: Тип сущности
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseOK'
+    delete:
+      tags:
+        - history
+      summary: Удалить элемент из истории поиска
+      description: Удаляет элемент из истории поиска на основе его идентификатора и типа.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                entityId:
+                  type: string
+                  description: Уникальный идентификатор сущности
+                  example: "12345"
+                entityType:
+                  $ref: '#/components/schemas/Entities'
+                  description: Тип сущности
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseOK'
+
+  /api/search/history/clean:
+    delete:
+      tags:
+        - history
+      summary: Очистить всю историю поиска
+      description: Удаляет все элементы из истории поиска.
+      responses:
+        '200':
+          $ref: '#/components/responses/ResponseOK'
+
+
 components:
   schemas:
+    # Entities
     Entities:
       type: string
       enum:
@@ -482,327 +738,331 @@ components:
       properties:
         id:
           type: string
-          example: "1"
+          description: Уникальный идентификатор артиста
         name:
           type: string
-          example: "Artist Name"
+          description: Имя артиста
         avatar:
           type: string
           nullable: true
-          example: "https://example.com/avatar.jpg"
+          description: URL аватара артиста
         type:
           type: string
-          enum: [ 'Artist' ]
-          example: "Artist"
-      required:
-        - id
-        - name
-        - avatar
-        - type
-
-    SimpleUser:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "2"
-        name:
-          type: string
-          example: "User Name"
-        avatar:
-          type: string
-          nullable: true
-          example: "https://example.com/avatar.jpg"
-        type:
-          type: string
-          enum: [ 'User' ]
-          example: "User"
-      required:
-        - id
-        - name
-        - avatar
-        - type
-
-    Album:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "3"
-        name:
-          type: string
-          example: "Album Name"
-        image:
-          type: string
-          nullable: true
-          example: "https://example.com/image.jpg"
-        color:
-          type: string
-          nullable: true
-          example: "#ff5733"
-        description:
-          type: string
-          nullable: true
-          example: "A great album"
-        info:
-          type: object
-          properties:
-            uploadedDate:
-              type: string
-              format: date-time
-              example: "2023-05-16T00:00:00Z"
-            savedQuantity:
-              type: integer
-              example: 1000
-            tracksAmount:
-              type: integer
-              example: 10
-            totalDuration:
-              type: integer
-              example: 3600
-          required:
-            - uploadedDate
-            - savedQuantity
-            - tracksAmount
-            - totalDuration
-        creators:
-          type: array
-          items:
-            $ref: '#/components/schemas/SimpleArtist'
-        isAdded:
-          type: boolean
-          example: true
-      required:
-        - id
-        - name
-        - image
-        - color
-        - description
-        - info
-        - creators
-        - isAdded
+          enum:
+            - Artist
+          description: Тип сущности (всегда 'Artist')э
 
     Artist:
       type: object
       properties:
         id:
           type: string
-          example: "4"
+          description: Уникальный идентификатор артиста
         profile:
           type: object
           properties:
             artistName:
               type: string
-              example: "Artist Name"
+              description: Имя артиста
             avatar:
               type: string
               nullable: true
-              example: "https://example.com/avatar.jpg"
+              description: URL аватара артиста
             coverImage:
               type: string
               nullable: true
-              example: "https://example.com/cover.jpg"
+              description: URL изображения обложки артиста
             color:
               type: string
-              example: "#ff5733"
+              description: Основной цвет профиля артиста
             description:
               type: string
               nullable: true
-              example: "Artist description"
-          required:
-            - artistName
-            - avatar
-            - coverImage
-            - color
-            - description
+              description: Описание артиста
         listenersQuantityPerMonth:
           type: integer
-          example: 5000
+          description: Количество слушателей в месяц
         subscriptionsTotalQuantity:
           type: integer
-          example: 1200
+          description: Общее количество подписок
         cityPlaybackData:
           type: array
+          description: Данные о воспроизведениях по городам
           items:
             type: object
             properties:
               cityName:
                 type: string
-                example: "New York"
+                description: Название города
               countryShortName:
                 type: string
-                example: "US"
+                description: Короткое название страны
               listenersQuantity:
                 type: integer
-                example: 1000
+                description: Количество слушателей в городе
         isSubscribed:
           type: boolean
-          example: true
-      required:
-        - id
-        - profile
-        - listenersQuantityPerMonth
-        - subscriptionsTotalQuantity
-        - cityPlaybackData
-        - isSubscribed
+          description: Признак подписки на артиста
 
-    Track:
+    Album:
       type: object
       properties:
         id:
           type: string
-          example: "5"
+          description: Уникальный идентификатор альбома
         name:
           type: string
-          example: "Song Title"
-        artists:
-          type: array
-          items:
-            $ref: '#/components/schemas/SimpleArtist'
-        avatar:
+          description: Название альбома
+        image:
           type: string
           nullable: true
-          example: "https://example.com/song-avatar.jpg"
+          description: URL изображения альбома
         color:
           type: string
           nullable: true
-          example: "#ff5733"
-        url:
+          description: Основной цвет альбома
+        description:
           type: string
-          example: "https://example.com/song.mp3"
-        uploadedDate:
-          type: string
-          format: date-time
-          example: "2023-06-20T00:00:00Z"
-        duration:
-          type: integer
-          example: 240
-        listenings:
-          type: integer
-          example: 50000
-        albumId:
-          type: string
-          example: "3"
+          nullable: true
+          description: Описание альбома
+        info:
+          type: object
+          properties:
+            uploadedDate:
+              type: string
+              format: date
+              description: Дата загрузки альбома
+            savedQuantity:
+              type: integer
+              description: Количество сохранений альбома
+            tracksAmount:
+              type: integer
+              description: Количество треков в альбоме
+            totalDuration:
+              type: integer
+              description: Общая длительность альбома (в секундах)
+        creators:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleArtist'
+          description: Список создателей альбома
         isAdded:
           type: boolean
-          example: true
-      required:
-        - id
-        - name
-        - artists
-        - avatar
-        - color
-        - url
-        - uploadedDate
-        - duration
-        - listenings
-        - albumId
-        - isAdded
+          description: Признак добавления альбома в библиотеку
 
     Playlist:
       type: object
       properties:
         id:
           type: string
-          example: "6"
+          description: Уникальный идентификатор плейлиста
         name:
           type: string
-          example: "My Playlist"
+          description: Название плейлиста
         image:
           type: string
           nullable: true
-          example: "https://example.com/playlist.jpg"
+          description: URL изображения плейлиста
         color:
           type: string
           nullable: true
-          example: "#ff5733"
+          description: Основной цвет плейлиста
         description:
           type: string
           nullable: true
-          example: "A collection of my favorite songs"
+          description: Описание плейлиста
         info:
           type: object
           properties:
             uploadedDate:
               type: string
-              format: date-time
-              example: "2023-07-01T00:00:00Z"
+              format: date
+              description: Дата загрузки плейлиста
             savedQuantity:
               type: integer
-              example: 500
+              description: Количество сохранений плейлиста
             tracksAmount:
               type: integer
-              example: 20
+              description: Количество треков в плейлисте
             totalDuration:
               type: integer
-              example: 4800
-          required:
-            - uploadedDate
-            - savedQuantity
-            - tracksAmount
-            - totalDuration
+              description: Общая длительность плейлиста (в секундах)
         creators:
           type: array
           items:
-            anyOf:
+            oneOf:
               - $ref: '#/components/schemas/SimpleArtist'
               - $ref: '#/components/schemas/SimpleUser'
+          description: Список создателей плейлиста
         isAdded:
           type: boolean
-          example: true
-      required:
-        - id
-        - name
-        - image
-        - color
-        - description
-        - info
-        - creators
-        - isAdded
+          description: Признак добавления плейлиста в библиотеку
+
+    SimpleTrack:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Уникальный идентификатор трека
+        name:
+          type: string
+          description: Название трека
+        image:
+          type: string
+          nullable: true
+          description: URL изображения трека
+        color:
+          type: string
+          nullable: true
+          description: Основной цвет трека
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleArtist'
+          description: Список артистов трека
+        isAddedToFavorites:
+          type: boolean
+          description: Признак добавления трека в избранное
+        duration:
+          type: integer
+          description: Длительность трека (в секундах)
+
+    Track:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Уникальный идентификатор трека
+        name:
+          type: string
+          description: Название трека
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleArtist'
+          description: Список артистов трека
+        avatar:
+          type: string
+          nullable: true
+          description: URL аватара трека
+        color:
+          type: string
+          nullable: true
+          description: Основной цвет трека
+        url:
+          type: string
+          description: URL аудиофайла трека
+        uploadedDate:
+          type: string
+          format: date
+          description: Дата загрузки трека
+        duration:
+          type: integer
+          description: Длительность трека (в секундах)
+        listenings:
+          type: integer
+          description: Количество прослушиваний трека
+        isAddedToFavorites:
+          type: boolean
+          description: Признак добавления трека в избранное
+        album:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Уникальный идентификатор альбома
+            name:
+              type: string
+              description: Название альбома
+
+    SimpleUser:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Уникальный идентификатор пользователя
+        name:
+          type: string
+          description: Имя пользователя
+        avatar:
+          type: string
+          nullable: true
+          description: URL аватара пользователя
+        type:
+          type: string
+          enum:
+            - User
+          description: Тип сущности (всегда 'User')
 
     RecommendationItem:
       type: object
       properties:
         id:
-          type: integer
-          example: 1
+          type: string
+          description: Уникальный идентификатор элемента рекомендации
         name:
           type: string
-          example: "Recommended Item Name"
-        imageUrl:
+          description: Название элемента рекомендации
+        image:
           type: string
           nullable: true
-          example: "https://example.com/image.jpg"
+          description: URL изображения элемента
         description:
           type: string
           nullable: true
-          example: "A brief description of the item."
+          description: Описание элемента
         color:
           type: string
           nullable: true
-          example: "#ff5733"
+          description: Цвет, связанный с элементом
         type:
           $ref: '#/components/schemas/Entities'
-      required:
-        - id
-        - name
-        - type
+          description: Тип элемента рекомендации (без 'Track')
 
     Recommendation:
       type: object
       properties:
         id:
           type: string
-          example: "2"
+          description: Уникальный идентификатор рекомендации
         naming:
           type: string
           nullable: true
-          example: "My Recommendations"
+          description: Название рекомендации
         list:
           type: array
           items:
             $ref: '#/components/schemas/RecommendationItem'
-      required:
-        - id
-        - naming
-        - list
+          description: Список элементов, входящих в рекомендацию
+
+    Discography:
+      type: object
+      properties:
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+          description: Список альбомов
+        popularTracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Track'
+          description: Список популярных треков
+        recommended:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recommendation'
+          description: Список рекомендованных элементов
+
+  responses:
+    ResponseOK:
+      description: Успешный ответ
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: OK
+                description: Сообщение о статусе операции

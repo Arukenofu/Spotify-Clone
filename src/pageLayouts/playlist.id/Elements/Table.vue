@@ -3,9 +3,10 @@ import type {Ref} from 'vue';
 import {computed, inject, onMounted, onUnmounted, ref} from 'vue';
 import MusicTableRow from '@/pageLayouts/playlist.id/Elements/MusicTableRow.vue';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
-import type {PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
+import type {Track} from "@/services/types/Entities/Track";
+import type {Playlist} from "@/services/types/Entities/Playlist";
 
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
@@ -59,8 +60,8 @@ const computeGridLines = computed(() => {
 
 defineProps<{
   format: 'Компактный'| 'Список';
-  queue: PlaylistInfoQueue[],
-  dossier: PlaylistInfoDossier
+  queue: Track[],
+  dossier: Playlist
 }>();
 
 const currentMusicStore = useCurrentMusicStore();

@@ -1,4 +1,4 @@
-import { storeToRefs } from 'pinia';
+import {storeToRefs} from 'pinia';
 
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
@@ -7,8 +7,9 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 import musicInfoService from "@/services/api/music/apiMusicService";
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import setTitle from '@/shared/utils/setTitle';
-import type { Track } from '@/services/types/Entities/Track';
-import type {PlaylistInfo, PlaylistInfoDossier, PlaylistInfoQueue} from "@/services/api/music/types/PlaylistInfo";
+import type {Track} from '@/services/types/Entities/Track';
+import type {PlaylistInfo} from "@/services/api/music/types/PlaylistInfo";
+import type {Playlist} from "@/services/types/Entities/Playlist";
 
 interface LoadPlaylistOptions {
   musicId?: number;
@@ -179,7 +180,7 @@ export default function () {
     return musicId === currentAudioId.value;
   }
 
-  function isThisPlaylist(playlistId: PlaylistInfoDossier['id'] | null, playing: boolean = false) {
+  function isThisPlaylist(playlistId: Playlist['id'] | null, playing: boolean = false) {
     if (playing && !isPlaying.value || !currentPlaylistInfo.value) {
       return false;
     }
@@ -187,7 +188,7 @@ export default function () {
     return playlistId === currentPlaylistInfo.value.id;
   }
 
-  function isThisPlaylistAndMusic(musicId: string | number | null, playlistId: PlaylistInfoDossier['id'] | null, playing: boolean = false) {
+  function isThisPlaylistAndMusic(musicId: string | number | null, playlistId: Playlist['id'] | null, playing: boolean = false) {
     if (playing && !isPlaying.value) {
       return false;
     }
@@ -195,8 +196,8 @@ export default function () {
     return isThisMusic(musicId) && isThisPlaylist(playlistId);
   }
 
-  function createCustomPlaylist(id: string, queue: PlaylistInfoQueue[], index: number = 0) {
-    const dossier: PlaylistInfoDossier = {
+  function createCustomPlaylist(id: string, queue: Track[], index: number = 0) {
+    const dossier: Playlist = {
       id: id,
       name: '',
       image: null,
