@@ -9,7 +9,7 @@ defineProps<BaseItemProps & {
 </script>
 
 <template>
-  <BasicContextMenuItem>
+  <BasicContextMenuItem v-bind="$props">
     {{state ? 'Удалить из профиля' : 'Добавить в профиль'}}
     <template #icon>
       <RoundAvatarIcon />

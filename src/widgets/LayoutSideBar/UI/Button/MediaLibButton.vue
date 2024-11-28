@@ -5,10 +5,10 @@ import PlusIcon from '@/UI/Icons/Shared/PlusIcon.vue';
 import ArrowIcon from '@/UI/Icons/Shared/ArrowIcon.vue';
 import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue';
-import {ContextMenu} from "@/features/ContextMenu/";
 import defaultWidth from '@/widgets/LayoutSideBar/constants/defaultWidth';
 import max from '@/widgets/LayoutSideBar/constants/max';
 import {useSidebarWidthStore} from '@/features/MedialibSidebar';
+import {Tippy} from "vue-tippy";
 
 const { isMinimized, currentWidth } = useSidebarWidthStore();
 
@@ -36,7 +36,7 @@ function toggleWidth() {
   }
 }
 
-const tooltip= computed(() => {
+const tooltip = computed(() => {
   const placement = isMinimized.value ? 'right' : 'top'
   const content = isMinimized.value ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку';
 
@@ -66,9 +66,11 @@ const tooltip= computed(() => {
       v-if="!isMinimized"
       class="other-controls"
     >
-      <ContextMenu
+      <Tippy
+        theme="context"
         trigger="click"
         placement="bottom-end"
+        interactive
       >
         <RoundButton
           v-tooltip="'Создать плейлист или папку'"
@@ -77,10 +79,10 @@ const tooltip= computed(() => {
           <PlusIcon class="icon" />
         </RoundButton>
 
-        <template #menu>
-          <CreatePlaylistContextMenu />
+        <template #content="{hide}">
+          <CreatePlaylistContextMenu @click="hide()" />
         </template>
-      </ContextMenu>
+      </Tippy>
 
       <RoundButton
         v-tooltip="currentWidth < 450 ? 'Развернуть' : 'Свернуть'"

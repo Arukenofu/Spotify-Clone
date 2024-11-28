@@ -12,29 +12,29 @@ export interface MediaLibBase<T extends MedialibEntities> {
   isPinned: boolean;
 }
 
-interface Playlist extends MediaLibBase<'Playlist'>{
+export interface MedialibPlaylist extends MediaLibBase<'Playlist'>{
   owner: SimpleUser;
   addedDateTime: string;
   playbackDateTime: string;
 }
 
-interface Artist extends MediaLibBase<'Artist'>{
+export interface MedialibArtist extends MediaLibBase<'Artist'>{
   addedDateTime: string;
 }
 
-interface Album extends MediaLibBase<'Album'>{
+export interface MedialibAlbum extends MediaLibBase<'Album'>{
   owner: SimpleUser;
   addedDateTime: string;
   playbackDateTime: string;
 }
 
-interface Folder extends MediaLibBase<'Folder'>{
+export interface MedialibFolder extends MediaLibBase<'Folder'>{
   itemsCount: number;
   addedDateTime: string;
 }
 
-interface Collection extends MediaLibBase<'Collection'>{
+export interface MedialibCollection extends MediaLibBase<'Collection'>{
   itemsCount: number;
 }
 
-export type MediaLibTypes = Playlist | Artist | Album | Folder | Collection;
+export type MediaLibTypes = MedialibPlaylist | MedialibArtist | MedialibAlbum | MedialibFolder | MedialibCollection;

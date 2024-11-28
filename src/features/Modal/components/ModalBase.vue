@@ -1,15 +1,15 @@
 <script setup lang="ts">
-defineProps<{
-  show: boolean
-}>()
+import type {ModalBaseProps} from "@/features/Modal/types/ModalBaseProps";
+
+const {useTransition = true} = defineProps<ModalBaseProps>()
 defineEmits<{
   close: []
 }>()
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="modal-background" appear>
+  <Teleport :disabled="disableTeleport" to="body">
+    <Transition :name="useTransition ? 'modal-background' : ''" appear>
       <div v-if="show" class="modal-background" @click.self="$emit('close')">
         <slot />
       </div>

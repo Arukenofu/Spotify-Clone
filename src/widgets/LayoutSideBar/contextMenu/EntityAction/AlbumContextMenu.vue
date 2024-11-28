@@ -13,7 +13,7 @@ const queryClient = useQueryClient();
 </script>
 
 <template>
-  <AddToMedialibState state underline @click="removeEntityFromMedialib(id, queryClient, type)" />
+  <AddToMedialibState state underline @click="removeEntityFromMedialib($props, queryClient)" />
 
   <Pin :id="id" type="Album" :is-pinned="isPinned" />
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import FormInput from '@/UI/Form/FormInput.vue';
-import FormError from '@/UI/Form/FormError.vue';
+import FormInput from '@/UI/Form/AuthForm/FormInput.vue';
+import FormError from '@/UI/Form/AuthForm/FormError.vue';
 
 interface Props {
   error?: any;

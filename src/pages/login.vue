@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {reactive} from 'vue';
 import Logo from '@/UI/Icons/Shared/Logo.vue';
-import FormLabel from '@/UI/Form/FormLabel.vue';
-import FormInput from '@/UI/Form/FormInput.vue';
-import FormCheckboxIOS from '@/UI/Form/FormCheckboxIOS.vue';
-import FormButton from '@/UI/Form/FormButton.vue';
+import FormLabel from '@/UI/Form/AuthForm/FormLabel.vue';
+import FormInput from '@/UI/Form/AuthForm/FormInput.vue';
+import FormCheckboxIOS from '@/UI/Form/AuthForm/FormCheckboxIOS.vue';
+import FormButton from '@/UI/Form/AuthForm/FormButton.vue';
 import ErrorIcon from '@/UI/Icons/Shared/ErrorIcon.vue';
-import FormError from '@/UI/Form/FormError.vue';
+import FormError from '@/UI/Form/AuthForm/FormError.vue';
 import setTitle from '@/shared/utils/setTitle';
 import {router} from '@/app/router';
 import {useMutation} from '@tanstack/vue-query';

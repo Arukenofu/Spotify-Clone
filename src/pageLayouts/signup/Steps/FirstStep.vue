@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {computed, inject, reactive, ref} from 'vue';
 
-import FormLabel from '@/UI/Form/FormLabel.vue';
-import FormInput from '@/UI/Form/FormInput.vue';
-import FormButton from '@/UI/Form/FormButton.vue';
+import FormLabel from '@/UI/Form/AuthForm/FormLabel.vue';
+import FormInput from '@/UI/Form/AuthForm/FormInput.vue';
+import FormButton from '@/UI/Form/AuthForm/FormButton.vue';
 
 import type {FirstStepForm} from '@/pageLayouts/signup/types/form';
 import Pin from '@/UI/Icons/Shared/RoundCheckIcon.vue';

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {ConfirmationModal, Modal} from "@/features/Modal";
 import {ref} from "vue";
-import type {MedialibEntities} from "@/services/api/medialib/types/MediaLibTypes";
 import localizeEntities from "@/services/utils/localizeEntities";
+import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
+import type {Entities} from "@/services/types/Entities";
 
 const model = ref(true);
 
@@ -11,13 +12,11 @@ defineEmits<{
   confirm: [];
 }>();
 
-defineProps<{
-  type: MedialibEntities,
-}>();
+defineProps<EntityActionContextMenuProps>();
 </script>
 
 <template>
-  <Modal v-model="model" @close="$emit('close')">
+  <Modal v-model="model" disable-teleport @close="$emit('close')">
     <ConfirmationModal
       @on-confirm="$emit('confirm')"
       @on-cancel="$emit('close')"
@@ -31,9 +30,16 @@ defineProps<{
         </template>
       </template>
 
-      <template v-if="type !== 'Folder'" #body>
+      <template v-if="type === 'Playlist'" #body>
+        Контент (<b>{{name}}</b>) будет удалён из твоей медиатеки
+      </template>
+
+      <template v-else-if="type === 'Folder'" #body>
+      </template>
+
+      <template v-else #body>
         Мы удалим
-        {{type === 'Collection' ? 'плейлист' : localizeEntities(type)!.toLowerCase()}}
+        {{type === 'Collection' ? 'плейлист' : localizeEntities(type as Entities)!.toLowerCase()}}
         <b>из твоей медиатеки</b>, но его все еще можно будет найти в Spotify.
       </template>
     </ConfirmationModal>

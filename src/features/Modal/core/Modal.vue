@@ -15,10 +15,11 @@ onUnmounted(() => {
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     model.value = false;
+    emit('close');
   }
 }
 
-defineEmits<{
+const emit = defineEmits<{
   close: []
 }>()
 </script>

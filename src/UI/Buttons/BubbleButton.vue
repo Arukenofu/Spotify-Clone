@@ -1,12 +1,13 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    design?: 'default' | 'active' | 'none' | 'green';
-  }>(),
-  {
-    design: 'default'
-  }
-);
+import type {ButtonHTMLAttributes} from "vue";
+
+/* @vue-ignore */
+interface Props extends ButtonHTMLAttributes {
+}
+
+const {design = 'default'} = defineProps<Props & {
+  design?: 'default' | 'active' | 'none' | 'green';
+}>();
 </script>
 
 <template>

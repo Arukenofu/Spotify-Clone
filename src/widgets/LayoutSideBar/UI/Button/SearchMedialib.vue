@@ -7,17 +7,17 @@ import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
 
 import useDebounce from "@/shared/composables/useDebounce";
 
-const state = ref<boolean>(false);
+const isExpanded = ref<boolean>(false);
 const input = ref<HTMLInputElement>();
 
 const model = defineModel<string>({
   required: true
 });
 
-const inputValue = ref<string>('');
+const currentScopeInputData = ref<string>('');
 const {debounce, clear} = useDebounce();
 
-watch(inputValue, (value) => {
+watch(currentScopeInputData, (value) => {
   if (!value) {
     clear();
     model.value = '';
@@ -32,33 +32,41 @@ watch(inputValue, (value) => {
 function handleToggle() {
   input.value?.focus();
 
-  if (state.value) {
+  if (isExpanded.value) {
     return;
   }
 
-  state.value = !state.value;
+  isExpanded.value = !isExpanded.value;
 }
 
 function handleClose() {
-  state.value = false;
+  isExpanded.value = false;
   model.value = '';
-  inputValue.value = '';
+  currentScopeInputData.value = '';
+}
+
+function onUnFocus() {
+  if (currentScopeInputData.value) {
+    return;
+  }
+
+  isExpanded.value = false;
 }
 
 onUnmounted(() => {
   model.value = '';
-})
+});
 </script>
 
 <template>
   <div class="search-section">
     <div
-      v-if="state"
+      v-if="isExpanded"
       class="overlay"
       @click="handleToggle()"
     >
       <CloseIconRound
-        v-if="state && model.length"
+        v-if="isExpanded && model.length"
         class="icon"
         @click="handleClose()"
       />
@@ -74,9 +82,10 @@ onUnmounted(() => {
 
     <input
       ref="input"
-      v-model="inputValue"
-      :class="state && 'active'"
+      v-model="currentScopeInputData"
+      :class="isExpanded && 'active'"
       placeholder="Искать в медиатеке"
+      @focusout="onUnFocus()"
     >
   </div>
 </template>

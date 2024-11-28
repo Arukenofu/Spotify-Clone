@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import FormCheckbox from '@/UI/Form/FormCheckbox.vue';
-import FormButton from '@/UI/Form/FormButton.vue';
+import FormCheckbox from '@/UI/Form/AuthForm/FormCheckbox.vue';
+import FormButton from '@/UI/Form/AuthForm/FormButton.vue';
 import {inject, ref} from 'vue';
-import FormError from '@/UI/Form/FormError.vue';
+import FormError from '@/UI/Form/AuthForm/FormError.vue';
 import {router} from '@/app/router';
 import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';

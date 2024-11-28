@@ -17,5 +17,7 @@ export {default as AddToFavouriteTracksState} from './components/items/AddToFavo
 export {default as AddToQueue} from './components/items/AddToQueue.vue'
 export {default as ToTheArtist} from './components/items/ToTheArtist.vue'
 export {default as ToTheAlbum} from './components/items/ToTheAlbum.vue'
+export {default as Remove} from './components/items/Remove.vue'
+export {default as ChangeData} from './components/items/ChangeData.vue'
 
 export {default as ContextMenu} from './core/ContextMenu.vue';

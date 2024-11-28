@@ -2,7 +2,7 @@
 import readableNumber from "@/shared/utils/format/readableNumber";
 import getDeclention from "@/shared/utils/getDeclention";
 import type {Artist} from "@/services/types/Entities/Artist";
-import {DefaultModal, Modal} from "@/features/Modal";
+import {AppearModal, Modal} from "@/features/Modal";
 
 const model = defineModel<boolean>({
   required: true
@@ -20,7 +20,7 @@ defineProps<Props>();
 
 <template>
   <Modal v-model="model">
-    <DefaultModal @close="model = false">
+    <AppearModal @close="model = false">
       <div class="modal-content">
         <div class="left-clm">
           <div class="stat">
@@ -43,7 +43,7 @@ defineProps<Props>();
           </p>
         </div>
       </div>
-    </DefaultModal>
+    </AppearModal>
   </Modal>
 </template>
 

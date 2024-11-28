@@ -2,10 +2,12 @@
 import {
   AddToMedialibState,
   AddToProfileState,
+  ChangeData,
   CreateFolder,
   CreatePlaylist,
   ExcludeFromMusicPreferences,
   MoveTo,
+  Remove,
   Share
 } from "@/features/ContextMenu";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
@@ -21,9 +23,19 @@ const queryClient = useQueryClient();
 </script>
 
 <template>
-  <AddToProfileState state />
+  <AddToProfileState state underline />
 
-  <AddToMedialibState state underline @click="removeEntityFromMedialib(id, queryClient, type)" />
+  <AddToMedialibState
+    v-if="owner?.id && 'someones playlist'"
+    state underline
+    @click="removeEntityFromMedialib($props, queryClient)"
+  />
+
+  <template v-else>
+    <Remove />
+
+    <ChangeData underline />
+  </template>
 
   <CreatePlaylist />
 
