@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
 import type {Entities} from "@/services/types/Entities";
+import {Modal} from "@/features/Modal";
+import {ref} from "vue";
 
 interface Props {
   image: string | null;
@@ -8,14 +10,31 @@ interface Props {
   type: Entities;
 }
 
-const {mask = '#333333'} = defineProps<Props>();
+const {mask = '#333333', image} = defineProps<Props>();
+
+const isModalOpened = ref<boolean>(false);
+
+function toggleModal(): void {
+  if (!image) {
+    return;
+  }
+  isModalOpened.value = !isModalOpened.value;
+}
 </script>
 
 <template>
   <div class="info-content">
     <div class="info">
-      <div class="info-image">
-        <EntityAvatar1x1 class="img" :type="type" :image="image" />
+      <div
+        class="info-image"
+        :class="image && 'hoverable'"
+        @click="toggleModal()"
+      >
+        <EntityAvatar1x1
+          class="img"
+          :type="type"
+          :image="image"
+        />
       </div>
       <div class="text-info">
         <slot />
@@ -24,10 +43,23 @@ const {mask = '#333333'} = defineProps<Props>();
 
     <div class="bg" />
     <div class="bg-subbed" />
+
+    <Modal v-model="isModalOpened">
+      <Transition name="appear-animation" appear>
+        <div class="modal-inner">
+          <EntityAvatar1x1 class="image" :type="type" :image="image" />
+
+          <button class="button" @click="toggleModal">
+            Закрыть
+          </button>
+        </div>
+      </Transition>
+    </Modal>
   </div>
 </template>
 
 <style scoped lang="scss">
+@import "@/features/Modal/styles/appear-animation-styles";
 .info-content {
   height: min(30vh, var(--fluid-height));
   max-height: 300px;
@@ -59,6 +91,15 @@ const {mask = '#333333'} = defineProps<Props>();
       }
     }
 
+    .hoverable {
+      cursor: pointer;
+      transition: scale .1s linear;
+
+      &:hover {
+        scale: 1.02;
+      }
+    }
+
     .text-info {
       display: flex;
       flex: 1;
@@ -86,6 +127,34 @@ const {mask = '#333333'} = defineProps<Props>();
     top: 0;
     width: 100%;
     background: linear-gradient(transparent 0, rgba(0,0,0,.5) 100%),var(--background-noise);
+  }
+}
+
+.modal-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+
+  .image {
+    aspect-ratio: 1/1;
+    height: 640px;
+    max-height: min(640px, 80vh - 24px - 48px);
+    max-width: 640px;
+  }
+
+  .button {
+    height: 48px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.04) translate3d(0px, 0px, 0px);
+    }
   }
 }
 </style>

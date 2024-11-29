@@ -46,10 +46,12 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
     <div v-else class="tracks-section">
       <MusicRowHeader
         class="row-header"
-        :var1="'Альбом'"
-        :is-var1="true"
         :parent-element="layout!.content"
-      />
+      >
+        <template #var1>
+          Альбом
+        </template>
+      </MusicRowHeader>
 
       <div class="tracks-wrapper">
         <MusicRow

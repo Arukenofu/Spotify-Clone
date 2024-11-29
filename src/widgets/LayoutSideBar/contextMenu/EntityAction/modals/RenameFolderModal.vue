@@ -21,7 +21,7 @@ const queryClient = useQueryClient();
 
 const {mutate: rename} = useMutation({
   mutationKey: ['renameFolder'],
-  mutationFn: async ($event: SubmitEvent) => {
+  mutationFn: async ($event: Event) => {
     const response = await apiMedialibService.renameFolder(id);
 
     if (response.message !== 'OK') {

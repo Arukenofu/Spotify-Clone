@@ -6,6 +6,7 @@ interface Props {
   isPlaying: boolean;
   tooltipStr: string | object;
   bgColor: string | null;
+  turnoffOptions?: boolean;
 }
 
 type Emit = {
@@ -13,7 +14,7 @@ type Emit = {
   dotsClick: [];
 }
 
-const {bgColor = '#333333'} = defineProps<Props>();
+const {bgColor = '#333333', turnoffOptions = false} = defineProps<Props>();
 defineEmits<Emit>();
 </script>
 
@@ -30,6 +31,7 @@ defineEmits<Emit>();
       />
       <slot name="main-options" />
       <button
+        v-if="!turnoffOptions"
         v-tooltip="tooltipStr"
         v-disable-child
         class="options"

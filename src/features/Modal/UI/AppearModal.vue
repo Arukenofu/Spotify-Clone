@@ -8,7 +8,7 @@ defineEmits<{
 </script>
 
 <template>
-  <Transition name="content" appear>
+  <Transition name="appear-animation" appear>
     <ScrollableBlock class="content" :allow-style-shadow="false" gap="0">
       <button class="close" @click="$emit('close')">
         <CloseIcon class="icon" />
@@ -20,6 +20,8 @@ defineEmits<{
 </template>
 
 <style scoped lang="scss">
+@import "../styles/appear-animation-styles.scss";
+
 .content {
   background-color: var(--ui);
   border-radius: 8px;
@@ -58,15 +60,5 @@ defineEmits<{
       fill: var(--text-soft);
     }
   }
-}
-
-.content-enter-from, .content-leave-to {
-  transform: translateY(25%) scale(.6);
-}
-.content-enter-to, .content-leave-from {
-  transform: translateY(0) scale(1);
-}
-.content-enter-active, .content-leave-active {
-  transition: transform .3s ease-out;
 }
 </style>

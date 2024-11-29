@@ -1,24 +1,19 @@
 import type {PlaylistInfo} from "@/services/api/music/types/PlaylistInfo";
 
-export const basePlaylistInfo = {
+export const getFavoriteTracksReturnData: PlaylistInfo = {
     playlistInfoDossier: {
         id: 0,
-        name: 'Базовая коллекция',
-        image: 'https://www.gamespot.com/a/uploads/scale_tiny/536/5360430/3074971-untitled-1.jpg',
-        color: '#8c6a70',
-        description: 'asd',
+        name: 'Любимые треки',
+        image: '',
+        color: '',
+        description: '',
         info: {
             uploadedDate: '2021-24-24',
-            savedQuantity: 123000,
+            savedQuantity: 0,
             tracksAmount: 2,
             totalDuration: 820,
         },
         creators: [{
-            id: 1,
-            name: 'baur',
-            avatar: null,
-            type: 'User'
-        },{
             id: 1,
             name: 'baur',
             avatar: null,
@@ -75,4 +70,4 @@ export const basePlaylistInfo = {
             isAddedToFavorites: false
         }
     ]
-} satisfies PlaylistInfo
+}

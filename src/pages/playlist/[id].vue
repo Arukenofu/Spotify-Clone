@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
 import setTitle from '@/shared/utils/setTitle';
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
@@ -40,15 +40,15 @@ const scrollY = inject('layoutScrollY', ref(0));
     entity="плейлист"
   />
 
-  <PlayHeader
-    v-if="dossier"
-    :is-playing="false"
-    :title="dossier.name"
-    :scroll-y="scrollY"
-    :mask="bgColor"
-  />
-
   <div v-if="isFetched" class="playlist" :style="`--bg-mask: ${bgColor}`">
+    <PlayHeader
+      v-if="dossier"
+      :is-playing="false"
+      :title="dossier.name"
+      :scroll-y="scrollY"
+      :mask="bgColor"
+    />
+
     <PlaylistInfo
       v-if="dossier"
       :id="dossier.id"
@@ -72,5 +72,6 @@ const scrollY = inject('layoutScrollY', ref(0));
 <style lang="scss" scoped>
 .playlist {
   margin-top: -64px;
+  height: 10000px;
 }
 </style>

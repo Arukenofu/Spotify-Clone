@@ -5,10 +5,6 @@ import {onMounted, onUnmounted, ref, useTemplateRef} from "vue";
 interface Props {
   parentElement: HTMLElement;
   passingHeight?: number;
-  var1?: any;
-  var2?: any;
-  isVar1?: boolean;
-  isVar2?: boolean;
 }
 
 const {
@@ -36,8 +32,15 @@ onUnmounted(() => {
   <div ref="stickyTableHead" class="v-music-row" :class="isSticky && 'stuck'">
     <div class="index">#</div>
     <div class="name">Название</div>
-    <div v-if="var1" class="var1">{{var1}}</div>
-    <div v-if="var2" class="var2">{{var2}}</div>
+    <div v-if="$slots.var1" class="var1">
+      <slot name="var1" />
+    </div>
+    <div v-if="$slots.var2" class="var2">
+      <slot name="var2" />
+    </div>
+    <div v-if="$slots.var3" class="var3">
+      <slot name="var3" />
+    </div>
     <div class="time">
       <div v-tooltip="'Длительность'">
         <ClockIcon class="icon" />
@@ -89,6 +92,7 @@ onUnmounted(() => {
       'name' : 'main',
       'var1' : 'var1',
       'var2' : 'var2',
+      'var3': 'var3',
       'time' : 'time'
   );
 

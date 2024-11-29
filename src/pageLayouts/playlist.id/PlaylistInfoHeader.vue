@@ -1,43 +1,54 @@
 <script setup lang="ts">
-import readableTime from "../../shared/utils/format/readableTime";
-import getCommaSeparatedString from "../../shared/utils/format/getCommaSeparatedString";
+import readableTime from "@/shared/utils/format/readableTime";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import type {Playlist} from "@/services/types/Entities/Playlist";
+import LazyImage from "@/UI/Elements/LazyImage.vue";
+import {computed} from "vue";
+import getDeclention from "@/shared/utils/getDeclention";
 
 interface Props extends Playlist {
 }
 
-defineProps<Props>();
+const {creators} = defineProps<Props>();
+
+const creator = computed(() => {
+  return creators[0];
+});
 
 </script>
 
 <template>
   <EntityInfoHeader
     class="playlist_about"
-    :image="image ?? null"
-    :mask="color ?? null"
+    :image="image"
+    :mask="color"
     type="Playlist"
   >
-    <span class="type">
-      Плейлист
-    </span>
+    <span class="type">Плейлист</span>
 
     <h1 class="name">{{name}}</h1>
 
-    <div class="artists">
-      {{description}}
-    </div>
-
     <div class="other-info">
-      <div class="logo">
-        <figure title="Spotify">
-          <div><img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67757000003b8255c25988a6ac314394d3fbf5" alt="Spotify"></div>
-        </figure>
-        <span>{{ getCommaSeparatedString(creators as [], 'name') }}</span>
+      <div class="creator">
+        <RouterLink
+          :to="`/${creator.type.toLowerCase()}/${creator.id}`"
+          class="link"
+          draggable="false"
+        >
+          <LazyImage
+            v-if="creator.avatar"
+            :image="creator.avatar"
+            class="avatar"
+          />
+
+          <span>
+            {{creators[0].name}}
+          </span>
+        </RouterLink>
       </div>
       <span class="dot">•</span>
       <div class="quantity">
-        {{ info.tracksAmount }} треков, примерно {{ readableTime(info.totalDuration) }}
+        {{ getDeclention(info.tracksAmount, 'трек', 'трека', 'треков') }}, примерно {{ readableTime(info.totalDuration) }}
       </div>
     </div>
   </EntityInfoHeader>
@@ -88,28 +99,30 @@ defineProps<Props>();
     align-items: center;
     white-space: nowrap;
 
-    .logo {
-      color: hsla(0,0%,100%,.7);
-      white-space: nowrap;
+    .link {
       display: flex;
-      grid-auto-flow: column;
-      grid-gap: 4px;
       align-items: center;
+      gap: 4px;
+      user-select: none;
 
-      figure, img {
-        width: 20px;
-        height: 20px;
+      &:hover {
+
+        span {
+          text-decoration: underline 1px;
+        }
       }
 
-      img {
+      .avatar {
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        object-fit: cover;
-        object-position: center center;
       }
 
       span {
-        font-size: .875em;
         font-weight: 700;
+        font-size: .875rem;
+        color: var(--white);
+        line-height: 1;
       }
     }
 

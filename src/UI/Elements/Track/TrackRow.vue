@@ -22,7 +22,6 @@ interface Props {
   showArtists?: boolean;
   image: string | null;
   color: string | null;
-
   compact?: boolean;
 }
 
@@ -101,11 +100,14 @@ defineEmits<Emits>();
       </div>
     </div>
 
-    <div class="var1">
+    <div v-if="$slots.var1" class="var1">
       <slot name="var1" />
     </div>
-    <div class="var2">
+    <div v-if="$slots.var2" class="var2">
       <slot name="var2" />
+    </div>
+    <div v-if="$slots.var3" class="var3">
+      <slot name="var3" />
     </div>
 
     <div class="time">

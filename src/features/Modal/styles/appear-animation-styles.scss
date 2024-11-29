@@ -1,0 +1,9 @@
+.appear-animation-enter-from, .appear-animation-leave-to {
+  transform: translateY(25%) scale(.6);
+}
+.appear-animation-enter-to, .appear-animation-leave-from {
+  transform: translateY(0) scale(1);
+}
+.appear-animation-enter-active, .appear-animation-leave-active {
+  transition: transform .3s ease-out;
+}

@@ -90,7 +90,7 @@ defineProps<Props>();
     display: flex;
     align-items: center;
     font-size: .875rem;
-    font-weight: 700;
+    font-weight: 500;
 
     & > span {
       color: var(--text-soft);
@@ -99,6 +99,11 @@ defineProps<Props>();
     .dot {
       margin: 0 4px;
       color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    span {
+      font-weight: 500;
     }
 
     .single-artist {
@@ -138,15 +143,5 @@ defineProps<Props>();
   }
 }
 
-@container playlistInfo (max-width: 1000px) {
-  .name {
-    font-size: 3.5em !important;
-  }
-}
 
-@container playlistInfo (max-width: 700px) {
-  .name {
-    font-size: 2em !important;
-  }
-}
 </style>
