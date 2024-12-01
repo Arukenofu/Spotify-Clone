@@ -1,0 +1,1 @@
+export type Formats = 'Компактный' | 'Список';

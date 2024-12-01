@@ -2,22 +2,18 @@
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import LikedSongsImage from '@/assets/images/liked-songs.png';
 import getDeclention from "../shared/utils/getDeclention";
-import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
-import useCachedRef from "@/shared/composables/useCachedRef";
+import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
 import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiUserService from "@/services/api/user/apiUserService";
-import Table from "@/pageLayouts/collection/Table.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
+import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
+import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
+import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 
 const maskColor = 'rgb(80, 56, 160)';
 
-type Format = 'Компактный' | 'Список';
-
-const format = useCachedRef<Format>('playlistFormat', 'Список', {
-  expectedTypes: ['string'],
-  expectedValues: ['Компактный', 'Список']
-});
+const {format, setFormat} = useMusicCollectionFormat();
 
 const {data, isFetching, isError, suspense} = useQuery({
   queryKey: ['favoriteTracks'],
@@ -25,10 +21,6 @@ const {data, isFetching, isError, suspense} = useQuery({
   suspense: true
 });
 await suspense();
-
-function setFormat(newValue: Format) {
-  format.value = newValue;
-}
 </script>
 
 <template>
@@ -51,9 +43,7 @@ function setFormat(newValue: Format) {
         Бауыржан Алкенов
       </RouterLink>
 
-      <div class="dot">
-        •
-      </div>
+      <EntityInfoHeaderDot />
 
       <span class="tracks-amount">
         {{getDeclention(1, 'трек', 'трека', 'треков')}}
@@ -72,7 +62,11 @@ function setFormat(newValue: Format) {
     </template>
   </GeneralGradientSectionWithControls>
 
-  <Table :format="format" :queue="data!.playlistQueue" />
+  <PlaylistTable
+    :queue="data!.playlistQueue"
+    :dossier="data!.playlistInfoDossier"
+    hide-main-options
+  />
 </template>
 
 <style scoped lang="scss">

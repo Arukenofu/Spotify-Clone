@@ -2,6 +2,7 @@
 import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import getDeclention from "@/shared/utils/getDeclention";
+import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 
 defineProps<HeaderProps>()
 </script>
@@ -13,7 +14,7 @@ defineProps<HeaderProps>()
     :mask="mask"
     type="Artist"
   >
-    <h1 class="artist-name">{{name}}</h1>
+    <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <span class="artist-listeners-quantity">
       {{getDeclention(listenersPerMonth, 'слушатель', 'слушателя', 'слушателей', 'readable')}} в месяц
     </span>
@@ -40,8 +41,6 @@ defineProps<HeaderProps>()
 
   .artist-listeners-quantity {
     font-size: 1rem;
-    line-height: 2;
-    margin-top: 4px;
   }
 }
 </style>

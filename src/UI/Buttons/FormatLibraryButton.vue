@@ -4,23 +4,22 @@ import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
 import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
 import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
 import {BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView, ContextMenu} from "@/features/ContextMenu";
-
-type Format = 'Компактный'| 'Список';
+import type {Formats} from "@/features/MusicCollectionFormat";
 
 const {format} = defineProps<{
-  format: Format
+  format: Formats
 }>();
 
 const emit = defineEmits<{
-  setFormat: [newValue: Format]
+  setFormat: [newValue: Formats]
 }>()
 
-interface Formats {
-  text: Format,
+interface FormatsData {
+  text: Formats,
   svgIcon: Component
 }
 
-const formats: Formats[] = [
+const formats: FormatsData[] = [
   {
     svgIcon: CompactIcon,
     text: 'Компактный',
@@ -42,7 +41,7 @@ const currentIcon = computed(() => {
   return null;
 })
 
-function setFormat(newValue: Format) {
+function setFormat(newValue: Formats) {
   emit('setFormat', newValue);
 }
 </script>

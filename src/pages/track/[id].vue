@@ -7,16 +7,17 @@ import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
-import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
 import formatTimeMMSS from "../../shared/utils/format/formatTimeMMSS";
 import readableNumber from "../../shared/utils/format/readableNumber";
-import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
 import AddToMediaLib from "@/UI/Buttons/AddToMediaLib.vue";
 import ArtistFullWidthBlock from "@/UI/Blocks/ArtistFullWidthBlock.vue";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
+import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 
 const route = useRoute('/track/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -46,7 +47,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
 
 <template>
   <div v-if="trackInfo" class="recommended-cards">
-    <PlayHeader
+    <PlayHeaderWithPlayingState
       :title="trackInfo.trackInfoDossier.name"
       :scroll-y="layoutScrollY"
       :mask="null"
@@ -86,11 +87,11 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
           </template>
         </div>
 
-        <div class="dot">•</div>
+        <EntityInfoHeaderDot />
 
         <span>{{formatTimeMMSS(trackInfo.trackInfoDossier.duration)}}</span>
 
-        <div class="dot">•</div>
+        <EntityInfoHeaderDot />
 
         <span>{{readableNumber(trackInfo.trackInfoDossier.listenings)}}</span>
       </div>

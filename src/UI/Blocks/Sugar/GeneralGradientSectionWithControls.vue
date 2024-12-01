@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
 import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
+import GeneralGradientSection from "@/UI/Blocks/GeneralGradientSection.vue";
 
 interface Props {
   isPlaying: boolean;
@@ -19,29 +20,25 @@ defineEmits<Emit>();
 </script>
 
 <template>
-  <div class="general">
-    <div class="background" />
-
-    <div class="controls">
-      <GreenPlayingButton
-        v-tooltip="isPlaying ? 'Пауза' : 'Слушать'"
-        class="playingButton"
-        :state="isPlaying"
-        @click="$emit('playClick')"
-      />
-      <slot name="main-options" />
-      <button
-        v-if="!turnoffOptions"
-        v-tooltip="tooltipStr"
-        v-disable-child
-        class="options"
-        @click="$emit('dotsClick')"
-      >
-        <ThreeDots class="icon" />
-      </button>
-      <slot name="additional-options" />
-    </div>
-  </div>
+  <GeneralGradientSection :bg-color>
+    <GreenPlayingButton
+      v-tooltip="isPlaying ? 'Пауза' : 'Слушать'"
+      class="playingButton"
+      :state="isPlaying"
+      @click="$emit('playClick')"
+    />
+    <slot name="main-options" />
+    <button
+      v-if="!turnoffOptions"
+      v-tooltip="tooltipStr"
+      v-disable-child
+      class="options"
+      @click="$emit('dotsClick')"
+    >
+      <ThreeDots class="icon" />
+    </button>
+    <slot name="additional-options" />
+  </GeneralGradientSection>
 </template>
 
 <style scoped lang="scss">

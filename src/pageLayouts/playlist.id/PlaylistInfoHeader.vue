@@ -5,8 +5,16 @@ import type {Playlist} from "@/services/types/Entities/Playlist";
 import LazyImage from "@/UI/Elements/LazyImage.vue";
 import {computed} from "vue";
 import getDeclention from "@/shared/utils/getDeclention";
+import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 
-interface Props extends Playlist {
+interface Props {
+  image: string | null;
+  mask: string | null;
+  name: string;
+  creators: Playlist['creators'],
+  tracksAmount: number;
+  totalDuration: number;
 }
 
 const {creators} = defineProps<Props>();
@@ -18,15 +26,12 @@ const creator = computed(() => {
 </script>
 
 <template>
-  <EntityInfoHeader
-    class="playlist_about"
-    :image="image"
-    :mask="color"
-    type="Playlist"
-  >
+  <EntityInfoHeader class="playlist_about" :image :mask type="Playlist">
     <span class="type">Плейлист</span>
 
-    <h1 class="name">{{name}}</h1>
+    <EntityInfoHeaderTitle>
+      {{name}}
+    </EntityInfoHeaderTitle>
 
     <div class="other-info">
       <div class="creator">
@@ -46,9 +51,9 @@ const creator = computed(() => {
           </span>
         </RouterLink>
       </div>
-      <span class="dot">•</span>
+      <EntityInfoHeaderDot />
       <div class="quantity">
-        {{ getDeclention(info.tracksAmount, 'трек', 'трека', 'треков') }}, примерно {{ readableTime(info.totalDuration) }}
+        {{ getDeclention(tracksAmount, 'трек', 'трека', 'треков') }}, примерно {{ readableTime(totalDuration) }}
       </div>
     </div>
   </EntityInfoHeader>
@@ -56,28 +61,11 @@ const creator = computed(() => {
 
 <style scoped lang="scss">
 .playlist_about {
-  container: playlistInfo / inline-size;
   user-select: none;
 
   .type {
     font-size: .875em;
     font-weight: 500;
-  }
-
-  .name {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    user-select: none;
-    font-size: 6em;
-    font-weight: 900;
-    white-space: nowrap;
-    -webkit-box-orient: vertical;
-    line-height: normal;
-    overflow: hidden;
-    text-align: left;
-    width: 100%;
-    word-break: break-word;
   }
 
   .artists {
@@ -93,8 +81,6 @@ const creator = computed(() => {
   }
 
   .other-info {
-    margin-top: 8px;
-    height: 24px;
     display: flex;
     align-items: center;
     white-space: nowrap;
@@ -134,20 +120,6 @@ const creator = computed(() => {
 
     & > span {
       margin: 0 4px;
-    }
-  }
-}
-
-@container playlistInfo (max-width: 1000px) {
-  .info .name {
-    font-size: 3.5em !important;
-  }
-}
-
-@container playlistInfo (max-width: 700px) {
-  .info {
-    .name {
-      font-size: 2em !important;
     }
   }
 }

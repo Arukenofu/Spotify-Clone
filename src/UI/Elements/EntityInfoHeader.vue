@@ -6,11 +6,11 @@ import {ref} from "vue";
 
 interface Props {
   image: string | null;
-  mask: string | null;
+  mask?: string | null;
   type: Entities;
 }
 
-const {mask = '#333333', image} = defineProps<Props>();
+const {mask, image} = defineProps<Props>();
 
 const isModalOpened = ref<boolean>(false);
 
@@ -18,6 +18,7 @@ function toggleModal(): void {
   if (!image) {
     return;
   }
+
   isModalOpened.value = !isModalOpened.value;
 }
 </script>
@@ -101,6 +102,7 @@ function toggleModal(): void {
     }
 
     .text-info {
+      container: EntityInfoHeader / inline-size;
       display: flex;
       flex: 1;
       flex-flow: column;
@@ -116,7 +118,7 @@ function toggleModal(): void {
     position: absolute;
     top: 0;
     width: 100%;
-    background-color: v-bind(mask);
+    background-color: v-bind("mask || 'rgb(83, 83, 83)'");
   }
 
   .bg-subbed {

@@ -23,7 +23,7 @@ defineProps<Props>();
   <Component
     :is="as ?? 'div'"
     class="v-picture"
-    :class="type === 'User' || type === 'Artist' && 'round'"
+    :class="type === 'User' || type === 'Artist' ? 'round' : ''"
   >
     <LazyImage
       v-if="image"

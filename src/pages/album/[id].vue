@@ -5,16 +5,16 @@ import {useRoute} from "vue-router";
 import musicInfoService from "@/services/api/music/apiMusicService";
 import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import AddToMediaLib from "@/UI/Buttons/AddToMediaLib.vue";
 import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
-import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
 import {inject, type Ref, ref, watch} from "vue";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
-import useCachedRef from "@/shared/composables/useCachedRef";
 import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
+import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 
 const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
@@ -35,12 +35,7 @@ const {data, isFetching, isError, refetch} = useQuery({
   }
 });
 
-type Format = 'Компактный'| 'Список';
-
-const format = useCachedRef<Format>('playlistFormat', 'Список', {
-  expectedTypes: ['string'],
-  expectedValues: ['Компактный', 'Список']
-});
+const {format, setFormat} = useMusicCollectionFormat();
 
 const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist} = useMusicUtils();
 </script>
@@ -53,7 +48,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
   />
 
   <div v-if="data" class="recommended-cards">
-    <PlayHeader
+    <PlayHeaderWithPlayingState
       :title="data.playlistInfoDossier.name"
       :scroll-y="scrollY"
       :is-playing="isThisPlaylist(data.playlistInfoDossier.id, true)"
@@ -83,7 +78,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
         />
       </template>
       <template #additional-options>
-        <FormatLibraryButton :format @set-format="(newValue: Format) => format = newValue" />
+        <FormatLibraryButton :format @set-format="setFormat" />
       </template>
     </GeneralGradientSectionWithControls>
 

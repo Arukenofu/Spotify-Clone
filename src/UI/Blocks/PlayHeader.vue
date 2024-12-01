@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
-import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
-import { computed } from 'vue';
+import StickyHeader from "@/UI/Blocks/StickyHeader.vue";
+import {computed} from "vue";
 
 interface Props {
-  title: string;
   scrollY: number;
-  isPlaying: boolean;
   mask: string | null;
   passingHeight?: number;
 }
@@ -14,17 +11,12 @@ interface Props {
 const {
   scrollY,
   passingHeight = 160,
-  mask = '#333333'
+  mask = 'rgb(83, 83, 83)'
 } = defineProps<Props>();
 
 const isHeightPassed = computed(() => {
   return scrollY > passingHeight;
 });
-
-type Emits = {
-  playClick: []
-}
-defineEmits<Emits>();
 </script>
 
 <template>
@@ -37,8 +29,7 @@ defineEmits<Emits>();
       </template>
 
       <template #default>
-        <GreenPlayingButton class="button" :state="isPlaying" @click="$emit('playClick')" />
-        <div class="title">{{title}}</div>
+        <slot />
       </template>
     </StickyHeader>
   </Transition>
@@ -51,7 +42,7 @@ defineEmits<Emits>();
   background-color: #212121;
 
   .background {
-    background-color: v-bind(mask);
+    background-color: v-bind("mask || 'rgb(83, 83, 83)'");
     height: 100%;
     width: 100%;
 

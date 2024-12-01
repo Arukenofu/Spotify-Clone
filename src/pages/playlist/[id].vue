@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import {useRoute} from 'vue-router';
 import setTitle from '@/shared/utils/setTitle';
-import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
 import musicInfoService from "@/services/api/music/apiMusicService";
 import {computed, inject, ref, watch} from "vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
+import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
 
 const route = useRoute('/playlist/[id]');
 
@@ -41,7 +42,7 @@ const scrollY = inject('layoutScrollY', ref(0));
   />
 
   <div v-if="isFetched" class="playlist" :style="`--bg-mask: ${bgColor}`">
-    <PlayHeader
+    <PlayHeaderWithPlayingState
       v-if="dossier"
       :is-playing="false"
       :title="dossier.name"
@@ -51,14 +52,17 @@ const scrollY = inject('layoutScrollY', ref(0));
 
     <PlaylistInfo
       v-if="dossier"
-      :id="dossier.id"
-      :name="dossier.name"
       :image="dossier.image"
-      :color="dossier.color"
+      :mask="dossier.color"
+      :name="dossier.name"
       :creators="dossier.creators"
-      :description="dossier.description"
-      :info="dossier.info"
-      :is-added="dossier.isAdded"
+      :tracks-amount="dossier.info.tracksAmount"
+      :total-duration="dossier.info.totalDuration"
+    />
+
+    <PlaylistControls
+      :queue="queue!"
+      :dossier="dossier!"
     />
 
     <PlaylistTable

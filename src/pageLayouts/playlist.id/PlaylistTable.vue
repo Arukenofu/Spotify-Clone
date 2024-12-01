@@ -1,94 +1,35 @@
 <script setup lang="ts">
-import {computed, inject, reactive, type Ref} from 'vue';
-import RoundPlusIcon from '@/UI/Icons/Shared/RoundPlusIcon.vue';
-import CheckedRoundCircleIcon from '@/UI/Icons/Shared/CheckedRoundCircleIcon.vue';
-import FormatLibraryButton from '../../UI/Buttons/FormatLibraryButton.vue';
-import useCachedRef from '@/shared/composables/useCachedRef';
+import {computed, inject, type Ref} from 'vue';
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
-import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
 import type {Playlist} from "@/services/types/Entities/Playlist";
 import type {Track} from "@/services/types/Entities/Track";
 import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 
 interface Props {
   queue: Track[],
-  dossier: Playlist
+  dossier: Playlist,
 }
 
 const {dossier, queue} = defineProps<Props>();
 
-type Format = 'Компактный' | 'Список';
-
-const format = useCachedRef<Format>('playlistFormat', 'Список', {
-  expectedTypes: ['string'],
-  expectedValues: ['Компактный', 'Список']
-});
+const {format} = useMusicCollectionFormat();
 
 const currentFormatClass = computed(() => {
   return format.value === 'Компактный' ? 'compact' : 'list';
-})
-
-const playlistStore = usePlaylistStore();
+});
 
 const {
-  loadSongOrPlaylist,
-  toggleTrackPlaying,
-  isThisPlaylist,
   isThisPlaylistAndMusic
 } = useMusicUtils();
-
-function play() {
-  if (isThisPlaylist(playlistStore.currentPlaylistInfo?.id ?? null)) {
-    toggleTrackPlaying(); return;
-  }
-
-  loadSongOrPlaylist({
-    playlistInfoDossier: dossier,
-    playlistQueue: queue
-  });
-}
-
-function setFormat(newValue: Format) {
-  format.value = newValue;
-}
-
-const tooltips = reactive({
-  addButton: {
-    content: dossier.isAdded ? 'Удалить из медиатеки' : 'Добавить в медиатеку',
-    distance: 24
-  },
-  options: `Открыть контекстное меню: ${dossier.name}`
-});
 
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 </script>
 
 <template>
   <div class="playlist-table" :class="`table-${currentFormatClass}`">
-    <GeneralGradientSectionWithControls
-      :is-playing="isThisPlaylist(
-        playlistStore.currentPlaylistInfo?.id ?? null,
-        true
-      )"
-      :tooltip-str="tooltips.options"
-      :bg-color="dossier.color ?? null"
-      @play-click="play"
-    >
-      <template #main-options>
-        <button v-tooltip="tooltips.addButton" class="state">
-          <CheckedRoundCircleIcon v-if="dossier.isAdded" class="remove" />
-          <RoundPlusIcon v-else class="add" />
-        </button>
-      </template>
-
-      <template #additional-options>
-        <FormatLibraryButton :format @set-format="setFormat" />
-      </template>
-    </GeneralGradientSectionWithControls>
-
     <MusicRowHeader
       :parent-element="layoutContent!.content"
       class="row-header computedGrid"
@@ -279,32 +220,6 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
 
 .playlist-table {
   container: playlist-table / inline-size;
-
-  .state {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    margin-right: var(--content-spacing);
-
-    .add {
-      fill: var(--text-soft);
-
-      &:hover {
-        fill: var(--white);
-        scale: 1.05;
-      }
-    }
-
-    .remove {
-      fill: var(--main-color);
-
-      &:hover {
-        scale: 1.05;
-      }
-    }
-  }
 
   .music-collection-wrapper {
     margin-top: var(--content-spacing);

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {computed, inject, ref, watch} from "vue";
 import {useRoute} from 'vue-router';
-import {useQuery} from "@tanstack/vue-query";
+import {useMutation, useQuery} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
-import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
 import ArtistInfoHeader from "@/pageLayouts/artist.id/ArtistInfoHeader.vue";
 import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue";
-import GeneralGradientSectionWithControls from "@/UI/Blocks/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
 import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
 import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
@@ -18,7 +18,7 @@ import readableNumber from "@/shared/utils/format/readableNumber";
 import getDeclention from "@/shared/utils/getDeclention";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
-import SubscribeToArtistButton from "@/UI/Buttons/SubscribeToArtistButton.vue";
+import SubscribeButton from "@/UI/Buttons/SubscribeButton.vue";
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -56,6 +56,19 @@ const {
 } = useMusicUtils();
 
 const isModal = ref<boolean>(false);
+
+const {mutate: toggleArtistSubscription} = useMutation({
+  mutationFn: async () => {
+    const data = await artistService.toggleArtistSubscription(
+        artistInfo.value!.isSubscribed,
+        artistInfo.value!.id
+    );
+
+    if (data.message === 'OK') {
+      artistInfo.value!.isSubscribed = !artistInfo.value!.isSubscribed
+    }
+  }
+});
 </script>
 
 <template>
@@ -66,7 +79,7 @@ const isModal = ref<boolean>(false);
   />
 
   <div v-if="artistInfo" class="recommended-cards">
-    <PlayHeader
+    <PlayHeaderWithPlayingState
       :title="artistInfo.profile.artistName"
       :scroll-y="layoutScrollY"
       :mask="artistInfo.profile.color"
@@ -98,10 +111,10 @@ const isModal = ref<boolean>(false);
       @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0)"
     >
       <template #main-options>
-        <SubscribeToArtistButton
-          v-model="artistInfo.isSubscribed"
-          :artist-id="artistInfo.id"
+        <SubscribeButton
+          :is-subscribed="artistInfo.isSubscribed"
           class="subscribe"
+          @click="toggleArtistSubscription()"
         />
       </template>
     </GeneralGradientSectionWithControls>

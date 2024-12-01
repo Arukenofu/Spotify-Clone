@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import getDeclention from "@/shared/utils/getDeclention";
-import SubscribeToArtistButton from "@/UI/Buttons/SubscribeToArtistButton.vue";
+import SubscribeToArtistButton from "@/UI/Buttons/SubscribeButton.vue";
+import {useMutation} from "@tanstack/vue-query";
+import artistService from "@/services/api/artist/apiArtistService";
 
-defineProps<{
+const {artistId} = defineProps<{
   artistId: number | string;
   artistName: string;
   coverImage: string | null;
@@ -12,6 +14,19 @@ defineProps<{
 
 const isSubscribed = defineModel<boolean>({
   required: true
+});
+
+const {mutate: toggleArtistSubscription} = useMutation({
+  mutationFn: async () => {
+    const data = await artistService.toggleArtistSubscription(
+        isSubscribed.value,
+        artistId
+    );
+
+    if (data.message === 'OK') {
+      isSubscribed.value = !isSubscribed.value
+    }
+  }
 });
 </script>
 
@@ -35,8 +50,8 @@ const isSubscribed = defineModel<boolean>({
         </div>
         <div class="subscribe-state">
           <SubscribeToArtistButton
-            v-model="isSubscribed"
-            :artist-id="artistId"
+            :is-subscribed="isSubscribed"
+            @click="toggleArtistSubscription()"
           />
         </div>
       </div>

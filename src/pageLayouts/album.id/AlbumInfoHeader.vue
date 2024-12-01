@@ -4,6 +4,8 @@ import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
 import getDeclention from "../../shared/utils/getDeclention";
 import readableTime from "../../shared/utils/format/readableTime";
 import type {Playlist} from "@/services/types/Entities/Playlist";
+import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 
 interface Props {
   image: string | null;
@@ -20,7 +22,7 @@ defineProps<Props>();
 <template>
   <EntityInfoHeader class="info" :image :mask type="Album">
     <div class="type">Альбом</div>
-    <h1 class="name">{{name}}</h1>
+    <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <div class="additional">
       <div v-if="creator.length === 1" class="single-artist">
         <EntityAvatar1x1 class="img" type="Artist" />
@@ -44,11 +46,11 @@ defineProps<Props>();
         </template>
       </div>
 
-      <div class="dot">•</div>
+      <EntityInfoHeaderDot />
 
       <span>{{getDeclention(tracksAmount, 'трек', 'трека', 'треков')}}</span>
 
-      <div class="dot">•</div>
+      <EntityInfoHeaderDot />
 
       <span>{{readableTime(totalDuration)}}</span>
     </div>
@@ -58,7 +60,6 @@ defineProps<Props>();
 <style scoped lang="scss">
 .info {
   margin-top: -64px;
-  container: playlistInfo / inline-size;
   user-select: none;
 
   &:deep(.img) {
@@ -68,22 +69,6 @@ defineProps<Props>();
   .type {
     font-weight: 500;
     font-size: .875rem;
-  }
-
-  .name {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-align: left;
-    user-select: none;
-    font-weight: 800;
-    text-wrap: nowrap;
-    margin-bottom: 8px;
-    line-height: 1.2;
-    width: min-content;
-    font-size: 6rem;
   }
 
   .additional {
@@ -142,6 +127,4 @@ defineProps<Props>();
     }
   }
 }
-
-
 </style>

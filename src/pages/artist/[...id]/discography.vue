@@ -14,6 +14,7 @@ import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from "@/shared/utils/setTitle";
+import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 
 const route = useRoute('/artist/[...id]/discography');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -75,7 +76,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
               <span v-tooltip="'27 Декабря 2024'" class="year">
                 2024
               </span>
-              <span class="dot">•</span>
+              <EntityInfoHeaderDot />
               <span class="amount">
                 {{getDeclention(album.info.tracksAmount, 'трек', 'трека', 'треков')}}
               </span>
@@ -221,10 +222,6 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
 
           span {
             color: var(--text-soft);
-          }
-
-          .dot {
-            margin: 0 4px;
           }
         }
 

@@ -8,8 +8,8 @@ interface Props {
   id: number | string;
   type: Entities;
   name: string;
-  image?: string | null;
-  color?: string | null;
+  image: string | null;
+  color: string | null;
   state?: boolean;
 }
 
