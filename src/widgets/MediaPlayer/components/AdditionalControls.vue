@@ -128,6 +128,9 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
 
 <style lang="scss" scoped>
 .additional-controls {
+  min-width: 180px;
+  width: 30%;
+
   .options {
     display: flex;
 

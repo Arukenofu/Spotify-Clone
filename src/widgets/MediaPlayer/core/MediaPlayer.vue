@@ -47,11 +47,10 @@ provide('exitFullScreenFunc', exitFullScreen);
 
 <style lang="scss" scoped>
 .player {
-  height: var(--player-height);
-  display: grid;
-  grid-template-columns: 1fr 1.25fr 1fr;
-  grid-gap: var(--border-radius);
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  height: var(--player-height);
   padding: 0 14px;
   z-index: 2;
   background-color: var(--black);

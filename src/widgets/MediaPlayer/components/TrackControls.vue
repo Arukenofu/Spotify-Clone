@@ -139,6 +139,8 @@ function timeUpdate(time: number) {
 
 <style lang="scss" scoped>
 .track-controls {
+  max-width: 722px;
+  width: 40%;
   height: 60px;
   display: flex;
   flex-direction: column;

@@ -50,7 +50,10 @@ import ShowQueue from '@/UI/Icons/MediaPlayerControls/ShowQueue.vue';
 
 <style lang="scss" scoped>
 .additional-controls {
+  min-width: 180px;
+  width: 30%;
   pointer-events: none;
+
   .options {
     display: flex;
 
