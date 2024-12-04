@@ -6,7 +6,7 @@ import MainTrackInfo from "@/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
 
 const store = useCurrentMusicStore();
-const { currentAudioData } = storeToRefs(store);
+const { currentAudioData } = storeToRefs(store)
 </script>
 
 <template>
