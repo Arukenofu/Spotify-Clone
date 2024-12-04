@@ -6,6 +6,8 @@ import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
+import MainTrackInfo from "@/UI/Elements/MainTrackInfo.vue";
+import Marquee from "@/shared/components/Marquee.vue";
 
 const {id} = defineProps<{
   id: string | number;
@@ -29,21 +31,22 @@ function copyLink() {
     :loading-color="loadingColor"
   />
   <div class="main-track-info">
-    <div class="text">
-      <RouterLink
-        class="track-name"
-        :to="`/album/${id}`"
-      >
-        {{name}}
-      </RouterLink>
-
-      <span class="artists">
-        <CommaSeparatedArtistsLink
-          class="artist"
-          :artists="artists"
-        />
-      </span>
-    </div>
+    <MainTrackInfo class="track-info">
+      <template #title>
+        <Marquee v-slot="{startMarquee}">
+          <RouterLink
+            class="track-title"
+            :to="`/track/${id}`"
+            @mouseenter="startMarquee"
+          >
+            {{name}}
+          </RouterLink>
+        </Marquee>
+      </template>
+      <template #artists>
+        <CommaSeparatedArtistsLink class="artist" :artists="artists" />
+      </template>
+    </MainTrackInfo>
     <div class="track-controls">
       <button
         v-tooltip="`Скопировать ссылку на трек`"
@@ -78,35 +81,27 @@ function copyLink() {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  width: 100%;
 
-  .text {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    .track-name {
+  .track-info {
+    .track-title {
       font-size: 1.5rem;
       font-weight: 700;
+      line-height: 1.2;
 
       &:hover {
         text-decoration: underline;
       }
     }
 
-    .artists {
-      &:deep(.v-link) {
-        color: var(--text-soft);
-        font-size: 1rem;
-        font-weight: 400;
-
-        &:hover {
-          color: var(--white);
-        }
-      }
+    .artist {
+      font-size: 1rem;
     }
   }
 
   .track-controls {
+    margin-left: 12px;
+    width: 56px;
     display: flex;
     gap: 12px;
 

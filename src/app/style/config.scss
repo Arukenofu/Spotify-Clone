@@ -28,6 +28,10 @@ a {
   text-decoration: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 img {

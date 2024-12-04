@@ -33,24 +33,34 @@ defineProps<{
   padding: 16px;
   border-radius: 8px;
   background-color: var(--ui-highlight);
+  margin-bottom: 16px;
 
   .title {
     height: 25px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 8px;
     margin-bottom: 9px;
 
     .text {
+      flex: 1 1 0;
       font-weight: 700;
+      overflow: hidden;
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
 
     .show-queue {
+      flex-shrink: 0;
       color: var(--text-soft);
       background: none;
       border: none;
       cursor: pointer;
       font-weight: 700;
+      margin-left: 10px;
 
       &:hover {
         scale: 1.04;

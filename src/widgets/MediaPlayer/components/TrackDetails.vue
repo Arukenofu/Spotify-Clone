@@ -2,6 +2,7 @@
 import {storeToRefs} from 'pinia';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import MainTrackInfo from "@/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
 
 const store = useCurrentMusicStore();
@@ -17,29 +18,25 @@ const { currentAudioData } = storeToRefs(store);
       >
     </div>
 
-    <div class="track-text-info">
-      <div class="track-name">
-        <Marquee
-          v-slot="{startMarquee}"
-          :iteration-count="2"
-          class="marquee"
-        >
+    <MainTrackInfo class="track-info">
+      <template #title>
+        <Marquee v-slot="{startMarquee}">
           <RouterLink
-            class="link"
-            to="/"
-            @mouseenter="startMarquee"
+            class="track-link"
+            :to="`/track/${currentAudioData.id}`"
+            @mouseenter="startMarquee()"
           >
             {{currentAudioData.name}}
           </RouterLink>
         </Marquee>
-      </div>
-      <div class="track-artists">
+      </template>
+      <template #artists>
         <CommaSeparatedArtistsLink
-          class="artists"
+          class="artist"
           :artists="currentAudioData.artists"
         />
-      </div>
-    </div>
+      </template>
+    </MainTrackInfo>
   </div>
 </template>
 
@@ -69,55 +66,18 @@ const { currentAudioData } = storeToRefs(store);
     }
   }
 
-  .track-text-info {
-    height: min-content;
-    display: grid;
-    column-gap: 8px;
-    grid-template: "pretitle pretitle" "title title" "badges subtitle"/auto 1fr;
-    line-height: 1;
-    font-size: 1.05rem;
+  .track-info {
 
-    .track-name {
-      grid-area: title;
-      font-size: 0.85em;
-      cursor: pointer;
-      width: 100%;
-
-      .marquee {
-
-        .link {
-          padding-left: 6px;
-          overflow: hidden;
-          white-space: nowrap;
-          font-weight: 500;
-          font-size: .9rem;
-          line-height: 1.3;
-        }
-
-      }
-
-      &:hover {
-        text-decoration: underline;
-      }
+    .track-link {
+      overflow: hidden;
+      white-space: nowrap;
+      font-weight: 500;
+      font-size: .875rem;
+      line-height: 1.3;
     }
 
-    .track-artists {
-      display: inline-flex;
-      grid-area: subtitle;
-      grid-column-start: badges;
-      align-items: baseline;
-      font-size: 0.75rem;
-      font-weight: 500;
-
-      :deep(a) {
-        color: var(--text-soft);
-        line-height: 1.375;
-
-        &:hover {
-          color: var(--white);
-          text-decoration: underline;
-        }
-      }
+    &:deep(.artist) {
+      font-size: .75rem;
     }
   }
 }

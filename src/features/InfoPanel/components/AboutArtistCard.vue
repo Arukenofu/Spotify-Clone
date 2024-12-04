@@ -73,12 +73,14 @@ const {mutate: toggleArtistSubscription} = useMutation({
     background-position: 50% 50%;
     background-size: cover;
     border-radius: 8px 8px 0 0;
-    aspect-ratio: 16/10;
+    padding-bottom: 67%;
     width: 100%;
+    position: relative;
 
     .title {
+      position: absolute;
+      inset: 0;
       padding: 16px;
-      height: 25px;
       font-weight: 700;
       font-size: 1rem;
     }
@@ -89,16 +91,21 @@ const {mutate: toggleArtistSubscription} = useMutation({
     margin-bottom: 16px;
 
     .artist-name {
+      display: block;
       font-weight: 700;
       font-size: 1rem;
+      line-height: 1.375;
+      width: 100%;
     }
 
     .secondary {
       display: flex;
       align-items: center;
-      gap: 8px;
-      height: 52px;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 8px;
+      padding-bottom: 12px;
 
       .listenings {
         color: var(--text-soft);
@@ -121,7 +128,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
       color: var(--text-soft);
       font-size: .875rem;
       line-height: 1.275;
-      font-weight: 400;
+      font-weight: 500;
     }
   }
 }

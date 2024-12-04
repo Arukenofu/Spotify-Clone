@@ -72,29 +72,31 @@ const nextSongInQueue = computed(() => {
     </PanelHeader>
 
     <ScrollableBlock class="content">
-      <AboutTrackInfo
-        :id="currentAudioData.id"
-        :name="currentAudioData.name"
-        :avatar="currentAudioData.avatar"
-        :loading-color="currentAudioData.color"
-        :artists="currentAudioData.artists"
-        :is-added-to-favorites="currentAudioData.isAddedToFavorites"
-      />
+      <div class="content-wrapper">
+        <AboutTrackInfo
+          :id="currentAudioData.id"
+          :name="currentAudioData.name"
+          :avatar="currentAudioData.avatar"
+          :loading-color="currentAudioData.color"
+          :artists="currentAudioData.artists"
+          :is-added-to-favorites="currentAudioData.isAddedToFavorites"
+        />
 
-      <AboutArtistCard
-        v-if="artistDossier"
-        v-model="artistDossier.isSubscribed"
-        :artist-id="artistDossier.id"
-        :artist-name="artistDossier.profile.artistName"
-        :cover-image="artistDossier.profile.coverImage"
-        :listeners-quantity="artistDossier.listenersQuantityPerMonth"
-        :description="artistDossier.profile.description"
-      />
+        <AboutArtistCard
+          v-if="artistDossier"
+          v-model="artistDossier.isSubscribed"
+          :artist-id="artistDossier.id"
+          :artist-name="artistDossier.profile.artistName"
+          :cover-image="artistDossier.profile.coverImage"
+          :listeners-quantity="artistDossier.listenersQuantityPerMonth"
+          :description="artistDossier.profile.description"
+        />
 
-      <NextTrackInQueue
-        v-if="nextSongInQueue"
-        :next-song="nextSongInQueue"
-      />
+        <NextTrackInQueue
+          v-if="nextSongInQueue"
+          :next-song="nextSongInQueue"
+        />
+      </div>
     </ScrollableBlock>
   </div>
 </template>
@@ -114,7 +116,10 @@ const nextSongInQueue = computed(() => {
   .content {
     height: calc(100% - var(--info-panel-header-height));
     user-select: none;
-    padding: 0 16px;
+
+    .content-wrapper {
+      padding: 0 16px;
+    }
   }
 }
 </style>
