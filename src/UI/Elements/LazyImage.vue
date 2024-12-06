@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 interface Props {
   image: string;
@@ -8,25 +8,42 @@ interface Props {
   loading?: 'lazy' | 'eager';
 }
 
-const {loading = 'lazy'} = defineProps<Props>();
+const {loading = 'lazy', image} = defineProps<Props>();
 
-const isLoaded = ref<boolean>(false);
+const imageClasses = ref<string>('');
 
-function onImageLoad() {
-  isLoaded.value = true;
-}
+onMounted(async () => {
+  const loadImage = (url: string) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  };
+
+  const startTime = performance.now();
+  const imageLoaded = await loadImage(image);
+  const loadTime = performance.now() - startTime;
+
+  if (imageLoaded && loadTime < 50) {
+    imageClasses.value = 'show'
+  } else {
+    imageClasses.value = 'animated-show';
+  }
+});
 </script>
 
 <template>
   <div class="lazyImage">
     <img
+      ref="image"
       :src="image"
       :alt="alt"
-      :class="isLoaded && 'v-img-loaded'"
+      :class="imageClasses"
       :loading="loading"
       class="image"
       draggable="false"
-      @load="onImageLoad"
     />
   </div>
 </template>
@@ -56,7 +73,11 @@ function onImageLoad() {
   }
 }
 
-.v-img-loaded {
+.show {
+  opacity: 1 !important;
+}
+
+.animated-show {
   animation: imageLoad .25s ease;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
