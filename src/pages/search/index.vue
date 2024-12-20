@@ -8,12 +8,18 @@ import MusicCard from "@/UI/Elements/MusicCard.vue";
 import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
 import {addToast} from "@/widgets/Toast";
 import type {Entities} from "@/services/types/Entities";
+import useResponsive from "@/shared/composables/useResponsive";
+import SearchMobileSearchBar from "@/pageLayouts/search/mobile/SearchMobileSearchBar.vue";
 
 setTitle('Spotify — Поиск');
+
+const {isMobile} = useResponsive();
 
 const {data: history} = useQuery({
   queryKey: ['searchHistory'],
   queryFn: async () => {
+    if (isMobile) return [];
+
     return await apiSearchService.getSearchHistory();
   },
   staleTime: 60000
@@ -46,7 +52,7 @@ const {mutate: removeFromHistory} = useMutation({
 <template>
   <section class="searchSection">
     <EntitiesSectionWithHeading
-      v-if="history && history.length"
+      v-if="history && history.length && !isMobile"
       class="history"
       naming="История поиска"
       href="/recent-searches"
@@ -67,6 +73,11 @@ const {mutate: removeFromHistory} = useMutation({
         </MusicCard>
       </CardRemoveWrapper>
     </EntitiesSectionWithHeading>
+
+    <div v-if="isMobile" class="mobile-search-bar" @click="$router.push('/search/recent')">
+      <h1 class="search-title">Искать</h1>
+      <SearchMobileSearchBar disabled />
+    </div>
 
     <div class="recommended-cards">
       <h1 class="title">
@@ -101,6 +112,16 @@ const {mutate: removeFromHistory} = useMutation({
 
   .history {
     padding: 0 var(--content-spacing);
+  }
+
+  .mobile-search-bar {
+    padding: 0 var(--content-spacing);
+
+    .search-title {
+      font-weight: 700;
+      padding-top: 45px;
+      margin-bottom: 21px;
+    }
   }
 
   .recommended-cards {

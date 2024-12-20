@@ -3,10 +3,7 @@ const model = defineModel<boolean>();
 </script>
 
 <template>
-  <div
-    ref="input"
-    class="checkbox"
-  >
+  <div class="checkbox">
     <input
       v-model="model"
       type="checkbox"
