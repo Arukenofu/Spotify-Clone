@@ -27,7 +27,15 @@ export default {
 
     delete: 'Delete',
 
-    share: '', // TODO
+    share: 'Share',
+    shareCopyMessage: 'Copy link to {0}',
+    shareWidget: 'Copy link to a widget',
+    shareEntities: {
+        playlist: 'playlist',
+        artist: 'artist',
+        album: 'album',
+        track: 'track',
+    },
 
     subscribe: 'Follow',
     unsubscribe: 'Unfollow',
