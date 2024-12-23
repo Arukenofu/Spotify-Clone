@@ -27,7 +27,15 @@ export default {
 
     delete: 'Удалить',
 
-    share: '', // TODO
+    share: 'Поделиться',
+    shareCopyMessage: 'Скопировать ссылку на {0}',
+    shareWidget: 'Скопировать код виджета',
+    shareEntities: {
+        playlist: 'плейлист',
+        artist: 'исполнителя',
+        album: 'альбом',
+        track: 'трек',
+    },
 
     subscribe: 'Подписаться',
     unsubscribe: 'Отписаться',
