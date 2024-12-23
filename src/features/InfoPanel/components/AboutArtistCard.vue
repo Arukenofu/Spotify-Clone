@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import getDeclention from "@/shared/utils/getDeclention";
 import SubscribeToArtistButton from "@/UI/Buttons/SubscribeButton.vue";
 import {useMutation} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
+import {useI18n} from "vue-i18n";
 
 const {artistId} = defineProps<{
   artistId: number | string;
@@ -11,6 +11,8 @@ const {artistId} = defineProps<{
   listenersQuantity: number;
   description: string | null;
 }>();
+
+const {t} = useI18n();
 
 const isSubscribed = defineModel<boolean>({
   required: true
@@ -44,9 +46,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
       </RouterLink>
       <div class="secondary">
         <div class="listenings">
-          {{
-            getDeclention(listenersQuantity, 'слушатель', 'слушателя', 'слушателей', 'readable')
-          }} в месяц
+          {{t('social.countPerMonth', [t('social.listeners', listenersQuantity)])}}
         </div>
         <div class="subscribe-state">
           <SubscribeToArtistButton

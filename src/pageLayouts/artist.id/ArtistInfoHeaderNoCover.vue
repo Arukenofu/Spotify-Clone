@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
-import getDeclention from "@/shared/utils/getDeclention";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import {useI18n} from "vue-i18n";
 
-defineProps<HeaderProps>()
+defineProps<HeaderProps>();
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -16,7 +18,7 @@ defineProps<HeaderProps>()
   >
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <span class="artist-listeners-quantity">
-      {{getDeclention(listenersPerMonth, 'слушатель', 'слушателя', 'слушателей', 'readable')}} в месяц
+      {{t('social.countPerMonth', [t('social.listeners', listenersPerMonth)])}}
     </span>
   </EntityInfoHeader>
 </template>

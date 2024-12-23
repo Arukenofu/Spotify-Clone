@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import LikedSongsImage from '@/assets/images/liked-songs.png';
-import getDeclention from "../shared/utils/getDeclention";
 import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
 import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
 import {useQuery} from "@tanstack/vue-query";
@@ -49,7 +48,7 @@ await suspense();
       <EntityInfoHeaderDot />
 
       <span class="tracks-amount">
-        {{getDeclention(1, 'трек', 'трека', 'треков')}}
+        {{t('plurable-entities.track', data?.playlistQueue.length!).toLowerCase()}}
       </span>
     </div>
   </EntityInfoHeader>

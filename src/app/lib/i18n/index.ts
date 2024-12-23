@@ -1,6 +1,7 @@
 import {createI18n} from "vue-i18n";
 import {getCookie, setCookie} from "@/shared/utils/cookie-actions";
 import simplifyModuleName from "@/app/lib/i18n/simplifyModuleName";
+import ruPluralizationRule from "@/app/lib/i18n/pluralization/ruPluralizationRules";
 
 export default createI18n({
     locale: getLocale(),
@@ -14,6 +15,9 @@ export default createI18n({
             eager: true,
             import: 'default'
         })),
+    },
+    pluralizationRules: {
+        ru: ruPluralizationRule
     }
 });
 

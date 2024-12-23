@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
-import getDeclention from "../../shared/utils/getDeclention";
 import readableTime from "../../shared/utils/format/readableTime";
 import type {Playlist} from "@/services/types/Entities/Playlist";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
@@ -51,7 +50,7 @@ defineProps<Props>();
 
       <EntityInfoHeaderDot />
 
-      <span>{{getDeclention(tracksAmount, 'трек', 'трека', 'треков')}}</span>
+      <span>{{t('plurable-entities.track', tracksAmount).toLowerCase()}}</span>
 
       <EntityInfoHeaderDot />
 

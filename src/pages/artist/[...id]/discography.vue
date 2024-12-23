@@ -8,13 +8,15 @@ import ListIcon from "@/UI/Icons/Shared/ListIcon.vue";
 import GridIcon from "@/UI/Icons/Shared/GridIcon.vue";
 import useCachedRef from "@/shared/composables/useCachedRef";
 import LazyImage from "@/UI/Elements/LazyImage.vue";
-import getDeclention from "../../../shared/utils/getDeclention";
 import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
 import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from "@/shared/utils/setTitle";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/artist/[...id]/discography');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -29,6 +31,8 @@ const {data: artistInfo, isFetched} = useQuery({
     return data;
   }
 });
+
+// TODO: add localization for current route
 
 const {isThisPlaylist, loadPlaylist} = useMusicUtils();
 
@@ -78,7 +82,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
               </span>
               <EntityInfoHeaderDot />
               <span class="amount">
-                {{getDeclention(album.info.tracksAmount, 'трек', 'трека', 'треков')}}
+                {{t('plurable-entities.track', album.info.tracksAmount).toLowerCase()}}
               </span>
             </div>
 

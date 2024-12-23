@@ -3,7 +3,6 @@ import {computed, inject, ref} from "vue";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import getDeclention from "@/shared/utils/getDeclention";
 import {useRoute} from "vue-router";
 import GeneralGradientSection from "@/UI/Blocks/GeneralGradientSection.vue";
 import SubscribeToArtistButton from "@/UI/Buttons/SubscribeButton.vue";
@@ -11,6 +10,9 @@ import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const isMyProfile = computed(() => {
   return false;
@@ -60,11 +62,11 @@ const currentList = [
       </EntityInfoHeaderTitle>
       <div class="additional">
         <RouterLink :to="linkToCurrentUserRoute('/followers')" class="subscribers">
-          {{getDeclention(2, 'подписчик', 'подписчика', 'подписчиков')}}
+          {{t('social.subscribers', 2)}}
         </RouterLink>
         <EntityInfoHeaderDot />
         <RouterLink :to="linkToCurrentUserRoute('/following')" class="subscriptions">
-          {{getDeclention(2, 'подписок', 'подписки', 'подписок')}}
+          {{t('social.subscriptions', 2)}}
         </RouterLink>
       </div>
     </EntityInfoHeader>

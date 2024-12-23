@@ -15,10 +15,12 @@ import ArtistInfoModal from "@/pageLayouts/artist.id/ArtistInfoModal.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from '@/shared/utils/setTitle';
 import readableNumber from "@/shared/utils/format/readableNumber";
-import getDeclention from "@/shared/utils/getDeclention";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 import SubscribeButton from "@/UI/Buttons/SubscribeButton.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -203,8 +205,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
         <EntityAvatar1x1 class="image" :image="artistInfo.profile.avatar" type="Artist" />
 
         <span class="listeners">
-          {{ getDeclention(artistInfo.listenersQuantityPerMonth, 'слушатель', 'слушателя', 'слушателей', 'readable') }}
-          в месяц
+          {{t('social.countPerMonth', [t('social.listeners', artistInfo.listenersQuantityPerMonth)])}}
         </span>
 
         <div class="description">

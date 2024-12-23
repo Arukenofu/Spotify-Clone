@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import readableNumber from "@/shared/utils/format/readableNumber";
-import getDeclention from "@/shared/utils/getDeclention";
 import type {Artist} from "@/services/types/Entities/Artist";
 import {AppearModal, Modal} from "@/features/Modal";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const model = defineModel<boolean>({
   required: true
@@ -34,7 +36,7 @@ defineProps<Props>();
 
           <div v-for="data in cityPlaybackData" :key="data.cityName" class="city">
             <div class="title">{{`${data.cityName}, ${data.countryShortName}`}}</div>
-            <div class="body">{{getDeclention(data.listenersQuantity, 'слушатель', 'слушателя', 'слушателей', 'readable')}}</div>
+            <div class="body">{{t('social.listeners', listeners)}}</div>
           </div>
         </div>
         <div class="right-clm">
