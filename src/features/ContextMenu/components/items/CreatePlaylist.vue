@@ -2,13 +2,14 @@
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
 import PlusMusicIcon from "@/UI/Icons/Shared/PlusMusicIcon.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
+import ctxT from "../../helpers/ctx-t";
 
 defineProps<BaseItemProps>();
 </script>
 
 <template>
   <BasicContextMenuItem>
-    Создать плейлист
+    {{ctxT('createPlaylist')}}
     <template #icon>
       <PlusMusicIcon />
     </template>

@@ -25,6 +25,7 @@ const store = useToastStore();
   left: 50%;
   transform: translateX(-50%);
   bottom: 14px;
+  z-index: 3;
 
   .toast {
     max-width: 450px;

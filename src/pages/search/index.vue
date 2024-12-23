@@ -10,8 +10,11 @@ import {addToast} from "@/widgets/Toast";
 import type {Entities} from "@/services/types/Entities";
 import useResponsive from "@/shared/composables/useResponsive";
 import SearchMobileSearchBar from "@/pageLayouts/search/mobile/SearchMobileSearchBar.vue";
+import {useI18n} from "vue-i18n";
 
 setTitle('Spotify — Поиск');
+
+const {t} = useI18n();
 
 const {isMobile} = useResponsive();
 
@@ -54,7 +57,7 @@ const {mutate: removeFromHistory} = useMutation({
     <EntitiesSectionWithHeading
       v-if="history && history.length && !isMobile"
       class="history"
-      naming="История поиска"
+      :naming="t('search.searchHistory')"
       href="/recent-searches"
     >
       <CardRemoveWrapper
@@ -75,13 +78,13 @@ const {mutate: removeFromHistory} = useMutation({
     </EntitiesSectionWithHeading>
 
     <div v-if="isMobile" class="mobile-search-bar" @click="$router.push('/search/recent')">
-      <h1 class="search-title">Искать</h1>
+      <h1 class="search-title">{{t('search.search')}}</h1>
       <SearchMobileSearchBar disabled />
     </div>
 
     <div class="recommended-cards">
       <h1 class="title">
-        Всё остальное
+        {{t('search.browseAll')}}
       </h1>
 
       <div class="cards">

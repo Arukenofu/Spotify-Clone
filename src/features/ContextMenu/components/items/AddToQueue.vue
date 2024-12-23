@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {BasicContextMenuItem} from "@/features/ContextMenu";
 import AddToQueueIcon from "@/UI/Icons/Shared/AddToQueueIcon.vue";
+import ctxT from "../../helpers/ctx-t";
 </script>
 
 <template>
@@ -8,7 +9,7 @@ import AddToQueueIcon from "@/UI/Icons/Shared/AddToQueueIcon.vue";
     <template #icon>
       <AddToQueueIcon />
     </template>
-    Добавить в очередь
+    {{ctxT('addToProfile')}}
   </BasicContextMenuItem>
 </template>
 

@@ -11,6 +11,9 @@ import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
 import apiSearchService from "@/services/api/search/apiSearchService";
 import {useRoute} from "vue-router";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/search/[...query]/');
 
@@ -33,7 +36,7 @@ const {isThisMusic} = useMusicUtils();
     <section class="top-result">
       <div class="best-result">
         <div class="title">
-          Лучший результат
+          {{t('search.bestResult')}}
         </div>
         <EntityCard
           :id="data.bestResult.id"
@@ -46,7 +49,7 @@ const {isThisMusic} = useMusicUtils();
       </div>
       <div class="tracks">
         <div class="title">
-          Треки
+          {{t('search.entities.track')}}
         </div>
         <div class="tracks-wrapper">
           <MusicRow
@@ -69,7 +72,7 @@ const {isThisMusic} = useMusicUtils();
 
     <EntitiesSectionWithHeading
       v-if="data.entities.artists?.length"
-      naming="Исполнители"
+      :naming="t('search.entities.artist')"
       :href="`/search/${searchQuery}/artists`"
     >
       <SearchCardComponent :item="data.entities.artists" />
@@ -77,7 +80,7 @@ const {isThisMusic} = useMusicUtils();
 
     <EntitiesSectionWithHeading
       v-if="data.entities.albums?.length"
-      naming="Альбомы"
+      :naming="t('search.entities.album')"
       :href="`/search/${searchQuery}/albums`"
     >
       <SearchCardComponent :item="data.entities.albums" />
@@ -85,7 +88,7 @@ const {isThisMusic} = useMusicUtils();
 
     <EntitiesSectionWithHeading
       v-if="data.entities.playlists?.length"
-      naming="Плейлисты"
+      :naming="t('search.entities.playlist')"
       :href="`/search/${searchQuery}/playlists`"
     >
       <SearchCardComponent :item="data.entities.playlists" />
@@ -93,7 +96,7 @@ const {isThisMusic} = useMusicUtils();
 
     <EntitiesSectionWithHeading
       v-if="data.entities.users?.length"
-      naming="Профили"
+      :naming="t('search.entities.user')"
       :href="`/search/${searchQuery}/users`"
     >
       <SearchCardComponent :item="data.entities.users" />

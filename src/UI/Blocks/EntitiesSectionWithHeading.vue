@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useResponsive from '@/shared/composables/useResponsive';
 import EntitiesSectionWrapper from "@/UI/Blocks/EntitiesSectionWrapper.vue";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   naming: string | null;
@@ -18,6 +19,7 @@ const {
 } = defineProps<Props>();
 
 const { isMobile } = useResponsive();
+const {t} = useI18n();
 </script>
 
 <template>
@@ -45,7 +47,7 @@ const { isMobile } = useResponsive();
         class="show-all"
       >
         <RouterLink :to="href">
-          Показать все
+          {{t('entities-section.showAll')}}
         </RouterLink>
       </div>
     </div>

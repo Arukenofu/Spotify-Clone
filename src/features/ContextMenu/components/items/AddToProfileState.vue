@@ -2,6 +2,7 @@
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
 import RoundAvatarIcon from "@/UI/Icons/Shared/RoundAvatarIcon.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
+import ctxT from "../../helpers/ctx-t";
 
 defineProps<BaseItemProps & {
   state: boolean
@@ -10,7 +11,7 @@ defineProps<BaseItemProps & {
 
 <template>
   <BasicContextMenuItem v-bind="$props">
-    {{state ? 'Удалить из профиля' : 'Добавить в профиль'}}
+    {{state ? ctxT('removeFromProfile') : ctxT('addToProfile') }}
     <template #icon>
       <RoundAvatarIcon />
     </template>

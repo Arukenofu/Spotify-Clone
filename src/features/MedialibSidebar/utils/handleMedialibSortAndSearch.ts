@@ -18,7 +18,7 @@ export default function (
         });
     }
 
-    if (options.sortBy === 'По алфавиту') {
+    if (options.sortBy === 'Alphabetical') {
         result.sort((a, b) => {
             if (a.isPinned === b.isPinned) {
                 return a.name.localeCompare(b.name);

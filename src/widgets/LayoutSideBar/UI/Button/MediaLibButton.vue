@@ -9,6 +9,9 @@ import defaultWidth from '@/widgets/LayoutSideBar/constants/defaultWidth';
 import max from '@/widgets/LayoutSideBar/constants/max';
 import {useSidebarWidthStore} from '@/features/MedialibSidebar';
 import {Tippy} from "vue-tippy";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const { isMinimized, currentWidth } = useSidebarWidthStore();
 
@@ -37,8 +40,8 @@ function toggleWidth() {
 }
 
 const tooltip = computed(() => {
-  const placement = isMinimized.value ? 'right' : 'top'
-  const content = isMinimized.value ? 'Открыть мою медиатеку' : 'Закрыть мою медиатеку';
+  const placement = isMinimized.value ? 'right' : 'top';
+  const content = isMinimized.value ? t('medialib.open') : t('medialib.close');
 
   return {
     content,
@@ -59,7 +62,7 @@ const tooltip = computed(() => {
       <span
         v-if="!isMinimized"
         class="text"
-      > Моя медиатека </span>
+      > {{t('medialib.myMedialib')}} </span>
     </button>
 
     <div
@@ -73,7 +76,7 @@ const tooltip = computed(() => {
         interactive
       >
         <RoundButton
-          v-tooltip="'Создать плейлист или папку'"
+          v-tooltip="t('medialib.createPlaylistOrFolder')"
           class="createPlaylist"
         >
           <PlusIcon class="icon" />
@@ -85,7 +88,7 @@ const tooltip = computed(() => {
       </Tippy>
 
       <RoundButton
-        v-tooltip="currentWidth < 450 ? 'Развернуть' : 'Свернуть'"
+        v-tooltip="currentWidth < 450 ? t('medialib.showMore') : t('medialib.showLess')"
         class="toggleWidth"
         @click="toggleWidth()"
       >

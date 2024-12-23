@@ -38,7 +38,7 @@ const scrollY = inject('layoutScrollY', ref(0));
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="плейлист"
+    entity="Playlist"
   />
 
   <div v-if="isFetched" class="playlist" :style="`--bg-mask: ${bgColor}`">

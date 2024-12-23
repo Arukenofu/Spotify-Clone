@@ -3,6 +3,7 @@ import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import type {Entities} from '@/services/types/Entities';
+import {useI18n} from "vue-i18n";
 
 interface Props {
   id: number | string;
@@ -12,7 +13,6 @@ interface Props {
   color: string | null;
   state?: boolean;
 }
-
 defineProps<Props>();
 
 type Emits = {
@@ -20,6 +20,8 @@ type Emits = {
 }
 
 defineEmits<Emits>();
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -50,7 +52,10 @@ defineEmits<Emits>();
     </span>
 
     <div class="textInfo">
-      <slot />
+      <slot v-if="type !== 'Artist'" />
+      <template v-else>
+        {{t('entities.artist')}}
+      </template>
     </div>
 
     <slot name="underlay" />

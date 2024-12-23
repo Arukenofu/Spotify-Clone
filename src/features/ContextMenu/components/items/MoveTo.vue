@@ -3,12 +3,13 @@ import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/Bas
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
 import FolderIcon from "@/UI/Icons/Shared/FolderIcon.vue";
 import WithSubtree from "../helpers/WithSubtree.vue";
+import ctxT from "../../helpers/ctx-t";
 </script>
 
 <template>
   <WithSubtree>
     <BasicContextMenuItem>
-      Переместить
+      {{ctxT('moveTo')}}
       <template #icon>
         <FolderIcon />
       </template>

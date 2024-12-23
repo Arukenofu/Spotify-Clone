@@ -13,6 +13,9 @@ import NowPlaying from '@/UI/Icons/MediaPlayerControls/NowPlaying.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import {infoPanel} from '@/features/InfoPanel';
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const musicStore = useMusicStore();
 const { audio, volume } = storeToRefs(musicStore);
@@ -66,28 +69,28 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
   <div class="additional-controls">
     <div class="options">
       <NowPlaying
-        v-tooltip="'Экран «Сейчас играет»'"
+        v-tooltip="t('media-player.nowPlaying')"
         class="icon"
         :class="currentPanelName === 'CurrentTrackInfo' && 'active'"
         @click="setNewPanel('CurrentTrackInfo')"
       />
 
       <ShowText
-        v-tooltip="'Текст'"
+        v-tooltip="t('media-player.lyrics')"
         class="icon"
         :class="currentRoutePath === '/lyrics' && 'active'"
         @click="toggleLyricsPage"
       />
 
       <ShowQueue
-        v-tooltip="'Очередь'"
+        v-tooltip="t('media-player.queue')"
         :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
         class="icon"
         @click="setNewPanel('CurrentPlaylistQueue')"
       />
 
       <ConnectToDevice
-        v-tooltip="'Подключиться к устройству'"
+        v-tooltip="t('media-player.connect')"
         :class="currentPanelName === 'ConnectToDevice' && 'active'"
         class="icon"
         @click="setNewPanel('ConnectToDevice')"
@@ -96,13 +99,13 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
       <div class="volume-option">
         <Volume
           v-if="volume !== 0"
-          v-tooltip="'Выключить звук'"
+          v-tooltip="t('media-player.disableVoice')"
           class="icon"
           @click="toggleVolume()"
         />
         <VolumeSilent
           v-else
-          v-tooltip="'Включить звук'"
+          v-tooltip="t('media-player.enableVoice')"
           class="icon"
           @click="toggleVolume()"
         />
@@ -118,7 +121,7 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
       </div>
 
       <FullScreen
-        v-tooltip="'На весь экран'"
+        v-tooltip="t('media-player.fullscreen')"
         class="icon"
         @click="enableFullScreenFunc!"
       />

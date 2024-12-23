@@ -7,6 +7,7 @@ import {computed} from "vue";
 import getDeclention from "@/shared/utils/getDeclention";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   image: string | null;
@@ -16,6 +17,8 @@ interface Props {
   tracksAmount: number;
   totalDuration: number;
 }
+
+const {t} = useI18n();
 
 const {creators} = defineProps<Props>();
 
@@ -27,7 +30,7 @@ const creator = computed(() => {
 
 <template>
   <EntityInfoHeader class="playlist_about" :image :mask type="Playlist">
-    <span class="type">Плейлист</span>
+    <span class="type">{{t('entities.playlist')}}</span>
 
     <EntityInfoHeaderTitle>
       {{name}}

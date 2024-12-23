@@ -5,6 +5,7 @@ import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
 import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
 import {BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView, ContextMenu} from "@/features/ContextMenu";
 import type {Formats} from "@/features/MusicCollectionFormat";
+import {useI18n} from "vue-i18n";
 
 const {format} = defineProps<{
   format: Formats
@@ -12,29 +13,31 @@ const {format} = defineProps<{
 
 const emit = defineEmits<{
   setFormat: [newValue: Formats]
-}>()
+}>();
+
+const {t} = useI18n();
 
 interface FormatsData {
-  text: Formats,
+  id: Formats,
   svgIcon: Component
 }
 
 const formats: FormatsData[] = [
   {
     svgIcon: CompactIcon,
-    text: 'Компактный',
+    id: 'Compact',
   },
   {
     svgIcon: ListIcon,
-    text: 'Список',
+    id: 'List',
   }
 ]
 
 const currentIcon = computed(() => {
-  if (format === 'Список') {
+  if (format === 'List') {
     return ListIcon;
   }
-  if (format === 'Компактный') {
+  if (format === 'Compact') {
     return CompactIcon;
   }
 
@@ -53,26 +56,26 @@ function setFormat(newValue: Formats) {
     placement="bottom-end"
   >
     <button v-disable-child class="setFormat">
-      <span>{{format}}</span>
+      <span>{{ t(`format-library.formats.${format.toLowerCase()}`) }}</span>
       <Component :is="currentIcon" class="icon" />
     </button>
 
     <template #menu>
       <BasicContextMenuView class="contextMenu">
         <BasicContextMenuTitle>
-          Формат библеотеки
+          {{t('format-library.componentNaming')}}
         </BasicContextMenuTitle>
         <BasicContextMenuItem
-          v-for="{text, svgIcon} in formats"
-          :key="text"
-          :active="format === text && 'active'"
-          @click="setFormat(text)"
+          v-for="{id, svgIcon} in formats"
+          :key="id"
+          :active="format === id && 'active'"
+          @click="setFormat(id)"
         >
-          {{text}}
+          {{ t(`format-library.formats.${id.toLowerCase()}`) }}
           <template #icon>
             <Component :is="svgIcon" />
           </template>
-          <template v-if="format === text" #additionalIcon>
+          <template v-if="format === id" #additionalIcon>
             <CheckIcon />
           </template>
         </BasicContextMenuItem>

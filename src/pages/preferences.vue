@@ -1,17 +1,48 @@
 <script setup lang="ts">
+import {ref} from "vue";
 import PreferencesControl from "@/pageLayouts/preferences/PreferencesControl.vue";
 import PreferencesControlSection from "@/pageLayouts/preferences/PreferencesControlSection.vue";
 import OutsideLinkIcon from "@/UI/Icons/Shared/OutsideLinkIcon.vue";
 import BaseIosCheckbox from "@/UI/Form/Base/BaseIosCheckbox.vue";
-import {ref} from "vue";
+import {getCookie, setCookie} from "@/shared/utils/cookie-actions";
+import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const value = ref<boolean>(false);
+
+const chosenLanguage = getCookie('locale') || 'en';
+const isLanguageChanged = ref<boolean>(false);
+
+const languages = [
+  {
+    text: 'Русский (Russian)',
+    value: 'ru',
+  },
+  {
+    text: 'English (English)',
+    value: 'en',
+  }
+];
+
+function onLanguageChanged(event: Event) {
+  const value = (event.target as HTMLSelectElement).value;
+
+  setCookie('locale', value, 365);
+
+  isLanguageChanged.value = true;
+}
+
+function reloadPage() {
+  location.reload();
+}
 </script>
 
 <template>
   <div class="preferences">
     <div class="heading">
-      <h1 class="heading-text">Настройки</h1>
+      <h1 class="heading-text">{{t('preferences.settings')}}</h1>
       <div class="search">
       </div>
     </div>
@@ -19,20 +50,20 @@ const value = ref<boolean>(false);
     <div class="controls-wrapper">
       <PreferencesControl>
         <template #name>
-          Аккаунт
+          {{t('preferences.account')}}
         </template>
 
         <template #section>
           <PreferencesControlSection>
             <template #description>
-              Изменить способы входа
+              {{t('preferences.accountDescription')}}
             </template>
             <template #action>
-              <button class="change-account-preferences">
-                Изменить
+              <BubbleButton design="border" class="change-account-preferences">
+                {{t('preferences.accountEditButton')}}
 
                 <OutsideLinkIcon class="icon" />
-              </button>
+              </BubbleButton>
             </template>
           </PreferencesControlSection>
         </template>
@@ -40,35 +71,51 @@ const value = ref<boolean>(false);
 
       <PreferencesControl>
         <template #name>
-          Язык
+          {{t('preferences.language')}}
         </template>
 
         <template #section>
           <PreferencesControlSection>
             <template #description>
-              Выбери язык. Изменения вступят в силу после перезапуска приложения.
+              {{t('preferences.languageDescription')}}
             </template>
 
             <template #action>
-              <select class="change-language">
-                <option value="en">English (English)</option>
-                <option value="ru">Русский (Russian)</option>
+              <select class="change-language" @change="onLanguageChanged($event)">
+                <option
+                  v-for="(language, index) in languages"
+                  :key="index"
+                  :value="language.value"
+                  :selected="chosenLanguage === language.value"
+                >
+                  {{language.text}}
+                </option>
               </select>
             </template>
           </PreferencesControlSection>
         </template>
       </PreferencesControl>
 
+      <div>
+        <BubbleButton
+          v-if="isLanguageChanged"
+          class="reload-button"
+          design="border"
+          @click="reloadPage()"
+        >
+          {{t('preferences.reload')}}
+        </BubbleButton>
+      </div>
 
       <PreferencesControl>
         <template #name>
-          Приватность
+          {{t('preferences.social')}}
         </template>
 
         <template #section>
           <PreferencesControlSection>
             <template #description>
-              Показывать в открытом профиле мои списки подписчиков и подписок
+              {{t('preferences.socialDescription')}}
             </template>
 
             <template #action>
@@ -112,21 +159,18 @@ const value = ref<boolean>(false);
       font-size: .875rem;
       padding: 8px 16px;
       background: none;
-      border: 1px solid #7c7c7c;
       border-radius: 500px;
-      transform: translate3d(0px, 0px, 0px);
-      cursor: pointer;
-
-      &:hover {
-        scale: 1.04;
-        border: 1px solid var(--white);
-      }
 
       .icon {
         width: 16px;
         height: 16px;
         fill: var(--white);
       }
+    }
+
+    .reload-button {
+      padding: 16px 32px;
+      font-size: 1rem;
     }
 
     .change-language {

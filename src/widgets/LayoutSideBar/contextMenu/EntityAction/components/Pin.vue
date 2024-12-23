@@ -6,6 +6,7 @@ import {useMutation, useQueryClient} from "@tanstack/vue-query";
 import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import apiMedialibService from "@/services/api/medialib/apiMedialibService";
 import {addToast} from "@/widgets/Toast";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   id: string | number;
@@ -13,6 +14,8 @@ interface Props {
   isPinned: boolean
 }
 const {id, isPinned} = defineProps<Props>();
+
+const {t} = useI18n();
 
 const queryClient = useQueryClient();
 
@@ -62,7 +65,7 @@ function localizePinState(type: MediaLibEntityProps['type']) {
     :class="isPinned && 'active-icon'"
     @click="togglePinState"
   >
-    {{`${isPinned ? 'Открепить' : 'Закрепить'} ${localizePinState(type)}`}}
+    {{`${isPinned ? t('contextmenu-items.unpin') : t('contextmenu-items.pin')} ${localizePinState(type)}`}}
     <template #icon><PinIcon /></template>
   </BasicContextMenuItem>
 </template>

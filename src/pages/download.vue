@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
-import {
-  BackgroundNoise,
-  useBackgroundNoise
-} from '@/features/BackgroundNoise';
+import {computed, inject, ref} from 'vue';
+import {BackgroundNoise, useBackgroundNoise} from '@/features/BackgroundNoise';
 import DesktopImage from '@/assets/images/desktop-app.png';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import setTitle from '@/shared/utils/setTitle';
@@ -49,6 +46,7 @@ const computeOpacity = computed<number>(() => {
   position: fixed;
   background-color: var(--ui);
   transition: opacity 0.25s ease-out;
+  top: 64px;
 }
 
 section {

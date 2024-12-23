@@ -8,6 +8,9 @@ import CloseIcon from '@/UI/Icons/Shared/CloseIcon.vue';
 
 import useDebounce from '@/shared/composables/useDebounce';
 import {router} from '@/app/router';
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/search/[...query]/[...path]');
 const input = useTemplateRef('input');
@@ -65,7 +68,7 @@ router.beforeEach((to, from) => {
       ref="input"
       v-model="inputValue"
       type="text"
-      placeholder="Что хочешь включить?"
+      :placeholder="t('app-header.searchBarPlaceholder')"
       @keyup="onSearchClick()"
       @input="onInput(($event.target as HTMLInputElement).value)"
     >
@@ -76,7 +79,7 @@ router.beforeEach((to, from) => {
     <div
       v-if="!inputValue?.length"
       v-tooltip="{
-        content: 'Обзор',
+        content: t('app-header.tooltip.browse'),
         distance: 5
       }"
       class="icon-container-box"
@@ -90,7 +93,7 @@ router.beforeEach((to, from) => {
 
     <div
       v-else
-      v-tooltip="'Очистить строку поиска'"
+      v-tooltip="t('app-header.tooltip.clear')"
       class="icon-container-delete"
       @click="clearAll()"
     >

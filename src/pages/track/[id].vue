@@ -193,7 +193,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="трек"
+    entity="Track"
   />
 </template>
 

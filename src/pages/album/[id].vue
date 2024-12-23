@@ -44,7 +44,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="альбом"
+    entity="Album"
   />
 
   <div v-if="data" class="recommended-cards">
@@ -99,7 +99,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
         :color="music.color"
         :is-added="false"
         :show-artists="true"
-        :compact="format === 'Компактный'"
+        :compact="format === 'Compact'"
         class="row"
         @set-play="loadSongOrPlaylist(data)"
       />

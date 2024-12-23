@@ -25,6 +25,10 @@ import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import {useTippy} from "vue-tippy";
 import EntityAction from "@/widgets/LayoutSideBar/contextMenu/EntityAction.vue";
 import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
+import {useI18n} from "vue-i18n";
+import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
+
+const {t} = useI18n();
 
 const search = ref<string>('');
 const { isMinimized } = useSidebarWidthStore();
@@ -101,7 +105,7 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
         class="container"
       >
         <FormatButton
-          :sort-name="currentSort"
+          :sort-name="t(`medialib.sorts.${currentSort.toLowerCase()}`) as sortOption"
           :format-component-name="getComponentName"
           class="formats"
         />

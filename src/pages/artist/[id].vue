@@ -75,7 +75,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="трек"
+    entity="Track"
   />
 
   <div v-if="artistInfo" class="recommended-cards">

@@ -4,6 +4,9 @@ import {router} from '@/app/router';
 import {useRoute} from 'vue-router';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import BubbleButton from '@/UI/Buttons/BubbleButton.vue';
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/search/[...query]/[...path]');
 
@@ -13,27 +16,27 @@ const param = computed(() => {
 
 const filters = [
   {
-    name: 'Все',
+    id: 'all',
     path: ''
   },
   {
-    name: 'Плейлисты',
+    id: 'playlist',
     path: '/playlists'
   },
   {
-    name: 'Профили',
+    id: 'user',
     path: '/users'
   },
   {
-    name: 'Треки',
+    id: 'track',
     path: '/tracks'
   },
   {
-    name: 'Альбомы',
+    id: 'album',
     path: '/albums'
   },
   {
-    name: 'Исполнители',
+    id: 'artist',
     path: '/artists'
   },
 ] as const;
@@ -54,13 +57,13 @@ const getActiveColorIndex = computed(() => {
 <template>
   <StickyHeader class="sticky-header">
     <BubbleButton
-      v-for="({ name, path }, index) in filters"
-      :key="name"
+      v-for="({ id, path }, index) in filters"
+      :key="id"
       class="button"
       :design="getActiveColorIndex === index ? 'active' : 'default'"
       @click="setFilterRoute(path)"
     >
-      {{ name }}
+      {{ t(`search.entities.${id}`) }}
     </BubbleButton>
   </StickyHeader>
 </template>

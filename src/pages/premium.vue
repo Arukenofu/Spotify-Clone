@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
-import { PremiumCards } from '@/widgets/PremiumCards';
+import {computed, inject, ref} from 'vue';
+import {PremiumCards} from '@/widgets/PremiumCards';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
 import Logo from '@/UI/Icons/Shared/Logo.vue';
@@ -178,6 +178,10 @@ const comparisons = [
 </template>
 
 <style lang="scss" scoped>
+.header {
+  top: 64px;
+}
+
 .main {
   display: flex;
   flex-direction: column;

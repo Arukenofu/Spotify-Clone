@@ -1,21 +1,25 @@
 <script setup lang="ts">
 
+import {useI18n} from "vue-i18n";
+
 interface Links {
   text: string;
   url: string;
 }
 
+const {t} = useI18n();
+
 const links: Links[] = [
   {
-    text: 'Клиентская сторона приложения',
+    text: t('app-footer.client'),
     url: 'https://github.com/Arukenofu/Spotify-Clone'
   },
   {
-    text: 'Серверая сторона приложения',
+    text: t('app-footer.server'),
     url: 'https://github.com/Rehart-Kcalb/Spotify_Clone'
   },
   {
-    text: 'Оригинальный Spotify',
+    text: t('app-footer.original'),
     url: 'https://open.spotify.com/'
   },
   {
@@ -27,7 +31,7 @@ const links: Links[] = [
     url: 'https://github.com/Rehart-Kcalb'
   },
   {
-    text: 'Лицензия',
+    text: t('app-footer.license'),
     url: 'https://github.com/Arukenofu/Spotify-Clone/blob/master/LICENSE'
   }
 ]

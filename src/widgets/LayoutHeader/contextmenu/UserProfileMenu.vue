@@ -2,6 +2,9 @@
 import {BasicContextMenuItem, BasicContextMenuView} from "@/features/ContextMenu";
 import {RouterLink} from "vue-router";
 import {router} from "@/app/router";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 function exitFromAccount() {
   router.push(`/signup`)
@@ -11,16 +14,16 @@ function exitFromAccount() {
 <template>
   <BasicContextMenuView class="modal">
     <BasicContextMenuItem>
-      Аккаунт
+      {{t('app-header.user.account')}}
     </BasicContextMenuItem>
     <BasicContextMenuItem :as="RouterLink" to="/user/asd">
-      Профиль
+      {{t('app-header.user.profile')}}
     </BasicContextMenuItem>
     <BasicContextMenuItem :as="RouterLink" to="/preferences" underline>
-      Настройки
+      {{t('app-header.user.settings')}}
     </BasicContextMenuItem>
     <BasicContextMenuItem @click="exitFromAccount">
-      Выйти
+      {{t('app-header.user.logout')}}
     </BasicContextMenuItem>
   </BasicContextMenuView>
 </template>

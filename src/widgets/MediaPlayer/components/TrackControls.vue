@@ -15,6 +15,9 @@ import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const musicStore = useMusicStore();
 const playlistStore = usePlaylistStore();
@@ -75,18 +78,31 @@ function timeUpdate(time: number) {
   audio.value!.currentTime = time;
   isPlaying.value = true;
 }
+
+function repeatModeTooltip() {
+  if (currentRepeatMode.value === 'onlyCurrentMusic') {
+    return t('media-player.repeat');
+  }
+
+  if (currentRepeatMode.value === 'repeatCurrentPlaylist') {
+    return t('media-player.repeatOnlyOne');
+  }
+
+  return t('media-player.repeatStop');
+}
 </script>
 
 <template>
   <div class="track-controls">
     <div class="options">
       <RandomOrder
+        v-tooltip="isShuffle ? t('media-player.shuffleDisable') : t('media-player.shuffleEnable')"
         class="icon"
         :style="getActiveColor(isShuffle, 'fill')"
         @click="isShuffle = !isShuffle"
       />
       <Previous
-        v-tooltip="'Назад'"
+        v-tooltip="t('media-player.previous')"
         class="icon pointerable"
         @click="previousTrack()"
       />
@@ -101,11 +117,12 @@ function timeUpdate(time: number) {
         />
       </button>
       <Next
-        v-tooltip="'Далее'"
+        v-tooltip="t('media-player.next')"
         class="icon pointerable"
         @click="nextTrack()"
       />
       <Repeat
+        v-tooltip="repeatModeTooltip()"
         :style="
           getActiveColor(currentRepeatMode !== 'onlyCurrentMusic', 'fill')
         "

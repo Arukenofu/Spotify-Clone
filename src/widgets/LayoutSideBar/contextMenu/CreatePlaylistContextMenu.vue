@@ -6,6 +6,9 @@ import apiMedialibService from "@/services/api/medialib/apiMedialibService";
 import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
 import type {CreatableMedialibEntities} from "@/services/api/medialib/types/CreateMedialibEntityResponse";
 import {addToast} from "@/widgets/Toast";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const queryClient = useQueryClient();
 
@@ -36,7 +39,7 @@ const {mutate: create} = useMutation({
   <BasicContextMenuView>
     <CreatePlaylist @click="create('Playlist')" />
     <BasicContextMenuItem @click="create('Folder')">
-      Создать папку с плейлистами
+      {{t('medialib.createFolder')}}
       <template #icon>
         <Folder />
       </template>

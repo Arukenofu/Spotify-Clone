@@ -6,6 +6,9 @@ import RoundButton from '@/UI/Buttons/RoundButton.vue';
 import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
 
 import useDebounce from "@/shared/composables/useDebounce";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const isExpanded = ref<boolean>(false);
 const input = ref<HTMLInputElement>();
@@ -73,7 +76,7 @@ onUnmounted(() => {
     </div>
 
     <RoundButton
-      v-tooltip="'Искать в медиатеке'"
+      v-tooltip="t('medialib.search')"
       class="searchButton"
       @click="handleToggle()"
     >
@@ -84,7 +87,7 @@ onUnmounted(() => {
       ref="input"
       v-model="currentScopeInputData"
       :class="isExpanded && 'active'"
-      placeholder="Искать в медиатеке"
+      :placeholder="t('medialib.search')"
       @focusout="onUnFocus()"
     >
   </div>

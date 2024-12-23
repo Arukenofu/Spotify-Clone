@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import setTitle from '@/shared/utils/setTitle';
 import NoUpdates from "@/pageLayouts/content-feed/NoUpdates.vue";
+import {useI18n} from "vue-i18n";
 
 setTitle('Spotify — Web Player');
+
+const {t} = useI18n();
 </script>
 
 <template>
   <div class="recommended-cards">
     <div class="heading">
-      <h1 class="heading-title">Что нового</h1>
-      <p class="heading-body">Последние релизы любимых исполнителей из твоих подписок</p>
+      <h1 class="heading-title">{{t('content-feed.headingTitle')}}</h1>
+      <p class="heading-body">{{t('content-feed.headingText')}}</p>
     </div>
 
     <NoUpdates />

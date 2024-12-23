@@ -1,9 +1,9 @@
 import useCachedRef from "@/shared/composables/useCachedRef";
+import type {sortOption} from "../constants/sorts";
 import sorts from "../constants/sorts";
 import {computed, readonly} from "vue";
-import type {sortOption} from "../constants/sorts";
 
-const currentSort = useCachedRef<sortOption>('medialibSort', 'Недавно добавленные', {
+const currentSort = useCachedRef<sortOption>('medialibSort', 'Recents', {
     expectedValues: sorts
 });
 
