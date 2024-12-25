@@ -36,26 +36,12 @@ const {mutate: togglePinState} = useMutation({
     });
   },
   onError: () => {
-    addToast(`Не удалось открепить медиатеку`);
+    addToast(t(`contextmenu-items.on${isPinned ? 'Un' : ''}PinUnSuccess`));
   }
 });
 
 function localizePinState(type: MediaLibEntityProps['type']) {
-  if (type === 'Artist') {
-    return 'исполнителя'
-  }
-  if (type === 'Folder') {
-    return 'папку'
-  }
-  if (type === 'Playlist') {
-    return 'плейлист'
-  }
-  if (type === 'Collection') {
-    return 'плейлист'
-  }
-  if (type === 'Album') {
-    return 'альбом'
-  }
+  return t(`contextmenu-items.pinItems.${type.toLowerCase()}`);
 }
 </script>
 

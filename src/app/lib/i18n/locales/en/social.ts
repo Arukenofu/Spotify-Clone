@@ -1,7 +1,10 @@
 export default {
+    subscribe: 'Follow',
+    unsubscribe: 'Unfollow',
+
     listeners: '{n} listener | {n} listeners',
-    subscribers: '{n} subscriber | {n} subscribers',
-    subscriptions: '{n} subscription | {n} subscriptions',
+    subscribers: '{n} follower | {n} followers',
+    subscriptions: '{n} following | {n} followings',
 
     countPerMonth: '{0} per month',
 }

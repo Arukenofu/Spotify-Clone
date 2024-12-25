@@ -1,6 +1,15 @@
 export default {
     pin: 'Закрепить',
     unpin: 'Открепить',
+    pinItems: {
+        artist: 'исполнителя',
+        folder: 'папку',
+        playlist: 'плейлист',
+        collection: 'плейлист',
+        album: 'альбом'
+    },
+    onPinUnSuccess: 'Не удалось открепить медиатеку',
+    onUnPinUnSuccess: 'Не удалось открепить медиатеку',
 
     addToFavoriteTracks: 'Добавить в любимые треки',
     removeFromFavoriteTracks: 'Удалить из любимых треков',

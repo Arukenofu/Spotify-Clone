@@ -102,7 +102,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
       class="controls"
       :is-playing="isThisPlaylist(`popular:${artistInfo.profile.artistName}`, true)"
       :tooltip-str="{
-        content: `Открыть контекстное меню: ${artistInfo.profile.artistName}`,
+        content: t('music-actions.moreOptionsFor', [artistInfo.profile.artistName]),
         distance: 24,
         style: {
           fontSize: '.9rem',
@@ -200,12 +200,12 @@ const {mutate: toggleArtistSubscription} = useMutation({
     </EntitiesSectionWithHeading>
 
     <section class="about-artist" @click="isModal = true">
-      <h2>Об исполнителе</h2>
+      <h2>{{t('artist.aboutArtist')}}</h2>
       <div class="card">
         <EntityAvatar1x1 class="image" :image="artistInfo.profile.avatar" type="Artist" />
 
         <span class="listeners">
-          {{t('social.countPerMonth', [t('social.listeners', artistInfo.listenersQuantityPerMonth)])}}
+          {{artistInfo.listenersQuantityPerMonth + ' ' + t('artist.monthlyListeners', artistInfo.listenersQuantityPerMonth).toLowerCase()}}
         </span>
 
         <div class="description">

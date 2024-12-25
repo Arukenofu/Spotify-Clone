@@ -2,6 +2,7 @@
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import LazyImage from "@/UI/Elements/LazyImage.vue";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   id: number;
@@ -18,6 +19,8 @@ type Emits = {
 
 defineProps<Props>();
 defineEmits<Emits>();
+
+const {t} = useI18n();
 
 </script>
 
@@ -36,7 +39,7 @@ defineEmits<Emits>();
       </span>
 
       <button
-        v-tooltip="state ? 'Пауза' : 'Слушать'"
+        v-tooltip="state ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
         @click.stop="$emit('onButtonClick')"
       >
         <PlayingState

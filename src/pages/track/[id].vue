@@ -18,6 +18,9 @@ import ArtistFullWidthBlock from "@/UI/Blocks/ArtistFullWidthBlock.vue";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/track/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -100,7 +103,7 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
     <GeneralGradientSectionWithControls
       :is-playing="isThisMusic(trackInfo.trackInfoDossier.id, true)"
       :bg-color="trackInfo.trackInfoDossier.color"
-      :tooltip-str="`Открыть контекстное меню: ${trackInfo.trackInfoDossier.name}`"
+      :tooltip-str="t('music-actions.moreOptionsFor', [trackInfo.trackInfoDossier.name])"
     >
       <template #main-options>
         <AddToMediaLib

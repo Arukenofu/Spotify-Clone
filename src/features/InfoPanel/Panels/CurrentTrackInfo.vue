@@ -15,6 +15,9 @@ import AboutArtistCard from "@/features/InfoPanel/components/AboutArtistCard.vue
 import AboutTrackInfo from "@/features/InfoPanel/components/AboutTrackInfo.vue";
 import NextTrackInQueue from "@/features/InfoPanel/components/NextTrackInQueue.vue";
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const store = useCurrentMusicStore();
 const playlist = usePlaylistStore();
@@ -60,7 +63,7 @@ const nextSongInQueue = computed(() => {
       </template>
       <template #options>
         <ContextMenu trigger="click" placement="bottom-end">
-          <RoundButton v-tooltip="`Открыть контекстное меню: ${currentAudioData.name}`">
+          <RoundButton v-tooltip="t('music-actions.moreOptionsFor', [currentAudioData.name])">
             <ThreeDots class="icon" />
           </RoundButton>
 

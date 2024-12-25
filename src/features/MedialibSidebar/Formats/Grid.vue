@@ -5,12 +5,15 @@ import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
 import {Tippy} from "vue-tippy";
 import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
+import {useI18n} from "vue-i18n";
 
 type GridFormatProps = {
   minimized: boolean;
 } & MediaLibEntityProps;
 
 const props = defineProps<GridFormatProps>();
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -25,7 +28,7 @@ const props = defineProps<GridFormatProps>();
     <EntityAvatar1x1 class="picture" :type="type!" :image="image">
       <GreenPlayingButton
         v-if="!minimized && type !== 'Folder'"
-        v-tooltip="`Слушать плейлист «${name}»`"
+        v-tooltip="false ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
         :state="false"
         class="stateButton"
       />

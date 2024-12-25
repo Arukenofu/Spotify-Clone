@@ -1,6 +1,15 @@
 export default {
     pin: 'Pin',
     unpin: 'Unpin',
+    pinItems: {
+        artist: 'artist',
+        folder: 'folder',
+        playlist: 'playlist',
+        collection: 'playlist',
+        album: 'album'
+    },
+    onPinUnSuccess: 'Failed to pin to your library',
+    onUnPinUnSuccess: 'Failed to unpin from your library',
 
     addToFavoriteTracks: 'Add to Liked Songs',
     removeFromFavoriteTracks: 'Remove from Liked Songs',

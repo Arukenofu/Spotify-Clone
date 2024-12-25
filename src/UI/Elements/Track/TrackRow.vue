@@ -9,6 +9,7 @@ import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
 import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue";
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   index?: number;
@@ -34,6 +35,8 @@ type Emits = {
 }
 
 defineEmits<Emits>();
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -125,7 +128,7 @@ defineEmits<Emits>();
 
       <button
         v-tooltip="{
-          content: `Открыть контекстное меню: ${getCommaSeparatedString(artists, 'name')} — ${musicName}`,
+          content: t('music-actions.moreOptionsFor', [`${getCommaSeparatedString(artists, 'name')} — ${musicName}`]),
           style: {
             overflow: 'hidden',
             textAlign: 'right',

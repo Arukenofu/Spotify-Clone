@@ -23,7 +23,7 @@ const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const tooltip = computed(() => {
   return {
-    content: `Открыть контекстное меню: Username`
+    content: t('music-actions.moreOptionsFor', ['Username'])
   }
 });
 
@@ -56,7 +56,7 @@ const currentList = [
     </PlayHeader>
 
     <EntityInfoHeader class="info-header" :image="null" :mask="null" type="User">
-      <span class="type">Профиль</span>
+      <span class="type">{{t('user.title')}}</span>
       <EntityInfoHeaderTitle>
         Username
       </EntityInfoHeaderTitle>
@@ -85,7 +85,7 @@ const currentList = [
 
     <div class="other-info-container">
       <EntitiesSectionWithHeading
-        naming="Открытые плейлисты"
+        :naming="t('user.publicPlaylists')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
@@ -102,7 +102,7 @@ const currentList = [
       </EntitiesSectionWithHeading>
 
       <EntitiesSectionWithHeading
-        naming="Недавние прослушано"
+        :naming="t('user.recentlyPlayed')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
@@ -119,7 +119,7 @@ const currentList = [
       </EntitiesSectionWithHeading>
 
       <EntitiesSectionWithHeading
-        naming="Подписчики"
+        :naming="t('user.subscribers')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
@@ -136,7 +136,7 @@ const currentList = [
       </EntitiesSectionWithHeading>
 
       <EntitiesSectionWithHeading
-        naming="Уже подписаны"
+        :naming="t('user.subscriptions')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard

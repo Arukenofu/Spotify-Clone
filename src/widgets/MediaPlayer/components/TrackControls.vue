@@ -107,7 +107,7 @@ function repeatModeTooltip() {
         @click="previousTrack()"
       />
       <button
-        v-tooltip="isPlaying ? 'Остановить' : 'Слушать'"
+        v-tooltip="isPlaying ? t('music-actions.stopMusic') : t('music-actions.playMusic')"
         class="icon musicState pointerable"
         @click="toggleTrackPlaying()"
       >

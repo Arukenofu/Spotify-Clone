@@ -2,6 +2,7 @@
 import GreenPlayingButton from "@/UI/Buttons/GreenPlayingButton.vue";
 import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import GeneralGradientSection from "@/UI/Blocks/GeneralGradientSection.vue";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   isPlaying: boolean;
@@ -17,12 +18,14 @@ type Emit = {
 
 const {bgColor = '#333333', turnoffOptions = false} = defineProps<Props>();
 defineEmits<Emit>();
+
+const {t} = useI18n();
 </script>
 
 <template>
   <GeneralGradientSection :bg-color>
     <GreenPlayingButton
-      v-tooltip="isPlaying ? 'Пауза' : 'Слушать'"
+      v-tooltip="isPlaying ? t('music-actions.stopMusic') : t('music-actions.playMusic')"
       class="playingButton"
       :state="isPlaying"
       @click="$emit('playClick')"

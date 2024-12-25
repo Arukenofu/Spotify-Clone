@@ -27,11 +27,11 @@ defineProps<Props>();
         <div class="left-clm">
           <div class="stat">
             <div class="title">{{readableNumber(subscriptions)}}</div>
-            <div class="body">Подписчики</div>
+            <div class="body">{{t('artist.subscribers', subscriptions)}}</div>
           </div>
           <div class="stat">
             <div class="title">{{readableNumber(listeners)}}</div>
-            <div class="body">Слушатели за месяц</div>
+            <div class="body">{{t('artist.monthlyListeners', listeners)}}</div>
           </div>
 
           <div v-for="data in cityPlaybackData" :key="data.cityName" class="city">

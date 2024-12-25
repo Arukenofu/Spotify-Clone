@@ -39,7 +39,7 @@ const {t} = useI18n();
     >
       <GreenPlayingButton
         v-if="type !== 'User'"
-        v-tooltip="`Слушать плейлист «${name}»`"
+        v-tooltip="state ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
         class="playingState"
         :state="state ?? false"
         @click.stop="$emit('onPlayClick')"
@@ -52,10 +52,13 @@ const {t} = useI18n();
     </span>
 
     <div class="textInfo">
-      <slot v-if="type !== 'Artist'" />
-      <template v-else>
+      <template v-if="type === 'Artist'">
         {{t('entities.artist')}}
       </template>
+      <template v-else-if="type === 'User'">
+        {{t('user.title')}}
+      </template>
+      <slot v-else />
     </div>
 
     <slot name="underlay" />
