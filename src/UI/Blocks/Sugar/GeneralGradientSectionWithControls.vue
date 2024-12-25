@@ -25,7 +25,7 @@ const {t} = useI18n();
 <template>
   <GeneralGradientSection :bg-color>
     <GreenPlayingButton
-      v-tooltip="isPlaying ? t('music-actions.stopMusic') : t('music-actions.playMusic')"
+      v-tooltip="isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
       class="playingButton"
       :state="isPlaying"
       @click="$emit('playClick')"

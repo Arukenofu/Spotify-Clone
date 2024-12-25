@@ -88,7 +88,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
 
             <div class="controls">
               <button
-                v-tooltip="isThisPlaylist(album.id, true) ? t('music-actions.stopMusic') : t('music-actions.playMusic')"
+                v-tooltip="isThisPlaylist(album.id, true) ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
                 class="playingState"
                 @click="loadPlaylist(album.id)"
               >
