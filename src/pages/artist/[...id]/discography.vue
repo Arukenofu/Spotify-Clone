@@ -26,7 +26,7 @@ const {data: artistInfo, isFetched} = useQuery({
   queryFn: async () => {
     const data = await artistService.getFullArtistInfoWithDiscography(Number(route.params.id));
 
-    setTitle(`Spotify – ${data.profile.artistName}: дискография`);
+    setTitle(t('route-titles.discography', [data.profile.artistName]));
 
     return data;
   }

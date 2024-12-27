@@ -2,8 +2,11 @@
 import TrackBlock from "@/UI/Elements/Track/TrackBlock.vue";
 import useInfoContentStore from "@/features/InfoPanel/store/useInfoContentStore";
 import type {Track} from "@/services/types/Entities/Track";
+import {useI18n} from "vue-i18n";
 
 const {setNewPanel} = useInfoContentStore();
+
+const {t} = useI18n();
 
 defineProps<{
   nextSong: Track
@@ -13,9 +16,9 @@ defineProps<{
 <template>
   <div class="next-in-queue">
     <div class="title">
-      <div class="text">Далее в очереди</div>
+      <div class="text">{{t('info-panel.currentTrackInfo.nextInQueue')}}</div>
       <button class="show-queue" @click="setNewPanel('CurrentPlaylistQueue')">
-        Показать очередь
+        {{t('info-panel.currentTrackInfo.openQueue')}}
       </button>
     </div>
     <div class="next-track">

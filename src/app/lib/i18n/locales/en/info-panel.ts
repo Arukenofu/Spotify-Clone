@@ -34,5 +34,10 @@ export default {
                 description: 'The app can detect more devices.',
             }
         ],
+    },
+    currentTrackInfo: {
+        nextInQueue: 'Next in queue',
+        openQueue: 'Open queue',
+        copyLinkToTrack: 'Copy link to track',
     }
 }

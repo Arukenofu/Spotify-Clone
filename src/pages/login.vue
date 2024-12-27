@@ -13,15 +13,15 @@ import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 import {useI18n} from "vue-i18n";
 
-setTitle('Войти - Spotify');
+const {t} = useI18n();
+
+setTitle(t('route.titles.login'));
 
 definePage({
   meta: {
     layout: false
   },
 });
-
-const {t} = useI18n();
 
 const form = reactive({
   email: '',

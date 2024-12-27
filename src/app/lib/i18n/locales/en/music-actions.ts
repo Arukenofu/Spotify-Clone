@@ -8,5 +8,8 @@ export default {
     addToLikedSongs: 'Add to Liked Songs',
     addToPlaylist: 'Add to Playlist',
 
+    playTrackByArtist: 'Play {0} by {1}',
+    pauseTrackByArtist: 'Pause {0} by {1}',
+
     moreOptionsFor: 'More options for {0}'
 }

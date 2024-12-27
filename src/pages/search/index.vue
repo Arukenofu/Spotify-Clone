@@ -12,9 +12,9 @@ import useResponsive from "@/shared/composables/useResponsive";
 import SearchMobileSearchBar from "@/pageLayouts/search/mobile/SearchMobileSearchBar.vue";
 import {useI18n} from "vue-i18n";
 
-setTitle('Spotify — Поиск');
-
 const {t} = useI18n();
+
+setTitle(t('route-titles.search'));
 
 const {isMobile} = useResponsive();
 

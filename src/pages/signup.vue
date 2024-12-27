@@ -9,8 +9,11 @@ import SecondStep from "@/pageLayouts/signup/Steps/SecondStep.vue";
 import ZeroStep from "@/pageLayouts/signup/Steps/ZeroStep.vue";
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
 import {provide, reactive, ref} from "vue";
+import {useI18n} from "vue-i18n";
 
-setTitle('Зарегестрироваться - Spotify');
+const {t} = useI18n();
+
+setTitle(t('route-titles.register'));
 
 definePage({
   meta: {

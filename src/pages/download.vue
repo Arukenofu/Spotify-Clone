@@ -4,8 +4,11 @@ import {BackgroundNoise, useBackgroundNoise} from '@/features/BackgroundNoise';
 import DesktopImage from '@/assets/images/desktop-app.png';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
 import setTitle from '@/shared/utils/setTitle';
+import {useI18n} from "vue-i18n";
 
-setTitle('Spotify — Приложение для компьютера');
+const {t} = useI18n();
+
+setTitle(t('route-titles.downloadDesktop'));
 
 const { currentColor } = useBackgroundNoise('#447bff');
 

@@ -34,5 +34,10 @@ export default {
                 description: 'Приложение может обнаружить больше устройств.',
             }
         ],
+    },
+    currentTrackInfo: {
+        nextInQueue: 'Далее в очереди',
+        openQueue: 'Показать очередь',
+        copyLinkToTrack: 'Скопировать ссылку на трек'
     }
 }

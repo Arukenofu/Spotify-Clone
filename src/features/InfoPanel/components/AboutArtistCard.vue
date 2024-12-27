@@ -38,7 +38,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
       class="artist-image"
       :style="`background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url(${coverImage})`"
     >
-      <div class="title">Об исполнителе</div>
+      <div class="title">{{t('artist.aboutArtist')}}</div>
     </div>
     <div class="about-artist">
       <RouterLink :to="`/artist/${artistId}`" class="artist-name">
