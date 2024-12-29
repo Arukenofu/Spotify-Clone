@@ -42,7 +42,7 @@ const {format, setFormat} = useMusicCollectionFormat();
 
 const tooltips = reactive({
   addButton: {
-    content: dossier.isAdded ? 'Удалить из медиатеки' : 'Добавить в медиатеку',
+    content: dossier.isAdded ? t('contextmenu-items.removeFromMedialib') : t('contextmenu-items.addToMedialib'),
     distance: 24
   },
   options: t('music-actions.moreOptionsFor', [dossier.name])

@@ -60,7 +60,7 @@ function copyLink() {
       </button>
 
       <button
-        v-tooltip="isAddedToFavorites ? 'Добавить в плейлист' : 'Добавить в любимые треки'"
+        v-tooltip="isAddedToFavorites ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
         class="button"
       >
         <Component

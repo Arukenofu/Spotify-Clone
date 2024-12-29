@@ -115,7 +115,7 @@ const {t} = useI18n();
 
     <div class="time">
       <button
-        v-tooltip="isAdded ? 'Добавить в любимые треки' : 'Добавить в плейлист'"
+        v-tooltip="isAdded ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
         class="addState"
         @click.stop
       >

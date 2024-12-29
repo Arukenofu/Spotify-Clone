@@ -55,7 +55,7 @@ const creator = computed(() => {
       </div>
       <EntityInfoHeaderDot />
       <div class="quantity">
-        {{ t('plurable-entities.track', tracksAmount).toLowerCase() }}, примерно {{ readableTime(totalDuration) }}
+        {{ t('plurable-entities.track', tracksAmount).toLowerCase() }}, {{t('time.likely')}} {{ readableTime(totalDuration) }}
       </div>
     </div>
   </EntityInfoHeader>
