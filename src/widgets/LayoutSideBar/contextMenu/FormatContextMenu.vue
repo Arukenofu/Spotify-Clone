@@ -9,6 +9,9 @@ import {gridColumnMaxWidth, gridColumnMinWidth, sorts} from "@/features/Medialib
 import type {FormatTypes} from "#imports";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
 import type {Component} from "vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 defineProps<{
   componentName: FormatTypes;
@@ -36,24 +39,20 @@ function setSortName(name: sortOption): void {
 
 interface FormatMap {
   id: FormatTypes,
-  text: string,
   icon: Component
 }
 
 const formatMap: FormatMap[] = [
   {
     id: 'Compact',
-    text: 'Компактный',
     icon: CompactIcon,
   },
   {
     id: 'List',
-    text: 'Список',
     icon: ListIcon,
   },
   {
     id: 'Grid',
-    text: 'Сетка',
     icon: GridIcon
   }
 ]
@@ -62,7 +61,7 @@ const formatMap: FormatMap[] = [
 <template>
   <BasicContextMenuView class="menu">
     <BasicContextMenuTitle>
-      Сортировка
+      {{t('medialib.librarySort')}}
     </BasicContextMenuTitle>
     <BasicContextMenuItem
       v-for="(sort, index) in sorts"
@@ -71,14 +70,14 @@ const formatMap: FormatMap[] = [
       :active="sortName === sort && 'active'"
       @click="setSortName(sort)"
     >
-      {{sort}}
+      {{ t(`medialib.sorts.${sort.toLowerCase()}`) }}
       <template v-if="sortName === sort" #additionalIcon>
         <CheckIcon />
       </template>
     </BasicContextMenuItem>
 
     <BasicContextMenuTitle>
-      Формат библеотеки
+      {{t('medialib.libraryFormat')}}
     </BasicContextMenuTitle>
     <BasicContextMenuItem
       v-for="format in formatMap"
@@ -86,7 +85,7 @@ const formatMap: FormatMap[] = [
       :active="componentName === format.id && 'active'"
       @click="setComponentName(format.id)"
     >
-      {{format.text}}
+      {{t(`medialib.formats.${format.id.toLowerCase()}`)}}
       <template #icon>
         <Component :is="format.icon" />
       </template>

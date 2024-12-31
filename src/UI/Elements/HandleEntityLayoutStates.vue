@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import LoadingBlock from "@/UI/Blocks/LoadingBlock.vue";
 import EntityErrorBlock from "@/UI/Blocks/ErrorBlock.vue";
+import type {Entities} from "@/services/types/Entities";
+import localizeEntities from "../../services/utils/localizeEntities";
 
 interface Props {
   isFetching: boolean;
   isError: boolean;
-  entity: string;
+  entity: Entities;
 }
 defineProps<Props>();
 </script>
@@ -16,7 +18,7 @@ defineProps<Props>();
     v-else-if="isError"
   >
     <template #title>
-      Не удалось найти {{entity}}
+      Не удалось найти {{localizeEntities(entity)}}
     </template>
     <template #body>
       Попробуй поискать что-нибудь другое

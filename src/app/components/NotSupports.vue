@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import Logo from "@/UI/Icons/Shared/Logo.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 </script>
 
 <template>
   <div class="wrapper">
     <Logo class="logo" />
 
-    <h1>Браузер не поддерживается</h1>
-    <p>Spotify не работает в этом браузере. Для более ярких впечатлений от прослушивания музыки обнови браузер или скачай приложение Spotify.</p>
+    <h1>{{t('not-supports.title')}}</h1>
+    <p>{{t('not-supports.description')}}</p>
   </div>
 </template>
 

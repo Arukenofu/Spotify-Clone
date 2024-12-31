@@ -1,8 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
+</script>
 
 <template>
   <div class="noText">
-    Похоже, у нас нет текста этой песни.
+    {{t('lyrics.noLyrics')}}
   </div>
 </template>
 

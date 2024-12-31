@@ -9,12 +9,15 @@ import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicSt
 import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
 import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
+import {useI18n} from "vue-i18n";
 
 const store = useCurrentMusicStore();
 const playlistStore = usePlaylistStore();
 const musicStore = useMusicStore();
 const { currentAudioData, currentAudioIndexInQueue } = storeToRefs(store);
 const { toggleTrackPlaying, loadSongFromCurrentQueue } = useMusicUtils();
+
+const {t} = useI18n();
 
 const isNoQueue = computed(() => {
   return !playlistStore.currentQueue.length || currentAudioIndexInQueue.value == null
@@ -29,10 +32,10 @@ const nextSongsInQueue = computed(() => {
 });
 
 const headTextValue = computed(() => {
-  let output = 'Далее';
+  let output = t('info-panel.queue.next');
 
   if (playlistStore.currentPlaylistInfo?.name) {
-    output += ` из: ${playlistStore.currentPlaylistInfo?.name}`;
+    output += ` ${t('info-panel.queue.from')}: ${playlistStore.currentPlaylistInfo?.name}`;
   } else {
     output += ':';
   }
@@ -47,14 +50,14 @@ const headTextValue = computed(() => {
   <div v-else class="panel">
     <PanelHeader>
       <template #name>
-        Очередь
+        {{t('info-panel.queue.queue')}}
       </template>
     </PanelHeader>
 
     <ScrollableBlock class="content">
       <div v-if="currentAudioData" class="now-playing section">
         <div class="head-text">
-          Сейчас играет
+          {{t('info-panel.queue.nowPlaying')}}
         </div>
         <div class="currentMusic">
           <Transition
@@ -130,7 +133,7 @@ const headTextValue = computed(() => {
     }
 
     &:deep(.scrollable-content) {
-      padding: 0 23px 0 8px;
+      padding: 0 8px;
     }
   }
 }

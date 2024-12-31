@@ -4,9 +4,9 @@ import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import type {Playlist} from "@/services/types/Entities/Playlist";
 import LazyImage from "@/UI/Elements/LazyImage.vue";
 import {computed} from "vue";
-import getDeclention from "@/shared/utils/getDeclention";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   image: string | null;
@@ -16,6 +16,8 @@ interface Props {
   tracksAmount: number;
   totalDuration: number;
 }
+
+const {t} = useI18n();
 
 const {creators} = defineProps<Props>();
 
@@ -27,7 +29,7 @@ const creator = computed(() => {
 
 <template>
   <EntityInfoHeader class="playlist_about" :image :mask type="Playlist">
-    <span class="type">Плейлист</span>
+    <span class="type">{{t('entities.playlist')}}</span>
 
     <EntityInfoHeaderTitle>
       {{name}}
@@ -53,7 +55,7 @@ const creator = computed(() => {
       </div>
       <EntityInfoHeaderDot />
       <div class="quantity">
-        {{ getDeclention(tracksAmount, 'трек', 'трека', 'треков') }}, примерно {{ readableTime(totalDuration) }}
+        {{ t('plurable-entities.track', tracksAmount).toLowerCase() }}, {{t('time.likely')}} {{ readableTime(totalDuration) }}
       </div>
     </div>
   </EntityInfoHeader>

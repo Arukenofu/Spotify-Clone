@@ -11,30 +11,25 @@ import FormError from '@/UI/Form/AuthForm/FormError.vue';
 
 import type {SecondStepForm} from '@/pageLayouts/signup/types/form';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
+import getLocale from "@/app/lib/i18n/utils/getLocale";
+import {useI18n} from "vue-i18n";
 
 const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
 const nextStep = inject<Function>('nextStep');
 
-const genders = ['Мужчина', 'Женщина', 'Другое', 'Не хочу выбирать'];
-const months = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь'
-];
+const {t, tm} = useI18n();
+
+const genders = tm('signup.second.genders');
+
+const months = (() => {
+  const applyFormat = new Intl.DateTimeFormat(getLocale(), { month: 'long' }).format;
+  return [...Array(12).keys()].map((m) => applyFormat(new Date(2021, m)));
+})();
 
 const currentForm = reactive<SecondStepForm>({
   username: '',
   day: null,
-  month: 'Месяц',
+  month: t('signup.second.month'),
   year: null,
   gender: ''
 });
@@ -63,7 +58,7 @@ const birthdayValidate = computed(() => {
   const { day, month, year } = currentForm;
 
   const isDayFill = String(day).length !== 0;
-  const isMonthFill = month !== 'Месяц';
+  const isMonthFill = month !== t('signup.second.month');
   const isYearFill = !!year;
 
   if (!(isDayFill && isMonthFill && isYearFill)) {
@@ -73,7 +68,7 @@ const birthdayValidate = computed(() => {
   if (day! > 31 || day! < 1) {
     errors.push({
       field: 'day',
-      message: 'Введите число от 1 до 31.'
+      message: t('signup.second.chooseDayFrom1To31')
     });
   }
 
@@ -83,7 +78,7 @@ const birthdayValidate = computed(() => {
   if (today.getFullYear() <= year!) {
     errors.push({
       field: 'year',
-      message: 'Введите действительный год рождения.'
+      message: t('signup.second.chooseRealBirthDay')
     });
   }
 
@@ -91,14 +86,14 @@ const birthdayValidate = computed(() => {
     errors.push({
       field: 'year',
       message:
-        'Вы еще не достигли возраста, позволяющего создать аккаунт Spotify.'
+          t('signup.second.tooYoung')
     });
   }
 
   if (year < 1900) {
     errors.push({
       field: 'year',
-      message: 'Год рождения должен быть не ранее 1900 г.'
+      message: t('signup.second.tooOld')
     });
   }
 
@@ -135,27 +130,27 @@ function validateCurrentStep() {
   <form @submit.prevent="validateCurrentStep()">
     <div class="username">
       <FormLabel margin="0 0 3px">
-        Название
+        {{t('signup.second.username')}}
       </FormLabel>
       <FormLabel
         color="var(--text-soft)"
         font-size=".85rem"
         font-weight="600"
       >
-        Ваше имя появится в профиле.
+        {{t('signup.second.usernameDesc')}}
       </FormLabel>
       <FormField
         v-model="currentForm.username"
         type="text"
         :error="formErrors.username"
       >
-        Укажите имя для своего профиля.
+        {{t('signup.second.usernameNotChoose')}}
       </FormField>
     </div>
 
     <div class="birthday">
       <FormLabel margin="18px 0 0">
-        Дата рождения
+        {{t('signup.second.birthday')}}
       </FormLabel>
 
       <div class="inputs">
@@ -165,7 +160,7 @@ function validateCurrentStep() {
           type="text"
           max-length="2"
           :only-number="true"
-          placeholder="дд"
+          :placeholder="t('signup.second.day')"
         />
 
         <FormSelect
@@ -186,7 +181,7 @@ function validateCurrentStep() {
           class="year"
           max-length="4"
           :only-number="true"
-          placeholder="гггг"
+          :placeholder="t('signup.second.year')"
         />
       </div>
 
@@ -206,7 +201,7 @@ function validateCurrentStep() {
 
     <div class="gender">
       <FormLabel margin="4px 0 3px">
-        Пол
+        {{t('signup.second.gender')}}
       </FormLabel>
       <FormLabel
         color="var(--text-soft)"
@@ -214,7 +209,7 @@ function validateCurrentStep() {
         font-weight="600"
         line-height="1.15"
       >
-        Мы учитываем пол при подборе персональных рекомендаций и рекламы.
+        {{t('signup.second.genderDesc')}}
       </FormLabel>
 
       <div class="radios">
@@ -231,13 +226,13 @@ function validateCurrentStep() {
           v-if="formErrors.gender"
           class="error"
         >
-          Выберите свой пол.
+          {{t('signup.second.genderNotChoose')}}
         </FormError>
       </div>
     </div>
 
     <FormButton class="button">
-      Далее
+      {{t('signup.next')}}
     </FormButton>
   </form>
 </template>
@@ -298,6 +293,7 @@ form {
 
   option {
     font-family: 'ProductSans', sans-serif;
+    text-transform: capitalize;
   }
 
   .button {

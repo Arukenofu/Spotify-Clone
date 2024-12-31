@@ -4,6 +4,7 @@ import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
 import type {Track} from '@/services/types/Entities/Track';
+import {useI18n} from "vue-i18n";
 
 const props = defineProps<{
   music: Track;
@@ -12,15 +13,15 @@ const props = defineProps<{
 
 defineEmits(['onImageBlockClick']);
 
+const {t} = useI18n();
+
 const playingStateTooltip = computed(() => {
   const musicName = props.music.name;
   const artists = getCommaSeparatedString(props.music.artists!, 'name');
 
-  if (props.state) {
-    return `Поставить на паузу то, что сейчас играет «${musicName}» (${artists})`;
-  } else {
-    return `Включить трек «${musicName}» исполнителя ${artists}`;
-  }
+  const action = props.state ? 'pause' : 'play';
+
+  return t(`music-actions.${action}TrackByArtist`, [musicName, artists])
 });
 </script>
 

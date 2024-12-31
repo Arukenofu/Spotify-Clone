@@ -3,6 +3,7 @@ import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/Bas
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
 import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
 import WithSubtree from "../helpers/WithSubtree.vue";
+import ctxT from "../../helpers/ctx-t";
 
 defineProps<{
   underline?: boolean,
@@ -12,7 +13,7 @@ defineProps<{
 <template>
   <WithSubtree>
     <BasicContextMenuItem :underline>
-      Добавить в плейлист
+      {{ctxT('addToPlaylist')}}
       <template #icon>
         <PlusIcon />
       </template>

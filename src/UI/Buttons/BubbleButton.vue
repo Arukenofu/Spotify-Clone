@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import type {ButtonHTMLAttributes} from "vue";
 
-/* @vue-ignore */
-interface Props extends ButtonHTMLAttributes {
-}
-
-const {design = 'default'} = defineProps<Props & {
-  design?: 'default' | 'active' | 'none' | 'green';
+const {design = 'default'} = defineProps<{
+  design?: 'default' | 'active' | 'none' | 'green' | 'border';
 }>();
 </script>
 
@@ -32,6 +27,7 @@ const {design = 'default'} = defineProps<Props & {
     background-color 0.2s ease,
     color 0.2s ease,
     opacity 0.2s ease;
+  transform: translate3d(0px, 0px, 0px);
 }
 
 .default {
@@ -71,6 +67,16 @@ const {design = 'default'} = defineProps<Props & {
   &:active {
     scale: 1;
     opacity: .9;
+  }
+}
+
+.border {
+  background: none;
+  border: 1px solid #7c7c7c;
+
+  &:hover {
+    scale: 1.04;
+    border: 1px solid var(--white);
   }
 }
 

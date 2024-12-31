@@ -2,13 +2,16 @@
 import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
 import QueueIcon from "@/UI/Icons/Shared/QueueIcon.vue";
 import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 </script>
 
 <template>
   <div class="no-queue">
     <PanelHeader>
       <template #name>
-        Очередь
+        {{t('info-panel.queue.queue')}}
       </template>
     </PanelHeader>
 
@@ -16,10 +19,10 @@ import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
       <div class="message">
         <QueueIcon class="icon" />
 
-        <h1>Добавляй треки в очередь</h1>
+        <h1>{{t('info-panel.queue.addTracks')}}</h1>
 
         <p>
-          Чтобы трек появился здесь, открой меню трека и нажми «Добавить в очередь».
+          {{t('info-panel.queue.addTrackDescription')}}
         </p>
 
         <BubbleButton
@@ -27,7 +30,7 @@ import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
           design="active"
           @click="$router.push('/search')"
         >
-          Искать треки
+          {{t('info-panel.queue.searchTracks')}}
         </BubbleButton>
       </div>
     </div>

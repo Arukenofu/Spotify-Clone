@@ -3,7 +3,6 @@ import {computed, inject, ref} from "vue";
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import getDeclention from "@/shared/utils/getDeclention";
 import {useRoute} from "vue-router";
 import GeneralGradientSection from "@/UI/Blocks/GeneralGradientSection.vue";
 import SubscribeToArtistButton from "@/UI/Buttons/SubscribeButton.vue";
@@ -11,6 +10,9 @@ import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
 import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/UI/Elements/MusicCard.vue";
 import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const isMyProfile = computed(() => {
   return false;
@@ -21,7 +23,7 @@ const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const tooltip = computed(() => {
   return {
-    content: `Открыть контекстное меню: Username`
+    content: t('music-actions.moreOptionsFor', ['Username'])
   }
 });
 
@@ -54,17 +56,17 @@ const currentList = [
     </PlayHeader>
 
     <EntityInfoHeader class="info-header" :image="null" :mask="null" type="User">
-      <span class="type">Профиль</span>
+      <span class="type">{{t('user.title')}}</span>
       <EntityInfoHeaderTitle>
         Username
       </EntityInfoHeaderTitle>
       <div class="additional">
         <RouterLink :to="linkToCurrentUserRoute('/followers')" class="subscribers">
-          {{getDeclention(2, 'подписчик', 'подписчика', 'подписчиков')}}
+          {{t('social.subscribers', 2)}}
         </RouterLink>
         <EntityInfoHeaderDot />
         <RouterLink :to="linkToCurrentUserRoute('/following')" class="subscriptions">
-          {{getDeclention(2, 'подписок', 'подписки', 'подписок')}}
+          {{t('social.subscriptions', 2)}}
         </RouterLink>
       </div>
     </EntityInfoHeader>
@@ -83,7 +85,7 @@ const currentList = [
 
     <div class="other-info-container">
       <EntitiesSectionWithHeading
-        naming="Открытые плейлисты"
+        :naming="t('user.publicPlaylists')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
@@ -100,7 +102,7 @@ const currentList = [
       </EntitiesSectionWithHeading>
 
       <EntitiesSectionWithHeading
-        naming="Недавние прослушано"
+        :naming="t('user.recentlyPlayed')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
@@ -117,7 +119,7 @@ const currentList = [
       </EntitiesSectionWithHeading>
 
       <EntitiesSectionWithHeading
-        naming="Подписчики"
+        :naming="t('user.subscribers')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
@@ -134,7 +136,7 @@ const currentList = [
       </EntitiesSectionWithHeading>
 
       <EntitiesSectionWithHeading
-        naming="Уже подписаны"
+        :naming="t('user.subscriptions')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard

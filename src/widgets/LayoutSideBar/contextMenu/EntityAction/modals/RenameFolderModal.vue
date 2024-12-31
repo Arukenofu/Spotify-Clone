@@ -7,6 +7,7 @@ import {Modal} from "@/features/Modal";
 import {useMutation, useQueryClient} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/medialib/apiMedialibService";
 import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
+import {useI18n} from "vue-i18n";
 
 const {id, currentName} = defineProps<{
   id: number | string;
@@ -16,6 +17,8 @@ const {id, currentName} = defineProps<{
 const state = defineModel<boolean>({
   required: true
 });
+
+const {t} = useI18n();
 
 const queryClient = useQueryClient();
 
@@ -55,7 +58,7 @@ const {mutate: rename} = useMutation({
   <Modal v-model="state" :use-transition="false">
     <DefaultModal class="modal">
       <div class="heading">
-        <h1 class="title">Переименовать</h1>
+        <h1 class="title">{{t('contextmenu-items.rename')}}</h1>
         <div class="close" @click="state = false">
           <CloseIcon class="icon" />
         </div>

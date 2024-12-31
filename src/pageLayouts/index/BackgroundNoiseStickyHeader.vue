@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
-import { BackgroundNoise } from '@/features/BackgroundNoise';
+import {computed, inject, ref} from 'vue';
+import {BackgroundNoise} from '@/features/BackgroundNoise';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
@@ -41,14 +44,14 @@ const { currentRoutePath } = useCurrentRoutePath('fullPath');
       :class="currentRoutePath !== '/' && 'inactive'"
       @click="$router.push(''); $emit('setColor', null)"
     >
-      Все
+      {{t('index-page.facet.all')}}
     </button>
 
     <button
       :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
       @click="$router.push('/?facet=music-chip'); $emit('setColor', null);"
     >
-      Музыка
+      {{t('index-page.facet.music')}}
     </button>
   </StickyHeader>
 </template>

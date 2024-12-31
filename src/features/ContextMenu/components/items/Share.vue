@@ -7,6 +7,7 @@ import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/Bas
 import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
 import type {Entities} from "@/services/types/Entities";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
+import ctxT from "../../helpers/ctx-t";
 
 defineProps<{
   entityId: string | number;
@@ -14,18 +15,7 @@ defineProps<{
 }>();
 
 function localize(entity: Entities) {
-  if (entity === 'Playlist') {
-    return 'плейлист'
-  }
-  if (entity === 'Artist') {
-    return 'исполнителя'
-  }
-  if (entity === 'Album') {
-    return 'альбом'
-  }
-  if (entity === 'Track') {
-    return 'трек'
-  }
+  return ctxT(`shareEntities.${entity.toLowerCase()}`)
 }
 
 function copyLink(id: string | number, entity: Entities) {
@@ -36,7 +26,7 @@ function copyLink(id: string | number, entity: Entities) {
 <template>
   <WithSubtree>
     <BasicContextMenuItem>
-      Поделиться
+      {{ctxT('share')}}
       <template #icon>
         <ShareIcon />
       </template>
@@ -47,14 +37,14 @@ function copyLink(id: string | number, entity: Entities) {
 
     <template v-if="type !== 'User'" #context>
       <BasicContextMenuItem @click="copyLink(entityId, type)">
-        Копировать ссылку на {{localize(type)}}
+        {{ctxT('shareCopyMessage', localize(type))}}
         <template #icon>
           <CopyLinkIcon />
         </template>
       </BasicContextMenuItem>
 
       <BasicContextMenuItem>
-        Копировать код виджета
+        {{ctxT('shareWidget')}}
         <template #icon>
           <CodeBlockIcon />
         </template>

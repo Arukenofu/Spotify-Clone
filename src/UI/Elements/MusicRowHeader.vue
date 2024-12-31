@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import ClockIcon from "@/UI/Icons/Shared/ClockIcon.vue";
 import {onMounted, onUnmounted, ref, useTemplateRef} from "vue";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   parentElement: HTMLElement;
   passingHeight?: number;
 }
+
+const {t} = useI18n();
 
 const {
   parentElement,
@@ -31,7 +34,7 @@ onUnmounted(() => {
 <template>
   <div ref="stickyTableHead" class="v-music-row" :class="isSticky && 'stuck'">
     <div class="index">#</div>
-    <div class="name">Название</div>
+    <div class="name">{{t('music-table.naming')}}</div>
     <div v-if="$slots.var1" class="var1">
       <slot name="var1" />
     </div>
@@ -42,7 +45,7 @@ onUnmounted(() => {
       <slot name="var3" />
     </div>
     <div class="time">
-      <div v-tooltip="'Длительность'">
+      <div v-tooltip="t('music-table.duration')">
         <ClockIcon class="icon" />
       </div>
     </div>

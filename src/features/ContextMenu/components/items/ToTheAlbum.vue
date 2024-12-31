@@ -2,6 +2,7 @@
 import {BasicContextMenuItem} from "@/features/ContextMenu";
 import AlbumIcon from "@/UI/Icons/Shared/AlbumIcon.vue";
 import {RouterLink} from "vue-router";
+import ctxT from "../../helpers/ctx-t";
 </script>
 
 <template>
@@ -9,7 +10,7 @@ import {RouterLink} from "vue-router";
     <template #icon>
       <AlbumIcon />
     </template>
-    К альбому
+    {{ctxT('toTheAlbum')}}
   </BasicContextMenuItem>
 </template>
 

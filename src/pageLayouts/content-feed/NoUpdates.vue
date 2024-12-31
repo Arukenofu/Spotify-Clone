@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n();
 </script>
 
 <template>
   <section class="no-updates">
-    <h1 class="updates-title">Нет обновлений</h1>
-    <p class="updates-body">Все новости будут появляться здесь. Подпишись на подкасты и любимых исполнителей, чтобы быть в курсе самого интересного.</p>
+    <h1 class="updates-title">{{t('content-feed.noUpdatesTitle')}}</h1>
+    <p class="updates-body">{{t('content-feed.noUpdatesDescription')}}</p>
   </section>
 </template>
 

@@ -7,6 +7,9 @@ import MusicCard from "@/UI/Elements/MusicCard.vue";
 import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
 import {router} from "@/app/router";
 import type {Entities} from "@/services/types/Entities";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const {data: history} = useQuery({
   queryKey: ['searchHistory'],
@@ -54,9 +57,9 @@ const {mutate: cleanSearchHistory} = useMutation({
 <template>
   <div class="layout">
     <div class="heading">
-      <h1 class="text">История поиска</h1>
+      <h1 class="text">{{t('search.searchHistory')}}</h1>
       <button class="clear" @click="cleanSearchHistory()">
-        Очистить историю поиска
+        {{t('search.cleanHistory')}}
       </button>
     </div>
 

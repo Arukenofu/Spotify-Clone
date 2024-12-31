@@ -8,8 +8,11 @@ import BellIcon from '@/widgets/LayoutHeader/UI/BellIcon.vue';
 import User from '@/widgets/LayoutHeader/components/User.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 import LongRoundButton from "@/UI/Buttons/LongRoundButton.vue";
+import {useI18n} from "vue-i18n";
 
 const { currentRoutePath } = useCurrentRoutePath('path');
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -20,7 +23,7 @@ const { currentRoutePath } = useCurrentRoutePath('path');
 
     <div class="left-side">
       <RoundButton
-        v-tooltip="'Главная'"
+        v-tooltip="t('app-header.tooltip.home')"
         class="homeButton"
         @click="$router.push('/')"
       >
@@ -39,7 +42,7 @@ const { currentRoutePath } = useCurrentRoutePath('path');
         class="premium-button"
         @click="$router.push('/premium')"
       >
-        Узнать больше о Premium
+        {{t('app-header.premium')}}
       </LongRoundButton>
 
       <LongRoundButton
@@ -47,11 +50,11 @@ const { currentRoutePath } = useCurrentRoutePath('path');
         @click="$router.push('/download')"
       >
         <DownloadIcon class="icon" />
-        <span> Установить приложение </span>
+        <span> {{t('app-header.download')}} </span>
       </LongRoundButton>
 
       <div
-        v-tooltip="'Что нового'"
+        v-tooltip="t('app-header.tooltip.contentFeed')"
         class="notification"
         @click="$router.push('/content-feed')"
       >

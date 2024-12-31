@@ -2,6 +2,8 @@
 import {BasicContextMenuItem} from "@/features/ContextMenu";
 import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
 import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue";
+import ctxT from "../../helpers/ctx-t";
+
 
 interface Props {
   state: boolean;
@@ -18,7 +20,7 @@ defineProps<Props>();
       />
     </template>
     <template #default>
-      {{state ? 'Удалить из любимых треков' : 'Добавить в любимые треки'}}
+      {{state ? ctxT('addToFavoriteTracks') : ctxT('removeFromFavoriteTracks')}}
     </template>
   </BasicContextMenuItem>
 </template>

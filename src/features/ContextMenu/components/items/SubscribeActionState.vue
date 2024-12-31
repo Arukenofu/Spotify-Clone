@@ -3,6 +3,7 @@ import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/Bas
 import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
 import SubscribeIcon from "@/UI/Icons/Shared/SubscribeIcon.vue";
+import ctxT from "../../helpers/ctx-t";
 
 defineProps<BaseItemProps & {
   state: boolean
@@ -11,7 +12,7 @@ defineProps<BaseItemProps & {
 
 <template>
   <BasicContextMenuItem :active="state && 'active-icon'">
-    {{state ? 'Отписаться' : 'Подписаться'}}
+    {{state ? ctxT('unsubscribe') : ctxT('subscribe')}}
     <template #icon>
       <CloseIcon v-if="state" />
       <SubscribeIcon v-else />

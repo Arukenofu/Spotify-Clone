@@ -1,1 +1,1 @@
-export type Formats = 'Компактный' | 'Список';
+export type Formats = 'Compact' | 'List';

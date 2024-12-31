@@ -9,13 +9,15 @@ import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import type {Track} from "@/services/types/Entities/Track";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   dossier: Playlist,
   queue: Track[]
 }
-
 const {dossier, queue} = defineProps<Props>();
+
+const {t} = useI18n();
 
 const playlistStore = usePlaylistStore();
 
@@ -40,10 +42,10 @@ const {format, setFormat} = useMusicCollectionFormat();
 
 const tooltips = reactive({
   addButton: {
-    content: dossier.isAdded ? 'Удалить из медиатеки' : 'Добавить в медиатеку',
+    content: dossier.isAdded ? t('contextmenu-items.removeFromMedialib') : t('contextmenu-items.addToMedialib'),
     distance: 24
   },
-  options: `Открыть контекстное меню: ${dossier.name}`
+  options: t('music-actions.moreOptionsFor', [dossier.name])
 });
 </script>
 

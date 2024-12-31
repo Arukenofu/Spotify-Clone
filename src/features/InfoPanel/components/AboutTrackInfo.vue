@@ -8,6 +8,7 @@ import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
 import MainTrackInfo from "@/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
+import {useI18n} from "vue-i18n";
 
 const {id} = defineProps<{
   id: string | number;
@@ -17,6 +18,8 @@ const {id} = defineProps<{
   artists: SimpleArtist[]
   isAddedToFavorites: boolean;
 }>();
+
+const {t} = useI18n();
 
 function copyLink() {
   copyLinkToClipboard(`${window.location.host}/track/${id}`);
@@ -49,7 +52,7 @@ function copyLink() {
     </MainTrackInfo>
     <div class="track-controls">
       <button
-        v-tooltip="`Скопировать ссылку на трек`"
+        v-tooltip="t('info-panel.currentTrackInfo.copyLinkToTrack')"
         class="copy button"
         @click="copyLink()"
       >
@@ -57,7 +60,7 @@ function copyLink() {
       </button>
 
       <button
-        v-tooltip="isAddedToFavorites ? 'Добавить в плейлист' : 'Добавить в любимые треки'"
+        v-tooltip="isAddedToFavorites ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
         class="button"
       >
         <Component

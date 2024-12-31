@@ -1,8 +1,8 @@
-export type sortOption = 'Недавно прослушано' | 'Недавно добавленные' | 'По алфавиту' | 'По автору';
+export type sortOption = 'Recents' | 'RecentlyAdded' | 'Alphabetical' | 'Creator';
 
 export default [
-    'Недавно прослушано',
-    'Недавно добавленные',
-    'По алфавиту',
-    'По автору'
+    'Recents',
+    'RecentlyAdded',
+    'Alphabetical',
+    'Creator'
 ] satisfies sortOption[];

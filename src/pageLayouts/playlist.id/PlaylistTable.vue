@@ -7,6 +7,7 @@ import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
+import {useI18n} from "vue-i18n";
 
 interface Props {
   queue: Track[],
@@ -15,10 +16,12 @@ interface Props {
 
 const {dossier, queue} = defineProps<Props>();
 
+const {t} = useI18n();
+
 const {format} = useMusicCollectionFormat();
 
 const currentFormatClass = computed(() => {
-  return format.value === 'Компактный' ? 'compact' : 'list';
+  return format.value === 'Compact' ? 'compact' : 'list';
 });
 
 const {
@@ -35,23 +38,23 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
       class="row-header computedGrid"
     >
       <template #var1>
-        <template v-if="format === 'Компактный'">
-          Исполнитель
+        <template v-if="format === 'Compact'">
+          {{t('entities.artist')}}
         </template>
         <template v-else>
-          Альбом
+          {{t('entities.album')}}
         </template>
       </template>
       <template #var2>
-        <template v-if="format === 'Компактный'">
-          Альбом
+        <template v-if="format === 'Compact'">
+          {{t('entities.album')}}
         </template>
         <template v-else>
-          Дата добавления
+          {{t('music-table.dateAdded')}}
         </template>
       </template>
-      <template v-if="format === 'Компактный'" #var3>
-        Дата добавления
+      <template v-if="format === 'Compact'" #var3>
+        {{t('music-table.dateAdded')}}
       </template>
     </MusicRowHeader>
 
@@ -70,12 +73,12 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
         :color="music.color"
         :is-added="false"
         :show-artists="true"
-        :compact="format === 'Компактный'"
+        :compact="format === 'Compact'"
         class="row computedGrid"
       >
         <template #var1>
           <CommaSeparatedArtistsLink
-            v-if="format === 'Компактный'"
+            v-if="format === 'Compact'"
             :artists="music.artists"
             class="artists"
           />
@@ -89,7 +92,7 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
         </template>
         <template #var2>
           <RouterLink
-            v-if="format === 'Компактный'"
+            v-if="format === 'Compact'"
             :to="`/album/${music.album.id}`"
             class="link"
           >
@@ -99,7 +102,7 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
             {{music.uploadedDate}}
           </span>
         </template>
-        <template v-if="format === 'Компактный'" #var3>
+        <template v-if="format === 'Compact'" #var3>
           <span class="text">
             {{music.uploadedDate}}
           </span>

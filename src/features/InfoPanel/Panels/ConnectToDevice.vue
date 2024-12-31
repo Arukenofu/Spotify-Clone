@@ -5,23 +5,17 @@ import PCDeviceIcon from '@/UI/Icons/Shared/PCDeviceIcon.vue';
 import WifiIcon from '@/UI/Icons/Shared/WifiIcon.vue';
 import PcAndDynamic from '@/UI/Icons/Shared/PcAndDynamic.vue';
 import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
+import {useI18n} from "vue-i18n";
+import type InfoPanel from "@/app/lib/i18n/locales/en/info-panel";
 
-const connectionPossibilities = [
-  {
-    title: 'Проверь подключение к Wi-Fi',
-    description: 'Устройства должны быть подключены к одной сети Wi-Fi.',
-    component: WifiIcon
-  },
-  {
-    title: 'Включи музыку на другом устройстве',
-    description: 'Тогда оно автоматически появится здесь.',
-    component: PcAndDynamic
-  },
-  {
-    title: 'Перейди в приложение Spotify',
-    description: 'Приложение может обнаружить больше устройств.',
-    component: DownloadIcon
-  }
+const {t, tm} = useI18n();
+
+type ConnectionPossibilities = typeof InfoPanel['connectToDevice']['connectionPossibilities'];
+
+const connectionComponents = [
+    WifiIcon,
+    PcAndDynamic,
+    DownloadIcon,
 ];
 </script>
 
@@ -29,7 +23,7 @@ const connectionPossibilities = [
   <div class="panel">
     <PanelHeader>
       <template #name>
-        Подключиться к устройству
+        {{t('info-panel.connectToDevice.title')}}
       </template>
     </PanelHeader>
 
@@ -40,27 +34,27 @@ const connectionPossibilities = [
       <div class="currentDeviceWidget">
         <div class="line1">
           <PCDeviceIcon class="icon" />
-          <div>Текущее устройство</div>
+          <div>{{t('info-panel.connectToDevice.currentDevice')}}</div>
         </div>
         <div
-          v-tooltip="'Этот браузер'"
+          v-tooltip="t('info-panel.connectToDevice.currentDevice')"
           class="line2"
         >
-          Этот браузер
+          {{ t('info-panel.connectToDevice.currentDevice') }}
         </div>
       </div>
 
       <div class="devices-section">
-        <h2>Другие устройства не найдены</h2>
+        <h2>{{ t('info-panel.connectToDevice.devicesNotFound') }}</h2>
 
         <div
-          v-for="(connection, index) in connectionPossibilities"
+          v-for="(connection, index) in tm('info-panel.connectToDevice.connectionPossibilities') as ConnectionPossibilities"
           :key="index"
           class="possible-connections"
         >
           <div class="connection">
             <div class="icon">
-              <Component :is="connection.component" />
+              <Component :is="connectionComponents[index]" />
             </div>
             <div class="text">
               <div

@@ -15,10 +15,12 @@ import ArtistInfoModal from "@/pageLayouts/artist.id/ArtistInfoModal.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from '@/shared/utils/setTitle';
 import readableNumber from "@/shared/utils/format/readableNumber";
-import getDeclention from "@/shared/utils/getDeclention";
 import TracksSection from "@/UI/Blocks/TracksSection.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 import SubscribeButton from "@/UI/Buttons/SubscribeButton.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
@@ -75,7 +77,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="трек"
+    entity="Track"
   />
 
   <div v-if="artistInfo" class="recommended-cards">
@@ -100,7 +102,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
       class="controls"
       :is-playing="isThisPlaylist(`popular:${artistInfo.profile.artistName}`, true)"
       :tooltip-str="{
-        content: `Открыть контекстное меню: ${artistInfo.profile.artistName}`,
+        content: t('music-actions.moreOptionsFor', [artistInfo.profile.artistName]),
         distance: 24,
         style: {
           fontSize: '.9rem',
@@ -198,13 +200,12 @@ const {mutate: toggleArtistSubscription} = useMutation({
     </EntitiesSectionWithHeading>
 
     <section class="about-artist" @click="isModal = true">
-      <h2>Об исполнителе</h2>
+      <h2>{{t('artist.aboutArtist')}}</h2>
       <div class="card">
         <EntityAvatar1x1 class="image" :image="artistInfo.profile.avatar" type="Artist" />
 
         <span class="listeners">
-          {{ getDeclention(artistInfo.listenersQuantityPerMonth, 'слушатель', 'слушателя', 'слушателей', 'readable') }}
-          в месяц
+          {{artistInfo.listenersQuantityPerMonth + ' ' + t('artist.monthlyListeners', artistInfo.listenersQuantityPerMonth).toLowerCase()}}
         </span>
 
         <div class="description">

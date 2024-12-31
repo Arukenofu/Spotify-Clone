@@ -4,6 +4,7 @@ import ArtistIcon from "@/UI/Icons/Shared/ArtistIcon.vue";
 import {RouterLink} from "vue-router";
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
+import ctxT from "../../helpers/ctx-t";
 
 defineProps<{
   artists: SimpleArtist[]
@@ -20,7 +21,7 @@ defineProps<{
     <template #icon>
       <ArtistIcon />
     </template>
-    К исполнителю
+    {{ctxT('toTheArtist')}}
   </BasicContextMenuItem>
 
   <WithSubtree>
@@ -28,7 +29,7 @@ defineProps<{
       <template #icon>
         <ArtistIcon />
       </template>
-      К исполнителю
+      {{ctxT('toTheArtist')}}
       <template #additionalIcon>
         <TriangleIcon />
       </template>

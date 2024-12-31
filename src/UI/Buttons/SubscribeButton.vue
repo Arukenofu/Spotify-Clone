@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import {useI18n} from "vue-i18n";
 import type {ButtonHTMLAttributes} from "vue";
 
 interface Props extends /* @vue-ignore */ ButtonHTMLAttributes {
   isSubscribed: boolean
 }
 defineProps<Props>();
+
+const {t} = useI18n();
 </script>
 
 <template>
   <button class="subscription">
-    {{ isSubscribed ? 'Уже подписаны' : 'Подписаться' }}
+    {{ isSubscribed ? t('social.unsubscribe') : t('social.subscribe') }}
   </button>
 </template>
 

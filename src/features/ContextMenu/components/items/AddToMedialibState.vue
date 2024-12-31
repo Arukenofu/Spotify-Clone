@@ -3,6 +3,7 @@ import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/Bas
 import RoundCheckIcon from "@/UI/Icons/Shared/RoundCheckIcon.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
 import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
+import ctxT from "../../helpers/ctx-t";
 
 interface Props extends BaseItemProps {
   state: boolean;
@@ -13,7 +14,7 @@ defineProps<Props>()
 
 <template>
   <BasicContextMenuItem v-bind="$props">
-    {{state ? 'Удалить из медиетеки' : 'Добавить в медиатеку'}}
+    {{state ? ctxT('removeFromMedialib') : ctxT('addToMedialib')}}
     <template #icon>
       <RoundCheckIcon v-if="state" achieve="yes" />
       <RoundPlusIcon v-else />

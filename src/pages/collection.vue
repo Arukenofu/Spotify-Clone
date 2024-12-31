@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import LikedSongsImage from '@/assets/images/liked-songs.png';
-import getDeclention from "../shared/utils/getDeclention";
 import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
 import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
 import {useQuery} from "@tanstack/vue-query";
@@ -10,6 +9,9 @@ import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue
 import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const maskColor = 'rgb(80, 56, 160)';
 
@@ -27,7 +29,7 @@ await suspense();
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="плейлист"
+    entity="Playlist"
   />
 
   <EntityInfoHeader
@@ -36,7 +38,7 @@ await suspense();
     type="Playlist"
     class="header"
   >
-    <span class="type">Плейлист</span>
+    <span class="type">{{t('entities.playlist')}}</span>
     <h1 class="title">Любимые треки</h1>
     <div class="other-info">
       <RouterLink to="/user/1" class="user">
@@ -46,7 +48,7 @@ await suspense();
       <EntityInfoHeaderDot />
 
       <span class="tracks-amount">
-        {{getDeclention(1, 'трек', 'трека', 'треков')}}
+        {{t('plurable-entities.track', data?.playlistQueue.length!).toLowerCase()}}
       </span>
     </div>
   </EntityInfoHeader>

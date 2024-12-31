@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {computed, inject, ref} from "vue";
 import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
-import getDeclention from "../../shared/utils/getDeclention";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
@@ -24,7 +26,7 @@ defineProps<HeaderProps>();
   <div class="info-layout">
     <h1 class="artist-name">{{name}}</h1>
     <span class="artist-listeners-quantity">
-      {{getDeclention(listenersPerMonth, 'слушатель', 'слушателя', 'слушателей', 'readable')}} в месяц
+      {{t('social.countPerMonth', [t('social.listeners', listenersPerMonth)])}}
     </span>
   </div>
 </template>

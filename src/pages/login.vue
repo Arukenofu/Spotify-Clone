@@ -11,8 +11,11 @@ import setTitle from '@/shared/utils/setTitle';
 import {router} from '@/app/router';
 import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
+import {useI18n} from "vue-i18n";
 
-setTitle('Войти - Spotify');
+const {t} = useI18n();
+
+setTitle(t('route.titles.login'));
 
 definePage({
   meta: {
@@ -45,7 +48,7 @@ const {mutate: login, error} = useMutation({
   <main>
     <form @submit.prevent="login()">
       <Logo class="logo" />
-      <h1>Войти в Spotify</h1>
+      <h1>{{t('login.title')}}</h1>
       <div
         v-if="error"
         class="errorField"
@@ -58,11 +61,11 @@ const {mutate: login, error} = useMutation({
           margin="16px 0 6px"
           font-size=".85rem"
         >
-          Электронная почта или имя пользователя
+          {{t('login.emailOrUsername')}}
         </FormLabel>
         <FormInput
           v-model="form.email"
-          placeholder="Электронная почта или имя пользователя"
+          :placeholder="t('login.emailOrUsername')"
           class="input"
           :error="fieldErrors.email"
         />
@@ -77,11 +80,11 @@ const {mutate: login, error} = useMutation({
           margin="16px 0 6px"
           font-size=".85rem"
         >
-          Пароль
+          {{t('login.password')}}
         </FormLabel>
         <FormInput
           v-model="form.password"
-          placeholder="Пароль"
+          :placeholder="t('login.password')"
           class="input"
           :error="fieldErrors.password"
           type="password"
@@ -98,16 +101,16 @@ const {mutate: login, error} = useMutation({
           v-model="form.isRemember"
           @click="form.isRemember = !form.isRemember"
         />
-        <span> Запомнить меня </span>
+        <span> {{t('login.rememberMe')}} </span>
       </div>
       <FormButton class="button">
-        Войти
+        {{t('login.login')}}
       </FormButton>
       <hr>
       <div class="noAccount">
-        Нет аккаунта?
+        {{t('login.noAccount')}}
         <RouterLink to="/signup">
-          Регистрация в Spotify
+          {{t('login.noAccountLink')}}
         </RouterLink>
       </div>
     </form>

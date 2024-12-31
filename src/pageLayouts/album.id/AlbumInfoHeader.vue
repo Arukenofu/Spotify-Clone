@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
 import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
-import getDeclention from "../../shared/utils/getDeclention";
 import readableTime from "../../shared/utils/format/readableTime";
 import type {Playlist} from "@/services/types/Entities/Playlist";
 import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 interface Props {
   image: string | null;
@@ -21,7 +23,7 @@ defineProps<Props>();
 
 <template>
   <EntityInfoHeader class="info" :image :mask type="Album">
-    <div class="type">Альбом</div>
+    <div class="type">{{t('entities.album')}}</div>
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <div class="additional">
       <div v-if="creator.length === 1" class="single-artist">
@@ -48,7 +50,7 @@ defineProps<Props>();
 
       <EntityInfoHeaderDot />
 
-      <span>{{getDeclention(tracksAmount, 'трек', 'трека', 'треков')}}</span>
+      <span>{{t('plurable-entities.track', tracksAmount).toLowerCase()}}</span>
 
       <EntityInfoHeaderDot />
 

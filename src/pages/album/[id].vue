@@ -15,6 +15,9 @@ import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
 import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
@@ -44,7 +47,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="альбом"
+    entity="Album"
   />
 
   <div v-if="data" class="recommended-cards">
@@ -66,7 +69,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
     <GeneralGradientSectionWithControls
       :is-playing="isThisPlaylist(data.playlistInfoDossier.id, true)"
       :bg-color="data.playlistInfoDossier.color"
-      :tooltip-str="`Открыть контекстное меню: ${data.playlistInfoDossier.name}`"
+      :tooltip-str="t('music-actions.moreOptionsFor', [data.playlistInfoDossier.name])"
       @play-click="loadPlaylist(data.playlistInfoDossier.id, {
         playlist: data
       })"
@@ -99,7 +102,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
         :color="music.color"
         :is-added="false"
         :show-artists="true"
-        :compact="format === 'Компактный'"
+        :compact="format === 'Compact'"
         class="row"
         @set-play="loadSongOrPlaylist(data)"
       />

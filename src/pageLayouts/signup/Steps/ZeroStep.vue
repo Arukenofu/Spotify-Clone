@@ -7,6 +7,9 @@ import type {ZeroStepForm} from '@/pageLayouts/signup/types/form';
 import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const nextStep = inject<Function>('nextStep');
 const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
@@ -23,15 +26,14 @@ const {mutate: register, error} = useMutation({
     globalRegisterForm!.email = currentForm.email;
   }
 });
-
 </script>
 
 <template>
   <div class="face">
-    <h1>Зарегистрируйтесь и погрузитесь в музыку</h1>
+    <h1>{{t('signup.zero.title')}}</h1>
 
     <form @submit.prevent="register()">
-      <FormLabel>Электронная почта</FormLabel>
+      <FormLabel>{{t('signup.zero.email')}}</FormLabel>
 
       <FormField
         v-model="currentForm.email"
@@ -44,13 +46,13 @@ const {mutate: register, error} = useMutation({
       </FormField>
 
       <FormButton class="button">
-        Далее
+        {{t('signup.next')}}
       </FormButton>
     </form>
 
     <div class="separator" />
 
-    <p>Уже есть аккаунт? <RouterLink to="/login">Войдите в него</RouterLink> </p>
+    <p>{{t('signup.zero.haveAnAccount')}} <RouterLink to="/login">{{t('signup.zero.login')}}</RouterLink> </p>
   </div>
 </template>
 

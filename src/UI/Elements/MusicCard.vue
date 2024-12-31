@@ -3,6 +3,7 @@ import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
 import type {Entities} from '@/services/types/Entities';
+import {useI18n} from "vue-i18n";
 
 interface Props {
   id: number | string;
@@ -12,7 +13,6 @@ interface Props {
   color: string | null;
   state?: boolean;
 }
-
 defineProps<Props>();
 
 type Emits = {
@@ -20,6 +20,8 @@ type Emits = {
 }
 
 defineEmits<Emits>();
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -37,7 +39,7 @@ defineEmits<Emits>();
     >
       <GreenPlayingButton
         v-if="type !== 'User'"
-        v-tooltip="`Слушать плейлист «${name}»`"
+        v-tooltip="state ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
         class="playingState"
         :state="state ?? false"
         @click.stop="$emit('onPlayClick')"
@@ -50,7 +52,13 @@ defineEmits<Emits>();
     </span>
 
     <div class="textInfo">
-      <slot />
+      <template v-if="type === 'Artist'">
+        {{t('entities.artist')}}
+      </template>
+      <template v-else-if="type === 'User'">
+        {{t('user.title')}}
+      </template>
+      <slot v-else />
     </div>
 
     <slot name="underlay" />
