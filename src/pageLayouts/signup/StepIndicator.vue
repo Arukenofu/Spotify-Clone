@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import {inject} from "vue";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const step = inject<number>('step');
 const previousStep = inject<Function>('previousStep');
@@ -26,13 +29,13 @@ const previousStep = inject<Function>('previousStep');
         /></svg></span>
     </button>
     <div class="indicator">
-      <span class="counter">Шаг {{ step }} из 3</span>
+      <span class="counter">{{t('signup.steps.title', [step])}}</span>
       <span class="text">
-        <template v-if="step === 1"> Придуймайте пароль </template>
+        <template v-if="step === 1"> {{t('signup.steps.first')}} </template>
 
-        <template v-if="step === 2"> Расскажите о себе </template>
+        <template v-if="step === 2"> {{t('signup.steps.second')}} </template>
 
-        <template v-if="step === 3"> Условия использования </template>
+        <template v-if="step === 3"> {{t('signup.steps.third')}} </template>
       </span>
     </div>
   </div>

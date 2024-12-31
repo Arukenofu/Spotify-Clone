@@ -51,4 +51,6 @@ export default {
 
     toTheAlbum: 'To the Album',
     toTheArtist: 'To the Artist',
+
+    rename: 'Rename'
 }

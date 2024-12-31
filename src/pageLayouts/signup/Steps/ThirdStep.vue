@@ -7,20 +7,23 @@ import {router} from '@/app/router';
 import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
 
 const terms = ref([
   {
-    text: 'Я не хочу получать рекламные сообщения от Spotify.',
+    text: t('signup.third.notSendAdvertisement'),
     checked: false
   },
   {
-    text: 'Я разрешаю сообщить мои регистрационные данные партнерам Spotify в целях рекламы.',
+    text: t('signup.third.agreeToProvideInformationToPartners'),
     checked: false
   },
   {
-    text: 'Я принимаю Условия использования и Политику конфиденциальности Spotify.',
+    text: t('signup.third.agreeWithPolicy'),
     checked: false
   }
 ]);
@@ -63,11 +66,11 @@ async function validateWholeForm() {
       v-if="isError"
       class="error"
     >
-      Чтобы продолжить, примите Условия использования.
+      {{t('signup.third.onNotAgreedWithAllTerms')}}
     </FormError>
 
     <FormButton class="button">
-      Зарегистрироваться
+      {{t('signup.third.register')}}
     </FormButton>
   </form>
 </template>

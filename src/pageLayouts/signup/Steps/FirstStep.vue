@@ -10,6 +10,9 @@ import Pin from '@/UI/Icons/Shared/RoundCheckIcon.vue';
 import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
+import {useI18n} from "vue-i18n";
+
+const {t} = useI18n();
 
 const nextStep = inject<Function>('nextStep');
 const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
@@ -48,17 +51,17 @@ const passwordRuleValidation = computed<{
 
   return [
     {
-      text: '1 букву',
+      text: t('signup.first.rules.oneLetter'),
       key: 'length',
       achieved: isHasOneLetter
     },
     {
-      text: '1 цифру или специальный символ (например, # ? ! &)',
+      text: t('signup.first.rules.digitSpecial'),
       key: 'digitSpecial',
       achieved: isHasSpecialSymbolOrNumber
     },
     {
-      text: '6 символов',
+      text: t('signup.first.rules.sixSymbol'),
       key: 'letter',
       achieved: isHas6Symbol
     }
@@ -80,7 +83,7 @@ const {mutate: validate} = useMutation({
 
 <template>
   <form @submit.prevent="validate()">
-    <FormLabel class="label">Пароль</FormLabel>
+    <FormLabel class="label">{{t('signup.first.password')}}</FormLabel>
     <FormInput
       v-model="currentForm.password"
       class="input"
@@ -90,7 +93,7 @@ const {mutate: validate} = useMutation({
     />
 
     <div class="rules">
-      <FormLabel class="label">Пароль должен содержать как минимум:</FormLabel>
+      <FormLabel class="label">{{t('signup.first.ruleTitle')}}:</FormLabel>
       <div
         v-for="(rule) in passwordRuleValidation"
         :key="rule.text"
@@ -109,7 +112,7 @@ const {mutate: validate} = useMutation({
       </div>
     </div>
 
-    <FormButton> Далее </FormButton>
+    <FormButton> {{t('signup.next')}} </FormButton>
   </form>
 </template>
 

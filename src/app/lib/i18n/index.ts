@@ -1,7 +1,7 @@
 import {createI18n} from "vue-i18n";
-import {getCookie, setCookie} from "@/shared/utils/cookie-actions";
-import simplifyModuleName from "@/app/lib/i18n/simplifyModuleName";
+import simplifyModuleName from "@/app/lib/i18n/utils/simplifyModuleName";
 import ruPluralizationRule from "@/app/lib/i18n/pluralization/ruPluralizationRules";
+import getLocale from "@/app/lib/i18n/utils/getLocale";
 
 export default createI18n({
     locale: getLocale(),
@@ -20,17 +20,3 @@ export default createI18n({
         ru: ruPluralizationRule
     }
 });
-
-function getLocale() {
-    const localeCookie = getCookie('locale');
-
-    if (localeCookie) {
-        return localeCookie;
-    }
-
-    const navigatorLang = window.navigator.language.split('-')[0];
-
-    setCookie('locale', navigatorLang, 365);
-
-    return navigatorLang;
-}

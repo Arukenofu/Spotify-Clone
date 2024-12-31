@@ -8,24 +8,27 @@ import {useQueryClient} from "@tanstack/vue-query";
 import removeEntityFromMedialib from "@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib";
 import {ref} from "vue";
 import RenameFolderModal from "@/widgets/LayoutSideBar/contextMenu/EntityAction/modals/RenameFolderModal.vue";
+import {useI18n} from "vue-i18n";
 
 defineProps<EntityActionContextMenuProps>();
 
 const queryClient = useQueryClient();
 
 const isRenameModal = ref<boolean>(false);
+
+const {t} = useI18n();
 </script>
 
 <template>
   <BasicContextMenuItem @click="isRenameModal = true">
-    Переименовать
+    {{t('contextmenu-items.rename')}}
     <template #icon>
       <PencilIcon />
     </template>
   </BasicContextMenuItem>
 
   <Remove underline @click="removeEntityFromMedialib($props, queryClient)">
-    Удалить
+    {{t('contextmenu-items.remove')}}
     <template #icon>
       <DangerIcon2 />
     </template>
