@@ -107,6 +107,7 @@ onMounted(() => {
       border-radius: var(--border-radius);
       container-type: inline-size;
       container-name: content;
+      transform: translate(0);
 
       @media screen and (max-width: 768px) {
         & {

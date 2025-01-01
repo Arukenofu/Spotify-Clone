@@ -179,7 +179,7 @@ const comparisons = [
 
 <style lang="scss" scoped>
 .header {
-  top: 64px;
+  top: 0;
 }
 
 .main {

@@ -49,7 +49,7 @@ const computeOpacity = computed<number>(() => {
   position: fixed;
   background-color: var(--ui);
   transition: opacity 0.25s ease-out;
-  top: 64px;
+  top: 0;
 }
 
 section {

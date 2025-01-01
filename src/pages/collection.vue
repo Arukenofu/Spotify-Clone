@@ -10,8 +10,11 @@ import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
+import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import {inject, ref} from "vue";
 
 const {t} = useI18n();
+const scrollY = inject('layoutScrollY', ref(0));
 
 const maskColor = 'rgb(80, 56, 160)';
 
@@ -32,48 +35,56 @@ await suspense();
     entity="Playlist"
   />
 
-  <EntityInfoHeader
-    :image="LikedSongsImage"
-    :mask="maskColor"
-    type="Playlist"
-    class="header"
-  >
-    <span class="type">{{t('entities.playlist')}}</span>
-    <h1 class="title">Любимые треки</h1>
-    <div class="other-info">
-      <RouterLink to="/user/1" class="user">
-        Бауыржан Алкенов
-      </RouterLink>
+  <div class="collection">
+    <PlayHeaderWithPlayingState
+      title="Любимые треки"
+      :scroll-y="scrollY"
+      :is-playing="false"
+      :mask="maskColor"
+    />
 
-      <EntityInfoHeaderDot />
+    <EntityInfoHeader
+      :image="LikedSongsImage"
+      :mask="maskColor"
+      type="Playlist"
+      class="header"
+    >
+      <span class="type">{{t('entities.playlist')}}</span>
+      <h1 class="title">Любимые треки</h1>
+      <div class="other-info">
+        <RouterLink to="/user/1" class="user">
+          Бауыржан Алкенов
+        </RouterLink>
 
-      <span class="tracks-amount">
-        {{t('plurable-entities.track', data?.playlistQueue.length!).toLowerCase()}}
-      </span>
-    </div>
-  </EntityInfoHeader>
+        <EntityInfoHeaderDot />
 
-  <GeneralGradientSectionWithControls
-    :is-playing="false"
-    :bg-color="maskColor"
-    tooltip-str=""
-    turnoff-options
-  >
-    <template #additional-options>
-      <FormatLibraryButton :format @set-format="setFormat" />
-    </template>
-  </GeneralGradientSectionWithControls>
+        <span class="tracks-amount">
+          {{t('plurable-entities.track', data?.playlistQueue.length!).toLowerCase()}}
+        </span>
+      </div>
+    </EntityInfoHeader>
 
-  <PlaylistTable
-    :queue="data!.playlistQueue"
-    :dossier="data!.playlistInfoDossier"
-    hide-main-options
-  />
+    <GeneralGradientSectionWithControls
+      :is-playing="false"
+      :bg-color="maskColor"
+      tooltip-str=""
+      turnoff-options
+    >
+      <template #additional-options>
+        <FormatLibraryButton :format @set-format="setFormat" />
+      </template>
+    </GeneralGradientSectionWithControls>
+
+    <PlaylistTable
+      :queue="data!.playlistQueue"
+      :dossier="data!.playlistInfoDossier"
+      hide-main-options
+    />
+  </div>
 </template>
 
 <style scoped lang="scss">
 .header {
-  margin-top: -64px;
   container: collection-info / inline-size;
 
   .type {
