@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PinIcon from "@/UI/Icons/Shared/PinIcon.vue";
+import PinIcon from "@/shared/UI/Icons/PinIcon.vue";
 import {BasicContextMenuItem} from "@/features/ContextMenu";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar";
 import {useMutation, useQueryClient} from "@tanstack/vue-query";

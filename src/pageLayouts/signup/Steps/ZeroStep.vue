@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import FormButton from '@/UI/Form/AuthForm/FormButton.vue';
-import FormField from '@/UI/Form/AuthForm/FormField.vue';
-import FormLabel from '@/UI/Form/AuthForm/FormLabel.vue';
+import FormButton from '@/shared/UI/Form/AuthForm/FormButton.vue';
+import FormField from '@/shared/UI/Form/AuthForm/FormField.vue';
+import FormLabel from '@/shared/UI/Form/AuthForm/FormLabel.vue';
 import {inject, reactive} from 'vue';
 import type {ZeroStepForm} from '@/pageLayouts/signup/types/form';
 import {useMutation} from '@tanstack/vue-query';

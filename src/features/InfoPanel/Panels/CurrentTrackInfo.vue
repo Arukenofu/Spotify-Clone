@@ -2,11 +2,11 @@
 import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
 import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
 import {computed, watch} from "vue";
-import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
-import RoundButton from "@/UI/Buttons/RoundButton.vue";
+import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
+import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
 import NowPlayingOptionsContextMenu from "@/features/InfoPanel/components/NowPlayingOptionsContextMenu.vue";
 import {ContextMenu} from "@/features/ContextMenu";
-import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
+import ScrollableBlock from "@/shared/UI/Blocks/ScrollableBlock.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiArtistService from "@/services/api/artist/apiArtistService";
 import type {Artist} from "@/services/types/Entities/Artist";

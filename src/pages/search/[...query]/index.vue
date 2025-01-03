@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import EntityCard from "@/UI/Elements/EntityCard.vue";
+import EntityCard from "@/shared/UI/Elements/EntityCard.vue";
 import {useQuery} from "@tanstack/vue-query";
-import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
+import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import {computed} from "vue";
-import LoadingBlock from "@/UI/Blocks/LoadingBlock.vue";
+import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
 import apiSearchService from "@/services/api/search/apiSearchService";

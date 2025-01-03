@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
 import routerPushPrevent from '@/shared/utils/routerPushPrevent';
-import LazyImage from "@/UI/Elements/LazyImage.vue";
+import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 import {useI18n} from "vue-i18n";
 
 interface Props {

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import NowPlaying from '@/UI/Icons/MediaPlayerControls/NowPlaying.vue';
-import FullScreen from '@/UI/Icons/MediaPlayerControls/FullScreen.vue';
+import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue';
+import FullScreen from '@/shared/UI/Icons/FullScreen.vue';
 import Range from '@/shared/components/Range.vue';
-import Volume from '@/UI/Icons/MediaPlayerControls/Volume.vue';
-import ShowText from '@/UI/Icons/MediaPlayerControls/ShowText.vue';
-import ConnectToDevice from '@/UI/Icons/MediaPlayerControls/ConnectToDevice.vue';
-import ShowQueue from '@/UI/Icons/MediaPlayerControls/ShowQueue.vue';
+import Volume from '@/shared/UI/Icons/Volume.vue';
+import ShowText from '@/shared/UI/Icons/ShowText.vue';
+import ConnectToDevice from '@/shared/UI/Icons/ConnectToDevice.vue';
+import ShowQueue from '@/shared/UI/Icons/ShowQueue.vue';
 </script>
 
 <template>

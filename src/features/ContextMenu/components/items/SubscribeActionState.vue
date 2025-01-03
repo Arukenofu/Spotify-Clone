@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
+import CloseIcon from "@/shared/UI/Icons/CloseIcon.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
-import SubscribeIcon from "@/UI/Icons/Shared/SubscribeIcon.vue";
+import SubscribeIcon from "@/shared/UI/Icons/SubscribeIcon.vue";
 import ctxT from "../../helpers/ctx-t";
 
 defineProps<BaseItemProps & {

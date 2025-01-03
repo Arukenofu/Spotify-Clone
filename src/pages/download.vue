@@ -2,7 +2,7 @@
 import {computed, inject, ref} from 'vue';
 import {BackgroundNoise, useBackgroundNoise} from '@/features/BackgroundNoise';
 import DesktopImage from '@/assets/images/desktop-app.png';
-import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
 import setTitle from '@/shared/utils/setTitle';
 import {useI18n} from "vue-i18n";
 

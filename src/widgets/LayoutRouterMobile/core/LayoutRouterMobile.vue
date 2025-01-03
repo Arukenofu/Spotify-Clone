@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import HomeIcon from '@/UI/Icons/Shared/HomeIcon.vue';
-import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
-import LibraryIcon from '@/UI/Icons/Shared/LibraryIcon.vue';
-import Logo from '@/UI/Icons/Shared/Logo.vue';
+import HomeIcon from '@/shared/UI/Icons/HomeIcon.vue';
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue';
+import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue';
+import Logo from '@/shared/UI/Icons/Logo.vue';
 import LinkButton from '@/widgets/LayoutRouterMobile/components/LinkButton.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
 

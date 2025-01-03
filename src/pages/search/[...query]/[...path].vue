@@ -4,14 +4,14 @@ import {computed, inject, type Ref, watch} from "vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiSearchService from "@/services/api/search/apiSearchService";
 import type {Entities} from "@/services/types/Entities";
-import LoadingBlock from "@/UI/Blocks/LoadingBlock.vue";
+import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import type {RecommendationItem} from "@/services/types/Recommendation";
-import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
+import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import type {Track} from "@/services/types/Entities/Track";
-import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
+import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
 
 const route = useRoute('/search/[...query]/[...path]');
 

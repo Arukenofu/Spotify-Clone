@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Folder from '@/UI/Icons/Shared/FolderIcon.vue';
+import Folder from '@/shared/UI/Icons/FolderIcon.vue';
 import {BasicContextMenuItem, BasicContextMenuView, CreatePlaylist} from "@/features/ContextMenu";
 import {useMutation, useQueryClient} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/medialib/apiMedialibService";

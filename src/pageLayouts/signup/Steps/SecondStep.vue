@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {computed, inject, reactive, ref} from 'vue';
 
-import FormLabel from '@/UI/Form/AuthForm/FormLabel.vue';
-import FormInput from '@/UI/Form/AuthForm/FormInput.vue';
-import FormSelect from '@/UI/Form/AuthForm/FormSelect.vue';
-import FormField from '@/UI/Form/AuthForm/FormField.vue';
-import FormRadio from '@/UI/Form/AuthForm/FormRadio.vue';
-import FormButton from '@/UI/Form/AuthForm/FormButton.vue';
-import FormError from '@/UI/Form/AuthForm/FormError.vue';
+import FormLabel from '@/shared/UI/Form/AuthForm/FormLabel.vue';
+import FormInput from '@/shared/UI/Form/AuthForm/FormInput.vue';
+import FormSelect from '@/shared/UI/Form/AuthForm/FormSelect.vue';
+import FormField from '@/shared/UI/Form/AuthForm/FormField.vue';
+import FormRadio from '@/shared/UI/Form/AuthForm/FormRadio.vue';
+import FormButton from '@/shared/UI/Form/AuthForm/FormButton.vue';
+import FormError from '@/shared/UI/Form/AuthForm/FormError.vue';
 
 import type {SecondStepForm} from '@/pageLayouts/signup/types/form';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";

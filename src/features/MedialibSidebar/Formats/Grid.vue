@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import GreenPlayingButton from '@/UI/Buttons/GreenPlayingButton.vue';
-import EntityAvatar1x1 from '@/UI/Elements/EntityAvatar1x1.vue';
+import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue';
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue';
 import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
 import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
 import {Tippy} from "vue-tippy";

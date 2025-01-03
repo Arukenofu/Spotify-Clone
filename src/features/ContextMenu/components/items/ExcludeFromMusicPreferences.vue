@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
-import RoundCrossIcon from "@/UI/Icons/Shared/RoundCrossIcon.vue";
+import RoundCrossIcon from "@/shared/UI/Icons/RoundCrossIcon.vue";
 import ctxT from "../../helpers/ctx-t";
 
 defineProps<BaseItemProps>();

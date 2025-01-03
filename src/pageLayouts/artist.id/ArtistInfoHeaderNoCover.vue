@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
-import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
-import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import {useI18n} from "vue-i18n";
 
 defineProps<HeaderProps>();

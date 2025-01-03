@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
-import MusicRow from "@/UI/Elements/Track/TrackRow.vue";
-import MusicRowHeader from "@/UI/Elements/MusicRowHeader.vue";
+import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
+import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
 import {computed, inject, type Ref} from "vue";
 import type {Track} from "@/services/types/Entities/Track";
 

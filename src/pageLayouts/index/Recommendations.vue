@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import EntitiesSectionWithHeading from '@/UI/Blocks/EntitiesSectionWithHeading.vue';
-import MusicCard from '@/UI/Elements/MusicCard.vue';
+import EntitiesSectionWithHeading from '@/shared/UI/Blocks/EntitiesSectionWithHeading.vue';
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue';
 import {useQuery} from "@tanstack/vue-query";
 import recommendationService from "@/services/api/recommendations/apiRecommendationService";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";

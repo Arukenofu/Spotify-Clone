@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
-import QueueIcon from "@/UI/Icons/Shared/QueueIcon.vue";
-import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
+import QueueIcon from "@/shared/UI/Icons/QueueIcon.vue";
+import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

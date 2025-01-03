@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
 import LikedSongsImage from '@/assets/images/liked-songs.png';
-import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
-import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
+import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiUserService from "@/services/api/user/apiUserService";
-import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
+import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
-import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
-import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
 import {inject, ref} from "vue";
 
 const {t} = useI18n();

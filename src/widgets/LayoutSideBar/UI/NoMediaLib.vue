@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LongRoundButton from "@/UI/Buttons/LongRoundButton.vue";
+import LongRoundButton from "@/shared/UI/Buttons/LongRoundButton.vue";
 
 const buttonInfo = [
   {

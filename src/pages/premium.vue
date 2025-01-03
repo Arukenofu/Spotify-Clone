@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {computed, inject, ref} from 'vue';
 import {PremiumCards} from '@/widgets/PremiumCards';
-import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
-import CheckIcon from '@/UI/Icons/Shared/CheckIcon.vue';
-import Logo from '@/UI/Icons/Shared/Logo.vue';
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
+import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue';
+import Logo from '@/shared/UI/Icons/Logo.vue';
 import setTitle from '@/shared/utils/setTitle';
 
 setTitle('Spotify — Premium');

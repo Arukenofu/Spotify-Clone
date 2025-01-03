@@ -2,7 +2,7 @@
 import {computed, inject, ref} from 'vue';
 import {BackgroundNoise} from '@/features/BackgroundNoise';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
-import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

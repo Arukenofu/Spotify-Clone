@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {onMounted, watch} from 'vue';
 import {storeToRefs} from 'pinia';
-import RandomOrder from '@/UI/Icons/MediaPlayer/RandomOrder.vue';
-import Previous from '@/UI/Icons/MediaPlayer/Previous.vue';
-import PlayingState from '@/UI/Icons/Shared/PlayingState.vue';
-import Next from '@/UI/Icons/MediaPlayer/Next.vue';
-import Repeat from '@/UI/Icons/MediaPlayer/Repeat.vue';
+import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
+import Previous from '@/shared/UI/Icons/Previous.vue';
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
+import Next from '@/shared/UI/Icons/Next.vue';
+import Repeat from '@/shared/UI/Icons/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
 import {useUserSettings} from '@/widgets/MediaPlayer/store/useUserSettings';
 import getRandomNumber from '@/shared/utils/getRandomNumber';

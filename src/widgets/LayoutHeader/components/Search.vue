@@ -2,9 +2,9 @@
 import {onMounted, ref, useTemplateRef} from 'vue';
 import {useRoute} from 'vue-router';
 
-import SearchReviewIcon from '@/UI/Icons/Shared/SearchReviewIcon.vue';
-import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
-import CloseIcon from '@/UI/Icons/Shared/CloseIcon.vue';
+import SearchReviewIcon from '@/shared/UI/Icons/SearchReviewIcon.vue';
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue';
+import CloseIcon from '@/shared/UI/Icons/CloseIcon.vue';
 
 import useDebounce from '@/shared/composables/useDebounce';
 import {router} from '@/app/router';

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {computed, inject, reactive, ref} from 'vue';
 
-import FormLabel from '@/UI/Form/AuthForm/FormLabel.vue';
-import FormInput from '@/UI/Form/AuthForm/FormInput.vue';
-import FormButton from '@/UI/Form/AuthForm/FormButton.vue';
+import FormLabel from '@/shared/UI/Form/AuthForm/FormLabel.vue';
+import FormInput from '@/shared/UI/Form/AuthForm/FormInput.vue';
+import FormButton from '@/shared/UI/Form/AuthForm/FormButton.vue';
 
 import type {FirstStepForm} from '@/pageLayouts/signup/types/form';
-import Pin from '@/UI/Icons/Shared/RoundCheckIcon.vue';
+import Pin from '@/shared/UI/Icons/RoundCheckIcon.vue';
 import {useMutation} from '@tanstack/vue-query';
 import authService from '@/services/api/auth/apiAuthService';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";

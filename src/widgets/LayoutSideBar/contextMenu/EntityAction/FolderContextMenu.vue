@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {BasicContextMenuItem, CreateFolder, MoveTo, Remove} from "@/features/ContextMenu";
 import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
-import PencilIcon from "@/UI/Icons/Shared/PencilIcon.vue";
-import DangerIcon2 from "@/UI/Icons/Shared/DangerIcon2.vue";
+import PencilIcon from "@/shared/UI/Icons/PencilIcon.vue";
+import DangerIcon2 from "@/shared/UI/Icons/DangerIcon2.vue";
 import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
 import {useQueryClient} from "@tanstack/vue-query";
 import removeEntityFromMedialib from "@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib";

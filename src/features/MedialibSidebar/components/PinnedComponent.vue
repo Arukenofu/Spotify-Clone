@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PinIcon from "@/UI/Icons/Shared/PinIcon.vue";
+import PinIcon from "@/shared/UI/Icons/PinIcon.vue";
 </script>
 
 <template>

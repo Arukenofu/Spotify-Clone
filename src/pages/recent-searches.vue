@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import EntitiesSectionWrapper from "@/UI/Blocks/EntitiesSectionWrapper.vue";
+import EntitiesSectionWrapper from "@/shared/UI/Blocks/EntitiesSectionWrapper.vue";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
 import apiSearchService from "@/services/api/search/apiSearchService";
-import CardRemoveWrapper from "@/UI/Elements/CardRemoveWrapper.vue";
-import MusicCard from "@/UI/Elements/MusicCard.vue";
+import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
+import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
 import {router} from "@/app/router";
 import type {Entities} from "@/services/types/Entities";

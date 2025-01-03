@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Logo from "@/UI/Icons/Shared/Logo.vue";
+import Logo from "@/shared/UI/Icons/Logo.vue";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

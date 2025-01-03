@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UserProfileMenu from "@/widgets/LayoutHeader/contextmenu/UserProfileMenu.vue";
-import RoundButton from "@/UI/Buttons/RoundButton.vue";
+import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
 import {ContextMenu} from "@/features/ContextMenu";
 </script>
 

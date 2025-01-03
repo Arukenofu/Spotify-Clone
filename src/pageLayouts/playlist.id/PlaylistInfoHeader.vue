@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import readableTime from "@/shared/utils/format/readableTime";
-import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
 import type {Playlist} from "@/services/types/Entities/Playlist";
-import LazyImage from "@/UI/Elements/LazyImage.vue";
+import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 import {computed} from "vue";
-import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 
 interface Props {

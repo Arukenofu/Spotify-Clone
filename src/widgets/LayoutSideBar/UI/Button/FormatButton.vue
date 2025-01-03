@@ -2,9 +2,9 @@
 import {computed} from 'vue';
 import type {FormatTypes} from "#imports";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
-import GridIcon from "@/UI/Icons/Shared/GridIcon.vue";
-import CompactIcon from "@/UI/Icons/Shared/CompactIcon.vue";
-import ListIcon from "@/UI/Icons/Shared/ListIcon.vue";
+import GridIcon from "@/shared/UI/Icons/GridIcon.vue";
+import CompactIcon from "@/shared/UI/Icons/CompactIcon.vue";
+import ListIcon from "@/shared/UI/Icons/ListIcon.vue";
 
 interface Props {
   formatComponentName: FormatTypes;

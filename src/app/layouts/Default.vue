@@ -7,7 +7,7 @@ import {LayoutInfoContent} from '@/widgets/LayoutInfoPanel';
 import {LayoutHeader} from '@/widgets/LayoutHeader';
 import {router} from '@/app/router';
 import useResponsive from '@/shared/composables/useResponsive';
-import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
 import SpotifyView from "@/app/components/SpotifyView.vue";
 import PageFooter from "@/app/components/PageFooter.vue";
 import {Toast} from "@/widgets/Toast";

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
-import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import PCDeviceIcon from '@/UI/Icons/Shared/PCDeviceIcon.vue';
-import WifiIcon from '@/UI/Icons/Shared/WifiIcon.vue';
-import PcAndDynamic from '@/UI/Icons/Shared/PcAndDynamic.vue';
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
+import PCDeviceIcon from '@/shared/UI/Icons/PCDeviceIcon.vue';
+import WifiIcon from '@/shared/UI/Icons/WifiIcon.vue';
+import PcAndDynamic from '@/shared/UI/Icons/PcAndDynamic.vue';
 import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
 import {useI18n} from "vue-i18n";
 import type InfoPanel from "@/app/lib/i18n/locales/en/info-panel";

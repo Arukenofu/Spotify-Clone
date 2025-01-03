@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {BasicContextMenuItem} from "@/features/ContextMenu";
-import AddToQueueIcon from "@/UI/Icons/Shared/AddToQueueIcon.vue";
+import AddToQueueIcon from "@/shared/UI/Icons/AddToQueueIcon.vue";
 import ctxT from "../../helpers/ctx-t";
 </script>
 

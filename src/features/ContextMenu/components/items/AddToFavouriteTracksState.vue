@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {BasicContextMenuItem} from "@/features/ContextMenu";
-import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
-import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue";
+import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
+import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
 import ctxT from "../../helpers/ctx-t";
 
 

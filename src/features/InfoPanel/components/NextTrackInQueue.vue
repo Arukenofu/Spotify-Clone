@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TrackBlock from "@/UI/Elements/Track/TrackBlock.vue";
+import TrackBlock from "@/shared/UI/Elements/Track/TrackBlock.vue";
 import useInfoContentStore from "@/features/InfoPanel/store/useInfoContentStore";
 import type {Track} from "@/services/types/Entities/Track";
 import {useI18n} from "vue-i18n";
@@ -76,7 +76,7 @@ defineProps<{
   .track {
 
     &:hover {
-      background-color: hsla(0, 0, 100%, .14) !important;
+      background-color: #3F3F3F !important;
     }
   }
 }

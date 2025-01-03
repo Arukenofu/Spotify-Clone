@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import CopyLinkIcon from "@/UI/Icons/Shared/CopyLinkIcon.vue";
-import CodeBlockIcon from "@/UI/Icons/Shared/CodeBlockIcon.vue";
-import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
+import CopyLinkIcon from "@/shared/UI/Icons/CopyLinkIcon.vue";
+import CodeBlockIcon from "@/shared/UI/Icons/CodeBlockIcon.vue";
+import TriangleIcon from "@/shared/UI/Icons/TriangleIcon.vue";
 import WithSubtree from "@/features/ContextMenu/components/helpers/WithSubtree.vue";
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
-import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
+import ShareIcon from "@/shared/UI/Icons/ShareIcon.vue";
 import type {Entities} from "@/services/types/Entities";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
 import ctxT from "../../helpers/ctx-t";

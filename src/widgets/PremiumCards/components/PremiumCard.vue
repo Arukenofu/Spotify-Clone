@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Logo from '@/UI/Icons/Shared/Logo.vue';
-import type { PremiumPlanProps } from '../types/PremiumPlanProps';
+import Logo from '@/shared/UI/Icons/Logo.vue';
+import type {PremiumPlanProps} from '../types/PremiumPlanProps';
 
 defineProps<PremiumPlanProps>();
 </script>

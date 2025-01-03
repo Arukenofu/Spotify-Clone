@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import Range from "@/shared/components/Range.vue";
-import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
-import RandomOrder from "@/UI/Icons/MediaPlayer/RandomOrder.vue";
-import Previous from "@/UI/Icons/MediaPlayer/Previous.vue";
-import PlayingState from "@/UI/Icons/Shared/PlayingState.vue";
-import Next from "@/UI/Icons/MediaPlayer/Next.vue";
-import Repeat from "@/UI/Icons/MediaPlayer/Repeat.vue";
+import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
+import RandomOrder from "@/shared/UI/Icons/RandomOrder.vue";
+import Previous from "@/shared/UI/Icons/Previous.vue";
+import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
+import Next from "@/shared/UI/Icons/Next.vue";
+import Repeat from "@/shared/UI/Icons/Repeat.vue";
 import useMusicStore from "@/features/MediaPlayer/store/useMusicStore";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
 import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
@@ -16,10 +16,10 @@ import {inject, onMounted, ref, watch} from "vue";
 import getRandomNumber from "@/shared/utils/getRandomNumber";
 import formatTimeMMSS from "../../../shared/utils/format/formatTimeMMSS";
 import getActiveColor from "@/shared/utils/getActiveColor";
-import ShowText from "@/UI/Icons/MediaPlayerControls/ShowText.vue";
-import VolumeSilent from "@/UI/Icons/MediaPlayerControls/VolumeSilent.vue";
-import Volume from "@/UI/Icons/MediaPlayerControls/Volume.vue";
-import UnFullscreen from "@/UI/Icons/Shared/UnFullscreen.vue";
+import ShowText from "@/shared/UI/Icons/ShowText.vue";
+import VolumeSilent from "@/shared/UI/Icons/VolumeSilent.vue";
+import Volume from "@/shared/UI/Icons/Volume.vue";
+import UnFullscreen from "@/shared/UI/Icons/UnFullscreen.vue";
 
 const musicStore = useMusicStore();
 const playlistStore = usePlaylistStore();

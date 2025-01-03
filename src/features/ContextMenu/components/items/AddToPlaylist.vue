@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
-import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
-import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
+import TriangleIcon from "@/shared/UI/Icons/TriangleIcon.vue";
+import PlusIcon from "@/shared/UI/Icons/PlusIcon.vue";
 import WithSubtree from "../helpers/WithSubtree.vue";
 import ctxT from "../../helpers/ctx-t";
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {computed} from 'vue';
 import {storeToRefs} from 'pinia';
-import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
-import MusicBlock from '@/UI/Elements/Track/TrackBlock.vue';
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
+import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue';
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
 import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';

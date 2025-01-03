@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MusicCard from "@/UI/Elements/MusicCard.vue";
+import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import type {RecommendationItem} from "@/services/types/Recommendation";
 import {useMutation, useQueryClient} from "@tanstack/vue-query";
 import apiSearchService from "@/services/api/search/apiSearchService";

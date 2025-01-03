@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {reactive} from "vue";
-import GeneralGradientSectionWithControls from "@/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
-import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue";
-import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
-import FormatLibraryButton from "@/UI/Buttons/FormatLibraryButton.vue";
+import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
+import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
+import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import type {Playlist} from "@/services/types/Entities/Playlist";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";

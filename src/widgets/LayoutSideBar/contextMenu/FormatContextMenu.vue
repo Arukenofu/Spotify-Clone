@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import CompactIcon from '@/UI/Icons/Shared/CompactIcon.vue';
-import ListIcon from '@/UI/Icons/Shared/ListIcon.vue';
-import GridIcon from '@/UI/Icons/Shared/GridIcon.vue';
+import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue';
+import ListIcon from '@/shared/UI/Icons/ListIcon.vue';
+import GridIcon from '@/shared/UI/Icons/GridIcon.vue';
 import Range from '@/shared/components/Range.vue';
 import {BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView} from "@/features/ContextMenu";
-import CheckIcon from "@/UI/Icons/Shared/CheckIcon.vue";
+import CheckIcon from "@/shared/UI/Icons/CheckIcon.vue";
 import {gridColumnMaxWidth, gridColumnMinWidth, sorts} from "@/features/MedialibSidebar"
 import type {FormatTypes} from "#imports";
 import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
-import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import readableTime from "../../shared/utils/format/readableTime";
 import type {Playlist} from "@/services/types/Entities/Playlist";
-import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

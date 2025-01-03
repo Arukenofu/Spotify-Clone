@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {computed, inject, ref} from "vue";
-import EntityInfoHeader from "@/UI/Elements/EntityInfoHeader.vue";
-import EntityInfoHeaderTitle from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import EntityInfoHeaderDot from "@/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
+import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useRoute} from "vue-router";
-import GeneralGradientSection from "@/UI/Blocks/GeneralGradientSection.vue";
-import SubscribeToArtistButton from "@/UI/Buttons/SubscribeButton.vue";
-import ThreeDots from "@/UI/Icons/Shared/ThreeDots.vue";
-import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
-import MusicCard from "@/UI/Elements/MusicCard.vue";
-import PlayHeader from "@/UI/Blocks/PlayHeader.vue";
+import GeneralGradientSection from "@/shared/UI/Blocks/GeneralGradientSection.vue";
+import SubscribeToArtistButton from "@/shared/UI/Buttons/SubscribeButton.vue";
+import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
+import PlayHeader from "@/shared/UI/Blocks/PlayHeader.vue";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

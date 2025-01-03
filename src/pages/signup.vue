@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import setTitle from '@/shared/utils/setTitle';
-import Logo from "@/UI/Icons/Shared/Logo.vue";
+import Logo from "@/shared/UI/Icons/Logo.vue";
 import ThirdStep from "@/pageLayouts/signup/Steps/ThirdStep.vue";
 import StepIndicator from "@/pageLayouts/signup/StepIndicator.vue";
 import FirstStep from "@/pageLayouts/signup/Steps/FirstStep.vue";

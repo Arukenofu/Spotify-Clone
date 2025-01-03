@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {useRoute} from 'vue-router';
 import setTitle from '@/shared/utils/setTitle';
-import PlayHeaderWithPlayingState from "@/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
 import musicInfoService from "@/services/api/music/apiMusicService";
 import {computed, inject, ref, watch} from "vue";
-import HandleEntityLayoutStates from "@/UI/Elements/HandleEntityLayoutStates.vue";
+import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
 
 const route = useRoute('/playlist/[id]');

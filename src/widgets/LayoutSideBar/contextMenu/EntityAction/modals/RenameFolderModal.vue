@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import BaseInput from "@/UI/Form/Base/BaseInput.vue";
+import BaseInput from "@/shared/UI/Form/Base/BaseInput.vue";
 import DefaultModal from "@/features/Modal/UI/DefaultModal.vue";
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
-import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
+import CloseIcon from "@/shared/UI/Icons/CloseIcon.vue";
+import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
 import {Modal} from "@/features/Modal";
 import {useMutation, useQueryClient} from "@tanstack/vue-query";
 import apiMedialibService from "@/services/api/medialib/apiMedialibService";

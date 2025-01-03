@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {onUnmounted, ref, watch} from 'vue';
 
-import SearchIcon from '@/UI/Icons/Shared/SearchIcon.vue';
-import RoundButton from '@/UI/Buttons/RoundButton.vue';
-import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue';
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
+import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue';
 
 import useDebounce from "@/shared/composables/useDebounce";
 import {useI18n} from "vue-i18n";

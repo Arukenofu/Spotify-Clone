@@ -2,7 +2,7 @@
 import {computed, defineComponent, h, ref} from 'vue';
 import {useRoute} from "vue-router";
 import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue';
-import ScrollableBlock from '@/UI/Blocks/ScrollableBlock.vue';
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
 import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchMedialib.vue';
 import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
 import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';

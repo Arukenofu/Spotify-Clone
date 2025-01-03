@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SearchIcon from "@/UI/Icons/Shared/SearchIcon.vue";
+import SearchIcon from "@/shared/UI/Icons/SearchIcon.vue";
 
 defineProps<{
   disabled?: boolean;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {BasicContextMenuItem} from "@/features/ContextMenu";
-import PencilIcon from "@/UI/Icons/Shared/PencilIcon.vue";
+import PencilIcon from "@/shared/UI/Icons/PencilIcon.vue";
 import ctxT from "../../helpers/ctx-t";
 </script>
 

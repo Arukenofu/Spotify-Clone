@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {BasicContextMenuItem, WithSubtree} from "@/features/ContextMenu";
-import ArtistIcon from "@/UI/Icons/Shared/ArtistIcon.vue";
+import ArtistIcon from "@/shared/UI/Icons/ArtistIcon.vue";
 import {RouterLink} from "vue-router";
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
-import TriangleIcon from "@/UI/Icons/Shared/TriangleIcon.vue";
+import TriangleIcon from "@/shared/UI/Icons/TriangleIcon.vue";
 import ctxT from "../../helpers/ctx-t";
 
 defineProps<{

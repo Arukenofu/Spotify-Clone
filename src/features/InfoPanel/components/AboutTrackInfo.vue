@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import CheckedRoundCircleIcon from "@/UI/Icons/Shared/CheckedRoundCircleIcon.vue";
-import RoundPlusIcon from "@/UI/Icons/Shared/RoundPlusIcon.vue";
-import EntityAvatar1x1 from "@/UI/Elements/EntityAvatar1x1.vue";
-import ShareIcon from "@/UI/Icons/Shared/ShareIcon.vue";
+import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
+import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
+import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
+import ShareIcon from "@/shared/UI/Icons/ShareIcon.vue";
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
-import MainTrackInfo from "@/UI/Elements/MainTrackInfo.vue";
+import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
 import {useI18n} from "vue-i18n";
 

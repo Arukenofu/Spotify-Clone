@@ -2,7 +2,7 @@
 import {storeToRefs} from 'pinia';
 import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
-import MainTrackInfo from "@/UI/Elements/MainTrackInfo.vue";
+import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
 
 const store = useCurrentMusicStore();

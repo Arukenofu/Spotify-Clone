@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SubscribeToArtistButton from "@/UI/Buttons/SubscribeButton.vue";
+import SubscribeToArtistButton from "@/shared/UI/Buttons/SubscribeButton.vue";
 import {useMutation} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
 import {useI18n} from "vue-i18n";

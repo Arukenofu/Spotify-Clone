@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ErrorBlock from "@/UI/Blocks/ErrorBlock.vue";
+import ErrorBlock from "@/shared/UI/Blocks/ErrorBlock.vue";
 
 defineProps<{
   query: string;

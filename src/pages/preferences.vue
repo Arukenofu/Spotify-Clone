@@ -2,10 +2,10 @@
 import {ref} from "vue";
 import PreferencesControl from "@/pageLayouts/preferences/PreferencesControl.vue";
 import PreferencesControlSection from "@/pageLayouts/preferences/PreferencesControlSection.vue";
-import OutsideLinkIcon from "@/UI/Icons/Shared/OutsideLinkIcon.vue";
-import BaseIosCheckbox from "@/UI/Form/Base/BaseIosCheckbox.vue";
+import OutsideLinkIcon from "@/shared/UI/Icons/OutsideLinkIcon.vue";
+import BaseIosCheckbox from "@/shared/UI/Form/Base/BaseIosCheckbox.vue";
 import {getCookie, setCookie} from "@/shared/utils/cookie-actions";
-import BubbleButton from "@/UI/Buttons/BubbleButton.vue";
+import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

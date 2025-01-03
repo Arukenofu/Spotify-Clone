@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
-import PlusIcon from "@/UI/Icons/Shared/PlusIcon.vue";
+import PlusIcon from "@/shared/UI/Icons/PlusIcon.vue";
 import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
 import ctxT from "../../helpers/ctx-t";
 

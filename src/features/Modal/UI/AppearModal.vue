@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ScrollableBlock from "@/UI/Blocks/ScrollableBlock.vue";
-import CloseIcon from "@/UI/Icons/Shared/CloseIcon.vue";
+import ScrollableBlock from "@/shared/UI/Blocks/ScrollableBlock.vue";
+import CloseIcon from "@/shared/UI/Icons/CloseIcon.vue";
 
 defineEmits<{
   close: []

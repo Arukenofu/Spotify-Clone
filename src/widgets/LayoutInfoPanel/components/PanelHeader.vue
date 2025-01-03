@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CloseIconRound from '@/UI/Icons/Shared/CloseIconRound.vue';
-import RoundButton from '@/UI/Buttons/RoundButton.vue';
+import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue';
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
 import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore';
 import {useI18n} from "vue-i18n";
 

@@ -2,8 +2,8 @@
 import {computed} from "vue";
 import {router} from '@/app/router';
 import {useRoute} from 'vue-router';
-import StickyHeader from '@/UI/Blocks/StickyHeader.vue';
-import BubbleButton from '@/UI/Buttons/BubbleButton.vue';
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
+import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue';
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();

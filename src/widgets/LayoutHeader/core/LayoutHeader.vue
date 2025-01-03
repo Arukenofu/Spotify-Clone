@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import SpotifyLogo from '@/UI/Icons/Shared/SpotifyLogo.vue';
-import RoundButton from '@/UI/Buttons/RoundButton.vue';
-import HomeIcon from '@/UI/Icons/Shared/HomeIcon.vue';
+import SpotifyLogo from '@/shared/UI/Icons/SpotifyLogo.vue';
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
+import HomeIcon from '@/shared/UI/Icons/HomeIcon.vue';
 import Search from '@/widgets/LayoutHeader/components/Search.vue';
 import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
 import BellIcon from '@/widgets/LayoutHeader/UI/BellIcon.vue';
 import User from '@/widgets/LayoutHeader/components/User.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
-import LongRoundButton from "@/UI/Buttons/LongRoundButton.vue";
+import LongRoundButton from "@/shared/UI/Buttons/LongRoundButton.vue";
 import {useI18n} from "vue-i18n";
 
 const { currentRoutePath } = useCurrentRoutePath('path');

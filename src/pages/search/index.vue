@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import setTitle from '@/shared/utils/setTitle';
-import EntitiesSectionWithHeading from "@/UI/Blocks/EntitiesSectionWithHeading.vue";
-import CardRemoveWrapper from "@/UI/Elements/CardRemoveWrapper.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
 import apiSearchService from "@/services/api/search/apiSearchService";
-import MusicCard from "@/UI/Elements/MusicCard.vue";
+import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
 import {addToast} from "@/widgets/Toast";
 import type {Entities} from "@/services/types/Entities";
