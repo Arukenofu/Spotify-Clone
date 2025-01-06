@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import {computed} from 'vue';
+import {Tippy} from "vue-tippy";
+import {useI18n} from "vue-i18n";
 import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue';
 import PlusIcon from '@/shared/UI/Icons/PlusIcon.vue';
 import ArrowIcon from '@/shared/UI/Icons/ArrowIcon.vue';
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
 import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue';
-import defaultWidth from '@/widgets/LayoutSideBar/constants/defaultWidth';
-import max from '@/widgets/LayoutSideBar/constants/max';
 import {useSidebarWidthStore} from '@/features/MedialibSidebar';
-import {Tippy} from "vue-tippy";
-import {useI18n} from "vue-i18n";
+import {defaultWidth, maximalWidth} from "@/widgets/LayoutSideBar/constants/layoutWidth";
 
 const {t} = useI18n();
 
@@ -17,14 +16,14 @@ const { isMinimized, currentWidth } = useSidebarWidthStore();
 
 function toggleSidebar() {
   if (isMinimized.value) {
-    currentWidth.value = defaultWidth;
+    currentWidth.value = defaultWidth.value;
   } else {
     currentWidth.value = 72;
   }
 }
 
 const widthArrowDirection = computed(() => {
-  if (currentWidth.value < 450) {
+  if (currentWidth.value <= defaultWidth.value) {
     return 'right';
   } else {
     return 'left';
@@ -33,9 +32,9 @@ const widthArrowDirection = computed(() => {
 
 function toggleWidth() {
   if (widthArrowDirection.value === 'left') {
-    currentWidth.value = defaultWidth;
+    currentWidth.value = defaultWidth.value;
   } else {
-    currentWidth.value = max;
+    currentWidth.value = maximalWidth.value;
   }
 }
 
@@ -88,7 +87,7 @@ const tooltip = computed(() => {
       </Tippy>
 
       <RoundButton
-        v-tooltip="currentWidth < 450 ? t('medialib.showMore') : t('medialib.showLess')"
+        v-tooltip="widthArrowDirection === 'right' ? t('medialib.showMore') : t('medialib.showLess')"
         class="toggleWidth"
         @click="toggleWidth()"
       >
