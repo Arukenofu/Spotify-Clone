@@ -1,55 +1,63 @@
 <script setup lang="ts">
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {RecommendationItem} from "@/services/types/Recommendation";
-import {useMutation, useQueryClient} from "@tanstack/vue-query";
-import apiSearchService from "@/services/api/search/apiSearchService";
+import type {ItemTypes, PartialSearchResult, SimplifiedAlbum, SimplifiedTrack,} from "@spotify/web-api-ts-sdk";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
+import CommaSeparatedEntityLink from "@/shared/components/CommaSeparatedEntityLink.vue";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+
+type SearchResultKeys = `${ItemTypes}s`
 
 defineProps<{
-  item: RecommendationItem[]
+  type: SearchResultKeys;
+  item: PartialSearchResult;
 }>();
-
-const queryClient = useQueryClient();
-
-const {mutate: addToSearchHistory} = useMutation({
-  mutationKey: ['searchHistory'],
-  mutationFn: async (data: RecommendationItem) => {
-    const response = await apiSearchService.addToSearchHistory(data.id, data.type);
-
-    if (response.message !== 'OK') {
-      throw new Error(response.message);
-    }
-
-    queryClient.setQueryData(['searchHistory'], (oldData: RecommendationItem[]) => {
-      const isExisting = oldData.find(value => {
-        return value.id === data.id
-      });
-
-      if (isExisting) {
-        return;
-      }
-
-      const newData = [...oldData];
-      newData.push(data);
-
-      return newData;
-    });
-  },
-})
 </script>
 
 <template>
-  <MusicCard
-    v-for="(data, index) in item"
-    :id="data.id"
+  <template
+    v-for="(data, index) in item[type]?.items"
     :key="index"
-    :type="data.type"
-    :name="data.name"
-    :image="data.image"
-    :color="data.color"
-    @click="addToSearchHistory(data)"
   >
-    {{data.description}}
-  </MusicCard>
+    <MusicCard
+      v-if="data"
+      :id="data.id"
+      :type="data.type as ItemTypes"
+      :name="data.name"
+      :image="getImageFromEntity(data) ?? null"
+      :mask-loader-image="getImageFromEntity(data, 2) ?? null"
+      :color="''"
+    >
+      <template v-if="data.type === 'playlist'">
+        <CommaSeparatedEntityLink
+          entity="user"
+          :entities="[{
+            id: (data as SimplifiedPlaylist).owner.id,
+            name: (data as SimplifiedPlaylist).owner.display_name
+          }]"
+          @click.stop
+        />
+      </template>
+      <template v-else-if="data.type === 'album'">
+        {{(data as SimplifiedAlbum).release_date.split('-')[0]}} •
+        <CommaSeparatedArtistsLink
+          :artists="(data as SimplifiedAlbum).artists.map((value) => ({
+            id: value.id,
+            name: value.name,
+          }))"
+          @click.stop
+        />
+      </template>
+      <template v-else-if="data.type === 'track'">
+        <CommaSeparatedArtistsLink
+          :artists="(data as SimplifiedTrack).artists.map((value) => ({
+            id: value.id,
+            name: value.name,
+          }))"
+          @click.stop
+        />
+      </template>
+    </MusicCard>
+  </template>
 </template>
 
 <style scoped lang="scss">

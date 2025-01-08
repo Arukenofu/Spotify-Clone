@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import type {Entities} from "@/services/types/Entities";
 import {Modal} from "@/features/Modal";
 import {ref} from "vue";
+import type {ItemTypes} from "@spotify/web-api-ts-sdk";
 
 interface Props {
   image: string | null;
   mask?: string | null;
-  type: Entities;
+  type: ItemTypes | 'user';
 }
 
 const {mask, image} = defineProps<Props>();

@@ -2,6 +2,6 @@ export default {
     title: 'Profile',
     publicPlaylists: 'Public Playlists',
     recentlyPlayed: 'Recently played',
-    subscriptions: 'Following',
+    subscriptions: 'Following artists',
     subscribers: 'Followers',
 }

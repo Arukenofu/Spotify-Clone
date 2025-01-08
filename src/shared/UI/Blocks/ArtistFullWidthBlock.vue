@@ -11,7 +11,7 @@ defineProps<Props>();
 
 <template>
   <RouterLink class="artist-100" :to="`/artist/${id}`">
-    <EntityAvatar1x1 class="img" type="Artist" :image />
+    <EntityAvatar1x1 class="img" type="artist" :image />
     <div class="text">
       <span class="type">Исполнитель</span>
       <RouterLink class="name" :to="`/artist/${id}`">
@@ -33,6 +33,7 @@ defineProps<Props>();
 
   &:hover {
     background-color: hsla(0,0%,100%,.1);
+    text-decoration: none;
   }
 
   .img {

@@ -2,7 +2,7 @@
 import {storeToRefs} from "pinia";
 import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
 import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
-import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 
 const playlistStore = usePlaylistStore();
 const { currentPlaylistInfo } = storeToRefs(playlistStore);

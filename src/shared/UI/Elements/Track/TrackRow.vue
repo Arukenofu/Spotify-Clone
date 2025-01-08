@@ -8,8 +8,8 @@ import formatTime from "@/shared/utils/format/formatTimeMMSS";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
-import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {useI18n} from "vue-i18n";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 
 interface Props {
   index?: number;
@@ -19,14 +19,17 @@ interface Props {
   musicId: string | number;
   musicName: string;
   duration: number;
-  artists: SimpleArtist[];
-  showArtists?: boolean;
+  artists: {id: string, name: string}[];
   image: string | null;
-  color: string | null;
+  maskLoaderImage?: string | null;
   compact?: boolean;
+  showArtists?: boolean;
+  hideImage?: boolean;
 }
 
-const {showArtists = true} = defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  showArtists: true
+});
 
 type Emits = {
   setPlay: [],
@@ -61,13 +64,12 @@ const {t} = useI18n();
       </button>
     </div>
     <div class="main">
-      <div v-if="!compact" class="image-wrapper" :class="!index && 'noindex'">
+      <div v-if="!(compact || hideImage)" class="image-wrapper" :class="!index && 'noindex'">
         <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
 
         <LazyImage
           v-if="image !== null"
           :image="image"
-          :color="color"
           class="image"
         />
         <div
@@ -92,13 +94,7 @@ const {t} = useI18n();
           class="artists"
           @click.stop
         >
-          <RouterLink
-            v-for="artist in artists"
-            :key="artist.id"
-            :to="`/artist/${artist.id}`"
-          >
-            {{artist.name}}
-          </RouterLink>
+          <CommaSeparatedArtistsLink class="artist" :artists="artists" />
         </span>
       </div>
     </div>
@@ -282,6 +278,7 @@ const {t} = useI18n();
         height: 40px;
         aspect-ratio: 1/1;
         border-radius: 4px;
+        background-color: transparent;
       }
 
       .icon {
@@ -328,19 +325,12 @@ const {t} = useI18n();
 
       .artists {
         display: flex;
+        color: var(--text-soft);
+        font-size: .875rem;
+        font-weight: 400;
 
-        a {
-          color: var(--text-soft);
-          font-size: .875rem;
-          font-weight: 400;
-
-          &:hover {
-            color: var(--white) !important;
-          }
-
-          &:not(:last-child)::after {
-            content: ",\00a0";
-          }
+        :deep(.artist:hover) {
+          color: var(--white);
         }
       }
     }
@@ -361,6 +351,7 @@ const {t} = useI18n();
 
     span {
       font-size: .875rem;
+      font-weight: 500;
       color: var(--text-soft);
       margin-left: auto;
       margin-right: 32px;

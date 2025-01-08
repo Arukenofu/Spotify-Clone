@@ -2,8 +2,7 @@
 import GreenPlayingButton from "@/shared/UI/Buttons/GreenPlayingButton.vue";
 import type {Entities} from "@/services/types/Entities";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import type {SimpleArtist} from "@/services/types/Entities/Artist";
-import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import localizeEntities from "../../../services/utils/localizeEntities";
 
 interface Props {
@@ -11,7 +10,7 @@ interface Props {
   name: string;
   image: string | null;
   type: Entities;
-  artists?: SimpleArtist[];
+  artists?: {id: string; name: string}[];
   isCurrent?: boolean;
   isPlaying?: boolean;
 }
@@ -70,6 +69,10 @@ defineEmits<Emits>();
   border-radius: 8px;
   padding: 20px;
   position: relative;
+
+  &:hover {
+    text-decoration: none;
+  }
 
   .image-outer {
     width: 96px;

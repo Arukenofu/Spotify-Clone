@@ -76,6 +76,5 @@ const scrollY = inject('layoutScrollY', ref(0));
 <style lang="scss" scoped>
 .playlist {
   margin-top: -64px;
-  height: 10000px;
 }
 </style>

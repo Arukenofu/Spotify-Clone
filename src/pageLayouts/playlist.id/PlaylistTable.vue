@@ -5,7 +5,7 @@ import type {Playlist} from "@/services/types/Entities/Playlist";
 import type {Track} from "@/services/types/Entities/Track";
 import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 

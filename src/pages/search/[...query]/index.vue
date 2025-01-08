@@ -4,106 +4,108 @@ import {useQuery} from "@tanstack/vue-query";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
-import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import {computed} from "vue";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
-import apiSearchService from "@/services/api/search/apiSearchService";
 import {useRoute} from "vue-router";
 import {useI18n} from "vue-i18n";
+import {sdk} from "@/services/sdk";
+import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
+import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
+import type {SearchResults} from "@spotify/web-api-ts-sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const {t} = useI18n();
-
 const route = useRoute('/search/[...query]/');
 
-const searchQuery = computed(() => route.params.query);
+const q = computed(() => route.params.query);
 
-const {data, isSuccess, isLoading} = useQuery({
-  queryKey: ['searchAll', searchQuery.value],
+const {data, isFetching, isSuccess} = useQuery({
+  queryKey: ['search', q],
   queryFn: async () => {
-    return apiSearchService.searchAll(searchQuery.value);
+    return sdk.search(q.value, allSearchEntities, 'US', 10)
+  },
+  staleTime: Infinity
+})
+
+const bestResult = computed(() => {
+  if (!data.value?.playlists?.items?.length) {
+    return null;
   }
+
+  return data.value?.playlists.items[0];
 });
 
 const {isThisMusic} = useMusicUtils();
+const allowedEntitiesSection:
+      (keyof SearchResults<typeof allSearchEntities>)[] = ['playlists', 'albums', 'artists'];
 </script>
 
 <template>
-  <LoadingBlock v-if="isLoading" />
+  <LoadingBlock v-if="isFetching" />
 
   <div v-else-if="isSuccess && data" class="recommended-cards">
     <section class="top-result">
-      <div class="best-result">
+      <div v-if="bestResult" class="best-result">
         <div class="title">
           {{t('search.bestResult')}}
         </div>
         <EntityCard
-          :id="data.bestResult.id"
+          :id="bestResult.id"
           class="card"
-          :name="data.bestResult.title"
-          :image="data.bestResult.image"
-          :artists="data.bestResult.artists"
-          :type="data.bestResult.type"
+          :name="bestResult.name"
+          :image="bestResult.images[0]?.url"
+          :artists="[{
+            id: bestResult.owner.id,
+            name: bestResult.owner.display_name
+          }]"
+          :type="'Playlist'"
         />
       </div>
       <div class="tracks">
         <div class="title">
           {{t('search.entities.track')}}
         </div>
-        <div class="tracks-wrapper">
+        <div v-if="data.tracks" class="tracks-wrapper">
           <MusicRow
-            v-for="track in data.bestResultTracks"
+            v-for="track in data.tracks.items.slice(0, 4)"
             :key="track.id"
             class="track"
             :is-current="isThisMusic(track.id, false)"
             :is-playing="isThisMusic(track.id, true)"
-            :is-added="track.isAddedToFavorites"
+            :is-added="false"
             :music-id="track.id"
-            :artists="track.artists"
+            :artists="track.artists.map((value) => ({
+              id: value.id,
+              name: value.name,
+            }))"
             :music-name="track.name"
-            :duration="track.duration"
-            :image="track.image"
-            :color="track.color"
+            :duration="track.duration_ms / 1000"
+            :image="getImageFromEntity(track, 2)"
           />
         </div>
       </div>
     </section>
 
-    <EntitiesSectionWithHeading
-      v-if="data.entities.artists?.length"
-      :naming="t('search.entities.artist')"
-      :href="`/search/${searchQuery}/artists`"
+    <template
+      v-for="entity in allowedEntitiesSection"
+      :key="entity"
     >
-      <SearchCardComponent :item="data.entities.artists" />
-    </EntitiesSectionWithHeading>
-
-    <EntitiesSectionWithHeading
-      v-if="data.entities.albums?.length"
-      :naming="t('search.entities.album')"
-      :href="`/search/${searchQuery}/albums`"
-    >
-      <SearchCardComponent :item="data.entities.albums" />
-    </EntitiesSectionWithHeading>
-
-    <EntitiesSectionWithHeading
-      v-if="data.entities.playlists?.length"
-      :naming="t('search.entities.playlist')"
-      :href="`/search/${searchQuery}/playlists`"
-    >
-      <SearchCardComponent :item="data.entities.playlists" />
-    </EntitiesSectionWithHeading>
-
-    <EntitiesSectionWithHeading
-      v-if="data.entities.users?.length"
-      :naming="t('search.entities.user')"
-      :href="`/search/${searchQuery}/users`"
-    >
-      <SearchCardComponent :item="data.entities.users" />
-    </EntitiesSectionWithHeading>
+      <EntitiesSectionWithHeading
+        v-if="data[entity]!.items.length"
+        :naming="t(`search.entities.${entity.slice(0, -1)}`)"
+        :href="`/search/${q}/${entity}`"
+      >
+        <SearchCardComponent
+          :item="data"
+          :type="entity"
+        />
+      </EntitiesSectionWithHeading>
+    </template>
   </div>
 
-  <SearchNotFound v-else-if="isSuccess && !data" :query="searchQuery" />
+  <SearchNotFound v-else-if="isSuccess && !data" :query="q" />
 
   <SearchError v-else />
 </template>

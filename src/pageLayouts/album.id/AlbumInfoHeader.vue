@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import readableTime from "../../shared/utils/format/readableTime";
-import type {Playlist} from "@/services/types/Entities/Playlist";
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
+import type {Album} from "@spotify/web-api-ts-sdk";
 
 const {t} = useI18n();
 
@@ -13,21 +12,20 @@ interface Props {
   image: string | null;
   mask: string | null;
   name: string;
-  creator: Playlist['creators'],
+  creator: Album['artists'],
   tracksAmount: number;
-  totalDuration: number;
 }
 
 defineProps<Props>();
 </script>
 
 <template>
-  <EntityInfoHeader class="info" :image :mask type="Album">
+  <EntityInfoHeader class="info" :image :mask type="album">
     <div class="type">{{t('entities.album')}}</div>
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <div class="additional">
       <div v-if="creator.length === 1" class="single-artist">
-        <EntityAvatar1x1 class="img" type="Artist" />
+        <EntityAvatar1x1 class="artist-img" type="artist" />
         <RouterLink :to="`/artist/${creator[0].id}`" class="name">
           {{creator[0].name}}
         </RouterLink>
@@ -51,10 +49,6 @@ defineProps<Props>();
       <EntityInfoHeaderDot />
 
       <span>{{t('plurable-entities.track', tracksAmount).toLowerCase()}}</span>
-
-      <EntityInfoHeaderDot />
-
-      <span>{{readableTime(totalDuration)}}</span>
     </div>
   </EntityInfoHeader>
 </template>
@@ -98,7 +92,7 @@ defineProps<Props>();
       align-items: center;
       gap: 3px;
 
-      .img {
+      .artist-img {
         width: 24px;
         height: 24px;
         border-radius: 50%;

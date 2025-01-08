@@ -1,45 +1,54 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {computed, inject, type Ref, watch} from "vue";
+import {computed, inject, type Ref} from "vue";
 import {useQuery} from "@tanstack/vue-query";
-import apiSearchService from "@/services/api/search/apiSearchService";
-import type {Entities} from "@/services/types/Entities";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
-import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
-import type {RecommendationItem} from "@/services/types/Recommendation";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import type {Track} from "@/services/types/Entities/Track";
 import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
+import {sdk} from "@/services/sdk";
+import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
+import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
+import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
+import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const route = useRoute('/search/[...query]/[...path]');
-
-watch(() => route.params.path, () => {
-  refetch();
-})
+const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
 const query = computed(() => route.params.query);
 const path = computed(() => route.params.path);
 
-const {data, isLoading, refetch} = useQuery({
-  queryKey: ['searchEntity', query.value, path.value],
-  queryFn: async () => {
-    const entity = path.value.charAt(0).toUpperCase() + path.value.slice(1, -1) as Entities;
+const entity = computed(() => {
+  const output = allSearchEntities.find(value => {
+    return path.value === `${value}s`;
+  })
 
-    return apiSearchService.searchEntity(query.value, entity);
-  }
+  if (!output) return null;
+
+  return output;
 });
 
-const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
+const {data, isFetching, isSuccess, error} = useQuery({
+  queryKey: ['searchEntity', query, path],
+  queryFn: async () => {
+    return sdk.search(query.value, [entity.value!], 'US', 30);
+  },
+  staleTime: Infinity,
+  maxPages: 10
+});
+
+const {isThisMusic} = useMusicUtils();
 </script>
 
 <template>
-  <LoadingBlock v-if="isLoading" />
-  <div v-else-if="data && data.length" class="recommended-cards">
-    <div v-if="'type' in data[0]" class="entities-wrapper">
+  <LoadingBlock v-if="isFetching" />
+  <SearchError v-else-if="error || !entity" />
+  <div v-else-if="data" class="recommended-cards">
+    <div v-if="entity !== 'track'" class="entities-wrapper">
       <SearchCardComponent
-        :item="data as RecommendationItem[]"
+        :item="data"
+        :type="`${entity}s`"
       />
     </div>
 
@@ -55,35 +64,27 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
 
       <div class="tracks-wrapper">
         <MusicRow
-          v-for="(track, index) in data as Track[]"
+          v-for="(track, index) in data.tracks.items"
           :key="track.id"
           :index="index+1"
-          :music-id="track.id"
-          :music-name="track.name"
-          :artists="track.artists"
-          :color="track.color"
-          :duration="track.duration"
-          :image="track.avatar"
-          :is-added="false"
-          :is-current="false"
-          :is-playing="false"
           class="track"
-        >
-          <template #var1>
-            <RouterLink
-              v-tooltip="track.album.name"
-              class="album"
-              :to="`/album/${track.album.id}`"
-            >
-              {{ track.album.name }}
-            </RouterLink>
-          </template>
-        </MusicRow>
+          :is-current="isThisMusic(track.id, false)"
+          :is-playing="isThisMusic(track.id, true)"
+          :is-added="false"
+          :music-id="track.id"
+          :artists="track.artists.map((value) => ({
+            id: value.id,
+            name: value.name,
+          }))"
+          :music-name="track.name"
+          :duration="track.duration_ms / 1000"
+          :image="getImageFromEntity(track, 2)"
+          :color="'#ffffff'"
+        />
       </div>
     </div>
   </div>
-  <SearchNotFound v-else-if="!data?.length" :query />
-  <SearchError v-else />
+  <SearchNotFound v-else-if="isSuccess && !data![`${entity}s`].items.length" :query />
 </template>
 
 <style scoped lang="scss">
@@ -98,7 +99,6 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
   }
 
   .tracks-section {
-    height: 1000px;
 
     .row-header, .tracks-wrapper .track {
       display: grid;
