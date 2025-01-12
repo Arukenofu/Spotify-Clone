@@ -1,51 +1,30 @@
 <script setup lang="ts">
 import {reactive} from "vue";
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import type {Playlist} from "@/services/types/Entities/Playlist";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
-import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import type {Track} from "@/services/types/Entities/Track";
 import {useI18n} from "vue-i18n";
-
-interface Props {
-  dossier: Playlist,
-  queue: Track[]
-}
-const {dossier, queue} = defineProps<Props>();
 
 const {t} = useI18n();
 
-const playlistStore = usePlaylistStore();
-
-const {
-  loadSongOrPlaylist,
-  toggleTrackPlaying,
-  isThisPlaylist
-} = useMusicUtils();
-
-function play() {
-  if (isThisPlaylist(playlistStore.currentPlaylistInfo?.id ?? null)) {
-    toggleTrackPlaying(); return;
-  }
-
-  loadSongOrPlaylist({
-    playlistInfoDossier: dossier,
-    playlistQueue: queue
-  });
-}
+const props = defineProps<{
+  playlistId: string;
+  playlistName: string;
+  maskColor: string | null;
+  isAdded: boolean;
+}>();
 
 const {format, setFormat} = useMusicCollectionFormat();
 
 const tooltips = reactive({
   addButton: {
-    content: dossier.isAdded ? t('contextmenu-items.removeFromMedialib') : t('contextmenu-items.addToMedialib'),
+    content: props.isAdded ? t('contextmenu-items.removeFromMedialib') : t('contextmenu-items.addToMedialib'),
     distance: 24
   },
-  options: t('music-actions.moreOptionsFor', [dossier.name])
+  options: t('music-actions.moreOptionsFor', [props.playlistName])
 });
 </script>
 
@@ -53,12 +32,11 @@ const tooltips = reactive({
   <GeneralGradientSectionWithControls
     :is-playing="false"
     :tooltip-str="tooltips.options"
-    :bg-color="dossier.color ?? null"
-    @play-click="play()"
+    :bg-color="maskColor"
   >
     <template #main-options>
       <button v-tooltip="tooltips.addButton" class="state">
-        <CheckedRoundCircleIcon v-if="dossier.isAdded" class="remove" />
+        <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
         <RoundPlusIcon v-else class="add" />
       </button>
     </template>

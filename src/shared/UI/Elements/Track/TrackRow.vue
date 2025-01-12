@@ -3,13 +3,13 @@ import getActiveColor from "@/shared/utils/getActiveColor";
 import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
 import NoMusicOrPlaylistAvatar from "@/shared/UI/Icons/NoMusicOrPlaylistAvatar.vue";
 import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import formatTime from "@/shared/utils/format/formatTimeMMSS";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
-import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {useI18n} from "vue-i18n";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 
 interface Props {
   index?: number;
@@ -19,14 +19,17 @@ interface Props {
   musicId: string | number;
   musicName: string;
   duration: number;
-  artists: SimpleArtist[];
-  showArtists?: boolean;
+  artists: {id: string, name: string}[];
   image: string | null;
-  color: string | null;
+  maskLoaderImage?: string | null;
   compact?: boolean;
+  showArtists?: boolean;
+  hideImage?: boolean;
 }
 
-const {showArtists = true} = defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  showArtists: true
+});
 
 type Emits = {
   setPlay: [],
@@ -45,29 +48,23 @@ const {t} = useI18n();
     :class="compact && 'row-compact'"
     @click="$emit('setPlay')"
   >
-    <div
-      v-if="index"
-      class="index"
-    >
+    <div v-if="index" class="index">
       <span
-        class="order"
+        class="order hide-on-hover"
         :style="getActiveColor(isCurrent)"
       >
         {{index}}
       </span>
-      <button class="toggle">
+      <button class="toggle show-on-hover">
         <img v-if="isPlaying" src="/src/assets/images/equalizer-animated.gif" alt="" />
         <PlayingState v-else class="icon" />
       </button>
     </div>
     <div class="main">
-      <div v-if="!compact" class="image-wrapper" :class="!index && 'noindex'">
-        <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
-
+      <div v-if="!(compact || hideImage)" class="image-wrapper" :class="!index && 'noindex'">
         <LazyImage
           v-if="image !== null"
           :image="image"
-          :color="color"
           class="image"
         />
         <div
@@ -76,8 +73,10 @@ const {t} = useI18n();
         >
           <NoMusicOrPlaylistAvatar class="icon" />
         </div>
+
+        <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
       </div>
-      <div class="text">
+      <div class="added-at">
         <RouterLink
           v-tooltip="musicName"
           :to="`/track/${musicId}`"
@@ -92,13 +91,7 @@ const {t} = useI18n();
           class="artists"
           @click.stop
         >
-          <RouterLink
-            v-for="artist in artists"
-            :key="artist.id"
-            :to="`/artist/${artist.id}`"
-          >
-            {{artist.name}}
-          </RouterLink>
+          <CommaSeparatedArtistsLink class="artist" :artists="artists" />
         </span>
       </div>
     </div>
@@ -116,7 +109,7 @@ const {t} = useI18n();
     <div class="time">
       <button
         v-tooltip="isAdded ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
-        class="addState"
+        class="addState show-on-hover"
         @click.stop
       >
         <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
@@ -135,7 +128,7 @@ const {t} = useI18n();
             direction: 'revert'
           }
         }"
-        class="contextMenu"
+        class="contextMenu show-on-hover"
         @click.stop
       >
         <ThreeDots />
@@ -165,47 +158,38 @@ const {t} = useI18n();
   &:hover {
     background-color: hsla(0, 0%, 100%, .1);
 
-    .index {
-      .order {
-        display: none;
+    .hide-on-hover {
+      display: none;
+    }
+
+    .show-on-hover {
+      display: initial;
+      visibility: initial;
+      opacity: 1 !important;
+    }
+
+    .toggle {
+      display: grid !important;
+    }
+
+    .noindex {
+      ::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        z-index: 1;
       }
 
-      .toggle {
-        display: grid;
-        place-items: center;
-
-        .icon {
-          display: block;
-        }
+      .state-icon {
+        opacity: 1;
+        z-index: 1 !important;
       }
     }
 
-    .main {
-      .noindex {
-        ::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background-color: rgba(0, 0, 0, 0.26);
-          border-radius: 4px;
-        }
-
-        .state-icon {
-          opacity: 1;
-        }
-      }
-
-      .text {
-        .artists a {
-          color: var(--white);
-        }
-      }
-    }
-
-    .time {
-      button {
-        display: block;
-      }
+    .artists:deep(a) {
+      color: var(--white) !important;
     }
   }
 
@@ -222,17 +206,9 @@ const {t} = useI18n();
       margin: 0 auto;
     }
 
-    &:has(.toggle img) {
-      .order {
-        display: none;
-      }
-      .toggle {
-        display: block;
-      }
-    }
-
     .toggle {
       display: none;
+      place-items: center;
       position: relative;
       width: 16px;
       height: 16px;
@@ -240,7 +216,6 @@ const {t} = useI18n();
       border: none;
 
       .icon {
-        display: none;
         width: 100%;
         height: 100%;
         fill: var(--white);
@@ -282,6 +257,7 @@ const {t} = useI18n();
         height: 40px;
         aspect-ratio: 1/1;
         border-radius: 4px;
+        background-color: transparent;
       }
 
       .icon {
@@ -300,7 +276,7 @@ const {t} = useI18n();
       }
     }
 
-    .text {
+    .added-at {
       display: flex;
       flex-direction: column;
       gap: 3px;
@@ -328,19 +304,12 @@ const {t} = useI18n();
 
       .artists {
         display: flex;
+        color: var(--text-soft);
+        font-size: .875rem;
+        font-weight: 400;
 
-        a {
-          color: var(--text-soft);
-          font-size: .875rem;
-          font-weight: 400;
-
-          &:hover {
-            color: var(--white) !important;
-          }
-
-          &:not(:last-child)::after {
-            content: ",\00a0";
-          }
+        :deep(.artist:hover) {
+          color: var(--white);
         }
       }
     }
@@ -358,18 +327,20 @@ const {t} = useI18n();
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 
     span {
       font-size: .875rem;
+      font-weight: 500;
       color: var(--text-soft);
-      margin-left: auto;
-      margin-right: 32px;
+      width: 5ch;
+      margin-right: 12px;
+      text-align: right;
     }
 
     .addState {
-      display: none;
-      position: absolute;
-      left: 16px;
+      opacity: 0;
+      margin-right: 12px;
       width: 16px;
       height: 16px;
       background: none;
@@ -395,11 +366,9 @@ const {t} = useI18n();
     }
 
     .contextMenu {
-      display: none;
+      opacity: 0;
       width: 16px;
       height: 16px;
-      position: absolute;
-      right: 0;
       background: none;
       border: none;
       cursor: pointer;

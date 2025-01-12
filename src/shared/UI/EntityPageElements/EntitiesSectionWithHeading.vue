@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useResponsive from '@/shared/composables/useResponsive';
-import EntitiesSectionWrapper from "@/shared/UI/Blocks/EntitiesSectionWrapper.vue";
+import EntitiesSectionWrapper from "@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue";
 import {useI18n} from "vue-i18n";
 
 interface Props {

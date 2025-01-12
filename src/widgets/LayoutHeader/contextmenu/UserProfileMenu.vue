@@ -6,6 +6,10 @@ import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();
 
+defineProps<{
+  userid: string;
+}>()
+
 function exitFromAccount() {
   router.push(`/signup`)
 }
@@ -16,7 +20,7 @@ function exitFromAccount() {
     <BasicContextMenuItem>
       {{t('app-header.user.account')}}
     </BasicContextMenuItem>
-    <BasicContextMenuItem :as="RouterLink" to="/user/asd">
+    <BasicContextMenuItem :as="RouterLink" :to="`/user/${userid}`">
       {{t('app-header.user.profile')}}
     </BasicContextMenuItem>
     <BasicContextMenuItem :as="RouterLink" to="/preferences" underline>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import EntitiesSectionWithHeading from '@/shared/UI/Blocks/EntitiesSectionWithHeading.vue';
+import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue';
 import MusicCard from '@/shared/UI/Elements/MusicCard.vue';
 import {useQuery} from "@tanstack/vue-query";
 import recommendationService from "@/services/api/recommendations/apiRecommendationService";

@@ -40,51 +40,58 @@ const { currentRoutePath } = useCurrentRoutePath('fullPath');
       <div class="filter" />
     </template>
 
-    <button
-      :class="currentRoutePath !== '/' && 'inactive'"
-      @click="$router.push(''); $emit('setColor', null)"
-    >
-      {{t('index-page.facet.all')}}
-    </button>
+    <div class="inner-content">
+      <button
+        :class="currentRoutePath !== '/' && 'inactive'"
+        @click="$router.push(''); $emit('setColor', null)"
+      >
+        {{t('index-page.facet.all')}}
+      </button>
 
-    <button
-      :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
-      @click="$router.push('/?facet=music-chip'); $emit('setColor', null);"
-    >
-      {{t('index-page.facet.music')}}
-    </button>
+      <button
+        :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
+        @click="$router.push('/?facet=music-chip'); $emit('setColor', null);"
+      >
+        {{t('index-page.facet.music')}}
+      </button>
+    </div>
   </StickyHeader>
 </template>
 
 <style scoped lang="scss">
 .header {
-  padding: 0 var(--content-spacing);
-
   .filter {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
   }
 
-  button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 500px;
-    margin-right: 8px;
-    background-color: var(--white);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--black);
-    line-height: 1.2;
+  .inner-content {
+    max-width: var(--content-max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--content-spacing);
 
-    &:active {
-      opacity: 0.7;
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 500px;
+      margin-right: 8px;
+      background-color: var(--white);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--black);
+      line-height: 1.2;
+
+      &:active {
+        opacity: 0.7;
+      }
     }
-  }
 
-  .inactive {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--white);
+    .inactive {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+    }
   }
 }
 </style>

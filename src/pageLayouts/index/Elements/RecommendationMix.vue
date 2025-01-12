@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
-import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 import {useI18n} from "vue-i18n";
 
@@ -27,7 +26,7 @@ const {t} = useI18n();
 <template>
   <div
     class="album"
-    @click="routerPushPrevent(`/playlist/${href}`)"
+    @click="$router.push(`/playlist/${href}`)"
   >
     <LazyImage
       :image="image"

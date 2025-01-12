@@ -60,7 +60,7 @@ const tooltip = computed(() => {
 
       <span
         v-if="!isMinimized"
-        class="text"
+        class="added-at"
       > {{t('medialib.myMedialib')}} </span>
     </button>
 
@@ -120,7 +120,7 @@ const tooltip = computed(() => {
       }
     }
 
-    .text {
+    .added-at {
       font-weight: 900;
       font-size: 1rem;
     }
@@ -161,7 +161,7 @@ button {
   cursor: pointer;
 
   &:hover {
-    .text {
+    .added-at {
       color: var(--white);
     }
   }

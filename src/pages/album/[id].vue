@@ -2,20 +2,27 @@
 import AlbumInfoHeader from "@/pageLayouts/album.id/AlbumInfoHeader.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {useRoute} from "vue-router";
-import musicInfoService from "@/services/api/music/apiMusicService";
-import setTitle from "@/shared/utils/setTitle";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
-import {inject, type Ref, ref, watch} from "vue";
-import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
+import {computed, inject, type Ref, ref} from "vue";
+import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
+import {sdk} from "@/services/sdk";
+import type {Album, Artist} from "@spotify/web-api-ts-sdk";
+import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
+import setTitle from "@/shared/utils/setTitle";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
+import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
+import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
 
 const {t} = useI18n();
 
@@ -23,24 +30,46 @@ const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
 const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
-watch(() => route.params.id, () => {
-  refetch();
-});
+const albumId = computed(() => route.params.id);
 
-const {data, isFetching, isError, refetch} = useQuery({
-  queryKey: ['playlistInfo', route.params.id],
-  queryFn: async () => {
-    const data = await musicInfoService.getPlaylistInfo(Number(route.params.id));
+async function fetchAlbumData() {
+  return sdk.albums.get(albumId.value);
+}
 
-    setTitle(`${data.playlistInfoDossier.name} - Album by ${getCommaSeparatedString(data.playlistInfoDossier.creators, 'name')} | Spotify`);
-
-    return data;
+async function fetchArtistData(artists: Artist[]) {
+  if (artists.length === 1) {
+    return [await sdk.artists.get(artists[0].id)];
   }
+
+  return artists;
+}
+
+async function getMaskColor(data: Album) {
+  if (!data?.images?.length) return null;
+
+  const palette = await getAsyncPalette(data.images[0].url);
+  if (!palette.Vibrant) return null;
+
+  return palette.Vibrant.hex;
+}
+
+const {data, isFetching, isError} = useQuery({
+  queryKey: ['album', albumId],
+  queryFn: async () => {
+    const data = await fetchAlbumData();
+    const maskColor = await getMaskColor(data);
+    const artists = await fetchArtistData(data.artists);
+
+    setTitle(`${data.name} - Album by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
+
+    return {...data, artists, maskColor};
+  },
+  staleTime: Infinity
 });
 
 const {format, setFormat} = useMusicCollectionFormat();
 
-const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist} = useMusicUtils();
+const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
 </script>
 
 <template>
@@ -50,29 +79,28 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
     entity="Album"
   />
 
-  <div v-if="data" class="recommended-cards">
+  <div v-if="data" class="album">
     <PlayHeaderWithPlayingState
-      :title="data.playlistInfoDossier.name"
+      :title="data.name"
       :scroll-y="scrollY"
-      :is-playing="isThisPlaylist(data.playlistInfoDossier.id, true)"
-      :mask="data.playlistInfoDossier.color"
+      :passing-height="280"
+      :is-playing="isThisPlaylist(data.id, true)"
+      :mask="data.maskColor"
     />
 
     <AlbumInfoHeader
-      :image="data.playlistInfoDossier.image"
-      :mask="data.playlistInfoDossier.color"
-      :name="data.playlistInfoDossier.name"
-      :creator="data.playlistInfoDossier.creators"
-      :tracks-amount="data.playlistInfoDossier.info.tracksAmount"
-      :total-duration="data.playlistInfoDossier.info.totalDuration"
+      :image="getImageFromEntity(data.images)"
+      :mask="data.maskColor"
+      :name="data.name"
+      :creator="data.artists"
+      :tracks-amount="data.total_tracks"
+      :release-date="data.release_date"
     />
+
     <GeneralGradientSectionWithControls
-      :is-playing="isThisPlaylist(data.playlistInfoDossier.id, true)"
-      :bg-color="data.playlistInfoDossier.color"
-      :tooltip-str="t('music-actions.moreOptionsFor', [data.playlistInfoDossier.name])"
-      @play-click="loadPlaylist(data.playlistInfoDossier.id, {
-        playlist: data
-      })"
+      :is-playing="isThisPlaylist(data.id, true)"
+      :bg-color="data.maskColor"
+      :tooltip-str="t('music-actions.moreOptionsFor', [data.name])"
     >
       <template #main-options>
         <AddToMediaLib
@@ -85,47 +113,105 @@ const {isThisPlaylist, isThisPlaylistAndMusic, loadPlaylist, loadSongOrPlaylist}
       </template>
     </GeneralGradientSectionWithControls>
 
-    <MusicRowHeader class="row-header" :parent-element="layout!.content" />
+    <MusicRowHeaderWrapper :parent-element="layout!.content">
+      <MusicRowHeader class="row-header" :class="format === 'Compact' && 'compact'">
+        <template v-if="format === 'Compact'" #var1>
+          {{t('entities.artist')}}
+        </template>
+      </MusicRowHeader>
+    </MusicRowHeaderWrapper>
 
-    <div class="wrapper">
+    <TrackTableWrapper>
       <MusicRow
-        v-for="(music, index) of data.playlistQueue"
+        v-for="(music, index) of data.tracks.items"
         :key="music.id"
         :index="index + 1"
-        :is-current="isThisPlaylistAndMusic(music.id, data.playlistInfoDossier.id)"
-        :is-playing="isThisPlaylistAndMusic(music.id, data.playlistInfoDossier.id, true)"
+        :is-current="isThisPlaylistAndMusic(music.id, data.id)"
+        :is-playing="isThisPlaylistAndMusic(music.id, data.id, true)"
         :music-id="music.id"
         :music-name="music.name"
-        :duration="music.duration"
+        :duration="music.duration_ms / 1000"
         :artists="music.artists"
-        :image="music.avatar"
-        :color="music.color"
+        :image="null"
         :is-added="false"
-        :show-artists="true"
         :compact="format === 'Compact'"
+        :class="format === 'Compact' && 'compact'"
         class="row"
-        @set-play="loadSongOrPlaylist(data)"
-      />
-    </div>
+        show-artists
+        hide-image
+      >
+        <template v-if="format === 'Compact'" #var1>
+          <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
+        </template>
+      </MusicRow>
+    </TrackTableWrapper>
   </div>
 </template>
 
 <style scoped lang="scss">
-.recommended-cards {
+.album {
+  container: album / inline-size;
+
+  .row:hover:deep(.artist) {
+    color: var(--white) !important;
+  }
+
+  .music-row-outer {
+    position: sticky;
+    top: 64px;
+
+    .row-header {
+
+    }
+  }
 
   .add {
     height: 32px;
     margin-right: var(--content-spacing);
   }
 
-  .row-header, .wrapper .row {
+  .row-header, .row {
     display: grid;
-    grid-template-columns: [index] 16px [main] minmax(120px, 4fr) [var1] 0 [var2] 0 [time] minmax(120px, 1fr);
+    grid-template-columns:
+        [index] 16px
+        [main] minmax(120px, 4fr)
+        [var1] 0
+        [var2] 0
+        [time] minmax(120px, 1fr);
   }
 
-  .wrapper {
-    margin-top: var(--content-spacing);
-    padding: 0 var(--content-spacing);
+  .compact {
+    grid-template-columns:
+        [index] 16px
+        [main] minmax(120px, 4fr)
+        [var1] minmax(120px, 2fr)
+        [var2] 0
+        [time]minmax(120px, 1fr) !important;
+
+    :deep(.artist) {
+      color: var(--text-soft);
+      font-size: .875rem;
+      font-weight: 500;
+
+      &:hover {
+        color: var(--white);
+      }
+    }
+  }
+
+  @container album (max-width: 550px) {
+    .compact {
+      grid-template-columns:
+        [index] 16px
+        [main] minmax(120px, 4fr)
+        [var1] 0
+        [var2] 0
+        [time] minmax(120px, 1fr) !important;
+
+      &:deep(.var1) {
+        display: none;
+      }
+    }
   }
 }
 </style>

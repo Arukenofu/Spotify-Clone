@@ -1,38 +1,12 @@
 <script setup lang="ts">
 import ClockIcon from "@/shared/UI/Icons/ClockIcon.vue";
-import {onMounted, onUnmounted, ref, useTemplateRef} from "vue";
 import {useI18n} from "vue-i18n";
 
-interface Props {
-  parentElement: HTMLElement;
-  passingHeight?: number;
-}
-
 const {t} = useI18n();
-
-const {
-  parentElement,
-  passingHeight = 128
-} = defineProps<Props>();
-
-const isSticky = ref<boolean>(false);
-const stickyTableHead = useTemplateRef<HTMLElement>('stickyTableHead');
-
-function setIsSticky() {
-  isSticky.value = !!(stickyTableHead.value && stickyTableHead.value.getBoundingClientRect().top <= passingHeight);
-}
-
-onMounted(() => {
-  parentElement.addEventListener('scroll', setIsSticky);
-});
-
-onUnmounted(() => {
-  parentElement.removeEventListener('scroll', setIsSticky);
-})
 </script>
 
 <template>
-  <div ref="stickyTableHead" class="v-music-row" :class="isSticky && 'stuck'">
+  <div class="v-music-row-header">
     <div class="index">#</div>
     <div class="name">{{t('music-table.naming')}}</div>
     <div v-if="$slots.var1" class="var1">
@@ -53,17 +27,15 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
-.v-music-row {
-  position: sticky;
+.v-music-row-header {
   width: 100%;
-  top: 64px;
+  max-width: var(--content-max-width);
   height: 36px;
+  margin: 0 auto;
   padding: 0 calc(var(--content-spacing) + 16px);
   display: grid;
   grid-gap: 16px;
   grid-template-rows: auto;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 1 !important;
 
   & > div {
     height: 100%;
@@ -104,9 +76,5 @@ onUnmounted(() => {
       grid-column: #{$line};
     }
   }
-}
-
-.stuck {
-  background-color: var(--ui-highlight);
 }
 </style>

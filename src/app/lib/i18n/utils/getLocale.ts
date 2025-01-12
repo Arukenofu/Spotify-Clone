@@ -1,15 +1,5 @@
-import {getCookie, setCookie} from "@/shared/utils/cookie-actions";
+import getUserLanguage from "@/app/lib/i18n/utils/getUserLanguage";
 
-export default function getLocale() {
-    const localeCookie = getCookie('locale');
-
-    if (localeCookie) {
-        return localeCookie;
-    }
-
-    const navigatorLang = window.navigator.language.split('-')[0];
-
-    setCookie('locale', navigatorLang, 365);
-
-    return navigatorLang;
+export default function () {
+    return navigator.language.split('-')[0] = getUserLanguage();
 }

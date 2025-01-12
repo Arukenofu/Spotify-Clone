@@ -1,82 +1,97 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {inject, ref, watch} from "vue";
+import {computed, inject, ref} from "vue";
 import {useQuery} from "@tanstack/vue-query";
-import musicInfoService from "@/services/api/music/apiMusicService";
-import setTitle from "@/shared/utils/setTitle";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import formatTimeMMSS from "../../shared/utils/format/formatTimeMMSS";
-import readableNumber from "../../shared/utils/format/readableNumber";
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
-import ArtistFullWidthBlock from "@/shared/UI/Blocks/ArtistFullWidthBlock.vue";
-import TracksSection from "@/shared/UI/Blocks/TracksSection.vue";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
+import ArtistFullWidthBlock from "@/shared/UI/EntityPageElements/ArtistFullWidthBlock.vue";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
+import {sdk} from "@/services/sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
+import type {Artist} from "@spotify/web-api-ts-sdk";
+import setTitle from "@/shared/utils/setTitle";
+import getMaskColor from "@/shared/utils/getMaskColor";
 
 const {t} = useI18n();
 
 const route = useRoute('/track/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
-watch(() => route.params.id, () => {
-  refetch();
+const trackId = computed(() => {
+  return route.params.id;
 });
 
-const {
-  data: trackInfo,
-  isFetching,
-  isError, 
-  refetch
-} = useQuery({
-  queryKey: ['trackInfo', route.params.id],
+async function fetchTrackData() {
+  const data = await sdk.tracks.get(trackId.value);
+
+  const str = getCommaSeparatedString(data.artists, 'id')
+      .replace(/\s+/g, '')
+      .replace(/\s+/g, "%20");
+  const artists = await sdk.makeRequest<{artists: Artist[]}>('GET', `artists?ids=${str}`);
+
+  return {
+    ...data,
+    artists: artists.artists
+  };
+}
+
+const {data: trackInfo, isFetching, isError} = useQuery({
+  queryKey: ['trackInfo', trackId],
   queryFn: async () => {
-    const data = await musicInfoService.getTrackInfo(Number(route.params.id));
+    const data = await fetchTrackData();
+    const maskColor = await getMaskColor(data.album);
 
-    setTitle(`${data.trackInfoDossier.name} - song by ${getCommaSeparatedString(data.trackInfoDossier.artists, 'name')} | Spotify`);
+    setTitle(`${data.name} - song by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
 
-    return data;
+    return {...data, maskColor}
   }
 });
 
-const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} = useMusicUtils();
+const {isThisMusic} = useMusicUtils();
 </script>
 
 <template>
-  <div v-if="trackInfo" class="recommended-cards">
+  <HandleEntityLayoutStates
+    v-if="!trackInfo"
+    :is-fetching="isFetching"
+    :is-error="isError"
+    entity="Track"
+  />
+
+  <div v-else class="recommended-cards">
     <PlayHeaderWithPlayingState
-      :title="trackInfo.trackInfoDossier.name"
+      :title="trackInfo.name"
       :scroll-y="layoutScrollY"
-      :mask="null"
-      :is-playing="isThisMusic(trackInfo.trackInfoDossier.id, true)"
-      @play-click="loadPlaylist(trackInfo.trackInfoDossier.id, {
-        musicId: trackInfo.trackInfoDossier.id
-      })"
+      :mask="trackInfo.maskColor"
+      :is-playing="isThisMusic(trackInfo.id, true)"
     />
     <EntityInfoHeader
-      :image="trackInfo.trackInfoDossier.avatar"
-      :mask="trackInfo.trackInfoDossier.color"
-      :type="'Track'"
+      :image="getImageFromEntity(trackInfo.album.images, 0)"
+      :mask="trackInfo.maskColor"
+      type="track"
       class="info"
     >
-      <span class="type">Трек</span>
-      <h1 class="name">{{trackInfo.trackInfoDossier.name}}</h1>
+      <span class="type">{{t('entities.track')}}</span>
+      <h1 class="name">{{trackInfo.name}}</h1>
       <div class="additional">
-        <div v-if="trackInfo.trackInfoDossier.artists.length === 1" class="single-artist">
-          <EntityAvatar1x1 class="img" type="Artist" />
-          <RouterLink :to="`/artist/${trackInfo.trackInfoDossier.artists[0].id}`" class="name">
-            {{trackInfo.trackInfoDossier.artists[0].name}}
+        <div v-if="trackInfo.artists.length === 1" class="single-artist">
+          <EntityAvatar1x1 :image="getImageFromEntity(trackInfo.artists[0].images, 2)" class="img" type="artist" />
+          <RouterLink :to="`/artist/${trackInfo.artists[0].id}`" class="artist-name">
+            {{trackInfo.artists[0].name}}
           </RouterLink>
         </div>
         <div v-else class="artists">
           <template
-            v-for="(artist, index) in trackInfo.trackInfoDossier.artists"
+            v-for="(artist, index) in trackInfo.artists"
             :key="artist.id"
           >
             <RouterLink
@@ -86,118 +101,45 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
               {{artist.name}}
             </RouterLink>
 
-            <template v-if="index !== trackInfo.trackInfoDossier.artists.length-1">&nbsp;•&nbsp;</template>
+            <template v-if="index !== trackInfo.artists.length-1">&nbsp;•&nbsp;</template>
           </template>
         </div>
 
         <EntityInfoHeaderDot />
 
-        <span>{{formatTimeMMSS(trackInfo.trackInfoDossier.duration)}}</span>
+        <RouterLink class="album-link" :to="`/album/${trackInfo.album.id}`">
+          {{trackInfo.album.name}}
+        </RouterLink>
 
         <EntityInfoHeaderDot />
 
-        <span>{{readableNumber(trackInfo.trackInfoDossier.listenings)}}</span>
+        <span>{{formatTimeMMSS(trackInfo.duration_ms / 1000)}}</span>
       </div>
     </EntityInfoHeader>
 
     <GeneralGradientSectionWithControls
-      :is-playing="isThisMusic(trackInfo.trackInfoDossier.id, true)"
-      :bg-color="trackInfo.trackInfoDossier.color"
-      :tooltip-str="t('music-actions.moreOptionsFor', [trackInfo.trackInfoDossier.name])"
+      :is-playing="false"
+      :bg-color="trackInfo.maskColor"
+      :tooltip-str="t('music-actions.moreOptionsFor', [trackInfo.name])"
     >
       <template #main-options>
         <AddToMediaLib
           class="add"
-          :state="trackInfo.trackInfoDossier.isAddedToFavorites"
+          :state="false"
         />
       </template>
     </GeneralGradientSectionWithControls>
 
     <div class="artists-container">
       <ArtistFullWidthBlock
-        v-for="artist in trackInfo.trackInfoDossier.artists"
+        v-for="artist in trackInfo.artists"
         :id="artist.id"
         :key="artist.id"
-        :image="artist.avatar"
+        :image="getImageFromEntity(artist.images, 2)"
         :name="artist.name"
       />
     </div>
-
-    <TracksSection class="section" naming="Рекомендации" postfix="На основе этого трека">
-      <div class="wrapper">
-        <MusicRow
-          v-for="(music, index) of trackInfo.recommendedRelatedTracks"
-          :key="music.id"
-          :index="index + 1"
-          :is-current="isThisPlaylistAndMusic(music.id, `related:${trackInfo.trackInfoDossier.name}`)"
-          :is-playing="isThisPlaylistAndMusic(music.id, `related:${trackInfo.trackInfoDossier.name}`, true)"
-          :music-id="music.id"
-          :music-name="music.name"
-          :duration="music.duration"
-          :artists="music.artists"
-          :image="music.avatar"
-          :color="music.color"
-          :is-added="false"
-          :show-artists="false"
-          class="row"
-          @set-play="createCustomPlaylist(
-            `related:${trackInfo.trackInfoDossier.name}`,
-            trackInfo.recommendedRelatedTracks,
-            index
-          )"
-        >
-          <template #var1>
-            <span class="var1">
-              {{readableNumber(trackInfo.trackInfoDossier.listenings)}}
-            </span>
-          </template>
-        </MusicRow>
-      </div>
-    </TracksSection>
-
-    <TracksSection
-      v-for="popular in trackInfo.popularArtistsTracks"
-      :key="popular.artistName"
-      class="section"
-      prefix="Популярные треки исполнителя"
-      :naming="popular.artistName"
-    >
-      <div class="wrapper">
-        <MusicRow
-          v-for="(music, index) of popular.trackList"
-          :key="music.id"
-          :index="index + 1"
-          :is-current="isThisPlaylistAndMusic(music.id, `popular:${popular.artistName}`)"
-          :is-playing="isThisPlaylistAndMusic(music.id, `popular:${popular.artistName}`, true)"
-          :music-id="music.id"
-          :music-name="music.name"
-          :duration="music.duration"
-          :artists="music.artists"
-          :image="music.avatar"
-          :color="music.color"
-          :is-added="false"
-          :show-artists="true"
-          class="row"
-          @set-play="createCustomPlaylist(
-            `popular:${popular.artistName}`,
-            trackInfo.recommendedRelatedTracks,
-            index
-          )"
-        >
-          <template #var1>
-            <span class="var1">
-              {{readableNumber(music.listenings)}}
-            </span>
-          </template>
-        </MusicRow>
-      </div>
-    </TracksSection>
   </div>
-  <HandleEntityLayoutStates
-    :is-fetching="isFetching"
-    :is-error="isError"
-    entity="Track"
-  />
 </template>
 
 <style scoped lang="scss">
@@ -205,10 +147,6 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
 
   .info {
     container: trackInfo / inline-size;
-
-    &:deep(.image) {
-      border-radius: 4px;
-    }
 
     .type {
       font-weight: 500;
@@ -248,10 +186,15 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
       display: flex;
       align-items: center;
       font-size: .875rem;
-      font-weight: 700;
+      font-weight: 400;
 
       & > span {
+        font-weight: inherit;
         color: var(--text-soft);
+      }
+
+      .album-link {
+        font-weight: inherit;
       }
 
       .dot {
@@ -270,9 +213,10 @@ const {isThisMusic, isThisPlaylistAndMusic, loadPlaylist, createCustomPlaylist} 
           border-radius: 50%;
         }
 
-        .name {
+        .artist-name {
           color: var(--white);
           font-weight: 700;
+          line-height: 1.375;
 
           &:hover {
             text-decoration: underline;

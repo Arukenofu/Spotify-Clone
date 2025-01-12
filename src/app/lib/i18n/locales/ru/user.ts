@@ -1,3 +1,7 @@
 export default {
-    title: 'Пользователь'
+    title: 'Профиль',
+    publicPlaylists: 'Открытые плейлисты',
+    recentlyPlayed: 'Недавно прослушано',
+    subscriptions: 'Исполнители',
+    subscribers: 'Подписчики',
 }

@@ -23,7 +23,6 @@
   text-align: left;
   width: 100%;
   word-break: break-word;
-  margin-bottom: 8px;
 }
 
 @container EntityInfoHeader (max-width: 1000px) {

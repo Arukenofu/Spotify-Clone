@@ -3,13 +3,14 @@ import {computed, inject, ref, watch} from "vue";
 import {useRoute} from 'vue-router';
 import {useMutation, useQuery} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import ArtistInfoHeader from "@/pageLayouts/artist.id/ArtistInfoHeader.vue";
 import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue";
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import ArtistInfoModal from "@/pageLayouts/artist.id/ArtistInfoModal.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
@@ -202,7 +203,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
     <section class="about-artist" @click="isModal = true">
       <h2>{{t('artist.aboutArtist')}}</h2>
       <div class="card">
-        <EntityAvatar1x1 class="image" :image="artistInfo.profile.avatar" type="Artist" />
+        <EntityAvatar1x1 class="image" :image="artistInfo.profile.avatar" type="artist" />
 
         <span class="listeners">
           {{artistInfo.listenersQuantityPerMonth + ' ' + t('artist.monthlyListeners', artistInfo.listenersQuantityPerMonth).toLowerCase()}}

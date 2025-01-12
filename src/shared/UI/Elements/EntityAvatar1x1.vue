@@ -4,13 +4,13 @@ import NoMusicOrPlaylistAvatar from '@/shared/UI/Icons/NoMusicOrPlaylistAvatar.v
 import NoFolderAvatar from '@/shared/UI/Icons/NoFolderAvatar.vue';
 import NoArtistAvatar from "@/shared/UI/Icons/NoArtistAvatar.vue";
 import LikedSongs from '@/assets/images/liked-songs.png';
-import type {Entities} from '@/services/types/Entities';
 import type {Component} from 'vue';
 import NoUserAvatar from "@/shared/UI/Icons/NoUserAvatar.vue";
+import type {ItemTypes} from "@spotify/web-api-ts-sdk";
 
 interface Props {
   image?: string | null,
-  type: Entities | 'Folder' | 'Collection',
+  type: ItemTypes | 'user' | 'Folder' | 'Collection',
   as?: Component | string,
   loading?: 'lazy' | 'eager',
   loadingColor?: string | null
@@ -23,7 +23,7 @@ defineProps<Props>();
   <Component
     :is="as ?? 'div'"
     class="v-picture"
-    :class="type === 'User' || type === 'Artist' ? 'round' : ''"
+    :class="type === 'artist' || type === 'user' ? 'round' : ''"
   >
     <LazyImage
       v-if="image"
@@ -37,16 +37,13 @@ defineProps<Props>();
       class="icon"
     />
 
-    <NoArtistAvatar v-else-if="type === 'Artist'" class="image" draggable="false" />
+    <NoUserAvatar v-else-if="type === 'user'" class="icon" draggable="false" />
 
-    <NoUserAvatar v-else-if="type === 'User'" class="user" draggable="false" />
+    <NoArtistAvatar v-else-if="type === 'artist'" class="image" draggable="false" />
 
     <LazyImage v-else-if="type === 'Collection'" :image="LikedSongs" class="image" />
 
-    <NoMusicOrPlaylistAvatar
-      v-else
-      class="icon"
-    />
+    <NoMusicOrPlaylistAvatar v-else class="icon" />
 
     <slot />
   </Component>

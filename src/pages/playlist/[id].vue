@@ -1,37 +1,57 @@
 <script setup lang="ts">
 import {useRoute} from 'vue-router';
-import setTitle from '@/shared/utils/setTitle';
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
-import {useQuery} from "@tanstack/vue-query";
-import musicInfoService from "@/services/api/music/apiMusicService";
-import {computed, inject, ref, watch} from "vue";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
+import {computed, inject, ref} from "vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
+import {sdk} from "@/services/sdk";
+import type {User} from "@spotify/web-api-ts-sdk";
+import setTitle from "@/shared/utils/setTitle";
+import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
+import getMaskColor from "@/shared/utils/getMaskColor";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
 
 const route = useRoute('/playlist/[id]');
-
-watch(() => route.params.id, () => {
-  refetch();
-});
-
-const {data, isFetched, isFetching, isError, refetch} = useQuery({
-  queryKey: ['playlistInfo', route.params.id],
-  queryFn: async () => {
-    const data = await musicInfoService.getPlaylistInfo(Number(route.params.id));
-
-    setTitle(`${data.playlistInfoDossier.name} | Spotify Playlist`);
-
-    return data;
-  },
-});
-
-const dossier = computed(() => data.value?.playlistInfoDossier);
-const queue = computed(() => data.value?.playlistQueue);
-const bgColor = computed(() => data.value?.playlistInfoDossier.color ?? '#333333');
-
 const scrollY = inject('layoutScrollY', ref(0));
+const queryClient = useQueryClient();
+const albumId = computed(() => route.params.id);
+
+async function fetchPlaylistData() {
+  return sdk.playlists.getPlaylist(albumId.value);
+}
+
+async function getOwnerData(id: string) {
+  const cachedUser = queryClient.getQueryData<User & {maskColor: string | null}>(['user', id])
+
+  if (cachedUser && cachedUser.id === id) {
+    return cachedUser;
+  }
+
+  const owner = await sdk.users.profile(id);
+  const maskColor = await getMaskColor(owner)
+  queryClient.setQueryData(['user', owner.id], {...owner, maskColor});
+
+  return {...owner, maskColor};
+}
+
+const {data, isFetched, isFetching, isError} = useQuery({
+  queryKey: ['playlistInfo', albumId],
+  queryFn: async () => {
+    const data = await fetchPlaylistData();
+    const maskColor = await getMaskColor(data, 0);
+    const owner = await getOwnerData(data.owner.id);
+
+    setTitle(`${data.name} | Spotify Playlist`);
+
+    return {...data, owner, maskColor};
+  },
+  staleTime: 10000
+});
+
+const {isThisPlaylist} = useMusicUtils();
 </script>
 
 <template>
@@ -41,34 +61,36 @@ const scrollY = inject('layoutScrollY', ref(0));
     entity="Playlist"
   />
 
-  <div v-if="isFetched" class="playlist" :style="`--bg-mask: ${bgColor}`">
+  <div v-if="isFetched && data" class="playlist" :style="`--bg-mask: ${data.maskColor}`">
     <PlayHeaderWithPlayingState
-      v-if="dossier"
-      :is-playing="false"
-      :title="dossier.name"
+      :title="data.name"
       :scroll-y="scrollY"
-      :mask="bgColor"
+      :mask="data.maskColor"
+      :is-playing="isThisPlaylist(data.id, true)"
     />
 
     <PlaylistInfo
-      v-if="dossier"
-      :image="dossier.image"
-      :mask="dossier.color"
-      :name="dossier.name"
-      :creators="dossier.creators"
-      :tracks-amount="dossier.info.tracksAmount"
-      :total-duration="dossier.info.totalDuration"
+      :playlist-name="data.name"
+      :playlist-description="data.description"
+      :image="getImageFromEntity(data.images, 0)"
+      :mask="data.maskColor"
+      :total-duration="100"
+      :creator="data.owner"
+      :creator-image="getImageFromEntity(data.owner.images, 1)"
+      :creator-mask="data.owner.maskColor"
+      :tracks-amount="data.tracks.total"
+      :savings-amount="data.followers.total"
     />
 
     <PlaylistControls
-      :queue="queue!"
-      :dossier="dossier!"
+      :playlist-id="data.id"
+      :playlist-name="data.name"
+      :mask-color="data.maskColor"
+      :is-added="false"
     />
 
     <PlaylistTable
-      v-if="dossier"
-      :queue="queue!"
-      :dossier="dossier"
+      :items="data.tracks.items"
     />
   </div>
 </template>
@@ -76,6 +98,5 @@ const scrollY = inject('layoutScrollY', ref(0));
 <style lang="scss" scoped>
 .playlist {
   margin-top: -64px;
-  height: 10000px;
 }
 </style>

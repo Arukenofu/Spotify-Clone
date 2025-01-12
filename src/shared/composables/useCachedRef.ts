@@ -1,4 +1,5 @@
-import { ref, watch } from 'vue';
+import {ref, watch} from 'vue';
+import getType from "@/shared/utils/getType";
 
 interface Options {
   expectedValues?: any[];
@@ -22,6 +23,8 @@ export default function <T>(
 
   watch(innerRef, (value) => {
     localStorage.setItem(key, stringifyJSON(value));
+  }, {
+    deep: true
   });
 
   return innerRef;
@@ -34,7 +37,7 @@ function checkJSON<T>(value: T, options: Options = {}): 'passed' | 'fail' {
     return expected.includes(value);
   };
 
-  if (expectedTypes && !checkByInclude(typeof value, expectedTypes)) {
+  if (expectedTypes && !checkByInclude(getType(value), expectedTypes)) {
     return 'fail';
   }
 

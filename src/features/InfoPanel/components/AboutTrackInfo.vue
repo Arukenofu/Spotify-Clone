@@ -3,7 +3,7 @@ import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import ShareIcon from "@/shared/UI/Icons/ShareIcon.vue";
-import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
 import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";

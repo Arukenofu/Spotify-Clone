@@ -70,7 +70,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
       <template v-if="format === 'Список'">
         <div v-for="album in artistInfo.discography.albums" :key="album.id" class="album">
           <LazyImage class="image" :image="album.image" :color="album.color" />
-          <div class="text">
+          <div class="added-at">
             <RouterLink :to="`/album/${album.id}`" class="title">
               {{album.name}}
             </RouterLink>
@@ -198,7 +198,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
         box-shadow: 0 4px 60px rgba(0,0,0,.5);
       }
 
-      .text {
+      .added-at {
         display: flex;
         flex-direction: column;
         margin-left: 24px;

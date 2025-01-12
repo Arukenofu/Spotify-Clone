@@ -11,7 +11,7 @@ import FormError from '@/shared/UI/Form/AuthForm/FormError.vue';
 
 import type {SecondStepForm} from '@/pageLayouts/signup/types/form';
 import type {RegisterForm} from "@/services/api/auth/types/RegisterForm";
-import getLocale from "@/app/lib/i18n/utils/getLocale";
+import getUserLanguage from "@/app/lib/i18n/utils/getUserLanguage";
 import {useI18n} from "vue-i18n";
 
 const globalRegisterForm = inject<RegisterForm>('globalRegisterForm');
@@ -22,7 +22,7 @@ const {t, tm} = useI18n();
 const genders = tm('signup.second.genders');
 
 const months = (() => {
-  const applyFormat = new Intl.DateTimeFormat(getLocale(), { month: 'long' }).format;
+  const applyFormat = new Intl.DateTimeFormat(getUserLanguage(), { month: 'long' }).format;
   return [...Array(12).keys()].map((m) => applyFormat(new Date(2021, m)));
 })();
 

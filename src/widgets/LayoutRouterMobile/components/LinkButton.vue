@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component } from 'vue';
+import type {Component} from 'vue';
 
 interface Props {
   active: boolean;
@@ -19,7 +19,7 @@ defineProps<Props>();
       class="icon"
       :state="active"
     />
-    <span class="text"><slot /></span>
+    <span class="added-at"><slot /></span>
   </button>
 </template>
 
@@ -33,7 +33,7 @@ defineProps<Props>();
   justify-content: center;
   gap: 3px;
 
-  .text,
+  .added-at,
   .icon {
     transition-property: opacity, scale;
     transition-duration: 0.2s;
@@ -46,7 +46,7 @@ defineProps<Props>();
     height: 24px;
   }
 
-  .text {
+  .added-at {
     font-size: 0.65rem;
     font-weight: 600;
     text-align: center;
@@ -65,7 +65,7 @@ defineProps<Props>();
 
   @media (hover: hover) {
     &:hover .icon,
-    &:hover .text {
+    &:hover .added-at {
       opacity: 0.75;
     }
   }
@@ -75,7 +75,7 @@ defineProps<Props>();
   .icon {
     fill: var(--white);
   }
-  .text {
+  .added-at {
     color: var(--white);
   }
 }

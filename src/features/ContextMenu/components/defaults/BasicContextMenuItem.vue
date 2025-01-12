@@ -24,7 +24,7 @@ const computedClasses = computed(() => {
       <div v-if="$slots.icon" class="icon">
         <slot name="icon" />
       </div>
-      <span class="text">
+      <span class="added-at">
         <slot />
       </span>
     </span>
@@ -67,7 +67,7 @@ const computedClasses = computed(() => {
     align-items: center;
     gap: 12px;
 
-    .text {
+    .added-at {
       font-weight: 500;
       font-size: 0.875rem;
       white-space: nowrap;

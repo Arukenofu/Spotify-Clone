@@ -11,7 +11,7 @@ interface Props {
 const {
   scrollY,
   passingHeight = 160,
-  mask = 'rgb(83, 83, 83)'
+  mask
 } = defineProps<Props>();
 
 const isHeightPassed = computed(() => {
@@ -22,7 +22,7 @@ const isHeightPassed = computed(() => {
 <template>
   <Transition name="header">
     <StickyHeader v-show="isHeightPassed" class="header">
-      <template #filter>
+      <template v-if="mask" #filter>
         <div class="background">
           <div class="background_inner" />
         </div>
@@ -39,10 +39,10 @@ const isHeightPassed = computed(() => {
 .header {
   position: fixed;
   padding: 0 var(--content-spacing);
-  background-color: #212121;
+  background-color: var(--ui);
 
   .background {
-    background-color: v-bind("mask || 'rgb(83, 83, 83)'");
+    background-color: v-bind(mask);
     height: 100%;
     width: 100%;
 

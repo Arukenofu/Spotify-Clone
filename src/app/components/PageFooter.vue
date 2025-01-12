@@ -15,20 +15,12 @@ const links: Links[] = [
     url: 'https://github.com/Arukenofu/Spotify-Clone'
   },
   {
-    text: t('app-footer.server'),
-    url: 'https://github.com/Rehart-Kcalb/Spotify_Clone'
-  },
-  {
     text: t('app-footer.original'),
     url: 'https://open.spotify.com/'
   },
   {
     text: 'Arukenofu',
     url: 'https://github.com/Arukenofu'
-  },
-  {
-    text: 'Rehart-Kcalb',
-    url: 'https://github.com/Rehart-Kcalb'
   },
   {
     text: t('app-footer.license'),

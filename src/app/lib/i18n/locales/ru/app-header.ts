@@ -3,7 +3,7 @@ export default {
         home: 'Главная',
         contentFeed: 'Что нового',
         browse: 'Обзор',
-        clean: 'Очистить строку поиска'
+        clear: 'Очистить строку поиска'
     },
     searchBarPlaceholder: 'Что хочешь включить?',
     premium: 'Узнать больше о Premium',

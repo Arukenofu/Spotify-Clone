@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CommaSeparatedArtistsLink from "@/shared/components/CommaSeparatedArtistsLink.vue";
+import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
+import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import {computed, inject, type Ref} from "vue";
 import type {Track} from "@/services/types/Entities/Track";
 
@@ -85,12 +85,12 @@ const currentFormatClass = computed(() => {
           >
             {{music.album.name}}
           </RouterLink>
-          <span v-else class="text">
+          <span v-else class="added-at">
             {{music.uploadedDate}}
           </span>
         </template>
         <template v-if="format === 'Компактный'" #var3>
-          <span class="text">
+          <span class="added-at">
             {{music.uploadedDate}}
           </span>
         </template>
@@ -124,7 +124,7 @@ const currentFormatClass = computed(() => {
         }
       }
 
-      .text {
+      .added-at {
         color: var(--text-soft);
         font-size: .875rem;
         font-weight: 500;

@@ -1,5 +1,5 @@
 import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
-import routerPushPrevent from "@/shared/utils/routerPushPrevent";
+import {router} from "@/app/router";
 
 export default async function handleMedialibClick(
     id: string | number,
@@ -10,8 +10,8 @@ export default async function handleMedialibClick(
         onFolder(); return;
     }
     if (type === 'Collection') {
-        await routerPushPrevent(`/${type}`); return;
+        await router.push(`/${type}`); return;
     }
 
-    await routerPushPrevent(`/${type}/${id}`);
+    await router.push(`/${type}/${id}`);
 }

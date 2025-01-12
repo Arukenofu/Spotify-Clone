@@ -22,7 +22,7 @@ const model = defineModel<string | null>();
     <label :for="index">
       <span class="indicator" />
 
-      <span class="text">
+      <span class="added-at">
         {{ text }}
       </span>
     </label>
@@ -78,7 +78,7 @@ const model = defineModel<string | null>();
       border-radius: 50%;
     }
 
-    .text {
+    .added-at {
       padding-left: 9px;
       padding-right: 24px;
       font-size: 0.95em;

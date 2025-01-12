@@ -16,7 +16,7 @@ defineProps<{
 <template>
   <div class="next-in-queue">
     <div class="title">
-      <div class="text">{{t('info-panel.currentTrackInfo.nextInQueue')}}</div>
+      <div class="added-at">{{t('info-panel.currentTrackInfo.nextInQueue')}}</div>
       <button class="show-queue" @click="setNewPanel('CurrentPlaylistQueue')">
         {{t('info-panel.currentTrackInfo.openQueue')}}
       </button>
@@ -45,7 +45,7 @@ defineProps<{
     gap: 8px;
     margin-bottom: 9px;
 
-    .text {
+    .added-at {
       flex: 1 1 0;
       font-weight: 700;
       overflow: hidden;

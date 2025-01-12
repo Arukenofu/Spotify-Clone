@@ -42,7 +42,7 @@ function onInput(value: string) {
   debounce(() => {
     const path = route.params.path ? `/${route.params.path}` : '';
 
-    router.push(`/search/${value}${path}`);
+    router.push(`/search/${encodeURIComponent(value)}${path}`);
   }, 1000);
 }
 
