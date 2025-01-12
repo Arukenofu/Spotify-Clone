@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component } from 'vue';
+import type {Component} from 'vue';
 
 defineProps<{
   to: string;
@@ -20,7 +20,7 @@ defineProps<{
       />
       <span
         v-if="!isMinimized"
-        class="text"
+        class="added-at"
       >
         <slot />
       </span>
@@ -43,7 +43,7 @@ li {
       .icon {
         fill: var(--white);
       }
-      .text {
+      .added-at {
         color: var(--white);
       }
     }
@@ -55,7 +55,7 @@ li {
       transition: fill 0.2s linear;
     }
 
-    .text {
+    .added-at {
       transition: color 0.2s linear;
       color: var(--text-soft);
       font-weight: 600;
@@ -67,7 +67,7 @@ li {
     .icon {
       fill: var(--white);
     }
-    .text {
+    .added-at {
       color: var(--white);
     }
   }

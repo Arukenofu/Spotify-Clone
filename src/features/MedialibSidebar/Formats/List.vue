@@ -17,7 +17,7 @@ const props = defineProps<MediaLibEntityProps>();
       </div>
     </div>
 
-    <div class="text">
+    <div class="added-at">
       <span class="playlist-name">
         {{ props.name }}
       </span>
@@ -85,7 +85,7 @@ const props = defineProps<MediaLibEntityProps>();
     }
   }
 
-  .text {
+  .added-at {
     height: 100%;
     display: flex;
     flex-direction: column;

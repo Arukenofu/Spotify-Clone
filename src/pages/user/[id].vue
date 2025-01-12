@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import {computed, inject, ref} from "vue";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import {useRoute} from "vue-router";
-import GeneralGradientSection from "@/shared/UI/Blocks/GeneralGradientSection.vue";
+import GeneralGradientSection from "@/shared/UI/EntityPageElements/GeneralGradientSection.vue";
 import SubscribeToArtistButton from "@/shared/UI/Buttons/SubscribeButton.vue";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import PlayHeader from "@/shared/UI/Blocks/PlayHeader.vue";
 import {useI18n} from "vue-i18n";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {sdk} from "@/services/sdk";
-import type {User, UserProfile} from "@spotify/web-api-ts-sdk";
-import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import type {UserProfile} from "@spotify/web-api-ts-sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
+import getMaskColor from "@/shared/utils/getMaskColor";
 
 const {t} = useI18n();
 const route = useRoute('/user/[id]');
@@ -44,29 +44,20 @@ async function fetchUserData() {
   return sdk.users.profile(route.params.id);
 }
 
-async function getMaskColor(data: User) {
-  if (!data.images.length) return null;
-
-  const palette = await getAsyncPalette(data.images[0].url);
-  if (!palette.Vibrant) return null;
-
-  return palette.Vibrant.hex;
-}
-
 const {data: user, isLoading} = useQuery({
   queryKey: ['user', routeId],
   queryFn: async () => {
     const data = await fetchUserData();
     const color = await getMaskColor(data);
 
-    return {...data, mask: color}
+    return {...data, maskColor: color}
   },
   staleTime: Infinity,
   maxPages: 3,
 });
 
 const currentMaskColor = computed(() => {
-  return user.value!.mask;
+  return user.value!.maskColor;
 });
 const isCurrentUser = computed(() => {
   const currentUserData = getCurrentUserData();
@@ -137,8 +128,8 @@ function linkToCurrentUserRoute(push: string) {
           v-for="entity in user.followedArtists.artists.items"
           :id="entity.id"
           :key="entity.id"
-          :image="getImageFromEntity(entity, 1)"
-          :mask-loader-image="getImageFromEntity(entity, 2)"
+          :image="getImageFromEntity(entity.images, 1)"
+          :mask-loader-image="getImageFromEntity(entity.images, 2)"
           :name="entity.name"
           type="artist"
         />
@@ -208,5 +199,7 @@ function linkToCurrentUserRoute(push: string) {
 
 .other-info-container {
   padding: 0 var(--content-spacing);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
 }
 </style>

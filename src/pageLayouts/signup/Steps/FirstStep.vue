@@ -104,7 +104,7 @@ const {mutate: validate} = useMutation({
         </span>
 
         <span
-          class="text"
+          class="added-at"
           :class="isError(rule.key) && 'alert'"
         >
           {{ rule.text }}
@@ -142,7 +142,7 @@ form {
         width: 12px;
       }
 
-      .text {
+      .added-at {
         position: relative;
         top: 1px;
         font-size: 0.9em;

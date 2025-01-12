@@ -3,7 +3,7 @@ import EntityCard from "@/shared/UI/Elements/EntityCard.vue";
 import {useQuery} from "@tanstack/vue-query";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import {computed} from "vue";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
@@ -78,11 +78,11 @@ const allowedEntitiesSection:
             :music-id="track.id"
             :artists="track.artists.map((value) => ({
               id: value.id,
-              name: value.name,
+              name: value.name
             }))"
             :music-name="track.name"
             :duration="track.duration_ms / 1000"
-            :image="getImageFromEntity(track, 2)"
+            :image="getImageFromEntity(track.album.images, 2)"
           />
         </div>
       </div>

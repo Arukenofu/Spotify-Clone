@@ -25,7 +25,7 @@ const {currentAudioData} = storeToRefs(currentStore);
       <div class="image">
         <img :src="currentAudioData.avatar ?? ''" alt="">
       </div>
-      <div class="text">
+      <div class="added-at">
         <div class="track-name">{{currentAudioData.name}}</div>
         <div class="track-creators">
           <CommaSeparatedArtistsLink
@@ -130,7 +130,7 @@ const {currentAudioData} = storeToRefs(currentStore);
       }
     }
 
-    .text {
+    .added-at {
       transition: transform 1s cubic-bezier(.3,0,.4,1) 1s,opacity .5s cubic-bezier(.3,0,.4,1),left 1s cubic-bezier(.3,0,.4,1),-webkit-transform 1s cubic-bezier(.3,0,.4,1) 1s;;
       bottom: 36.5em;
       font-weight: 900;

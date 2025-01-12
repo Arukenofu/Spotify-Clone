@@ -36,15 +36,17 @@ function getAvailableSearchEntities() {
 </script>
 
 <template>
-  <div v-if="data" class="search">
+  <template v-if="data">
     <SearchRouterHeader :available-routes="getAvailableSearchEntities()" />
-
-    <RouterView />
-  </div>
+    <div class="search">
+      <RouterView />
+    </div>
+  </template>
 </template>
 
 <style scoped lang="scss">
 .search {
-  height: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
 }
 </style>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
 import LikedSongsImage from '@/assets/images/liked-songs.png';
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiUserService from "@/services/api/user/apiUserService";
@@ -10,7 +11,7 @@ import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import {inject, ref} from "vue";
 
 const {t} = useI18n();
@@ -46,7 +47,7 @@ await suspense();
     <EntityInfoHeader
       :image="LikedSongsImage"
       :mask="maskColor"
-      type="Playlist"
+      type="playlist"
       class="header"
     >
       <span class="type">{{t('entities.playlist')}}</span>

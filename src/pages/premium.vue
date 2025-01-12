@@ -107,7 +107,7 @@ const comparisons = [
           :key="benefit"
         >
           <CheckIcon class="check" />
-          <div class="text">
+          <div class="added-at">
             {{ benefit }}
           </div>
         </li>
@@ -330,7 +330,7 @@ const comparisons = [
           height: 24px;
         }
 
-        .text {
+        .added-at {
           font-size: 1rem;
         }
       }

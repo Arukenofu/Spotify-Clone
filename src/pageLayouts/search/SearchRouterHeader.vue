@@ -26,36 +26,44 @@ const getActiveFilterIndex = computed(() => {
 
 <template>
   <StickyHeader class="sticky-header">
-    <BubbleButton
-      class="button"
-      :design="!route.params.path ? 'active' : 'default'"
-      @click="setSearchRouteFilter('')"
-    >
-      {{t('search.entities.all')}}
-    </BubbleButton>
+    <div class="content">
+      <BubbleButton
+        class="button"
+        :design="!route.params.path ? 'active' : 'default'"
+        @click="setSearchRouteFilter('')"
+      >
+        {{t('search.entities.all')}}
+      </BubbleButton>
 
-    <BubbleButton
-      v-for="(availableRoute, index) in props.availableRoutes"
-      :key="availableRoute"
-      class="button"
-      :design="getActiveFilterIndex === index ? 'active' : 'default'"
-      @click="setSearchRouteFilter(`/${availableRoute}s`)"
-    >
-      {{ t(`search.entities.${availableRoute}`) }}
-    </BubbleButton>
+      <BubbleButton
+        v-for="(availableRoute, index) in props.availableRoutes"
+        :key="availableRoute"
+        class="button"
+        :design="getActiveFilterIndex === index ? 'active' : 'default'"
+        @click="setSearchRouteFilter(`/${availableRoute}s`)"
+      >
+        {{ t(`search.entities.${availableRoute}`) }}
+      </BubbleButton>
+    </div>
   </StickyHeader>
 </template>
 
 <style lang="scss" scoped>
 .sticky-header {
-  height: 56px;
-  padding: 12px var(--content-spacing);
-  display: flex;
-  gap: 9px;
   background-color: var(--ui);
 
-  .button {
-    height: 100%;
+  .content {
+    max-width: var(--content-max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px var(--content-spacing);
+    display: flex;
+    gap: 9px;
+    height: 56px;
+
+    .button {
+      height: 100%;
+    }
   }
 }
 </style>

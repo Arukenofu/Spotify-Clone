@@ -128,6 +128,7 @@ await suspense();
     }
 
     .content {
+      margin: 0 auto;
       position: relative;
       min-height: 100%;
       z-index: 1 !important;

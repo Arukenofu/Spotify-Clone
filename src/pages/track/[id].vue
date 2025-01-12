@@ -3,22 +3,23 @@ import {useRoute} from "vue-router";
 import {computed, inject, ref} from "vue";
 import {useQuery} from "@tanstack/vue-query";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import formatTimeMMSS from "../../shared/utils/format/formatTimeMMSS";
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
-import ArtistFullWidthBlock from "@/shared/UI/Blocks/ArtistFullWidthBlock.vue";
+import ArtistFullWidthBlock from "@/shared/UI/EntityPageElements/ArtistFullWidthBlock.vue";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 import {sdk} from "@/services/sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import type {Artist, SimplifiedAlbum} from "@spotify/web-api-ts-sdk";
+import type {Artist} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
-import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import getMaskColor from "@/shared/utils/getMaskColor";
 
 const {t} = useI18n();
 
@@ -41,15 +42,6 @@ async function fetchTrackData() {
     ...data,
     artists: artists.artists
   };
-}
-
-async function getMaskColor(data: SimplifiedAlbum) {
-  if (!data.images.length) return null;
-
-  const palette = await getAsyncPalette(data.images[2].url);
-  if (!palette.Vibrant) return null;
-
-  return palette.Vibrant.hex;
 }
 
 const {data: trackInfo, isFetching, isError} = useQuery({
@@ -83,7 +75,7 @@ const {isThisMusic} = useMusicUtils();
       :is-playing="isThisMusic(trackInfo.id, true)"
     />
     <EntityInfoHeader
-      :image="getImageFromEntity(trackInfo.album, 0)"
+      :image="getImageFromEntity(trackInfo.album.images, 0)"
       :mask="trackInfo.maskColor"
       type="track"
       class="info"
@@ -92,7 +84,7 @@ const {isThisMusic} = useMusicUtils();
       <h1 class="name">{{trackInfo.name}}</h1>
       <div class="additional">
         <div v-if="trackInfo.artists.length === 1" class="single-artist">
-          <EntityAvatar1x1 :image="getImageFromEntity(trackInfo.artists[0], 2)" class="img" type="artist" />
+          <EntityAvatar1x1 :image="getImageFromEntity(trackInfo.artists[0].images, 2)" class="img" type="artist" />
           <RouterLink :to="`/artist/${trackInfo.artists[0].id}`" class="artist-name">
             {{trackInfo.artists[0].name}}
           </RouterLink>
@@ -143,7 +135,7 @@ const {isThisMusic} = useMusicUtils();
         v-for="artist in trackInfo.artists"
         :id="artist.id"
         :key="artist.id"
-        :image="getImageFromEntity(artist, 2)"
+        :image="getImageFromEntity(artist.images, 2)"
         :name="artist.name"
       />
     </div>

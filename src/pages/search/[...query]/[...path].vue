@@ -5,7 +5,7 @@ import {useQuery} from "@tanstack/vue-query";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
-import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
+import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import {sdk} from "@/services/sdk";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
@@ -74,11 +74,11 @@ const {isThisMusic} = useMusicUtils();
           :music-id="track.id"
           :artists="track.artists.map((value) => ({
             id: value.id,
-            name: value.name,
+            name: value.name
           }))"
           :music-name="track.name"
           :duration="track.duration_ms / 1000"
-          :image="getImageFromEntity(track, 2)"
+          :image="getImageFromEntity(track.album.images, 2)"
           :color="'#ffffff'"
         />
       </div>

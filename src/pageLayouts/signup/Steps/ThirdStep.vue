@@ -57,7 +57,7 @@ async function validateWholeForm() {
       <div class="check">
         <FormCheckbox v-model="term.checked" />
       </div>
-      <div class="text">
+      <div class="added-at">
         {{ term.text }}
       </div>
     </div>
@@ -88,7 +88,7 @@ form {
     border-radius: 6px;
     cursor: initial;
 
-    .text {
+    .added-at {
       position: relative;
       bottom: 4px;
       font-size: 0.9rem;

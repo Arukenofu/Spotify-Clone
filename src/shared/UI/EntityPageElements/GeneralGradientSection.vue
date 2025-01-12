@@ -23,9 +23,10 @@ const {bgColor = '#333333'} = defineProps<Props>()
 
   .controls {
     width: 100%;
-    height: 56px;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    min-height: 56px;
     padding: var(--content-spacing);
-    box-sizing: content-box;
     display: flex;
     align-items: center;
   }

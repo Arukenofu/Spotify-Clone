@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import GreenPlayingButton from "@/shared/UI/Buttons/GreenPlayingButton.vue";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import GeneralGradientSection from "@/shared/UI/Blocks/GeneralGradientSection.vue";
+import GeneralGradientSection from "@/shared/UI/EntityPageElements/GeneralGradientSection.vue";
 import {useI18n} from "vue-i18n";
 
 interface Props {
@@ -48,38 +48,29 @@ const {t} = useI18n();
 .general {
   position: relative;
 
-  .controls {
-    width: 100%;
+  .playingButton {
     height: 56px;
-    padding: var(--content-spacing);
-    box-sizing: content-box;
-    display: flex;
-    align-items: center;
+    width: auto;
+    aspect-ratio: 1/1;
+    margin-right: calc(var(--content-spacing) + 8px);
+    box-shadow: none;
+  }
 
-    .playingButton {
-      height: 100%;
-      width: auto;
-      aspect-ratio: 1/1;
-      margin-right: calc(var(--content-spacing) + 8px);
-      box-shadow: none;
+  .options {
+    width: 32px;
+    height: 32px;
+    margin-right: var(--content-spacing);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover .icon {
+      fill: var(--white);
+      scale: 1.05;
     }
 
-    .options {
-      width: 32px;
-      height: 32px;
-      margin-right: var(--content-spacing);
-      background: none;
-      border: none;
-      cursor: pointer;
-
-      &:hover .icon {
-        fill: var(--white);
-        scale: 1.05;
-      }
-
-      .icon {
-        fill: var(--text-soft);
-      }
+    .icon {
+      fill: var(--text-soft);
     }
   }
 

@@ -2,13 +2,14 @@
 import AlbumInfoHeader from "@/pageLayouts/album.id/AlbumInfoHeader.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {useRoute} from "vue-router";
-import GeneralGradientSectionWithControls from "@/shared/UI/Blocks/Sugar/GeneralGradientSectionWithControls.vue";
+import GeneralGradientSectionWithControls
+  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import PlayHeaderWithPlayingState from "@/shared/UI/Blocks/Sugar/PlayHeaderWithPlayingState.vue";
+import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import {computed, inject, type Ref, ref} from "vue";
-import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
+import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
@@ -18,6 +19,10 @@ import type {Album} from "@spotify/web-api-ts-sdk";
 import getAsyncPalette from "@/shared/utils/getAsyncPalette";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
+import setTitle from "@/shared/utils/setTitle";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
+import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
+import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
 
 const {t} = useI18n();
 
@@ -27,14 +32,12 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
 
 const albumId = computed(() => route.params.id);
 
-// setTitle(`${data.playlistInfoDossier.name} - Album by ${getCommaSeparatedString(data.playlistInfoDossier.creators, 'name')} | Spotify`);
-
 async function fetchAlbumData() {
   return sdk.albums.get(albumId.value);
 }
 
 async function getMaskColor(data: Album) {
-  if (!data.images.length) return null;
+  if (!data?.images?.length) return null;
 
   const palette = await getAsyncPalette(data.images[0].url);
   if (!palette.Vibrant) return null;
@@ -48,8 +51,11 @@ const {data, isFetching, isError} = useQuery({
     const data = await fetchAlbumData();
     const maskColor = await getMaskColor(data);
 
+    setTitle(`${data.name} - Album by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
+
     return {...data, maskColor};
-  }
+  },
+  staleTime: Infinity
 });
 
 const {format, setFormat} = useMusicCollectionFormat();
@@ -68,17 +74,19 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
     <PlayHeaderWithPlayingState
       :title="data.name"
       :scroll-y="scrollY"
+      :passing-height="280"
       :is-playing="isThisPlaylist(data.id, true)"
       :mask="data.maskColor"
     />
 
     <AlbumInfoHeader
-      :image="getImageFromEntity(data)"
+      :image="getImageFromEntity(data.images)"
       :mask="data.maskColor"
       :name="data.name"
       :creator="data.artists"
       :tracks-amount="data.total_tracks"
     />
+
     <GeneralGradientSectionWithControls
       :is-playing="isThisPlaylist(data.id, true)"
       :bg-color="data.maskColor"
@@ -95,13 +103,15 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
       </template>
     </GeneralGradientSectionWithControls>
 
-    <MusicRowHeader class="row-header" :class="format === 'Compact' && 'compact'" :parent-element="layout!.content">
-      <template v-if="format === 'Compact'" #var1>
-        {{t('entities.artist')}}
-      </template>
-    </MusicRowHeader>
+    <MusicRowHeaderWrapper :parent-element="layout!.content">
+      <MusicRowHeader class="row-header" :class="format === 'Compact' && 'compact'">
+        <template v-if="format === 'Compact'" #var1>
+          {{t('entities.artist')}}
+        </template>
+      </MusicRowHeader>
+    </MusicRowHeaderWrapper>
 
-    <div class="wrapper">
+    <TrackTableWrapper>
       <MusicRow
         v-for="(music, index) of data.tracks.items"
         :key="music.id"
@@ -124,20 +134,33 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
           <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
         </template>
       </MusicRow>
-    </div>
+    </TrackTableWrapper>
   </div>
 </template>
 
 <style scoped lang="scss">
 .album {
-  container: playlist / inline-size;
+  container: album / inline-size;
+
+  .row:hover:deep(.artist) {
+    color: var(--white) !important;
+  }
+
+  .music-row-outer {
+    position: sticky;
+    top: 64px;
+
+    .row-header {
+
+    }
+  }
 
   .add {
     height: 32px;
     margin-right: var(--content-spacing);
   }
 
-  .row-header, .wrapper .row {
+  .row-header, .row {
     display: grid;
     grid-template-columns:
         [index] 16px
@@ -166,7 +189,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
     }
   }
 
-  @container playlist (max-width: 550px) {
+  @container album (max-width: 550px) {
     .compact {
       grid-template-columns:
         [index] 16px
@@ -179,11 +202,6 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
         display: none;
       }
     }
-  }
-
-  .wrapper {
-    margin-top: var(--content-spacing);
-    padding: 0 var(--content-spacing);
   }
 }
 </style>

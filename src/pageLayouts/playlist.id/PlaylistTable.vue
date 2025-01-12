@@ -1,76 +1,67 @@
 <script setup lang="ts">
 import {computed, inject, type Ref} from 'vue';
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import type {Playlist} from "@/services/types/Entities/Playlist";
-import type {Track} from "@/services/types/Entities/Track";
-import MusicRowHeader from "@/shared/UI/Elements/MusicRowHeader.vue";
+import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
-
-interface Props {
-  queue: Track[],
-  dossier: Playlist,
-}
-
-const {dossier, queue} = defineProps<Props>();
+import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
+import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
+import type {Playlist, Track} from "@spotify/web-api-ts-sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const {t} = useI18n();
-
 const {format} = useMusicCollectionFormat();
+const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
+
+defineProps<{
+  items: Playlist<Track>['tracks']['items']
+}>();
 
 const currentFormatClass = computed(() => {
-  return format.value === 'Compact' ? 'compact' : 'list';
+  return format.value.toLowerCase();
 });
-
-const {
-  isThisPlaylistAndMusic
-} = useMusicUtils();
-
-const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 </script>
 
 <template>
   <div class="playlist-table" :class="`table-${currentFormatClass}`">
-    <MusicRowHeader
-      :parent-element="layoutContent!.content"
-      class="row-header computedGrid"
-    >
-      <template #var1>
-        <template v-if="format === 'Compact'">
-          {{t('entities.artist')}}
+    <MusicRowHeaderWrapper :parent-element="layoutContent!.content">
+      <MusicRowHeader class="computedGrid">
+        <template #var1>
+          <template v-if="format === 'Compact'">
+            {{t('entities.artist')}}
+          </template>
+          <template v-else>
+            {{t('entities.album')}}
+          </template>
         </template>
-        <template v-else>
-          {{t('entities.album')}}
+        <template #var2>
+          <template v-if="format === 'Compact'">
+            {{t('entities.album')}}
+          </template>
+          <template v-else>
+            {{t('music-table.dateAdded')}}
+          </template>
         </template>
-      </template>
-      <template #var2>
-        <template v-if="format === 'Compact'">
-          {{t('entities.album')}}
-        </template>
-        <template v-else>
+        <template v-if="format === 'Compact'" #var3>
           {{t('music-table.dateAdded')}}
         </template>
-      </template>
-      <template v-if="format === 'Compact'" #var3>
-        {{t('music-table.dateAdded')}}
-      </template>
-    </MusicRowHeader>
+      </MusicRowHeader>
+    </MusicRowHeaderWrapper>
 
-    <div class="music-collection-wrapper">
+    <TrackTableWrapper>
       <MusicRow
-        v-for="(music, index) of queue"
-        :key="music.id"
+        v-for="(music, index) of items"
+        :key="music.track.id"
         :index="index + 1"
-        :is-current="isThisPlaylistAndMusic(music.id, dossier.id)"
-        :is-playing="isThisPlaylistAndMusic(music.id, dossier.id, true)"
-        :music-id="music.id"
-        :music-name="music.name"
-        :duration="music.duration"
-        :artists="music.artists"
-        :image="music.avatar"
-        :color="music.color"
+        :is-current="false"
+        :is-playing="false"
+        :music-id="music.track.id"
+        :music-name="music.track.name"
+        :duration="music.track.duration_ms / 1000"
+        :artists="music.track.artists"
+        :image="getImageFromEntity(music.track.album.images, 2)"
+        :color="null"
         :is-added="false"
         :show-artists="true"
         :compact="format === 'Compact'"
@@ -79,40 +70,122 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
         <template #var1>
           <CommaSeparatedArtistsLink
             v-if="format === 'Compact'"
-            :artists="music.artists"
+            :artists="music.track.artists"
             class="artists"
           />
           <RouterLink
             v-else
-            :to="`/album/${music.album.id}`"
+            :to="`/album/${music.track.album.id}`"
             class="link"
           >
-            {{music.album.name}}
+            {{music.track.album.name}}
           </RouterLink>
         </template>
         <template #var2>
           <RouterLink
             v-if="format === 'Compact'"
-            :to="`/album/${music.album.id}`"
+            :to="`/album/${music.track.album.id}`"
             class="link"
           >
-            {{music.album.name}}
+            {{music.track.album.name}}
           </RouterLink>
-          <span v-else class="text">
-            {{music.uploadedDate}}
+          <span v-else class="added-at">
+            {{music.added_at}}
           </span>
         </template>
         <template v-if="format === 'Compact'" #var3>
-          <span class="text">
-            {{music.uploadedDate}}
+          <span class="added-at">
+            {{music.added_at}}
           </span>
         </template>
       </MusicRow>
-    </div>
+    </TrackTableWrapper>
   </div>
 </template>
 
 <style scoped lang="scss">
+.table-list {
+  container: playlist-table / inline-size;
+
+  .computedGrid {
+    grid-template-columns:
+      [index] 16px
+      [main] minmax(120px, 6fr)
+      [var1] minmax(120px, 4fr)
+      [var2] minmax(120px, 4fr)
+      [time] minmax(120px, 1fr);
+  }
+
+  @container playlist-table (max-width: 760px) {
+    .computedGrid {
+      grid-template-columns:
+        [index] 16px
+        [main] minmax(120px, 4fr)
+        [var1] minmax(120px, 2fr)
+        [var2] 0
+        [time] minmax(120px, 1fr) !important;
+
+      &:deep(.var2) {
+        display: none;
+      }
+    }
+  }
+
+  @container playlist-table (max-width: 550px) {
+    .computedGrid {
+      grid-template-columns:
+        [index] 16px
+        [main] minmax(120px, 4fr)
+        [var1] 0
+        [var2] 0
+        [time] minmax(120px, 1fr) !important;
+
+      &:deep(.var1, .var2) {
+        display: none;
+      }
+    }
+  }
+}
+
+.playlist-table {
+  container: playlist-table / inline-size;
+
+  .row {
+    &:deep(.var1, .var2), .link, .added-at {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      white-space: unset;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.375;
+    }
+
+    &:hover {
+      .link, &:deep(.v-link) {
+        color: var(--white);
+      }
+    }
+
+    .link, &:deep(.v-link) {
+      color: var(--text-soft);
+      font-size: .875rem;
+      font-weight: 500  ;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .added-at {
+      color: var(--text-soft);
+      font-size: .875rem;
+      font-weight: 500;
+    }
+  }
+}
+
 .table-compact {
   container: playlist-table / inline-size;
 
@@ -173,83 +246,6 @@ const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutC
 
       &:deep(.var1, .var2, .var3) {
         display: none;
-      }
-    }
-  }
-}
-
-.table-list {
-  container: playlist-table / inline-size;
-
-  .computedGrid {
-    grid-template-columns:
-      [index] 16px
-      [main] minmax(120px, 6fr)
-      [var1] minmax(120px, 4fr)
-      [var2] minmax(120px, 4fr)
-      [time] minmax(120px, 1fr);
-  }
-
-  @container playlist-table (max-width: 760px) {
-    .computedGrid {
-      grid-template-columns:
-        [index] 16px
-        [main] minmax(120px, 4fr)
-        [var1] minmax(120px, 2fr)
-        [var2] 0
-        [time] minmax(120px, 1fr) !important;
-
-      &:deep(.var2) {
-        display: none;
-      }
-    }
-  }
-
-  @container playlist-table (max-width: 550px) {
-    .computedGrid {
-      grid-template-columns:
-        [index] 16px
-        [main] minmax(120px, 4fr)
-        [var1] 0
-        [var2] 0
-        [time] minmax(120px, 1fr) !important;
-
-      &:deep(.var1, .var2) {
-        display: none;
-      }
-    }
-  }
-}
-
-.playlist-table {
-  container: playlist-table / inline-size;
-
-  .music-collection-wrapper {
-    margin-top: var(--content-spacing);
-    padding: 0 var(--content-spacing);
-
-    .row {
-
-      &:hover {
-        .link, &:deep(.v-link) {
-          color: var(--white);
-        }
-      }
-
-      .link, &:deep(.v-link) {
-        color: var(--text-soft);
-        font-size: .875rem;
-        font-weight: 500  ;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
-      .text {
-        color: var(--text-soft);
-        font-size: .875rem;
-        font-weight: 500;
       }
     }
   }

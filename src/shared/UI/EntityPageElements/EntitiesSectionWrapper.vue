@@ -39,5 +39,6 @@ const computeGridAutoRows = computed(() => {
   grid-template-rows: v-bind(computeGridAutoRows);
   overflow: hidden;
   grid-auto-rows: min-content;
+  justify-content: center;
 }
 </style>
