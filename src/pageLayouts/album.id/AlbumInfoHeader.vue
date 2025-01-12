@@ -1,50 +1,55 @@
 <script setup lang="ts">
 import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 import type {Album} from "@spotify/web-api-ts-sdk";
+import AlbumInfoHeaderArtist from "@/pageLayouts/album.id/AlbumInfoHeaderArtist.vue";
+import getUserLanguage from "@/app/lib/i18n/utils/getUserLanguage";
 
 const {t} = useI18n();
 
-interface Props {
+defineProps<{
   image: string | null;
   mask: string | null;
   name: string;
   creator: Album['artists'],
   tracksAmount: number;
+  releaseDate: string;
+}>();
+
+function getYear(dateString: string) {
+  return dateString.split('-')[0];
 }
 
-defineProps<Props>();
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
+  return date.toLocaleDateString(getUserLanguage(), {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 </script>
 
 <template>
   <EntityInfoHeader class="info" :image :mask type="album">
     <div class="type">{{t('entities.album')}}</div>
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
-    <div class="additional">
-      <div v-if="creator.length === 1" class="single-artist">
-        <EntityAvatar1x1 class="artist-img" type="artist" />
-        <RouterLink :to="`/artist/${creator[0].id}`" class="name">
-          {{creator[0].name}}
-        </RouterLink>
-      </div>
-      <div v-else class="artists">
-        <template
-          v-for="(artist, index) in creator"
-          :key="artist.id"
-        >
-          <RouterLink
-            :to="`/artist/${artist.id}`"
-            class="artist"
-          >
-            {{artist.name}}
-          </RouterLink>
 
-          <template v-if="index !== creator.length-1">&nbsp;•&nbsp;</template>
-        </template>
-      </div>
+    <div class="additional">
+      <AlbumInfoHeaderArtist :creator="creator" />
+
+      <EntityInfoHeaderDot />
+
+      <span v-tooltip="formatDate(releaseDate)" class="releaseDate">
+        {{getYear(releaseDate)}}
+      </span>
 
       <EntityInfoHeaderDot />
 
@@ -85,41 +90,6 @@ defineProps<Props>();
 
     span {
       font-weight: 500;
-    }
-
-    .single-artist {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-
-      .artist-img {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-      }
-
-      .name {
-        color: var(--white);
-        font-weight: 700;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-
-    .artists {
-      display: inline-flex;
-      align-items: center;
-
-      .artist {
-        color: var(--white);
-        font-weight: 700;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
     }
   }
 }

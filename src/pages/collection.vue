@@ -4,8 +4,7 @@ import LikedSongsImage from '@/assets/images/liked-songs.png';
 import GeneralGradientSectionWithControls
   from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import {useQuery} from "@tanstack/vue-query";
-import apiUserService from "@/services/api/user/apiUserService";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
@@ -13,20 +12,30 @@ import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInf
 import {useI18n} from "vue-i18n";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import {inject, ref} from "vue";
-
-const {t} = useI18n();
-const scrollY = inject('layoutScrollY', ref(0));
+import type {UserProfile} from "@spotify/web-api-ts-sdk";
+import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import {sdk} from "@/services/sdk";
 
 const maskColor = 'rgb(80, 56, 160)';
 
-const {format, setFormat} = useMusicCollectionFormat();
+const {t} = useI18n();
+const queryClient = useQueryClient();
+const scrollY = inject('layoutScrollY', ref(0));
 
-const {data, isFetching, isError, suspense} = useQuery({
+const currentUserData = queryClient.getQueryData<UserProfile>(['currentUser']);
+const currentUserAvatar = getImageFromEntity(currentUserData!.images, 1);
+
+const {data: favoriteTracks, isFetching, isError, suspense} = useQuery({
   queryKey: ['favoriteTracks'],
-  queryFn: async () => apiUserService.getFavoriteTracks(),
+  queryFn: () => {
+    return sdk.currentUser.tracks.savedTracks();
+  },
   suspense: true
 });
 await suspense();
+
+const {format, setFormat} = useMusicCollectionFormat();
 </script>
 
 <template>
@@ -36,7 +45,7 @@ await suspense();
     entity="Playlist"
   />
 
-  <div class="collection">
+  <div v-if="favoriteTracks" class="collection">
     <PlayHeaderWithPlayingState
       title="Любимые треки"
       :scroll-y="scrollY"
@@ -53,14 +62,21 @@ await suspense();
       <span class="type">{{t('entities.playlist')}}</span>
       <h1 class="title">Любимые треки</h1>
       <div class="other-info">
-        <RouterLink to="/user/1" class="user">
-          Бауыржан Алкенов
-        </RouterLink>
+        <div class="user">
+          <LazyImage 
+            v-if="currentUserAvatar"
+            :image="currentUserAvatar"
+            class="user-avatar"
+          />
+          <RouterLink :to="`/user/${currentUserData!.id}`" class="user-link">
+            {{currentUserData!.display_name}}
+          </RouterLink>
+        </div>
 
         <EntityInfoHeaderDot />
 
         <span class="tracks-amount">
-          {{t('plurable-entities.track', data?.playlistQueue.length!).toLowerCase()}}
+          {{t('plurable-entities.track', favoriteTracks.total).toLowerCase()}}
         </span>
       </div>
     </EntityInfoHeader>
@@ -77,15 +93,14 @@ await suspense();
     </GeneralGradientSectionWithControls>
 
     <PlaylistTable
-      :queue="data!.playlistQueue"
-      :dossier="data!.playlistInfoDossier"
-      hide-main-options
+      :items="favoriteTracks.items"
     />
   </div>
 </template>
 
 <style scoped lang="scss">
 .header {
+  margin-top: -64px;
   container: collection-info / inline-size;
 
   .type {
@@ -128,10 +143,22 @@ await suspense();
     font-size: .875rem;
 
     .user {
-      font-weight: 700;
+      display: flex;
+      align-items: center;
 
-      &:hover {
-        text-decoration: underline;
+      .user-avatar {
+        height: 24px;
+        width: 24px;
+        border-radius: 50%;
+        margin-right: 4px;
+      }
+
+      .user-link {
+        font-weight: 700;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 

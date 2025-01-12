@@ -95,7 +95,6 @@ function setFormat(newValue: Formats) {
     background: none;
     border: none;
     cursor: pointer;
-    margin-right: calc(var(--content-spacing) * 2);
 
     span {
       color: var(--text-soft);

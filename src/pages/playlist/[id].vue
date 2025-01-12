@@ -48,7 +48,7 @@ const {data, isFetched, isFetching, isError} = useQuery({
 
     return {...data, owner, maskColor};
   },
-  staleTime: Infinity
+  staleTime: 10000
 });
 
 const {isThisPlaylist} = useMusicUtils();
@@ -71,6 +71,7 @@ const {isThisPlaylist} = useMusicUtils();
 
     <PlaylistInfo
       :playlist-name="data.name"
+      :playlist-description="data.description"
       :image="getImageFromEntity(data.images, 0)"
       :mask="data.maskColor"
       :total-duration="100"

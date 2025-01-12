@@ -9,6 +9,7 @@ import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
 import {useI18n} from "vue-i18n";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 
 interface Props {
   index?: number;

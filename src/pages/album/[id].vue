@@ -15,7 +15,7 @@ import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 import {sdk} from "@/services/sdk";
-import type {Album} from "@spotify/web-api-ts-sdk";
+import type {Album, Artist} from "@spotify/web-api-ts-sdk";
 import getAsyncPalette from "@/shared/utils/getAsyncPalette";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
@@ -36,6 +36,14 @@ async function fetchAlbumData() {
   return sdk.albums.get(albumId.value);
 }
 
+async function fetchArtistData(artists: Artist[]) {
+  if (artists.length === 1) {
+    return [await sdk.artists.get(artists[0].id)];
+  }
+
+  return artists;
+}
+
 async function getMaskColor(data: Album) {
   if (!data?.images?.length) return null;
 
@@ -50,10 +58,11 @@ const {data, isFetching, isError} = useQuery({
   queryFn: async () => {
     const data = await fetchAlbumData();
     const maskColor = await getMaskColor(data);
+    const artists = await fetchArtistData(data.artists);
 
     setTitle(`${data.name} - Album by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
 
-    return {...data, maskColor};
+    return {...data, artists, maskColor};
   },
   staleTime: Infinity
 });
@@ -85,6 +94,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
       :name="data.name"
       :creator="data.artists"
       :tracks-amount="data.total_tracks"
+      :release-date="data.release_date"
     />
 
     <GeneralGradientSectionWithControls

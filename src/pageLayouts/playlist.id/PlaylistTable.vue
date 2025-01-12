@@ -7,15 +7,16 @@ import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
-import type {Playlist, Track} from "@spotify/web-api-ts-sdk";
+import type {Playlist, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import formatRelativeDate from "../../shared/utils/formatRelativeDate";
 
 const {t} = useI18n();
 const {format} = useMusicCollectionFormat();
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
 defineProps<{
-  items: Playlist<Track>['tracks']['items']
+  items: Playlist<Track>['tracks']['items'] | SavedTrack[]
 }>();
 
 const currentFormatClass = computed(() => {
@@ -90,12 +91,12 @@ const currentFormatClass = computed(() => {
             {{music.track.album.name}}
           </RouterLink>
           <span v-else class="added-at">
-            {{music.added_at}}
+            {{formatRelativeDate(music.added_at)}}
           </span>
         </template>
         <template v-if="format === 'Compact'" #var3>
           <span class="added-at">
-            {{music.added_at}}
+            {{formatRelativeDate(music.added_at)}}
           </span>
         </template>
       </MusicRow>

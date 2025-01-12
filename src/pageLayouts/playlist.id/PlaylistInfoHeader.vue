@@ -13,6 +13,7 @@ defineProps<{
   image: string | null;
   mask: string | null;
   playlistName: string;
+  playlistDescription?: string;
   creator: Playlist['owner'],
   creatorImage: string | null;
   creatorMask: string | null;
@@ -28,6 +29,10 @@ defineProps<{
     <EntityInfoHeaderTitle>
       {{playlistName}}
     </EntityInfoHeaderTitle>
+
+    <div v-if="playlistDescription" class="description">
+      {{playlistDescription}}
+    </div>
 
     <div class="other-info">
       <div class="creator">
@@ -69,8 +74,15 @@ defineProps<{
 .playlist_about {
   user-select: none;
 
+  .description {
+    color: var(--text-soft);
+    font-size: .875rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
   .type {
-    font-size: .875em;
+    font-size: .875rem;
     font-weight: 500;
   }
 
