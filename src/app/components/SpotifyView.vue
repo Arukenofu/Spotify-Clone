@@ -13,7 +13,9 @@ import Loading from "@/shared/components/Loading.vue";
         </template>
 
         <template #fallback>
-          <Loading />
+          <div class="content">
+            <Loading position="absolute" />
+          </div>
         </template>
       </Suspense>
     </template>

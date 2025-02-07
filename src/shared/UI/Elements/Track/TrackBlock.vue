@@ -43,7 +43,7 @@ const playingStateTooltip = computed(() => {
       />
     </div>
 
-    <div class="text">
+    <div class="added-at">
       <div
         class="title"
         :style="getActiveColor(state, 'color')"
@@ -125,7 +125,7 @@ const playingStateTooltip = computed(() => {
     }
   }
 
-  .text {
+  .added-at {
     display: flex;
     flex-direction: column;
     justify-content: center;

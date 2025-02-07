@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import {useI18n} from "vue-i18n";
 
@@ -14,7 +14,7 @@ const {t} = useI18n();
     class="info-header"
     :image="image ?? null"
     :mask="mask"
-    type="Artist"
+    type="artist"
   >
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <span class="artist-listeners-quantity">

@@ -15,5 +15,9 @@ export default {
         track: 'Tracks',
         album: 'Albums',
         artist: 'Artists',
+        genre: 'Genres & Moods',
+        episode: 'Episodes',
+        show: 'Podcasts & Shows',
+        audiobook: 'Audiobooks',
     }
 }

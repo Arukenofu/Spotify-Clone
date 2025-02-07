@@ -56,7 +56,7 @@ const connectionComponents = [
             <div class="icon">
               <Component :is="connectionComponents[index]" />
             </div>
-            <div class="text">
+            <div class="added-at">
               <div
                 v-tooltip="connection.title"
                 class="title"
@@ -152,7 +152,7 @@ const connectionComponents = [
             }
           }
 
-          .text {
+          .added-at {
 
             .title {
               font-size: .95rem;

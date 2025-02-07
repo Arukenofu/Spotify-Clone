@@ -11,9 +11,13 @@ export default {
     entities: {
         all: 'Все',
         playlist: 'Плейлисты',
-        user: 'Профили',
-        track: 'Треки',
         album: 'Альбомы',
         artist: 'Исполнители',
+        track: 'Треки',
+        genre: 'Жанры и настроения',
+        episode: 'Подкасты и шоу',
+        show: 'Эпизоды',
+        audiobook: 'Аудиокниги',
+        user: 'Профили',
     }
 }

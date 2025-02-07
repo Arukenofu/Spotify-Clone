@@ -18,7 +18,7 @@ defineProps<Props>();
     v-else-if="isError"
   >
     <template #title>
-      Не удалось найти {{localizeEntities(entity)}}
+      Не удалось найти {{localizeEntities(entity).toLowerCase()}}
     </template>
     <template #body>
       Попробуй поискать что-нибудь другое

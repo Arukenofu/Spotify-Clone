@@ -1,64 +1,23 @@
 <script setup lang="ts">
-import EntitiesSectionWrapper from "@/shared/UI/Blocks/EntitiesSectionWrapper.vue";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
-import apiSearchService from "@/services/api/search/apiSearchService";
+import EntitiesSectionWrapper from "@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue";
 import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
-import {router} from "@/app/router";
-import type {Entities} from "@/services/types/Entities";
 import {useI18n} from "vue-i18n";
+import {clearHistory, getHistory, removeFromHistory} from "@/features/SearchHistory";
+import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
+import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const {t} = useI18n();
 
-const {data: history} = useQuery({
-  queryKey: ['searchHistory'],
-  queryFn: async () => {
-    return await apiSearchService.getSearchHistory();
-  }
-});
-
-const queryClient = useQueryClient();
-
-const {mutate: removeFromHistory} = useMutation({
-  mutationKey: ['searchHistory'],
-  mutationFn: async ([id, type, index]: [string | number, Exclude<Entities, 'Track'>, number]) => {
-    const data = await apiSearchService.removeFromSearchHistory(id, type);
-
-    if (data.message !== 'OK') {
-      throw new Error(data.message);
-    }
-
-    queryClient.setQueryData(['searchHistory'], (oldData: GetSearchHistoryResult[]) => {
-      const newData = [...oldData];
-
-      newData.splice(index, 1);
-
-      return newData;
-    })
-  },
-});
-
-const {mutate: cleanSearchHistory} = useMutation({
-  mutationKey: ['searchHistory'],
-  mutationFn: async () => {
-    return await apiSearchService.cleanSearchHistory();
-  },
-  onSuccess: async () => {
-    queryClient.setQueryData(['searchHistory'], () => {
-      return [];
-    });
-
-    await router.push('/search')
-  }
-})
+const history = getHistory()?.reverse();
 </script>
 
 <template>
   <div class="layout">
     <div class="heading">
-      <h1 class="text">{{t('search.searchHistory')}}</h1>
-      <button class="clear" @click="cleanSearchHistory()">
+      <h1 class="added-at">{{t('search.searchHistory')}}</h1>
+      <button class="clear" @click="clearHistory()">
         {{t('search.cleanHistory')}}
       </button>
     </div>
@@ -67,16 +26,15 @@ const {mutate: cleanSearchHistory} = useMutation({
       <CardRemoveWrapper
         v-for="(entity, index) in history"
         :key="entity.id"
-        @on-remove="removeFromHistory([entity.id, entity.type, index])"
+        @on-remove="removeFromHistory(index)"
       >
         <MusicCard
           :id="entity.id"
-          :type="entity.type"
+          :type="entity.type as ItemTypes"
           :name="entity.name"
-          :image="entity.image"
-          :color="entity.color"
+          :image="getImageFromEntity(entity.images, 1)"
         >
-          {{entity.description}}
+          <SearchCardDescriptionRenderer :entity="entity" />
         </MusicCard>
       </CardRemoveWrapper>
     </EntitiesSectionWrapper>
@@ -94,7 +52,7 @@ const {mutate: cleanSearchHistory} = useMutation({
     align-items: center;
     margin-bottom: 8px;
 
-    .text {
+    .added-at {
       font-weight: 700;
       font-size: 1.5rem;
     }

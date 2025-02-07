@@ -11,6 +11,8 @@ import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
 import SpotifyView from "@/app/components/SpotifyView.vue";
 import PageFooter from "@/app/components/PageFooter.vue";
 import {Toast} from "@/widgets/Toast";
+import {useQuery} from "@tanstack/vue-query";
+import {sdk} from "@/services/sdk";
 
 const layout = ref();
 const layoutScrollY = ref<number>(0);
@@ -40,6 +42,15 @@ onMounted(() => {
     setStyleVar('--layout-gap', '8px');
   }
 });
+
+const {suspense} = useQuery({
+  queryKey: ['currentUser'],
+  queryFn: async () => {
+    return sdk.currentUser.profile();
+  },
+  staleTime: Infinity
+});
+await suspense();
 </script>
 
 <template>
@@ -117,6 +128,7 @@ onMounted(() => {
     }
 
     .content {
+      margin: 0 auto;
       position: relative;
       min-height: 100%;
       z-index: 1 !important;

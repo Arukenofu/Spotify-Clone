@@ -30,7 +30,7 @@ const previousStep = inject<Function>('previousStep');
     </button>
     <div class="indicator">
       <span class="counter">{{t('signup.steps.title', [step])}}</span>
-      <span class="text">
+      <span class="added-at">
         <template v-if="step === 1"> {{t('signup.steps.first')}} </template>
 
         <template v-if="step === 2"> {{t('signup.steps.second')}} </template>
@@ -70,7 +70,7 @@ const previousStep = inject<Function>('previousStep');
       color: var(--text-soft);
     }
 
-    .text {
+    .added-at {
       font-weight: 700;
     }
   }

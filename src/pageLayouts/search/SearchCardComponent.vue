@@ -1,55 +1,35 @@
 <script setup lang="ts">
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {RecommendationItem} from "@/services/types/Recommendation";
-import {useMutation, useQueryClient} from "@tanstack/vue-query";
-import apiSearchService from "@/services/api/search/apiSearchService";
+import type {ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import {addToHistory} from "@/features/SearchHistory";
+import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
+
+type SearchResultKeys = `${Exclude<ItemTypes, 'track'>}s`
 
 defineProps<{
-  item: RecommendationItem[]
+  type: SearchResultKeys;
+  item: PartialSearchResult;
 }>();
-
-const queryClient = useQueryClient();
-
-const {mutate: addToSearchHistory} = useMutation({
-  mutationKey: ['searchHistory'],
-  mutationFn: async (data: RecommendationItem) => {
-    const response = await apiSearchService.addToSearchHistory(data.id, data.type);
-
-    if (response.message !== 'OK') {
-      throw new Error(response.message);
-    }
-
-    queryClient.setQueryData(['searchHistory'], (oldData: RecommendationItem[]) => {
-      const isExisting = oldData.find(value => {
-        return value.id === data.id
-      });
-
-      if (isExisting) {
-        return;
-      }
-
-      const newData = [...oldData];
-      newData.push(data);
-
-      return newData;
-    });
-  },
-})
 </script>
 
 <template>
-  <MusicCard
-    v-for="(data, index) in item"
-    :id="data.id"
+  <template
+    v-for="(entity, index) in item[type]?.items"
     :key="index"
-    :type="data.type"
-    :name="data.name"
-    :image="data.image"
-    :color="data.color"
-    @click="addToSearchHistory(data)"
   >
-    {{data.description}}
-  </MusicCard>
+    <MusicCard
+      v-if="entity"
+      :id="entity.id"
+      :type="entity.type as ItemTypes"
+      :name="entity.name"
+      :image="getImageFromEntity(entity.images)"
+      :mask-loader-image="getImageFromEntity(entity.images, 2)"
+      @click="addToHistory(entity)"
+    >
+      <SearchCardDescriptionRenderer :entity="entity" />
+    </MusicCard>
+  </template>
 </template>
 
 <style scoped lang="scss">

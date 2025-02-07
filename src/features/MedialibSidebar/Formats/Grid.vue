@@ -34,7 +34,7 @@ const {t} = useI18n();
       />
     </EntityAvatar1x1>
 
-    <div v-if="!minimized" class="text">
+    <div v-if="!minimized" class="added-at">
       <span class="name">{{ name }}</span>
       <span class="body">
         <PinnedComponent v-if="isPinned" class="pinned" />
@@ -117,7 +117,7 @@ const {t} = useI18n();
     background-color: var(--black);
   }
 
-  .text {
+  .added-at {
     display: flex;
     flex-direction: column;
     gap: 6px;

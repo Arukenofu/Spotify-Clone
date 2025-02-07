@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import routerPushPrevent from '@/shared/utils/routerPushPrevent';
 import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue';
 import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue';
-import type {Entities} from '@/services/types/Entities';
 import {useI18n} from "vue-i18n";
+import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import {onBeforeMount, ref} from "vue";
+import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+
+const {t} = useI18n();
 
 interface Props {
   id: number | string;
-  type: Entities;
+  type: ItemTypes;
   name: string;
   image: string | null;
-  color: string | null;
+  maskLoaderImage?: string | null;
   state?: boolean;
 }
-defineProps<Props>();
+const props = defineProps<Props>();
 
 type Emits = {
   onPlayClick: []
@@ -21,24 +24,32 @@ type Emits = {
 
 defineEmits<Emits>();
 
-const {t} = useI18n();
+const maskColor = ref<string | null>(null);
+
+onBeforeMount(async () => {
+  const loaderImage = props.maskLoaderImage ?? props.image;
+
+  if (loaderImage) {
+    const data = await getAsyncPalette(loaderImage)
+    maskColor.value = data.Vibrant?.hex ?? null;
+  }
+});
 </script>
 
 <template>
   <div
     class="card"
-    @click="routerPushPrevent(`/${type}/${id}`)"
+    @click="$router.push(`/${type}/${id}`)"
   >
     <EntityAvatar1x1
       class="image"
       :type="type"
       :image="image"
-      :style="type === 'Artist' || type === 'User' && 'border-radius: 50%'"
-      :loading-color="color"
+      :style="type === 'artist' && 'border-radius: 50%'"
+      :loading-color="maskColor"
       loading="lazy"
     >
       <GreenPlayingButton
-        v-if="type !== 'User'"
         v-tooltip="state ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
         class="playingState"
         :state="state ?? false"
@@ -52,11 +63,8 @@ const {t} = useI18n();
     </span>
 
     <div class="textInfo">
-      <template v-if="type === 'Artist'">
+      <template v-if="type === 'artist'">
         {{t('entities.artist')}}
-      </template>
-      <template v-else-if="type === 'User'">
-        {{t('user.title')}}
       </template>
       <slot v-else />
     </div>
@@ -133,9 +141,8 @@ const {t} = useI18n();
   .textInfo {
     line-height: 1.1rem;
     max-height: 2.2rem;
-    color: var(--text-soft);
+    color: var(--text-soft) !important;
     font-size: 0.875rem;
-    font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;

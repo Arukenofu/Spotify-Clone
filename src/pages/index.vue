@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBackgroundNoise } from '@/features/BackgroundNoise';
+import {useBackgroundNoise} from '@/features/BackgroundNoise';
 import useResponsive from '@/shared/composables/useResponsive';
 import setTitle from '@/shared/utils/setTitle';
 import MobileGreetings from '@/pageLayouts/index/Mobile/MobileGreetings.vue';
@@ -31,6 +31,8 @@ setTitle('Spotify - Web Player: Music for everyone');
 
 <style lang="scss" scoped>
 .container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
   padding: 12px var(--content-spacing) 0;
   display: grid;
   gap: 24px 32px;

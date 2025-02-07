@@ -26,7 +26,7 @@ const currentComponent = computed(() => {
 
 <template>
   <button class="format">
-    <span class="text">
+    <span class="added-at">
       {{ sortName }}
     </span>
 
@@ -53,7 +53,7 @@ const currentComponent = computed(() => {
     transform: scale(1.04);
     transform-origin: center;
 
-    .text {
+    .added-at {
       color: var(--white);
     }
 
@@ -71,7 +71,7 @@ const currentComponent = computed(() => {
     opacity: 0.5;
   }
 
-  .text {
+  .added-at {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -1,25 +1,75 @@
 <script setup lang="ts">
 import {computed, inject, ref} from "vue";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader.vue";
+import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useRoute} from "vue-router";
-import GeneralGradientSection from "@/shared/UI/Blocks/GeneralGradientSection.vue";
+import GeneralGradientSection from "@/shared/UI/EntityPageElements/GeneralGradientSection.vue";
 import SubscribeToArtistButton from "@/shared/UI/Buttons/SubscribeButton.vue";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import PlayHeader from "@/shared/UI/Blocks/PlayHeader.vue";
 import {useI18n} from "vue-i18n";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
+import {sdk} from "@/services/sdk";
+import type {UserProfile} from "@spotify/web-api-ts-sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
+import getMaskColor from "@/shared/utils/getMaskColor";
 
 const {t} = useI18n();
+const route = useRoute('/user/[id]');
+const queryClient = useQueryClient();
+const layoutScrollY = inject('layoutScrollY', ref(0));
 
-const isMyProfile = computed(() => {
-  return false;
+const routeId = computed(() => route.params.id);
+
+function getCurrentUserData() {
+  return queryClient.getQueryData<UserProfile>(['currentUser']);
+}
+
+async function fetchUserData() {
+  const currentUserData = getCurrentUserData();
+
+  if (currentUserData && currentUserData.id === routeId.value) {
+    const followedArtists = await sdk.currentUser.followedArtists('', 10);
+    queryClient.setQueryData(['currentUserFollowedArtists'], followedArtists);
+
+    return {
+      ...currentUserData,
+      followedArtists
+    };
+  }
+
+  return sdk.users.profile(route.params.id);
+}
+
+const {data: user, isLoading} = useQuery({
+  queryKey: ['user', routeId],
+  queryFn: async () => {
+    const data = await fetchUserData();
+    const color = await getMaskColor(data);
+
+    return {...data, maskColor: color}
+  },
+  staleTime: Infinity,
+  maxPages: 3,
 });
 
-const route = useRoute();
-const layoutScrollY = inject('layoutScrollY', ref(0));
+const currentMaskColor = computed(() => {
+  return user.value!.maskColor;
+});
+const isCurrentUser = computed(() => {
+  const currentUserData = getCurrentUserData();
+
+  return currentUserData!.id === routeId.value;
+});
+const currentProfilePicture = computed(() => {
+  if (!user.value || !user.value.images.length) {
+    return null;
+  }
+  return user.value.images[0].url;
+});
 
 const tooltip = computed(() => {
   return {
@@ -30,50 +80,36 @@ const tooltip = computed(() => {
 function linkToCurrentUserRoute(push: string) {
   return (route.path + push).replace(/\/{2,}/g, '/');
 }
-
-const currentList = [
-  {
-    id: 1,
-    name: 'Плейлист #1',
-    image: 'https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36',
-    description: 'Плейлист #1',
-    color: '#6c2d2d',
-    type: 'Playlist'
-  }
-]
-
 </script>
 
 <template>
-  <div class="layout">
+  <LoadingBlock v-if="isLoading" />
+
+  <div v-if="user" class="layout">
     <PlayHeader
-      :mask="null"
+      :mask="currentMaskColor"
       :scroll-y="layoutScrollY"
       :passing-height="150"
       class="play-header"
     >
-      <span class="name">Username</span>
+      <span class="name">{{user.display_name}}</span>
     </PlayHeader>
 
-    <EntityInfoHeader class="info-header" :image="null" :mask="null" type="User">
+    <EntityInfoHeader class="info-header" :image="currentProfilePicture" :mask="currentMaskColor" type="user">
       <span class="type">{{t('user.title')}}</span>
       <EntityInfoHeaderTitle>
-        Username
+        {{user.display_name}}
       </EntityInfoHeaderTitle>
       <div class="additional">
         <RouterLink :to="linkToCurrentUserRoute('/followers')" class="subscribers">
-          {{t('social.subscribers', 2)}}
-        </RouterLink>
-        <EntityInfoHeaderDot />
-        <RouterLink :to="linkToCurrentUserRoute('/following')" class="subscriptions">
-          {{t('social.subscriptions', 2)}}
+          {{t('social.subscribers', user.followers.total)}}
         </RouterLink>
       </div>
     </EntityInfoHeader>
 
-    <GeneralGradientSection class="gradient-controls" :bg-color="null">
+    <GeneralGradientSection class="gradient-controls" :bg-color="currentMaskColor">
       <SubscribeToArtistButton
-        v-if="!isMyProfile"
+        v-if="!isCurrentUser"
         :is-subscribed="false"
         class="subscribe-button"
       />
@@ -83,73 +119,20 @@ const currentList = [
       </button>
     </GeneralGradientSection>
 
-    <div class="other-info-container">
-      <EntitiesSectionWithHeading
-        :naming="t('user.publicPlaylists')"
-        :href="linkToCurrentUserRoute('/playlists')"
-      >
-        <MusicCard
-          v-for="entity in currentList"
-          :id="entity.id"
-          :key="entity.id"
-          :image="entity.image"
-          :color="entity.color"
-          :type="'Playlist'"
-          :name="entity.name"
-        >
-          Username
-        </MusicCard>
-      </EntitiesSectionWithHeading>
-
-      <EntitiesSectionWithHeading
-        :naming="t('user.recentlyPlayed')"
-        :href="linkToCurrentUserRoute('/playlists')"
-      >
-        <MusicCard
-          v-for="entity in currentList"
-          :id="entity.id"
-          :key="entity.id"
-          :image="entity.image"
-          :color="entity.color"
-          :type="'Artist'"
-          :name="entity.name"
-        >
-          Исполнитель
-        </MusicCard>
-      </EntitiesSectionWithHeading>
-
-      <EntitiesSectionWithHeading
-        :naming="t('user.subscribers')"
-        :href="linkToCurrentUserRoute('/playlists')"
-      >
-        <MusicCard
-          v-for="entity in currentList"
-          :id="entity.id"
-          :key="entity.id"
-          :image="entity.image"
-          :color="entity.color"
-          :type="'User'"
-          :name="entity.name"
-        >
-          Username
-        </MusicCard>
-      </EntitiesSectionWithHeading>
-
+    <div v-if="'followedArtists' in user" class="other-info-container">
       <EntitiesSectionWithHeading
         :naming="t('user.subscriptions')"
         :href="linkToCurrentUserRoute('/playlists')"
       >
         <MusicCard
-          v-for="entity in currentList"
+          v-for="entity in user.followedArtists.artists.items"
           :id="entity.id"
           :key="entity.id"
-          :image="entity.image"
-          :color="entity.color"
-          :type="'User'"
+          :image="getImageFromEntity(entity.images, 1)"
+          :mask-loader-image="getImageFromEntity(entity.images, 2)"
           :name="entity.name"
-        >
-          Username
-        </MusicCard>
+          type="artist"
+        />
       </EntitiesSectionWithHeading>
     </div>
   </div>
@@ -216,5 +199,7 @@ const currentList = [
 
 .other-info-container {
   padding: 0 var(--content-spacing);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
 }
 </style>

@@ -33,7 +33,7 @@ button {
   cursor: pointer;
 
   &:hover {
-    .text {
+    .added-at {
       color: var(--white);
     }
   }

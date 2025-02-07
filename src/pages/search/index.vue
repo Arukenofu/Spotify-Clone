@@ -1,53 +1,44 @@
 <script setup lang="ts">
 import setTitle from '@/shared/utils/setTitle';
-import EntitiesSectionWithHeading from "@/shared/UI/Blocks/EntitiesSectionWithHeading.vue";
+import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
-import apiSearchService from "@/services/api/search/apiSearchService";
+import {useQuery} from "@tanstack/vue-query";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {GetSearchHistoryResult} from "@/services/api/search/types/GetSearchHistoryResult";
-import {addToast} from "@/widgets/Toast";
-import type {Entities} from "@/services/types/Entities";
 import useResponsive from "@/shared/composables/useResponsive";
 import SearchMobileSearchBar from "@/pageLayouts/search/mobile/SearchMobileSearchBar.vue";
 import {useI18n} from "vue-i18n";
+import {sdk} from "@/services/sdk";
+import getLocale from "@/app/lib/i18n/utils/getLocale";
+import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
+import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import GenreCard from "@/pageLayouts/search/GenreCard.vue";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import {getHistory, removeFromHistory} from "@/features/SearchHistory";
+import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
 
 const {t} = useI18n();
 
 setTitle(t('route-titles.search'));
 
 const {isMobile} = useResponsive();
+const history = getHistory()?.reverse();
 
-const {data: history} = useQuery({
-  queryKey: ['searchHistory'],
+const {data: categories} = useQuery({
+  queryKey: ['categories'],
   queryFn: async () => {
-    if (isMobile) return [];
+    const data = await sdk.browse.getCategories(getCountryCodeA2(), getLocale());
 
-    return await apiSearchService.getSearchHistory();
-  },
-  staleTime: 60000
-});
+    const maskColors: (string | null)[] = [];
 
-const queryClient = useQueryClient();
-
-const {mutate: removeFromHistory} = useMutation({
-  mutationFn: async ([id, type, index]: [string | number, Exclude<Entities, 'Track'>, number]) => {
-    const data = await apiSearchService.removeFromSearchHistory(id, type);
-
-    if (data.message !== 'OK') {
-      throw new Error(data.message);
+    for (const item of data.categories.items) {
+      const palettes = await getAsyncPalette(item.icons[0].url);
+      maskColors.push(palettes.Vibrant?.hex ?? null);
     }
 
-    queryClient.setQueryData(['searchHistory'], (oldData: GetSearchHistoryResult[]) => {
-      const newData = [...oldData];
-
-      newData.splice(index, 1);
-
-      return newData;
-    })
-  },
-  onError: () => {
-      addToast('Ошибка при удалении из истории');
+    return {
+      ...data.categories,
+      maskColors
+    };
   }
 });
 </script>
@@ -63,16 +54,16 @@ const {mutate: removeFromHistory} = useMutation({
       <CardRemoveWrapper
         v-for="(entity, index) in history"
         :key="index"
-        @on-remove="removeFromHistory([entity.id, entity.type, index])"
+        @on-remove="removeFromHistory(index)"
       >
         <MusicCard
           :id="entity.id"
           :type="entity.type"
           :name="entity.name"
-          :image="entity.image"
-          :color="entity.color"
+          :image="getImageFromEntity(entity.images)"
+          :color="null"
         >
-          {{entity.description}}
+          <SearchCardDescriptionRenderer :entity="entity" />
         </MusicCard>
       </CardRemoveWrapper>
     </EntitiesSectionWithHeading>
@@ -87,23 +78,16 @@ const {mutate: removeFromHistory} = useMutation({
         {{t('search.browseAll')}}
       </h1>
 
-      <div class="cards">
-        <RouterLink
-          v-for="a in 20"
-          :key="a"
-          class="card"
-          :to="`/genre/${a}`"
+      <div v-if="categories" class="cards">
+        <GenreCard 
+          v-for="(item, index) in categories.items"
+          :id="item.id"
+          :key="item.id"
+          :image="getImageFromEntity(item.icons, 0)!"
+          :mask-color="categories.maskColors[index]"
         >
-          <div class="name">
-            Музыка
-          </div>
-
-          <img
-            class="image"
-            src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
-            alt="img"
-          >
-        </RouterLink>
+          {{item.name}}
+        </GenreCard>
       </div>
     </div>
   </section>
@@ -112,6 +96,8 @@ const {mutate: removeFromHistory} = useMutation({
 <style lang="scss" scoped>
 .searchSection {
   width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
 
   .history {
     padding: 0 var(--content-spacing);
@@ -129,27 +115,11 @@ const {mutate: removeFromHistory} = useMutation({
 
   .recommended-cards {
     padding: 0 var(--content-spacing);
-    --min-column-width: 300px;
+    --min-column-width: 260px;
 
     @media screen and (max-width: 768px) {
-      --min-column-width: 150px;
-
       .title {
         font-size: 1.2rem !important;
-      }
-
-      .cards {
-        grid-gap: 15px !important;
-
-        .card {
-          border-radius: 5px !important;
-          aspect-ratio: 2/1.1 !important;
-
-          .name {
-            font-size: 1.05rem !important;
-            padding: 14px !important;
-          }
-        }
       }
     }
 
@@ -166,32 +136,6 @@ const {mutate: removeFromHistory} = useMutation({
       grid-gap: 24px;
       grid-auto-rows: min-content;
       grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
-
-      .card {
-        display: block;
-        aspect-ratio: 16/9;
-        background-color: #45dc60;
-        border-radius: 9px;
-        position: relative;
-        overflow: hidden;
-
-        .name {
-          font-weight: 900;
-          font-size: 1.5rem;
-          padding: 16px;
-        }
-
-        .image {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          width: 45%;
-          transform: rotate(25deg) translate(18%, -2%);
-          border-radius: 4px;
-          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-          z-index: 1;
-        }
-      }
     }
   }
 }

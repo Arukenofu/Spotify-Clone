@@ -3,6 +3,6 @@ export default {
     artist: '{n} Artist | {n} Artists',
     album: '{n} Album | {n} Albums',
     user: '{n} User | {n} Users',
-    track: '{n} Track | {n} Tracks',
+    track: '{n} Song | {n} Songs',
     folder: '{n} Folder | {n} Folders'
 }
