@@ -20,7 +20,7 @@ defineEmits<{
 </template>
 
 <style scoped lang="scss">
-@import "../styles/appear-animation-styles.scss";
+@use "../styles/appear-animation-styles.scss";
 
 .content {
   background-color: var(--ui);

@@ -20,7 +20,7 @@ function addToHistory(item: Item) {
 }
 
 function getHistory() {
-    return history.value;
+    return history.value.slice().reverse();
 }
 
 function removeFromHistory(index: number) {

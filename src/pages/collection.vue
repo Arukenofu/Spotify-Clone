@@ -63,7 +63,7 @@ const {format, setFormat} = useMusicCollectionFormat();
       <h1 class="title">Любимые треки</h1>
       <div class="other-info">
         <div class="user">
-          <LazyImage 
+          <LazyImage
             v-if="currentUserAvatar"
             :image="currentUserAvatar"
             class="user-avatar"

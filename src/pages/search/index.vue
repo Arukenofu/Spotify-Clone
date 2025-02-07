@@ -15,13 +15,14 @@ import GenreCard from "@/pageLayouts/search/GenreCard.vue";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import {getHistory, removeFromHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
+import type {ItemTypes} from "@spotify/web-api-ts-sdk";
 
 const {t} = useI18n();
 
 setTitle(t('route-titles.search'));
 
 const {isMobile} = useResponsive();
-const history = getHistory()?.reverse();
+const history = getHistory();
 
 const {data: categories} = useQuery({
   queryKey: ['categories'],
@@ -58,10 +59,10 @@ const {data: categories} = useQuery({
       >
         <MusicCard
           :id="entity.id"
-          :type="entity.type"
+          :type="entity.type as ItemTypes"
           :name="entity.name"
           :image="getImageFromEntity(entity.images)"
-          :color="null"
+          class="music-card"
         >
           <SearchCardDescriptionRenderer :entity="entity" />
         </MusicCard>
@@ -101,6 +102,10 @@ const {data: categories} = useQuery({
 
   .history {
     padding: 0 var(--content-spacing);
+
+    .music-card {
+      width: 100%;
+    }
   }
 
   .mobile-search-bar {

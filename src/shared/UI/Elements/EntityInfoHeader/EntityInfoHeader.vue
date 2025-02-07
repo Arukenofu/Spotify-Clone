@@ -60,7 +60,7 @@ function toggleModal(): void {
 </template>
 
 <style scoped lang="scss">
-@import "@/features/Modal/styles/appear-animation-styles";
+@use "@/features/Modal/styles/appear-animation-styles";
 .info-content {
   height: min(30vh, var(--fluid-height));
   max-height: 300px;
