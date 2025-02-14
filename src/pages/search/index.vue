@@ -102,10 +102,6 @@ const {data: categories} = useQuery({
 
   .history {
     padding: 0 var(--content-spacing);
-
-    .music-card {
-      width: 100%;
-    }
   }
 
   .mobile-search-bar {

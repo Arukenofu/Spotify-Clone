@@ -8,15 +8,10 @@ interface Props {
   headTitle?: string | null;
   href: string | null;
   isShowAll?: boolean;
-  minColumnWidth?: string;
-  minRows?: number | 'auto';
+  isScrollable?: boolean;
 }
 
-const {
-  isShowAll = true,
-  minColumnWidth = '180px',
-  minRows = 1
-} = defineProps<Props>();
+const {isShowAll = true, isScrollable = true} = defineProps<Props>();
 
 const { isMobile } = useResponsive();
 const {t} = useI18n();
@@ -52,10 +47,7 @@ const {t} = useI18n();
       </div>
     </div>
 
-    <EntitiesSectionWrapper
-      :min-column-width="minColumnWidth"
-      :min-rows="minRows"
-    >
+    <EntitiesSectionWrapper :is-scrollable="isScrollable">
       <slot />
     </EntitiesSectionWrapper>
   </section>

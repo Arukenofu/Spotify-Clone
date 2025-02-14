@@ -22,7 +22,7 @@ const history = getHistory()?.reverse();
       </button>
     </div>
 
-    <EntitiesSectionWrapper min-column-width="180px" min-rows="auto">
+    <EntitiesSectionWrapper>
       <CardRemoveWrapper
         v-for="(entity, index) in history"
         :key="entity.id"

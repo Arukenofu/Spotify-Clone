@@ -85,6 +85,7 @@ onBeforeMount(async () => {
   transition: all ease 0.1s;
   user-select: none;
   position: relative;
+  width: calc(var(--content-max-width) / 10);
 
   &:hover {
     background-color: var(--ui-highlight);
