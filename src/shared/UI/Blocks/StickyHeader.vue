@@ -22,7 +22,7 @@ defineProps<{
 <style lang="scss" scoped>
 .sticky-header {
   position: sticky;
-  z-index: 2;
+  z-index: 4;
   top: 0;
   width: 100%;
   height: 64px;

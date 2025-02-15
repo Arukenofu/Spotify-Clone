@@ -86,6 +86,7 @@ onBeforeMount(async () => {
   user-select: none;
   position: relative;
   width: calc(var(--content-max-width) / 10);
+  scroll-snap-align: start;
 
   &:hover {
     background-color: var(--ui-highlight);

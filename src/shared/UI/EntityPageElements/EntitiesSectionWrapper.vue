@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, useTemplateRef} from "vue";
+import {computed, onMounted, ref, useTemplateRef} from "vue";
 import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
 import ArrowIcon2 from "@/shared/UI/Icons/ArrowIcon2.vue";
 
@@ -12,6 +12,17 @@ const scrollableSectionRef = useTemplateRef('scrollableSectionRef');
 const canItScrollLeft = ref<boolean>(false);
 const canItScrollRight = ref<boolean>(true);
 
+onMounted(() => {
+  const section = scrollableSectionRef.value;
+  if (!section) return;
+
+  const maxScrollLeft = section.scrollWidth - section.clientWidth;
+
+  if (maxScrollLeft === 0) {
+    canItScrollRight.value = false;
+  }
+});
+
 const computeRootElementShadowClasses = computed(() => ([
     canItScrollLeft.value && 'shadow-left',
     canItScrollRight.value && 'shadow-right'
@@ -23,6 +34,8 @@ function onScroll() {
 
   const scrollLeft = section.scrollLeft;
   const maxScrollLeft = section.scrollWidth - section.clientWidth;
+
+  console.log(scrollLeft, maxScrollLeft);
 
   canItScrollLeft.value = scrollLeft > 0;
   canItScrollRight.value = scrollLeft !== maxScrollLeft;
@@ -79,23 +92,23 @@ function onScrollButtonClick(direction: 'left' | 'right') {
 
 <style scoped lang="scss">
 .v-section {
-  margin-inline: -24px;
+  margin-inline: calc(var(--content-spacing) * -1);
   position: relative;
 
   .v-scrollable-section {
-    padding-left: 24px;
+    display: flex;
     overflow-x: scroll;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
     overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 calc(40px + -12px + max(0px, (100cqi - 1955px) * 0.5));
 
     .inner-section {
       display: grid;
       grid-auto-flow: column;
       grid-template-rows: repeat(1, auto);
-      width: 100%;
+      padding-left: 4px;
     }
   }
 
@@ -107,6 +120,7 @@ function onScrollButtonClick(direction: 'left' | 'right') {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    pointer-events: none;
 
     .hidden {
       opacity: 0 !important;
@@ -121,7 +135,8 @@ function onScrollButtonClick(direction: 'left' | 'right') {
       margin-top: -16px;
       transition: all .15s ease-out;
       opacity: 0;
-      z-index: 2;
+      z-index: 3;
+      pointer-events: initial;
 
       &:hover {
         background-color: #2a2a2a;
@@ -157,6 +172,12 @@ function onScrollButtonClick(direction: 'left' | 'right') {
     }
   }
 
+  @media only screen and (hover: none) and (pointer: coarse){
+    &::before, &::after {
+      display: none;
+    }
+  }
+
   &::before, &::after {
     content: "";
     position: absolute;
@@ -164,7 +185,7 @@ function onScrollButtonClick(direction: 'left' | 'right') {
     bottom: 0;
     width: 120px;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
 
     opacity: 0;
@@ -189,6 +210,10 @@ function onScrollButtonClick(direction: 'left' | 'right') {
     );
     inset-inline-end: 0;
   }
+}
+
+:deep(.inner-section > div:last-child) {
+  margin-right: 48px;
 }
 
 .shadow-left::before, .shadow-right::after {
