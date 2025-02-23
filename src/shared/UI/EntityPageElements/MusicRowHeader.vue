@@ -36,6 +36,7 @@ const {t} = useI18n();
   display: grid;
   grid-gap: 16px;
   grid-template-rows: auto;
+  z-index: 3  ;
 
   & > div {
     height: 100%;

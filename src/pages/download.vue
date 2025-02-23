@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, inject, ref} from 'vue';
-import {BackgroundNoise, useBackgroundNoise} from '@/features/BackgroundNoise';
+import {BackgroundNoise} from '@/features/BackgroundNoise';
 import DesktopImage from '@/assets/images/desktop-app.png';
 import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
 import setTitle from '@/shared/utils/setTitle';
@@ -9,8 +9,6 @@ import {useI18n} from "vue-i18n";
 const {t} = useI18n();
 
 setTitle(t('route-titles.downloadDesktop'));
-
-const { currentColor } = useBackgroundNoise('#447bff');
 
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
@@ -29,7 +27,7 @@ const computeOpacity = computed<number>(() => {
     :style="`opacity: ${computeOpacity}`"
   />
   <BackgroundNoise
-    :current-color="currentColor"
+    current-color="var(--ui)"
     height="260px"
   />
 

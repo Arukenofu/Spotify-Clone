@@ -3,7 +3,7 @@ import type {Recommendation} from "@/services/types/Recommendation";
 export const recommendations = [
     {
       id: 1,
-      naming: null,
+      naming: 'Рекомендации',
       list: [
           {
               id: 1,

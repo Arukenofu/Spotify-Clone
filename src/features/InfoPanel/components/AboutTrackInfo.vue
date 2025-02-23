@@ -29,7 +29,7 @@ function copyLink() {
 <template>
   <EntityAvatar1x1
     class="avatar"
-    type="Track"
+    type="track"
     :image="avatar"
     :loading-color="loadingColor"
   />
@@ -47,7 +47,13 @@ function copyLink() {
         </Marquee>
       </template>
       <template #artists>
-        <CommaSeparatedArtistsLink class="artist" :artists="artists" />
+        <CommaSeparatedArtistsLink
+          class="artist"
+          :artists="artists.map(artist => ({
+            name: artist.name,
+            id: artist.id as string
+          }))"
+        />
       </template>
     </MainTrackInfo>
     <div class="track-controls">

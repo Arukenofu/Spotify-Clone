@@ -9,21 +9,18 @@ const {t} = useI18n();
 
 const layoutScrollY = inject('layoutScrollY', ref(0));
 
-const {currentColor} = defineProps<{
-  currentColor: string
-}>();
-defineEmits<{
-  setColor: [color: string | null]
+const props = defineProps<{
+  maskColor: string
 }>();
 
 const computeStickyHeaderStyle = computed(() => ({
   opacity: Math.min(layoutScrollY.value / 120, 1),
-  backgroundColor: currentColor === 'rgb(83, 83, 83)' ? '#212121' : currentColor,
+  backgroundColor: props.maskColor,
   transition: 'background-color .25s, opacity .4s ease-out'
 }));
 
-function isDefaultColor(success: any, fail: any = currentColor) {
-  return currentColor === 'var(--ui)' ? success : fail;
+function isDefaultColor(success: any, fail: any = props.maskColor) {
+  return props.maskColor === 'var(--ui)' ? success : fail;
 }
 
 const { currentRoutePath } = useCurrentRoutePath('fullPath');
@@ -43,14 +40,14 @@ const { currentRoutePath } = useCurrentRoutePath('fullPath');
     <div class="inner-content">
       <button
         :class="currentRoutePath !== '/' && 'inactive'"
-        @click="$router.push(''); $emit('setColor', null)"
+        @click="$router.push('')"
       >
         {{t('index-page.facet.all')}}
       </button>
 
       <button
         :class="currentRoutePath !== '/?facet=music-chip' && 'inactive'"
-        @click="$router.push('/?facet=music-chip'); $emit('setColor', null);"
+        @click="$router.push('/?facet=music-chip')"
       >
         {{t('index-page.facet.music')}}
       </button>

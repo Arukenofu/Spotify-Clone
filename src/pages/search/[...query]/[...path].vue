@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {computed, inject, type Ref} from "vue";
+import {computed} from "vue";
 import {useQuery} from "@tanstack/vue-query";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
@@ -14,7 +14,6 @@ import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const route = useRoute('/search/[...query]/[...path]');
-const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
 const query = computed(() => route.params.query);
 const path = computed(() => route.params.path);
@@ -53,10 +52,7 @@ const {isThisMusic} = useMusicUtils();
     </div>
 
     <div v-else class="tracks-section">
-      <MusicRowHeader
-        class="row-header"
-        :parent-element="layout!.content"
-      >
+      <MusicRowHeader class="row-header">
         <template #var1>
           Альбом
         </template>
@@ -89,7 +85,6 @@ const {isThisMusic} = useMusicUtils();
 
 <style scoped lang="scss">
 .recommended-cards {
-  margin-top: 24px;
 
   .entities-wrapper {
     display: grid;
@@ -111,8 +106,10 @@ const {isThisMusic} = useMusicUtils();
     }
 
     .row-header {
+      position: sticky;
       top: 56px;
       background-color: var(--ui);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);;
     }
 
     .tracks-wrapper {

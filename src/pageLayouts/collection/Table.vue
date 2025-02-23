@@ -55,7 +55,10 @@ const currentFormatClass = computed(() => {
         :music-id="music.id"
         :music-name="music.name"
         :duration="music.duration"
-        :artists="music.artists"
+        :artists="music.artists.map(artist => ({
+          id: artist.id as string,
+          name: artist.name,
+        }))"
         :image="music.avatar"
         :color="music.color"
         :is-added="false"
@@ -66,7 +69,10 @@ const currentFormatClass = computed(() => {
         <template #var1>
           <CommaSeparatedArtistsLink
             v-if="format === 'Компактный'"
-            :artists="music.artists"
+            :artists="music.artists.map(artist => ({
+              id: artist.id as string,
+              name: artist.name,
+            }))"
             class="artists"
           />
           <RouterLink

@@ -159,10 +159,6 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
   .music-row-outer {
     position: sticky;
     top: 64px;
-
-    .row-header {
-
-    }
   }
 
   .add {
