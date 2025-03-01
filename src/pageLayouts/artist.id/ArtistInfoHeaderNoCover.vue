@@ -18,7 +18,7 @@ const {t} = useI18n();
   >
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
     <span class="artist-listeners-quantity">
-      {{t('social.countPerMonth', [t('social.listeners', listenersPerMonth)])}}
+      {{t('social.subscribers', listenersPerMonth)}}
     </span>
   </EntityInfoHeader>
 </template>

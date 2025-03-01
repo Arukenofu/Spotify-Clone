@@ -1,15 +1,22 @@
 <script setup lang="ts">
+import {useI18n} from "vue-i18n";
+
 interface Props {
   naming: string;
   prefix?: string;
   postfix?: string;
+  showExpanded?: boolean;
 }
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  showExpanded: true,
+});
 
-const isExpanded = defineModel<boolean | null>('isExpanded', {
+const isExpanded = defineModel<boolean>('isExpanded', {
   required: false,
   default: null
 });
+
+const {t} = useI18n();
 </script>
 
 <template>
@@ -22,8 +29,8 @@ const isExpanded = defineModel<boolean | null>('isExpanded', {
     <div class="wrapper">
       <slot />
     </div>
-    <button v-if="isExpanded !== null" class="expand" @click="isExpanded = !isExpanded">
-      {{isExpanded ? 'Свернуть' : 'Ещё'}}
+    <button v-if="showExpanded" class="expand" @click="isExpanded = !isExpanded">
+      {{isExpanded ? t('music-table.showLess') : t('music-table.seeMore')}}
     </button>
   </section>
 </template>
@@ -60,6 +67,7 @@ const isExpanded = defineModel<boolean | null>('isExpanded', {
     font-weight: 700;
     font-size: .875rem;
     color: hsla(0,0%,100%,.7);
+    white-space: nowrap;
 
     &:hover {
       color: var(--white);

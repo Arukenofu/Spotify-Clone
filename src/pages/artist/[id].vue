@@ -1,76 +1,121 @@
 <script setup lang="ts">
-import {computed, inject, ref, watch} from "vue";
+import {computed, inject, ref} from "vue";
 import {useRoute} from 'vue-router';
-import {useMutation, useQuery} from "@tanstack/vue-query";
-import artistService from "@/services/api/artist/apiArtistService";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import ArtistInfoHeader from "@/pageLayouts/artist.id/ArtistInfoHeader.vue";
 import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue";
 import GeneralGradientSectionWithControls
   from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
-import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import ArtistInfoModal from "@/pageLayouts/artist.id/ArtistInfoModal.vue";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from '@/shared/utils/setTitle';
-import readableNumber from "@/shared/utils/format/readableNumber";
 import TracksSection from "@/shared/UI/Blocks/TracksSection.vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import SubscribeButton from "@/shared/UI/Buttons/SubscribeButton.vue";
 import {useI18n} from "vue-i18n";
+import {sdk} from "@/services/sdk";
+import getMaskColor from "@/shared/utils/getMaskColor";
+import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
+import type {FollowedArtists, SimplifiedAlbum} from "@spotify/web-api-ts-sdk";
 
 const {t} = useI18n();
 
 const route = useRoute('/artist/[id]');
 const layoutScrollY = inject('layoutScrollY', ref(0));
+const queryClient = useQueryClient();
 
-const isExpanded = ref<boolean>(false);
-
-watch(() => route.params.id, () => {
-  refetch();
-})
-
-const {data: artistInfo, isFetched, isFetching, isError, refetch} = useQuery({
-  queryKey: ['artistFullInfo', route.params.id],
+const {data: artistInfo, isFetching, isError} = useQuery({
+  queryKey: ['artist', route.params.id],
   queryFn: async () => {
-    const data = await artistService.getFullArtistInfoWithDiscography(Number(route.params.id));
+    const data = await sdk.artists.get(route.params.id);
+    if (!data) throw new Error("Error fetching artist");
 
-    setTitle(`${data.profile.artistName} | Spotify`);
+    const maskColor = await getMaskColor(data);
+    const isSubscribed = await sdk.currentUser.followsArtistsOrUsers([route.params.id], 'artist');
+    // @ts-ignore
+    const topItems = await sdk.artists.topTracks(route.params.id, getCountryCodeA2());
+    const discography = await sdk.artists.albums(route.params.id);
+
+    setTitle(`${data.name} | Spotify`);
     
-    return data;
-  }
+    return {
+      ...data,
+      topItems,
+      discography,
+      maskColor,
+      isSubscribed: isSubscribed.length ? isSubscribed[0] : false
+    };
+  },
+  staleTime: Infinity
 });
 
-const popularMusic = computed(() => {
-  if (!isExpanded.value) {
-    return artistInfo.value?.discography.popularTracks.slice(0, 5) ?? [];
-  }
-
-  return artistInfo.value?.discography.popularTracks ?? [];
-});
-
-const {
-  loadPlaylist,
-  isThisPlaylist,
-  isThisPlaylistAndMusic,
-  createCustomPlaylist
-} = useMusicUtils();
-
-const isModal = ref<boolean>(false);
-
-const {mutate: toggleArtistSubscription} = useMutation({
+const {mutate: toggleSubscription} = useMutation({
   mutationFn: async () => {
-    const data = await artistService.toggleArtistSubscription(
-        artistInfo.value!.isSubscribed,
-        artistInfo.value!.id
-    );
+    if (!artistInfo.value) return;
 
-    if (data.message === 'OK') {
-      artistInfo.value!.isSubscribed = !artistInfo.value!.isSubscribed
-    }
+    const action = artistInfo.value.isSubscribed ? 'unfollowArtistsOrUsers' : 'followArtistsOrUsers';
+
+    await sdk.currentUser[action]([route.params.id], 'artist').catch(() => {
+      throw new Error("Error toggling artist subscription");
+    });
+
+    const isSubscribed = !artistInfo.value.isSubscribed
+
+    queryClient.setQueryData(['artist', route.params.id], () => ({
+      ...artistInfo.value,
+      isSubscribed: isSubscribed
+    }));
+
+    queryClient.setQueryData(['currentUserFollowedArtists'], (oldData: FollowedArtists) => {
+      const { artists } = oldData;
+      const updatedItems = artists.items.some(item => item.id === route.params.id)
+          ? artists.items.filter(item => item.id !== route.params.id)
+          : [...artists.items, { ...artistInfo.value }];
+
+      return {
+        ...oldData,
+        artists: {
+          ...artists,
+          items: updatedItems
+        }
+      };
+    });
   }
+});
+
+const isTopTracksExpanded = ref(false);
+
+const isTopTracksHaveEnoughItems = computed(() => {
+  if (!artistInfo.value) return false;
+
+  return artistInfo.value.topItems.tracks.length > 5;
+});
+
+const topTracks = computed(() => {
+  if (!artistInfo.value) return [];
+
+  if (isTopTracksExpanded.value) {
+    return artistInfo.value.topItems.tracks;
+  } else {
+    return artistInfo.value.topItems.tracks.slice(0, 5);
+  }
+});
+
+const discography = computed(() => {
+  if (!artistInfo.value) return null;
+
+  const items = artistInfo.value.discography.items;
+
+  const output: Record<string, SimplifiedAlbum[]> = {};
+
+  for (let i = 0; i < items.length; i++) {
+    if (!(items[i].album_type in output)) {
+      output[items[i].album_type] = [];
+    }
+
+    output[items[i].album_type].push(items[i]);
+  }
+
+  return output;
 });
 </script>
 
@@ -78,152 +123,72 @@ const {mutate: toggleArtistSubscription} = useMutation({
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="Track"
-  />
+    entity="artist"
+  >
+    <div v-if="artistInfo" class="recommended-cards">
+      <PlayHeaderWithPlayingState
+        :title="artistInfo.name"
+        :scroll-y="layoutScrollY"
+        :mask="artistInfo.maskColor"
+        :is-playing="false"
+      />
 
-  <div v-if="artistInfo" class="recommended-cards">
-    <PlayHeaderWithPlayingState
-      :title="artistInfo.profile.artistName"
-      :scroll-y="layoutScrollY"
-      :mask="artistInfo.profile.color"
-      :is-playing="isThisPlaylist(`popular:${artistInfo.profile.artistName}`, true)"
-      @play-click="createCustomPlaylist(
-        `popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0
-      )"
-    />
-    <Component
-      :is="artistInfo.profile.coverImage ? ArtistInfoHeader : ArtistInfoHeaderNoCover"
-      :mask="artistInfo.profile.color"
-      :name="artistInfo.profile.artistName"
-      :listeners-per-month="artistInfo.listenersQuantityPerMonth"
-      :image="artistInfo.profile.avatar"
-      :cover-image="artistInfo.profile.coverImage"
-    />
-    <GeneralGradientSectionWithControls
-      class="controls"
-      :is-playing="isThisPlaylist(`popular:${artistInfo.profile.artistName}`, true)"
-      :tooltip-str="{
-        content: t('music-actions.moreOptionsFor', [artistInfo.profile.artistName]),
-        distance: 24,
-        style: {
-          fontSize: '.9rem',
-          padding: '6px 8px'
-        }
-      }"
-      :bg-color="artistInfo.profile.color"
-      @play-click="createCustomPlaylist(`popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0)"
-    >
-      <template #main-options>
-        <SubscribeButton
-          :is-subscribed="artistInfo.isSubscribed"
-          class="subscribe"
-          @click="toggleArtistSubscription()"
-        />
-      </template>
-    </GeneralGradientSectionWithControls>
+      <ArtistInfoHeaderNoCover
+        :name="artistInfo.name"
+        :mask="artistInfo.maskColor"
+        :listeners-per-month="artistInfo.followers.total"
+        :image="artistInfo.images[0].url"
+      />
 
-    <TracksSection
-      v-model:is-expanded="isExpanded"
-      class="popular-tracks"
-      naming="Популярные треки"
-    >
-      <div class="wrapper">
-        <MusicRow
-          v-for="(music, index) of popularMusic"
-          :key="music.id"
-          :index="index + 1"
-          :is-current="isThisPlaylistAndMusic(music.id, `popular:${artistInfo.profile.artistName}`)"
-          :is-playing="isThisPlaylistAndMusic(music.id, `popular:${artistInfo.profile.artistName}`, true)"
-          :music-id="music.id"
-          :music-name="music.name"
-          :duration="music.duration"
-          :artists="music.artists"
-          :image="music.avatar"
-          :color="music.color"
-          :is-added="false"
-          :show-artists="false"
-          class="row"
-          @set-play="createCustomPlaylist(
-            `popular:${artistInfo.profile.artistName}`, artistInfo.discography.popularTracks, 0
-          )"
-        >
-          <template #var1>
-            <span class="var1">
-              {{readableNumber(artistInfo.listenersQuantityPerMonth)}}
-            </span>
-          </template>
-        </MusicRow>
-      </div>
-    </TracksSection>
-
-    <EntitiesSectionWithHeading
-      class="albums"
-      naming="Музыка"
-      :href="`/artist/${artistInfo.id}/discography`"
-      column-width="180px"
-    >
-      <MusicCard
-        v-for="album in artistInfo.discography.albums"
-        :id="album.id"
-        :key="album.id"
-        :image="album.image"
-        type="album"
-        :name="album.name"
-        :color="album.color"
-        :state="isThisPlaylist(album.id, true)"
-        @on-play-click="loadPlaylist(album.id)"
+      <GeneralGradientSectionWithControls
+        class="controls"
+        :is-playing="false"
+        :tooltip-str="{
+          content: t('music-actions.moreOptionsFor', [artistInfo.name]),
+          distance: 24,
+          style: {
+            fontSize: '.9rem',
+            padding: '6px 8px'
+          }
+        }"
+        :bg-color="artistInfo.maskColor"
       >
-        {{album.info.uploadedDate}}
-      </MusicCard>
-    </EntitiesSectionWithHeading>
+        <template #main-options>
+          <SubscribeButton
+            :is-subscribed="artistInfo.isSubscribed"
+            class="subscribe"
+            @click="toggleSubscription()"
+          />
+        </template>
+      </GeneralGradientSectionWithControls>
 
-    <EntitiesSectionWithHeading
-      v-for="section in artistInfo.discography.recommended"
-      :key="section.id"
-      :naming="section.naming"
-      :href="`/artist/${artistInfo.id}/recommended`"
-      :column-width="'180px'"
-      class="recommended"
-    >
-      <MusicCard
-        v-for="item in section.list"
-        :id="item.id"
-        :key="item.id"
-        :image="item.image"
-        type="playlist"
-        :name="item.name"
-        :color="item.color"
-        :state="isThisPlaylist(item.id, true)"
-        @on-play-click="loadPlaylist(item.id)"
+      <TracksSection
+        v-model:is-expanded="isTopTracksExpanded"
+        class="popular-tracks"
+        :naming="t('artist.topTracks')"
+        :show-expanded="isTopTracksHaveEnoughItems"
       >
-        {{item.description}}
-      </MusicCard>
-    </EntitiesSectionWithHeading>
-
-    <section class="about-artist" @click="isModal = true">
-      <h2>{{t('artist.aboutArtist')}}</h2>
-      <div class="card">
-        <EntityAvatar1x1 class="image" :image="artistInfo.profile.avatar" type="artist" />
-
-        <span class="listeners">
-          {{artistInfo.listenersQuantityPerMonth + ' ' + t('artist.monthlyListeners', artistInfo.listenersQuantityPerMonth).toLowerCase()}}
-        </span>
-
-        <div class="description">
-          {{ artistInfo.profile.description }}
+        <div class="popular-tracks-wrapper">
+          <MusicRow
+            v-for="(music, index) of topTracks"
+            :key="music.id"
+            :index="index + 1"
+            :is-current="false"
+            :is-playing="false"
+            :music-id="music.id"
+            :music-name="music.name"
+            :duration="music.duration_ms / 1000"
+            :artists="music.artists"
+            :image="music.album.images[2].url"
+            :color="null"
+            :is-added="false"
+            :show-artists="false"
+            class="row"
+          />
         </div>
-      </div>
-    </section>
-  </div>
-
-  <ArtistInfoModal
-    v-if="artistInfo && isFetched"
-    v-model="isModal"
-    :subscriptions="artistInfo.subscriptionsTotalQuantity"
-    :listeners="artistInfo.listenersQuantityPerMonth"
-    :city-playback-data="artistInfo.cityPlaybackData"
-    :description="artistInfo.profile.description"
-  />
+      </TracksSection>
+    </div>
+  </HandleEntityLayoutStates>
 </template>
 
 <style lang="scss" scoped>
@@ -241,6 +206,8 @@ const {mutate: toggleArtistSubscription} = useMutation({
   }
 
   .popular-tracks {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
     padding: 0 var(--content-spacing);
     display: grid;
     grid-template-columns: 1fr;
@@ -252,28 +219,18 @@ const {mutate: toggleArtistSubscription} = useMutation({
       margin-bottom: 16px;
     }
 
-    .wrapper {
+    .popular-tracks-wrapper {
       container: wrapper / inline-size;
 
-      @container wrapper (max-width: 620px) {
-        .row {
-          grid-template-columns: [index] 16px [main] minmax(120px, 4fr) [var1] 0 [var2] 0 [time] minmax(120px, 1fr) !important;
-        }
-
-        .var1 {
-          display: none;
-        }
-      }
-
       .row {
-        grid-template-columns: [index] 16px [main] minmax(120px, 4fr) [var1] minmax(120px, 2fr) [var2] 0 [time] minmax(120px, 1fr);
-      }
-
-      .var1 {
-        font-size: .875rem;
+        grid-template-columns:
+            [index] 16px
+            [main] minmax(120px, 4fr)
+            [var1] 0
+            [var2] 0
+            [time] minmax(120px, 1fr);
       }
     }
-
   }
 
   .albums, .recommended {

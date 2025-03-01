@@ -47,7 +47,7 @@ const links: Links[] = [
         </div>
       </div>
       <div class="right">
-        © 2024 Spotify AB
+        © 2025 Spotify AB
       </div>
     </div>
   </footer>

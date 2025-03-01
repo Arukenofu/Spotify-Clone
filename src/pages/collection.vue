@@ -42,60 +42,60 @@ const {format, setFormat} = useMusicCollectionFormat();
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="Playlist"
-  />
+    entity="playlist"
+  >
+    <div v-if="favoriteTracks" class="collection">
+      <PlayHeaderWithPlayingState
+        title="Любимые треки"
+        :scroll-y="scrollY"
+        :is-playing="false"
+        :mask="maskColor"
+      />
 
-  <div v-if="favoriteTracks" class="collection">
-    <PlayHeaderWithPlayingState
-      title="Любимые треки"
-      :scroll-y="scrollY"
-      :is-playing="false"
-      :mask="maskColor"
-    />
+      <EntityInfoHeader
+        :image="LikedSongsImage"
+        :mask="maskColor"
+        type="playlist"
+        class="header"
+      >
+        <span class="type">{{t('entities.playlist')}}</span>
+        <h1 class="title">Любимые треки</h1>
+        <div class="other-info">
+          <div class="user">
+            <LazyImage
+              v-if="currentUserAvatar"
+              :image="currentUserAvatar"
+              class="user-avatar"
+            />
+            <RouterLink :to="`/user/${currentUserData!.id}`" class="user-link">
+              {{currentUserData!.display_name}}
+            </RouterLink>
+          </div>
 
-    <EntityInfoHeader
-      :image="LikedSongsImage"
-      :mask="maskColor"
-      type="playlist"
-      class="header"
-    >
-      <span class="type">{{t('entities.playlist')}}</span>
-      <h1 class="title">Любимые треки</h1>
-      <div class="other-info">
-        <div class="user">
-          <LazyImage
-            v-if="currentUserAvatar"
-            :image="currentUserAvatar"
-            class="user-avatar"
-          />
-          <RouterLink :to="`/user/${currentUserData!.id}`" class="user-link">
-            {{currentUserData!.display_name}}
-          </RouterLink>
+          <EntityInfoHeaderDot />
+
+          <span class="tracks-amount">
+            {{t('plurable-entities.track', favoriteTracks.total).toLowerCase()}}
+          </span>
         </div>
+      </EntityInfoHeader>
 
-        <EntityInfoHeaderDot />
+      <GeneralGradientSectionWithControls
+        :is-playing="false"
+        :bg-color="maskColor"
+        tooltip-str=""
+        turnoff-options
+      >
+        <template #additional-options>
+          <FormatLibraryButton :format @set-format="setFormat" />
+        </template>
+      </GeneralGradientSectionWithControls>
 
-        <span class="tracks-amount">
-          {{t('plurable-entities.track', favoriteTracks.total).toLowerCase()}}
-        </span>
-      </div>
-    </EntityInfoHeader>
-
-    <GeneralGradientSectionWithControls
-      :is-playing="false"
-      :bg-color="maskColor"
-      tooltip-str=""
-      turnoff-options
-    >
-      <template #additional-options>
-        <FormatLibraryButton :format @set-format="setFormat" />
-      </template>
-    </GeneralGradientSectionWithControls>
-
-    <PlaylistTable
-      :items="favoriteTracks.items"
-    />
-  </div>
+      <PlaylistTable
+        :items="favoriteTracks.items"
+      />
+    </div>
+  </HandleEntityLayoutStates>
 </template>
 
 <style scoped lang="scss">

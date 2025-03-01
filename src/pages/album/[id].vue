@@ -76,76 +76,76 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="Album"
-  />
+    entity="album"
+  >
+    <div v-if="data" class="album">
+      <PlayHeaderWithPlayingState
+        :title="data.name"
+        :scroll-y="scrollY"
+        :passing-height="280"
+        :is-playing="isThisPlaylist(data.id, true)"
+        :mask="data.maskColor"
+      />
 
-  <div v-if="data" class="album">
-    <PlayHeaderWithPlayingState
-      :title="data.name"
-      :scroll-y="scrollY"
-      :passing-height="280"
-      :is-playing="isThisPlaylist(data.id, true)"
-      :mask="data.maskColor"
-    />
+      <AlbumInfoHeader
+        :image="getImageFromEntity(data.images)"
+        :mask="data.maskColor"
+        :name="data.name"
+        :creator="data.artists"
+        :tracks-amount="data.total_tracks"
+        :release-date="data.release_date"
+      />
 
-    <AlbumInfoHeader
-      :image="getImageFromEntity(data.images)"
-      :mask="data.maskColor"
-      :name="data.name"
-      :creator="data.artists"
-      :tracks-amount="data.total_tracks"
-      :release-date="data.release_date"
-    />
-
-    <GeneralGradientSectionWithControls
-      :is-playing="isThisPlaylist(data.id, true)"
-      :bg-color="data.maskColor"
-      :tooltip-str="t('music-actions.moreOptionsFor', [data.name])"
-    >
-      <template #main-options>
-        <AddToMediaLib
-          class="add"
-          :state="true"
-        />
-      </template>
-      <template #additional-options>
-        <FormatLibraryButton :format @set-format="setFormat" />
-      </template>
-    </GeneralGradientSectionWithControls>
-
-    <MusicRowHeaderWrapper :parent-element="layout!.content">
-      <MusicRowHeader class="row-header" :class="format === 'Compact' && 'compact'">
-        <template v-if="format === 'Compact'" #var1>
-          {{t('entities.artist')}}
-        </template>
-      </MusicRowHeader>
-    </MusicRowHeaderWrapper>
-
-    <TrackTableWrapper>
-      <MusicRow
-        v-for="(music, index) of data.tracks.items"
-        :key="music.id"
-        :index="index + 1"
-        :is-current="isThisPlaylistAndMusic(music.id, data.id)"
-        :is-playing="isThisPlaylistAndMusic(music.id, data.id, true)"
-        :music-id="music.id"
-        :music-name="music.name"
-        :duration="music.duration_ms / 1000"
-        :artists="music.artists"
-        :image="null"
-        :is-added="false"
-        :compact="format === 'Compact'"
-        :class="format === 'Compact' && 'compact'"
-        class="row"
-        show-artists
-        hide-image
+      <GeneralGradientSectionWithControls
+        :is-playing="isThisPlaylist(data.id, true)"
+        :bg-color="data.maskColor"
+        :tooltip-str="t('music-actions.moreOptionsFor', [data.name])"
       >
-        <template v-if="format === 'Compact'" #var1>
-          <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
+        <template #main-options>
+          <AddToMediaLib
+            class="add"
+            :state="true"
+          />
         </template>
-      </MusicRow>
-    </TrackTableWrapper>
-  </div>
+        <template #additional-options>
+          <FormatLibraryButton :format @set-format="setFormat" />
+        </template>
+      </GeneralGradientSectionWithControls>
+
+      <MusicRowHeaderWrapper :parent-element="layout!.content">
+        <MusicRowHeader class="row-header" :class="format === 'Compact' && 'compact'">
+          <template v-if="format === 'Compact'" #var1>
+            {{t('entities.artist')}}
+          </template>
+        </MusicRowHeader>
+      </MusicRowHeaderWrapper>
+
+      <TrackTableWrapper>
+        <MusicRow
+          v-for="(music, index) of data.tracks.items"
+          :key="music.id"
+          :index="index + 1"
+          :is-current="isThisPlaylistAndMusic(music.id, data.id)"
+          :is-playing="isThisPlaylistAndMusic(music.id, data.id, true)"
+          :music-id="music.id"
+          :music-name="music.name"
+          :duration="music.duration_ms / 1000"
+          :artists="music.artists"
+          :image="null"
+          :is-added="false"
+          :compact="format === 'Compact'"
+          :class="format === 'Compact' && 'compact'"
+          class="row"
+          show-artists
+          hide-image
+        >
+          <template v-if="format === 'Compact'" #var1>
+            <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
+          </template>
+        </MusicRow>
+      </TrackTableWrapper>
+    </div>
+  </HandleEntityLayoutStates>
 </template>
 
 <style scoped lang="scss">

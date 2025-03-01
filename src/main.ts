@@ -18,7 +18,14 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(VueQueryPlugin, {
-    enableDevtoolsV6Plugin: true
+    enableDevtoolsV6Plugin: true,
+    queryClientConfig: {
+        defaultOptions: {
+            queries: {
+                retry: false
+            }
+        }
+    }
 });
 app.use(VueTippy, VueTippyConfig);
 app.use(i18n);

@@ -58,41 +58,41 @@ const {isThisPlaylist} = useMusicUtils();
   <HandleEntityLayoutStates
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="Playlist"
-  />
+    entity="playlist"
+  >
+    <div v-if="isFetched && data" class="playlist" :style="`--bg-mask: ${data.maskColor}`">
+      <PlayHeaderWithPlayingState
+        :title="data.name"
+        :scroll-y="scrollY"
+        :mask="data.maskColor"
+        :is-playing="isThisPlaylist(data.id, true)"
+      />
 
-  <div v-if="isFetched && data" class="playlist" :style="`--bg-mask: ${data.maskColor}`">
-    <PlayHeaderWithPlayingState
-      :title="data.name"
-      :scroll-y="scrollY"
-      :mask="data.maskColor"
-      :is-playing="isThisPlaylist(data.id, true)"
-    />
+      <PlaylistInfo
+        :playlist-name="data.name"
+        :playlist-description="data.description"
+        :image="getImageFromEntity(data.images, 0)"
+        :mask="data.maskColor"
+        :total-duration="100"
+        :creator="data.owner"
+        :creator-image="getImageFromEntity(data.owner.images, 1)"
+        :creator-mask="data.owner.maskColor"
+        :tracks-amount="data.tracks.total"
+        :savings-amount="data.followers.total"
+      />
 
-    <PlaylistInfo
-      :playlist-name="data.name"
-      :playlist-description="data.description"
-      :image="getImageFromEntity(data.images, 0)"
-      :mask="data.maskColor"
-      :total-duration="100"
-      :creator="data.owner"
-      :creator-image="getImageFromEntity(data.owner.images, 1)"
-      :creator-mask="data.owner.maskColor"
-      :tracks-amount="data.tracks.total"
-      :savings-amount="data.followers.total"
-    />
+      <PlaylistControls
+        :playlist-id="data.id"
+        :playlist-name="data.name"
+        :mask-color="data.maskColor"
+        :is-added="false"
+      />
 
-    <PlaylistControls
-      :playlist-id="data.id"
-      :playlist-name="data.name"
-      :mask-color="data.maskColor"
-      :is-added="false"
-    />
-
-    <PlaylistTable
-      :items="data.tracks.items"
-    />
-  </div>
+      <PlaylistTable
+        :items="data.tracks.items"
+      />
+    </div>
+  </HandleEntityLayoutStates>
 </template>
 
 <style lang="scss" scoped>

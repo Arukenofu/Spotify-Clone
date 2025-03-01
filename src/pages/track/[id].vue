@@ -61,85 +61,84 @@ const {isThisMusic} = useMusicUtils();
 
 <template>
   <HandleEntityLayoutStates
-    v-if="!trackInfo"
     :is-fetching="isFetching"
     :is-error="isError"
-    entity="Track"
-  />
-
-  <div v-else class="recommended-cards">
-    <PlayHeaderWithPlayingState
-      :title="trackInfo.name"
-      :scroll-y="layoutScrollY"
-      :mask="trackInfo.maskColor"
-      :is-playing="isThisMusic(trackInfo.id, true)"
-    />
-    <EntityInfoHeader
-      :image="getImageFromEntity(trackInfo.album.images, 0)"
-      :mask="trackInfo.maskColor"
-      type="track"
-      class="info"
-    >
-      <span class="type">{{t('entities.track')}}</span>
-      <h1 class="name">{{trackInfo.name}}</h1>
-      <div class="additional">
-        <div v-if="trackInfo.artists.length === 1" class="single-artist">
-          <EntityAvatar1x1 :image="getImageFromEntity(trackInfo.artists[0].images, 2)" class="img" type="artist" />
-          <RouterLink :to="`/artist/${trackInfo.artists[0].id}`" class="artist-name">
-            {{trackInfo.artists[0].name}}
-          </RouterLink>
-        </div>
-        <div v-else class="artists">
-          <template
-            v-for="(artist, index) in trackInfo.artists"
-            :key="artist.id"
-          >
-            <RouterLink
-              :to="`/artist/${artist.id}`"
-              class="artist"
-            >
-              {{artist.name}}
-            </RouterLink>
-
-            <template v-if="index !== trackInfo.artists.length-1">&nbsp;•&nbsp;</template>
-          </template>
-        </div>
-
-        <EntityInfoHeaderDot />
-
-        <RouterLink class="album-link" :to="`/album/${trackInfo.album.id}`">
-          {{trackInfo.album.name}}
-        </RouterLink>
-
-        <EntityInfoHeaderDot />
-
-        <span>{{formatTimeMMSS(trackInfo.duration_ms / 1000)}}</span>
-      </div>
-    </EntityInfoHeader>
-
-    <GeneralGradientSectionWithControls
-      :is-playing="false"
-      :bg-color="trackInfo.maskColor"
-      :tooltip-str="t('music-actions.moreOptionsFor', [trackInfo.name])"
-    >
-      <template #main-options>
-        <AddToMediaLib
-          class="add"
-          :state="false"
-        />
-      </template>
-    </GeneralGradientSectionWithControls>
-
-    <div class="artists-container">
-      <ArtistFullWidthBlock
-        v-for="artist in trackInfo.artists"
-        :id="artist.id"
-        :key="artist.id"
-        :image="getImageFromEntity(artist.images, 2)"
-        :name="artist.name"
+    entity="track"
+  >
+    <div v-if="trackInfo" class="recommended-cards">
+      <PlayHeaderWithPlayingState
+        :title="trackInfo.name"
+        :scroll-y="layoutScrollY"
+        :mask="trackInfo.maskColor"
+        :is-playing="isThisMusic(trackInfo.id, true)"
       />
+      <EntityInfoHeader
+        :image="getImageFromEntity(trackInfo.album.images, 0)"
+        :mask="trackInfo.maskColor"
+        type="track"
+        class="info"
+      >
+        <span class="type">{{t('entities.track')}}</span>
+        <h1 class="name">{{trackInfo.name}}</h1>
+        <div class="additional">
+          <div v-if="trackInfo.artists.length === 1" class="single-artist">
+            <EntityAvatar1x1 :image="getImageFromEntity(trackInfo.artists[0].images, 2)" class="img" type="artist" />
+            <RouterLink :to="`/artist/${trackInfo.artists[0].id}`" class="artist-name">
+              {{trackInfo.artists[0].name}}
+            </RouterLink>
+          </div>
+          <div v-else class="artists">
+            <template
+              v-for="(artist, index) in trackInfo.artists"
+              :key="artist.id"
+            >
+              <RouterLink
+                :to="`/artist/${artist.id}`"
+                class="artist"
+              >
+                {{artist.name}}
+              </RouterLink>
+
+              <template v-if="index !== trackInfo.artists.length-1">&nbsp;•&nbsp;</template>
+            </template>
+          </div>
+
+          <EntityInfoHeaderDot />
+
+          <RouterLink class="album-link" :to="`/album/${trackInfo.album.id}`">
+            {{trackInfo.album.name}}
+          </RouterLink>
+
+          <EntityInfoHeaderDot />
+
+          <span>{{formatTimeMMSS(trackInfo.duration_ms / 1000)}}</span>
+        </div>
+      </EntityInfoHeader>
+
+      <GeneralGradientSectionWithControls
+        :is-playing="false"
+        :bg-color="trackInfo.maskColor"
+        :tooltip-str="t('music-actions.moreOptionsFor', [trackInfo.name])"
+      >
+        <template #main-options>
+          <AddToMediaLib
+            class="add"
+            :state="false"
+          />
+        </template>
+      </GeneralGradientSectionWithControls>
+
+      <div class="artists-container">
+        <ArtistFullWidthBlock
+          v-for="artist in trackInfo.artists"
+          :id="artist.id"
+          :key="artist.id"
+          :image="getImageFromEntity(artist.images, 2)"
+          :name="artist.name"
+        />
+      </div>
     </div>
-  </div>
+  </HandleEntityLayoutStates>
 </template>
 
 <style scoped lang="scss">

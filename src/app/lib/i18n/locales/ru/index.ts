@@ -1,4 +1,8 @@
 export default {
+     "errors": {
+          cannotFindEntity: 'Не удалось найти {0}',
+          tryLookingSomethingElse: 'Попробуй поискать что-нибудь другое'
+     },
      "404": {
           "title": "Страница не найдена",
           "description": "Мы не нашли нужную страницу",
