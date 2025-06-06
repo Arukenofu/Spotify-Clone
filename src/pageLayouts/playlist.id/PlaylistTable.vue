@@ -51,55 +51,55 @@ const currentFormatClass = computed(() => {
     </MusicRowHeaderWrapper>
 
     <TrackTableWrapper>
-      <MusicRow
-        v-for="(music, index) of items"
-        :key="music.track.id"
-        :index="index + 1"
-        :is-current="false"
-        :is-playing="false"
-        :music-id="music.track.id"
-        :music-name="music.track.name"
-        :duration="music.track.duration_ms / 1000"
-        :artists="music.track.artists"
-        :image="getImageFromEntity(music.track.album.images, 2)"
-        :color="null"
-        :is-added="false"
-        :show-artists="true"
-        :compact="format === 'Compact'"
-        class="row computedGrid"
-      >
-        <template #var1>
-          <CommaSeparatedArtistsLink
-            v-if="format === 'Compact'"
-            :artists="music.track.artists"
-            class="artists"
-          />
-          <RouterLink
-            v-else
-            :to="`/album/${music.track.album.id}`"
-            class="link"
-          >
-            {{music.track.album.name}}
-          </RouterLink>
-        </template>
-        <template #var2>
-          <RouterLink
-            v-if="format === 'Compact'"
-            :to="`/album/${music.track.album.id}`"
-            class="link"
-          >
-            {{music.track.album.name}}
-          </RouterLink>
-          <span v-else class="added-at">
-            {{formatRelativeDate(music.added_at)}}
-          </span>
-        </template>
-        <template v-if="format === 'Compact'" #var3>
-          <span class="added-at">
-            {{formatRelativeDate(music.added_at)}}
-          </span>
-        </template>
-      </MusicRow>
+      <template v-for="(music, index) of items" :key="music.track.id">
+        <MusicRow
+          :index="index + 1"
+          :is-current="false"
+          :is-playing="false"
+          :music-id="music.track.id"
+          :music-name="music.track.name"
+          :duration="music.track.duration_ms / 1000"
+          :artists="music.track.artists"
+          :image="getImageFromEntity(music.track.album.images, 2)"
+          :color="null"
+          :is-added="false"
+          :show-artists="true"
+          :compact="format === 'Compact'"
+          class="row computedGrid"
+        >
+          <template #var1>
+            <CommaSeparatedArtistsLink
+              v-if="format === 'Compact'"
+              :artists="music.track.artists"
+              class="artists"
+            />
+            <RouterLink
+              v-else
+              :to="`/album/${music.track.album.id}`"
+              class="link"
+            >
+              {{music.track.album.name}}
+            </RouterLink>
+          </template>
+          <template #var2>
+            <RouterLink
+              v-if="format === 'Compact'"
+              :to="`/album/${music.track.album.id}`"
+              class="link"
+            >
+              {{music.track.album.name}}
+            </RouterLink>
+            <span v-else class="added-at">
+              {{formatRelativeDate(music.added_at)}}
+            </span>
+          </template>
+          <template v-if="format === 'Compact'" #var3>
+            <span class="added-at">
+              {{formatRelativeDate(music.added_at)}}
+            </span>
+          </template>
+        </MusicRow>
+      </template>
     </TrackTableWrapper>
   </div>
 </template>

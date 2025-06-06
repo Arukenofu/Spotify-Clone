@@ -15,11 +15,16 @@ function findImage(data: Item, arrayKey: number) {
 }
 
 export default async function (data: Item, arrayKey: number = 0) {
-    const image = findImage(data, arrayKey);
-    if (!image) return null;
+    try {
+        const image = findImage(data, arrayKey);
+        if (!image) return null;
 
-    const palette = await getAsyncPalette(image);
-    if (!palette.Vibrant) return null;
+        const palette = await getAsyncPalette(image);
+        if (!palette.Vibrant) return null;
 
-    return palette.Vibrant.hex;
+        return palette.Vibrant.hex;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+        return null;
+    }
 }
