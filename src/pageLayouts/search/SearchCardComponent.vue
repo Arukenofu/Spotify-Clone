@@ -1,35 +1,36 @@
 <script setup lang="ts">
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
+import type {Image, ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import {addToHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
+import {proxy} from "@/shared/utils/proxy";
 
 type SearchResultKeys = `${Exclude<ItemTypes, 'track'>}s`
 
-defineProps<{
-  type: SearchResultKeys;
-  item: PartialSearchResult;
+const props = defineProps<{
+  item: NonNullable<PartialSearchResult[SearchResultKeys]>['items'][number];
+  type: SearchResultKeys
 }>();
+
+function loadImage(images: Image[], index: number = 0) {
+  const image = getImageFromEntity(images, index);
+
+  return props.type === 'playlists' ? proxy(image || '') : image;
+}
 </script>
 
 <template>
-  <template
-    v-for="(entity, index) in item[type]?.items"
-    :key="index"
+  <MusicCard
+    :id="item.id"
+    :type="item.type as ItemTypes"
+    :name="item.name"
+    :image="loadImage(item.images)"
+    :mask-loader-image="loadImage(item.images, 2)"
+    @click="addToHistory(item)"
   >
-    <MusicCard
-      v-if="entity"
-      :id="entity.id"
-      :type="entity.type as ItemTypes"
-      :name="entity.name"
-      :image="getImageFromEntity(entity.images)"
-      :mask-loader-image="getImageFromEntity(entity.images, 2)"
-      @click="addToHistory(entity)"
-    >
-      <SearchCardDescriptionRenderer :entity="entity" />
-    </MusicCard>
-  </template>
+    <SearchCardDescriptionRenderer :entity="item" />
+  </MusicCard>
 </template>
 
 <style scoped lang="scss">

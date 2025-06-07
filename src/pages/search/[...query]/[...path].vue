@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {computed} from "vue";
-import {useQuery} from "@tanstack/vue-query";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
 import SearchError from "@/pageLayouts/search/SearchError.vue";
@@ -12,6 +12,8 @@ import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import SearchCardScroller from "@/pageLayouts/search/SearchCardScroller.vue";
+import type {PartialSearchResult} from "@spotify/web-api-ts-sdk";
 
 const route = useRoute('/search/[...query]/[...path]');
 
@@ -28,14 +30,38 @@ const entity = computed(() => {
   return output;
 });
 
-const {data, isFetching, isSuccess, error} = useQuery({
+const queryClient = useQueryClient();
+
+const {
+  data,
+  isFetching,
+  isSuccess,
+  error
+} = useQuery({
   queryKey: ['searchEntity', query, path],
   queryFn: async () => {
     return sdk.search(query.value, [entity.value!], 'US', 30);
   },
   staleTime: Infinity,
-  maxPages: 10
+  maxPages: 10,
 });
+
+function nextPage(
+    newData: NonNullable<PartialSearchResult[keyof PartialSearchResult]>
+) {
+  queryClient.setQueryData(['searchEntity', query, path], (oldData: PartialSearchResult) => {
+    const key: keyof PartialSearchResult = `${entity.value!}s`;
+
+    return {
+      [key]: {
+        ...oldData[key],
+        next: newData.next,
+        previous: newData.previous,
+        items: newData.items
+      }
+    }
+  })
+}
 
 const {isThisMusic} = useMusicUtils();
 </script>
@@ -44,12 +70,16 @@ const {isThisMusic} = useMusicUtils();
   <LoadingBlock v-if="isFetching" />
   <SearchError v-else-if="error || !entity" />
   <div v-else-if="data" class="recommended-cards">
-    <div v-if="entity !== 'track'" class="entities-wrapper">
-      <SearchCardComponent
-        :item="data"
-        :type="`${entity}s`"
-      />
-    </div>
+    <SearchCardScroller
+      v-if="entity !== 'track'"
+      :data="data"
+      :type="`${entity}s`"
+      @data-update="nextPage"
+    >
+      <template #default="{item}">
+        <SearchCardComponent :item="item" :type="`${entity}s`" />
+      </template>
+    </SearchCardScroller>
 
     <div v-else class="tracks-section">
       <MusicRowHeader class="row-header">
@@ -86,15 +116,7 @@ const {isThisMusic} = useMusicUtils();
 <style scoped lang="scss">
 .recommended-cards {
 
-  .entities-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    grid-auto-rows: min-content;
-    padding: 0 var(--content-spacing);
-  }
-
   .tracks-section {
-
     .row-header, .tracks-wrapper .track {
       display: grid;
       grid-template-columns:

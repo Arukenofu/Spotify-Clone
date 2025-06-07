@@ -10,19 +10,25 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "server": "vite-node server/index.ts",
+    "server:dev": "nodemon --exec vite-node server/index.ts",
+    "dev:all": "run-p dev server:dev"
   },
   "dependencies": {
     "@spotify/web-api-ts-sdk": "^1.2.0",
     "@tanstack/vue-query": "^5.66.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "node-vibrant": "^4.0.0",
     "ofetch": "^1.4.1",
     "pinia": "^2.3.1",
     "vue": "^3.5.13",
     "vue-i18n": "11.1.2",
     "vue-router": "^4.5.0",
-    "vue-tippy": "^6.5.0",
-    "vue-virtual-scroller": "^2.0.0-beta.8"
+    "vue-tippy": "^6.5.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
@@ -33,11 +39,14 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.28.0",
+    "nodemon": "^3.1.10",
     "npm-run-all2": "^6.2.2",
     "sass": "^1.79.3",
+    "ts-node": "^10.9.2",
     "typescript": "~5.6.2",
     "unplugin-vue-router": "^0.11.2",
     "vite": "^5.4.8",
+    "vite-node": "^3.2.2",
     "vite-plugin-compression2": "^1.3.0",
     "vite-plugin-sass-glob-import": "^3.0.2",
     "vite-plugin-vue-devtools": "^7.5.6",

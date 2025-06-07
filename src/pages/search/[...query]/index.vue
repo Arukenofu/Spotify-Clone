@@ -39,7 +39,7 @@ const bestResult = computed(() => {
 
 const {isThisMusic} = useMusicUtils();
 const allowedEntitiesSection:
-      (keyof SearchResults<typeof allSearchEntities>)[] = ['playlists', 'albums', 'artists'];
+      Exclude<(keyof SearchResults<typeof allSearchEntities>), 'tracks'>[] = ['playlists', 'albums', 'artists'];
 </script>
 
 <template>
@@ -97,10 +97,13 @@ const allowedEntitiesSection:
         :naming="t(`search.entities.${entity.slice(0, -1)}`)"
         :href="`/search/${q}/${entity}`"
       >
-        <SearchCardComponent
-          :item="data"
-          :type="entity"
-        />
+        <template v-for="item in data[entity]!.items" :key="item?.id">
+          <SearchCardComponent
+            v-if="item"
+            :item="item"
+            :type="entity"
+          />
+        </template>
       </EntitiesSectionWithHeading>
     </template>
   </div>

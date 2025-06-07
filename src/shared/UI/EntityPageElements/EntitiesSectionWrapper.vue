@@ -7,7 +7,7 @@ const {isScrollable = true} = defineProps<{
   isScrollable?: boolean;
 }>();
 
-const scrollableSectionRef = useTemplateRef('scrollableSectionRef');
+const scrollableSectionRef = useTemplateRef<HTMLElement>('scrollableSectionRef');
 
 const canItScrollLeft = ref<boolean>(false);
 const canItScrollRight = ref<boolean>(true);
@@ -34,8 +34,6 @@ function onScroll() {
 
   const scrollLeft = section.scrollLeft;
   const maxScrollLeft = section.scrollWidth - section.clientWidth;
-
-  console.log(scrollLeft, maxScrollLeft);
 
   canItScrollLeft.value = scrollLeft > 0;
   canItScrollRight.value = scrollLeft !== maxScrollLeft;

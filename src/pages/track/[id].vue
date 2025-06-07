@@ -19,7 +19,7 @@ import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import type {Artist} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
-import getMaskColor from "@/shared/utils/getMaskColor";
+import {getMaskColor} from "@/shared/utils/getMaskColor";
 
 const {t} = useI18n();
 

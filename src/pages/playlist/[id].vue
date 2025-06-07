@@ -10,9 +10,11 @@ import {sdk} from "@/services/sdk";
 import type {User} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
 import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import getMaskColor from "@/shared/utils/getMaskColor";
+import {findImage, getMaskColor} from "@/shared/utils/getMaskColor";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
+import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import {proxy} from "@/shared/utils/proxy";
 
 const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
@@ -41,7 +43,11 @@ const {data, isFetched, isFetching, isError} = useQuery({
   queryKey: ['playlistInfo', albumId],
   queryFn: async () => {
     const data = await fetchPlaylistData();
-    const maskColor = await getMaskColor(data, 0);
+
+    const imageUrl = findImage(data, 0);
+    const maskColor = imageUrl ? (await getAsyncPalette(proxy(imageUrl))).Vibrant?.hex : null;
+    console.log(maskColor);
+
     const owner = await getOwnerData(data.owner.id);
 
     setTitle(`${data.name} | Spotify Playlist`);

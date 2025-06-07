@@ -2,7 +2,7 @@
 import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 
 defineProps<{
-  id: string;
+  href: string;
   image: string;
   maskColor: string | null;
 }>();
@@ -10,9 +10,9 @@ defineProps<{
 </script>
 
 <template>
-  <RouterLink
+  <a
     class="card"
-    :to="`/genre/${id}`"
+    :href="href"
     draggable="false"
   >
     <div class="name">
@@ -23,7 +23,7 @@ defineProps<{
       class="image"
       :image="image"
     />
-  </RouterLink>
+  </a>
 </template>
 
 <style scoped lang="scss">
@@ -34,6 +34,7 @@ defineProps<{
   border-radius: 9px;
   position: relative;
   overflow: hidden;
+  pointer-events: none;
 
   .name {
     position: absolute;

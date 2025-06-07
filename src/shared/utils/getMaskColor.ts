@@ -3,7 +3,7 @@ import getAsyncPalette from "@/shared/utils/getAsyncPalette";
 
 type Item = NonNullable<PartialSearchResult[keyof PartialSearchResult]>['items'][number] | User;
 
-function findImage(data: Item, arrayKey: number) {
+export function findImage(data: Item, arrayKey: number) {
     if ('images' in data && data?.images?.length) {
         return data.images[arrayKey].url ?? null;
     }
@@ -14,7 +14,7 @@ function findImage(data: Item, arrayKey: number) {
     return null;
 }
 
-export default async function (data: Item, arrayKey: number = 0) {
+export async function getMaskColor(data: Item, arrayKey: number = 0) {
     try {
         const image = findImage(data, arrayKey);
         if (!image) return null;

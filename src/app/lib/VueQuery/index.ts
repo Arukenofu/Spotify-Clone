@@ -5,7 +5,8 @@ const VueQueryPluginConfig: VueQueryPluginOptions = {
     queryClientConfig: {
         defaultOptions: {
             queries: {
-                retry: false
+                retry: false,
+                staleTime: Infinity
             }
         }
     }

@@ -2,7 +2,7 @@
 import setTitle from '@/shared/utils/setTitle';
 import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
-import {useQuery} from "@tanstack/vue-query";
+import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import useResponsive from "@/shared/composables/useResponsive";
 import SearchMobileSearchBar from "@/pageLayouts/search/mobile/SearchMobileSearchBar.vue";
@@ -15,7 +15,8 @@ import GenreCard from "@/pageLayouts/search/GenreCard.vue";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import {getHistory, removeFromHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import type {Categories, ItemTypes} from "@spotify/web-api-ts-sdk";
+import InfiniteScroll from "@/shared/components/InfiniteScroll.vue";
 
 const {t} = useI18n();
 
@@ -24,7 +25,9 @@ setTitle(t('route-titles.search'));
 const {isMobile} = useResponsive();
 const history = getHistory();
 
-const {data: categories} = useQuery({
+const queryClient = useQueryClient();
+
+const {data: categories, suspense} = useQuery({
   queryKey: ['categories'],
   queryFn: async () => {
     const data = await sdk.browse.getCategories(getCountryCodeA2(), getLocale());
@@ -42,6 +45,35 @@ const {data: categories} = useQuery({
     };
   }
 });
+
+async function nextPage() {
+  const next = categories.value?.next;
+  if (!next) return;
+
+  const data = await sdk.makeRequest('GET', next.replace('https://api.spotify.com/v1/', '')) as Categories | undefined;
+  if (!data) return;
+
+  const maskColors: (string | null)[] = [];
+
+  for (const item of data.categories.items) {
+    const palettes = await getAsyncPalette(item.icons[0].url);
+    maskColors.push(palettes.Vibrant?.hex ?? null);
+  }
+
+  queryClient.setQueryData(['categories'], (oldData: Categories['categories']) => {
+    categories.value
+    return {
+      ...oldData,
+      next: data.categories.next,
+      previous: data.categories.previous,
+      items: oldData.items.concat(data.categories.items),
+      // @ts-ignore
+      maskColors: oldData.maskColors.concat(maskColors),
+    }
+  });
+}
+
+await suspense();
 </script>
 
 <template>
@@ -79,17 +111,17 @@ const {data: categories} = useQuery({
         {{t('search.browseAll')}}
       </h1>
 
-      <div v-if="categories" class="cards">
+      <InfiniteScroll v-if="categories" class="cards" @data-update="nextPage()">
         <GenreCard 
           v-for="(item, index) in categories.items"
-          :id="item.id"
           :key="item.id"
+          :href="item.href"
           :image="getImageFromEntity(item.icons, 0)!"
           :mask-color="categories.maskColors[index]"
         >
           {{item.name}}
         </GenreCard>
-      </div>
+      </InfiniteScroll>
     </div>
   </section>
 </template>

@@ -13,7 +13,7 @@ import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutSta
 import SubscribeButton from "@/shared/UI/Buttons/SubscribeButton.vue";
 import {useI18n} from "vue-i18n";
 import {sdk} from "@/services/sdk";
-import getMaskColor from "@/shared/utils/getMaskColor";
+import {getMaskColor} from "@/shared/utils/getMaskColor";
 import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
 import type {FollowedArtists, SimplifiedAlbum} from "@spotify/web-api-ts-sdk";
 
