@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import awsLambdaFastify from '@fastify/aws-lambda';
 import type {FastifyError, FastifyReply, FastifyRequest} from 'fastify/';
 import cors from '@fastify/cors';
 import staticPlugin from '@fastify/static';
@@ -56,8 +57,9 @@ const start = async (): Promise<void> => {
         console.log(`Среда: ${isProduction ? 'production' : 'development'}`);
     } catch (err: any) {
         fastify.log.error(err);
-        process.exit(1);
     }
 };
 
 await start();
+
+export const handler = awsLambdaFastify(fastify);
