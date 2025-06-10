@@ -1,30 +1,40 @@
-import type {RequestHandler} from 'express';
-import express from 'express';
-import {Readable} from "node:stream";
+import type {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
 
-export const apiRouter = express.Router();
+interface IProxyImageQueryParams {
+  url?: string;
+}
 
-apiRouter.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
+async function apiRoutes (fastify: FastifyInstance) {
+  fastify.get('/health', async (_: FastifyRequest, reply: FastifyReply) => {
+    reply.send({ status: 'ok' });
+  });
 
-  const proxyImageHandler: RequestHandler = async (req, res) => {
-    const { url } = req.query;
+  fastify.get<{ Querystring: IProxyImageQueryParams }>('/proxy-image', async (request, reply) => {
+    const { url } = request.query;
+
+    if (!url) {
+      reply.status(400).send({ error: 'Параметр "url" обязателен.' });
+      return;
+    }
+
     try {
-      const response = await fetch(url as string);
+      const response = await fetch(url);
       const contentType = response.headers.get('content-type');
-      res.setHeader('Content-Type', contentType || 'image/jpeg');
+      reply.header('Content-Type', contentType || 'image/jpeg');
 
-      if (!response.body) {
-        res.status(401).send('Not Found'); return;
+      const contentLength = response.headers.get('content-length');
+      if (contentLength) {
+        reply.header('Content-Length', contentLength);
       }
 
-      const readable = Readable.fromWeb(response.body);
-      readable.pipe(res);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Proxy error');
-    }
-  };
+      reply.code(response.status);
 
-apiRouter.get('/proxy-image', proxyImageHandler);
+      return response.body;
+    } catch (err: any) {
+      fastify.log.error('Proxy image error:', err);
+      reply.status(500).send({ error: 'Ошибка проксирования изображения.' });
+    }
+  });
+}
+
+export default apiRoutes;

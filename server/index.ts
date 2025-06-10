@@ -1,36 +1,63 @@
-import express from 'express';
-import cors from 'cors';
+import Fastify from 'fastify';
+import type {FastifyError, FastifyReply, FastifyRequest} from 'fastify/';
+import cors from '@fastify/cors';
+import staticPlugin from '@fastify/static';
+import formbody from '@fastify/formbody';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {apiRouter} from './routes/api';
+import apiRoutes from "./routes/api";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const fastify = Fastify({
+});
+
+const PORT = 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
-app.use(cors());
-app.use(express.json());
+fastify.register(cors, {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+});
 
-app.use('/api', apiRouter);
+fastify.register(formbody);
+
+fastify.register(apiRoutes, {prefix: '/api'})
 
 if (isProduction) {
     const distPath = path.join(__dirname, '../dist');
-    app.use(express.static(distPath));
-    
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(distPath, 'index.html'));
+    fastify.log.info(`Dist path (production): ${distPath}`);
+
+    fastify.register(staticPlugin, {
+        root: distPath,
+        prefix: '/',
+    });
+
+    fastify.setNotFoundHandler(async (_: FastifyRequest, reply: FastifyReply) => {
+        reply.status(404).send({ error: 'Not Found' });
     });
 }
 
-app.use((err: Error, req: express.Request, res: express.Response) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
+    fastify.log.error('Server Error:', error);
+    const statusCode: number = error.statusCode || 500;
+    reply.status(statusCode).send({
+        error: 'Что-то пошло не так!',
+        details: error.message
+    });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Environment: ${isProduction ? 'production' : 'development'}`);
-}); 
+const start = async (): Promise<void> => {
+    try {
+        await fastify.listen({port: PORT, host: '0.0.0.0'});
+        console.log(`Сервер запущен на порту ${PORT}`);
+        console.log(`Среда: ${isProduction ? 'production' : 'development'}`);
+    } catch (err: any) {
+        fastify.log.error(err);
+        process.exit(1);
+    }
+};
+
+await start();
