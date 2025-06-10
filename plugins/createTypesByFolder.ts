@@ -1,7 +1,7 @@
-import { fileURLToPath } from 'node:url';
+import {fileURLToPath} from 'node:url';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
-import type { Plugin } from 'vite';
+import type {Plugin} from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +12,7 @@ export interface CreateFolderOptions {
   extension: string;
 }
 
-export default function (options: CreateFolderOptions[] = []) {
+export function createTypesByFolder(options: CreateFolderOptions[] = []) {
   const declarationsFolder = path.resolve(__dirname, '../.generated');
 
   if (!fs.existsSync(declarationsFolder)) {

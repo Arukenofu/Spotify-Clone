@@ -1,12 +1,12 @@
-import { fileURLToPath, URL } from 'node:url';
-import { ClientSideLayout } from 'vite-plugin-vue-layouts';
-import { defineConfig } from 'vite';
+import {fileURLToPath, URL} from 'node:url';
+import {ClientSideLayout} from 'vite-plugin-vue-layouts';
+import {defineConfig} from 'vite';
 
 import Router from 'unplugin-vue-router/vite';
 import vue from '@vitejs/plugin-vue';
-import sassGlobImports from 'vite-plugin-sass-glob-import';
-import createTypesByFolder from './scripts/createTypesByFolder';
 import vueDevTools from 'vite-plugin-vue-devtools';
+import sassGlobImports from 'vite-plugin-sass-glob-import';
+import {createTypesByFolder} from './plugins/createTypesByFolder';
 
 import ScssConfig from "./config/scss.config";
 import RouterEnvConfig from "./config/routerEnv.config";

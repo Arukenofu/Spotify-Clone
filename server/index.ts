@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-import awsLambdaFastify from '@fastify/aws-lambda';
 import type {FastifyError, FastifyReply, FastifyRequest} from 'fastify/';
 import cors from '@fastify/cors';
 import staticPlugin from '@fastify/static';
@@ -7,12 +6,12 @@ import formbody from '@fastify/formbody';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import apiRoutes from "./routes/api";
+import * as fs from "fs/promises";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const fastify = Fastify({
-});
+const fastify = Fastify();
 
 const PORT = 3000;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -33,11 +32,19 @@ if (isProduction) {
 
     fastify.register(staticPlugin, {
         root: distPath,
-        prefix: '/',
+        prefix: '/'
     });
 
-    fastify.setNotFoundHandler(async (_: FastifyRequest, reply: FastifyReply) => {
-        reply.status(404).send({ error: 'Not Found' });
+    fastify.setNotFoundHandler(async (request, reply) => {
+        const url = request.raw.url;
+
+        if (url?.startsWith('/api')) {
+            reply.status(404).send({ error: 'API route not found' });
+        } else {
+            const indexPath = path.join(distPath, 'index.html');
+            const file = await fs.readFile(indexPath);
+            reply.type('text/html').send(file);
+        }
     });
 }
 
@@ -50,7 +57,7 @@ fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: Fa
     });
 });
 
-const start = async (): Promise<void> => {
+const startFastifyServer = async (): Promise<void> => {
     try {
         await fastify.listen({port: PORT, host: '0.0.0.0'});
         console.log(`Сервер запущен на порту ${PORT}`);
@@ -60,6 +67,4 @@ const start = async (): Promise<void> => {
     }
 };
 
-await start();
-
-export const handler = awsLambdaFastify(fastify);
+await startFastifyServer();

@@ -1,4 +1,4 @@
-import type {CreateFolderOptions} from "../scripts/createTypesByFolder";
+import type {CreateFolderOptions} from "../plugins/createTypesByFolder";
 
 export default [
     {
