@@ -2,21 +2,21 @@
 import {computed, inject, type Ref} from 'vue';
 import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
-import type {Playlist, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
-import formatRelativeDate from "../../shared/utils/formatRelativeDate";
+import type {PlaylistedTrack, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
+import formatRelativeDate from "@/shared/utils/formatRelativeDate";
+import PlaylistTableVar1 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue";
+import PlaylistTableVar2 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue";
 
 const {t} = useI18n();
 const {format} = useMusicCollectionFormat();
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
 defineProps<{
-  items: Playlist<Track>['tracks']['items'] | SavedTrack[]
+  items: PlaylistedTrack<Track>[] | SavedTrack[]
 }>();
 
 const currentFormatClass = computed(() => {
@@ -51,16 +51,13 @@ const currentFormatClass = computed(() => {
     </MusicRowHeaderWrapper>
 
     <TrackTableWrapper>
-      <template v-for="(music, index) of items" :key="music.track.id">
+      <template v-for="({track, ...item}, index) of items" :key="index">
         <MusicRow
+          v-if="track"
           :index="index + 1"
           :is-current="false"
           :is-playing="false"
-          :music-id="music.track.id"
-          :music-name="music.track.name"
-          :duration="music.track.duration_ms / 1000"
-          :artists="music.track.artists"
-          :image="getImageFromEntity(music.track.album.images, 2)"
+          :track="track"
           :color="null"
           :is-added="false"
           :show-artists="true"
@@ -68,34 +65,20 @@ const currentFormatClass = computed(() => {
           class="row computedGrid"
         >
           <template #var1>
-            <CommaSeparatedArtistsLink
-              v-if="format === 'Compact'"
-              :artists="music.track.artists"
-              class="artists"
+            <PlaylistTableVar1 
+              :track-id="track.id" :album-name="track.album.name"
+              :format="format" :artists="track.artists"
             />
-            <RouterLink
-              v-else
-              :to="`/album/${music.track.album.id}`"
-              class="link"
-            >
-              {{music.track.album.name}}
-            </RouterLink>
           </template>
           <template #var2>
-            <RouterLink
-              v-if="format === 'Compact'"
-              :to="`/album/${music.track.album.id}`"
-              class="link"
-            >
-              {{music.track.album.name}}
-            </RouterLink>
-            <span v-else class="added-at">
-              {{formatRelativeDate(music.added_at)}}
-            </span>
+            <PlaylistTableVar2
+              :album-id="track.album.id" :album-name="track.album.name"
+              :format="format" :added-at="item.added_at"
+            />
           </template>
           <template v-if="format === 'Compact'" #var3>
             <span class="added-at">
-              {{formatRelativeDate(music.added_at)}}
+              {{formatRelativeDate(item.added_at)}}
             </span>
           </template>
         </MusicRow>

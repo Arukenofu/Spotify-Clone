@@ -170,17 +170,12 @@ const discography = computed(() => {
       >
         <div class="popular-tracks-wrapper">
           <MusicRow
-            v-for="(music, index) of topTracks"
-            :key="music.id"
+            v-for="(track, index) of topTracks"
+            :key="track.id"
             :index="index + 1"
+            :track="track"
             :is-current="false"
             :is-playing="false"
-            :music-id="music.id"
-            :music-name="music.name"
-            :duration="music.duration_ms / 1000"
-            :artists="music.artists"
-            :image="music.album.images[2].url"
-            :color="null"
             :is-added="false"
             :show-artists="false"
             class="row"

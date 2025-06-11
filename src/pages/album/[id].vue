@@ -4,9 +4,8 @@ import {useQuery} from "@tanstack/vue-query";
 import {useRoute} from "vue-router";
 import GeneralGradientSectionWithControls
   from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
+import TrackRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import {computed, inject, type Ref, ref} from "vue";
 import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
@@ -15,14 +14,14 @@ import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 import {sdk} from "@/services/sdk";
-import type {Album, Artist} from "@spotify/web-api-ts-sdk";
-import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import type {Artist} from "@spotify/web-api-ts-sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
+import {getMaskColor} from "@/shared/utils/getMaskColor";
 
 const {t} = useI18n();
 
@@ -44,15 +43,6 @@ async function fetchArtistData(artists: Artist[]) {
   return artists;
 }
 
-async function getMaskColor(data: Album) {
-  if (!data?.images?.length) return null;
-
-  const palette = await getAsyncPalette(data.images[0].url);
-  if (!palette.Vibrant) return null;
-
-  return palette.Vibrant.hex;
-}
-
 const {data, isFetching, isError} = useQuery({
   queryKey: ['album', albumId],
   queryFn: async () => {
@@ -68,8 +58,6 @@ const {data, isFetching, isError} = useQuery({
 });
 
 const {format, setFormat} = useMusicCollectionFormat();
-
-const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
 </script>
 
 <template>
@@ -83,7 +71,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
         :title="data.name"
         :scroll-y="scrollY"
         :passing-height="280"
-        :is-playing="isThisPlaylist(data.id, true)"
+        :is-playing="false"
         :mask="data.maskColor"
       />
 
@@ -97,7 +85,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
       />
 
       <GeneralGradientSectionWithControls
-        :is-playing="isThisPlaylist(data.id, true)"
+        :is-playing="false"
         :bg-color="data.maskColor"
         :tooltip-str="t('music-actions.moreOptionsFor', [data.name])"
       >
@@ -121,17 +109,13 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
       </MusicRowHeaderWrapper>
 
       <TrackTableWrapper>
-        <MusicRow
+        <TrackRow
           v-for="(music, index) of data.tracks.items"
           :key="music.id"
           :index="index + 1"
-          :is-current="isThisPlaylistAndMusic(music.id, data.id)"
-          :is-playing="isThisPlaylistAndMusic(music.id, data.id, true)"
-          :music-id="music.id"
-          :music-name="music.name"
-          :duration="music.duration_ms / 1000"
-          :artists="music.artists"
-          :image="null"
+          :track="music"
+          :is-current="false"
+          :is-playing="false"
           :is-added="false"
           :compact="format === 'Compact'"
           :class="format === 'Compact' && 'compact'"
@@ -142,7 +126,7 @@ const {isThisPlaylist, isThisPlaylistAndMusic} = useMusicUtils();
           <template v-if="format === 'Compact'" #var1>
             <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
           </template>
-        </MusicRow>
+        </TrackRow>
       </TrackTableWrapper>
     </div>
   </HandleEntityLayoutStates>

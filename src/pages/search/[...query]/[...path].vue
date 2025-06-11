@@ -10,8 +10,6 @@ import {sdk} from "@/services/sdk";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import SearchCardScroller from "@/pageLayouts/search/SearchCardScroller.vue";
 import type {PartialSearchResult} from "@spotify/web-api-ts-sdk";
 
@@ -62,26 +60,13 @@ function nextPage(
     }
   })
 }
-
-const {isThisMusic} = useMusicUtils();
 </script>
 
 <template>
   <LoadingBlock v-if="isFetching" />
   <SearchError v-else-if="error || !entity" />
   <div v-else-if="data" class="recommended-cards">
-    <SearchCardScroller
-      v-if="entity !== 'track'"
-      :data="data"
-      :type="`${entity}s`"
-      @data-update="nextPage"
-    >
-      <template #default="{item}">
-        <SearchCardComponent :item="item" :type="`${entity}s`" />
-      </template>
-    </SearchCardScroller>
-
-    <div v-else class="tracks-section">
+    <div v-if="entity === 'track'" class="tracks-section">
       <MusicRowHeader class="row-header">
         <template #var1>
           Альбом
@@ -94,21 +79,28 @@ const {isThisMusic} = useMusicUtils();
           :key="track.id"
           :index="index+1"
           class="track"
-          :is-current="isThisMusic(track.id, false)"
-          :is-playing="isThisMusic(track.id, true)"
+          :track="track"
+          :is-current="false"
+          :is-playing="false"
           :is-added="false"
-          :music-id="track.id"
-          :artists="track.artists.map((value) => ({
-            id: value.id,
-            name: value.name
-          }))"
-          :music-name="track.name"
-          :duration="track.duration_ms / 1000"
-          :image="getImageFromEntity(track.album.images, 2)"
-          :color="'#ffffff'"
         />
       </div>
     </div>
+
+    <div v-else-if="entity === 'episode'">
+
+    </div>
+
+    <SearchCardScroller
+      v-else
+      :data="data"
+      :type="`${entity}s`"
+      @data-update="nextPage"
+    >
+      <template #default="{item}">
+        <SearchCardComponent :item="item" :type="`${entity}s`" />
+      </template>
+    </SearchCardScroller>
   </div>
   <SearchNotFound v-else-if="isSuccess && !data![`${entity}s`].items.length" :query />
 </template>

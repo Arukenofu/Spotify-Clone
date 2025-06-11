@@ -13,11 +13,13 @@ import {useI18n} from "vue-i18n";
 const {t} = useI18n();
 
 const route = useRoute('/search/[...query]/[...path]');
-const input = useTemplateRef('input');
+const input = useTemplateRef<HTMLInputElement>('input');
 const inputValue = ref<string>('');
 
 function onSearchClick() {
-  if (!route.fullPath.startsWith('/search')) {
+  if (inputValue.value) {
+    router.push(`/search/${inputValue.value}`);
+  } else if (!route.fullPath.startsWith('/search')) {
     router.push('/search');
   }
 
@@ -41,7 +43,6 @@ function onInput(value: string) {
 
   debounce(() => {
     const path = route.params.path ? `/${route.params.path}` : '';
-
     router.push(`/search/${encodeURIComponent(value)}${path}`);
   }, 1000);
 }
@@ -51,10 +52,9 @@ function clearAll() {
   inputValue.value = '';
 }
 
-router.beforeEach((to, from) => {
-  if (from.path.startsWith('/search') && !to.path.startsWith('/search')) {
-    inputValue.value = '';
-    clear();
+router.afterEach((to) => {
+  if (to.path.startsWith('/search/') && route.params.query) {
+    inputValue.value = route.params.query;
   }
 })
 </script>
@@ -69,7 +69,6 @@ router.beforeEach((to, from) => {
       v-model="inputValue"
       type="text"
       :placeholder="t('app-header.searchBarPlaceholder')"
-      @keyup="onSearchClick()"
       @input="onInput(($event.target as HTMLInputElement).value)"
     >
     <div class="icon-container-search">

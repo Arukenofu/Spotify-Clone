@@ -5,8 +5,8 @@ import staticPlugin from '@fastify/static';
 import formbody from '@fastify/formbody';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import apiRoutes from "./routes/api";
 import * as fs from "fs/promises";
+import apiRoutes from "./routes/api";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +24,7 @@ fastify.register(cors, {
 
 fastify.register(formbody);
 
-fastify.register(apiRoutes, {prefix: '/api'})
+fastify.register(apiRoutes, {prefix: '/api'});
 
 if (isProduction) {
     const distPath = path.join(__dirname, '../dist');
@@ -53,7 +53,7 @@ fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: Fa
     const statusCode: number = error.statusCode || 500;
     reply.status(statusCode).send({
         error: 'Что-то пошло не так!',
-        details: error.message
+        details: error
     });
 });
 

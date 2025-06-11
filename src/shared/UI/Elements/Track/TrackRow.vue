@@ -10,26 +10,21 @@ import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue
 import {useI18n} from "vue-i18n";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
+import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
+import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import {computed} from "vue";
 
 interface Props {
   index?: number;
+  track: Track | SimplifiedTrack;
   isCurrent: boolean;
   isPlaying: boolean;
   isAdded: boolean;
-  musicId: string | number;
-  musicName: string;
-  duration: number;
-  artists: {id: string, name: string}[];
-  image: string | null;
-  maskLoaderImage?: string | null;
+
   compact?: boolean;
   showArtists?: boolean;
   hideImage?: boolean;
 }
-
-withDefaults(defineProps<Props>(), {
-  showArtists: true
-});
 
 type Emits = {
   setPlay: [],
@@ -37,7 +32,24 @@ type Emits = {
   showContextMenu: [],
 }
 
+const props = withDefaults(defineProps<Props>(), {
+  showArtists: true
+});
 defineEmits<Emits>();
+
+const image = 'album' in props.track ? getImageFromEntity(props.track.album.images, 2) : null;
+
+const optionsContextMenu = computed(() => ({
+  content:
+      t('music-actions.moreOptionsFor',
+          [`${getCommaSeparatedString(props.track.artists, 'name')} — ${props.track.name}`]
+      ),
+  style: {
+    overflow: 'hidden',
+    textAlign: 'right',
+    direction: 'revert'
+  }
+}));
 
 const {t} = useI18n();
 </script>
@@ -46,7 +58,6 @@ const {t} = useI18n();
   <div
     class="row"
     :class="compact && 'row-compact'"
-    @click="$emit('setPlay')"
   >
     <div v-if="index" class="index">
       <span
@@ -62,15 +73,9 @@ const {t} = useI18n();
     </div>
     <div class="main">
       <div v-if="!(compact || hideImage)" class="image-wrapper" :class="!index && 'noindex'">
-        <LazyImage
-          v-if="image !== null"
-          :image="image"
-          class="image"
-        />
-        <div
-          v-else
-          class="icon image"
-        >
+        <LazyImage v-if="image !== null" :image="image" class="image" />
+
+        <div v-else class="icon image">
           <NoMusicOrPlaylistAvatar class="icon" />
         </div>
 
@@ -78,20 +83,20 @@ const {t} = useI18n();
       </div>
       <div class="added-at">
         <RouterLink
-          v-tooltip="musicName"
-          :to="`/track/${musicId}`"
+          v-tooltip="track.name"
+          :to="`/track/${track.id}`"
           :style="getActiveColor(isCurrent)"
           class="musicName"
           @click.stop
         >
-          {{musicName}}
+          {{track.name}}
         </RouterLink>
         <span
           v-if="showArtists && !compact"
           class="artists"
           @click.stop
         >
-          <CommaSeparatedArtistsLink class="artist" :artists="artists" />
+          <CommaSeparatedArtistsLink class="artist" :artists="track.artists" />
         </span>
       </div>
     </div>
@@ -116,18 +121,11 @@ const {t} = useI18n();
         <RoundPlusIcon v-else class="add" />
       </button>
       <span>
-        {{formatTime(duration)}}
+        {{formatTime(track.duration_ms / 1000)}}
       </span>
 
       <button
-        v-tooltip="{
-          content: t('music-actions.moreOptionsFor', [`${getCommaSeparatedString(artists, 'name')} — ${musicName}`]),
-          style: {
-            overflow: 'hidden',
-            textAlign: 'right',
-            direction: 'revert'
-          }
-        }"
+        v-tooltip="optionsContextMenu"
         class="contextMenu show-on-hover"
         @click.stop
       >

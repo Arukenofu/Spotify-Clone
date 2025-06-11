@@ -3,14 +3,12 @@ import EntitiesSectionWrapper from "@/shared/UI/EntityPageElements/EntitiesSecti
 import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import {useI18n} from "vue-i18n";
-import {clearHistory, getHistory, removeFromHistory} from "@/features/SearchHistory";
+import {clearHistory, history, removeFromHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
 import type {ItemTypes} from "@spotify/web-api-ts-sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const {t} = useI18n();
-
-const history = getHistory()?.reverse();
 </script>
 
 <template>

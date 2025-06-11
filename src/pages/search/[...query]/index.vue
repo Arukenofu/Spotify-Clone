@@ -2,7 +2,6 @@
 import EntityCard from "@/shared/UI/Elements/EntityCard.vue";
 import {useQuery} from "@tanstack/vue-query";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
 import {computed} from "vue";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
@@ -14,7 +13,6 @@ import {sdk} from "@/services/sdk";
 import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
 import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
 import type {SearchResults} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 
 const {t} = useI18n();
 const route = useRoute('/search/[...query]/');
@@ -37,7 +35,6 @@ const bestResult = computed(() => {
   return data.value?.playlists.items[0];
 });
 
-const {isThisMusic} = useMusicUtils();
 const allowedEntitiesSection:
       Exclude<(keyof SearchResults<typeof allSearchEntities>), 'tracks'>[] = ['playlists', 'albums', 'artists'];
 </script>
@@ -72,17 +69,10 @@ const allowedEntitiesSection:
             v-for="track in data.tracks.items.slice(0, 4)"
             :key="track.id"
             class="track"
-            :is-current="isThisMusic(track.id, false)"
-            :is-playing="isThisMusic(track.id, true)"
+            :track="track"
+            :is-current="false"
+            :is-playing="false"
             :is-added="false"
-            :music-id="track.id"
-            :artists="track.artists.map((value) => ({
-              id: value.id,
-              name: value.name
-            }))"
-            :music-name="track.name"
-            :duration="track.duration_ms / 1000"
-            :image="getImageFromEntity(track.album.images, 2)"
           />
         </div>
       </div>

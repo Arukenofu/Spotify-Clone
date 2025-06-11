@@ -13,17 +13,17 @@ import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
 import getAsyncPalette from "@/shared/utils/getAsyncPalette";
 import GenreCard from "@/pageLayouts/search/GenreCard.vue";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
-import {getHistory, removeFromHistory} from "@/features/SearchHistory";
+import {history, removeFromHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
 import type {Categories, ItemTypes} from "@spotify/web-api-ts-sdk";
 import InfiniteScroll from "@/shared/components/InfiniteScroll.vue";
+import {proxy} from "@/shared/utils/proxy";
 
 const {t} = useI18n();
 
 setTitle(t('route-titles.search'));
 
 const {isMobile} = useResponsive();
-const history = getHistory();
 
 const queryClient = useQueryClient();
 
@@ -93,7 +93,7 @@ await suspense();
           :id="entity.id"
           :type="entity.type as ItemTypes"
           :name="entity.name"
-          :image="getImageFromEntity(entity.images)"
+          :image="proxy(entity?.images?.[0]?.url)"
           class="music-card"
         >
           <SearchCardDescriptionRenderer :entity="entity" />

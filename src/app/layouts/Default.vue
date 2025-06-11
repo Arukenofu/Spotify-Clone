@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {onMounted, provide, ref} from 'vue';
 import {LayoutMobileRouter} from '@/widgets/LayoutRouterMobile';
-import {MediaPlayer} from '@/widgets/MediaPlayer';
 import {LayoutSideBar} from '@/widgets/LayoutSideBar';
 import {LayoutInfoContent} from '@/widgets/LayoutInfoPanel';
 import {LayoutHeader} from '@/widgets/LayoutHeader';
@@ -95,7 +94,6 @@ await suspense();
   </div>
 
   <LayoutMobileRouter v-if="isMobile" />
-  <MediaPlayer v-else />
 </template>
 
 <style lang="scss" scoped>

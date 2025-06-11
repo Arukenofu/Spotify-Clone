@@ -9,11 +9,9 @@ import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutSta
 import {sdk} from "@/services/sdk";
 import type {User} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
-import {findImage, getMaskColor} from "@/shared/utils/getMaskColor";
+import {getMaskColor} from "@/shared/utils/getMaskColor";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
-import getAsyncPalette from "@/shared/utils/getAsyncPalette";
 import {proxy} from "@/shared/utils/proxy";
 
 const route = useRoute('/playlist/[id]');
@@ -44,10 +42,9 @@ const {data, isFetched, isFetching, isError} = useQuery({
   queryFn: async () => {
     const data = await fetchPlaylistData();
 
-    const imageUrl = findImage(data, 0);
-    const maskColor = imageUrl ? (await getAsyncPalette(proxy(imageUrl))).Vibrant?.hex : null;
-    console.log(maskColor);
+    data.images[0].url = proxy(data.images[0].url)!;
 
+    const maskColor = await getMaskColor(data);
     const owner = await getOwnerData(data.owner.id);
 
     setTitle(`${data.name} | Spotify Playlist`);
@@ -56,8 +53,6 @@ const {data, isFetched, isFetching, isError} = useQuery({
   },
   staleTime: 10000
 });
-
-const {isThisPlaylist} = useMusicUtils();
 </script>
 
 <template>
@@ -71,7 +66,7 @@ const {isThisPlaylist} = useMusicUtils();
         :title="data.name"
         :scroll-y="scrollY"
         :mask="data.maskColor"
-        :is-playing="isThisPlaylist(data.id, true)"
+        :is-playing="false"
       />
 
       <PlaylistInfo

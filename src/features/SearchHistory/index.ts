@@ -1,5 +1,6 @@
 import useCachedRef from "@/shared/composables/useCachedRef";
 import type {ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
+import {computed} from "vue";
 
 type Item = NonNullable<PartialSearchResult[`${Exclude<ItemTypes, 'track'>}s`]>['items'][number];
 
@@ -19,16 +20,21 @@ function addToHistory(item: Item) {
     history.value.push(item);
 }
 
-function getHistory() {
+const getHistory = computed(() => {
     return history.value.slice().reverse();
-}
+})
 
 function removeFromHistory(index: number) {
-    history.value.splice(index, 1);
+    history.value.splice(history.value.length - index - 1, 1);
 }
 
 function clearHistory() {
     history.value = [];
 }
 
-export {addToHistory, getHistory, removeFromHistory, clearHistory};
+export {
+    addToHistory,
+    getHistory as history,
+    removeFromHistory,
+    clearHistory
+};
