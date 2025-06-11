@@ -81,7 +81,7 @@ const {t} = useI18n();
 
         <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
       </div>
-      <div class="added-at">
+      <div class="track-info">
         <RouterLink
           v-tooltip="track.name"
           :to="`/track/${track.id}`"
@@ -274,13 +274,14 @@ const {t} = useI18n();
       }
     }
 
-    .added-at {
+    .track-info {
       display: flex;
       flex-direction: column;
       gap: 3px;
       justify-items: center;
 
       a {
+        line-height: 1.2;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         line-clamp: 1;
@@ -288,6 +289,8 @@ const {t} = useI18n();
         white-space: unset;
         word-break: break-all;
         font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &:hover {
           text-decoration: underline;
@@ -298,16 +301,27 @@ const {t} = useI18n();
         color: var(--white);
         text-decoration: none;
         font-size: 1rem;
+        text-underline-offset: 2px;
       }
 
       .artists {
-        display: flex;
         color: var(--text-soft);
-        font-size: .875rem;
-        font-weight: 400;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        white-space: unset;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.375;
 
-        :deep(.artist:hover) {
-          color: var(--white);
+        :deep(.artist) {
+          line-height: 1.5;
+
+          &:hover {
+            color: var(--white);
+            text-decoration: underline;
+          }
         }
       }
     }

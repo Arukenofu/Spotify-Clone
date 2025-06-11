@@ -4,7 +4,7 @@ import type {FormatTypes} from "#imports";
 import type {SimplifiedArtist} from "@spotify/web-api-ts-sdk";
 
 defineProps<{
-  trackId: string;
+  albumId: string;
   albumName: string;
   format: FormatTypes;
   artists: SimplifiedArtist[];
@@ -19,7 +19,7 @@ defineProps<{
   />
   <RouterLink
     v-else
-    :to="`/album/${trackId}`"
+    :to="`/album/${albumId}`"
     class="link"
   >
     {{albumName}}

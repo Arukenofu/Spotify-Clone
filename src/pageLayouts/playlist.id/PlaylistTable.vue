@@ -66,7 +66,7 @@ const currentFormatClass = computed(() => {
         >
           <template #var1>
             <PlaylistTableVar1 
-              :track-id="track.id" :album-name="track.album.name"
+              :album-id="track.album.id" :album-name="track.album.name"
               :format="format" :artists="track.artists"
             />
           </template>
