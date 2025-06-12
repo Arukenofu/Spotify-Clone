@@ -3,7 +3,7 @@ import {FastAverageColor} from "fast-average-color";
 
 type Item = NonNullable<PartialSearchResult[keyof PartialSearchResult]>['items'][number] | User | Album;
 
-function increaseSaturation(r: number, g: number, b: number, factor = 1.2) {
+export function increaseSaturation(r: number, g: number, b: number, factor = 1.2) {
     r /= 255; g /= 255; b /= 255;
 
     const max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -52,17 +52,21 @@ export function findImage(data: Item, arrayKey: number) {
     return null;
 }
 
+export async function facColor(url: string) {
+    const fac = new FastAverageColor();
+
+    return fac.getColorAsync(url, {
+        algorithm: 'sqrt',
+        mode: 'speed'
+    })
+}
+
 export async function getMaskColor(data: Item, arrayKey: number = 0) {
     try {
         const image = findImage(data, arrayKey);
         if (!image) return null;
 
-        const fac = new FastAverageColor();
-
-        const palette = await fac.getColorAsync(image, {
-            algorithm: 'sqrt',
-            mode: 'speed'
-        });
+        const palette = await facColor(image);
 
         let [r, g, b] = palette.value;
 

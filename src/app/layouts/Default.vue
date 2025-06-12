@@ -12,6 +12,7 @@ import PageFooter from "@/app/components/PageFooter.vue";
 import {Toast} from "@/widgets/Toast";
 import {useQuery} from "@tanstack/vue-query";
 import {sdk} from "@/services/sdk";
+import {MediaPlayer} from "@/widgets/MediaPlayer";
 
 const layout = ref();
 const layoutScrollY = ref<number>(0);
@@ -93,6 +94,7 @@ await suspense();
     <Toast />
   </div>
 
+  <MediaPlayer />
   <LayoutMobileRouter v-if="isMobile" />
 </template>
 

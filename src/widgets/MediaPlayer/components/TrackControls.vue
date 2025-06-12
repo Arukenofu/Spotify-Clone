@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, watch} from 'vue';
+import {onMounted, reactive} from "vue";
 import {storeToRefs} from 'pinia';
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
 import Previous from '@/shared/UI/Icons/Previous.vue';
@@ -8,76 +8,15 @@ import Next from '@/shared/UI/Icons/Next.vue';
 import Repeat from '@/shared/UI/Icons/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
 import {useUserSettings} from '@/widgets/MediaPlayer/store/useUserSettings';
-import getRandomNumber from '@/shared/utils/getRandomNumber';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import formatTime from '@/shared/utils/format/formatTimeMMSS';
-import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
-import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
-import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
-import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import {useI18n} from "vue-i18n";
+import {currentPlaybackStore, useAudioStream} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
-const musicStore = useMusicStore();
-const playlistStore = usePlaylistStore();
-const currentMusicStore = useCurrentMusicStore();
-
-const { audio, isPlaying, currentTime, duration } = storeToRefs(musicStore);
-const { currentQueue } = storeToRefs(playlistStore);
-const { currentAudioIndexInQueue } = storeToRefs(currentMusicStore);
-
-const { toggleTrackPlaying, nextTrack, previousTrack, loadSongFromCurrentQueue } = useMusicUtils();
-const {loadMetaData, autoTimeUpdate} = musicStore;
-
 const userConfig = useUserSettings();
 const { isShuffle, currentRepeatMode } = storeToRefs(userConfig);
-
-onMounted(() => {
-  loadMetaData();
-  autoTimeUpdate(onMusicEnded);
-
-  setInterval(() => {
-    loadMetaData();
-    autoTimeUpdate(onMusicEnded);
-  }, 1500);
-});
-
-watch(audio, () => {
-  loadMetaData();
-});
-
-async function onMusicEnded() {
-  if (!currentAudioIndexInQueue.value) {
-    return;
-  }
-
-  if (currentRepeatMode.value === 'repeatCurrentMusic') {
-    return audio.value?.play();
-  }
-
-  if (isShuffle.value) {
-    return loadSongFromCurrentQueue(
-      currentQueue.value[
-        getRandomNumber(
-          currentQueue.value.length - 1,
-          currentAudioIndexInQueue.value
-        )
-      ]
-    );
-  }
-
-  if (currentRepeatMode.value === 'repeatCurrentPlaylist') {
-    return nextTrack();
-  }
-
-  isPlaying.value = false;
-}
-
-function timeUpdate(time: number) {
-  audio.value!.currentTime = time;
-  isPlaying.value = true;
-}
 
 function repeatModeTooltip() {
   if (currentRepeatMode.value === 'onlyCurrentMusic') {
@@ -90,6 +29,29 @@ function repeatModeTooltip() {
 
   return t('media-player.repeatStop');
 }
+
+const stream = reactive(useAudioStream());
+const currentPlayback = currentPlaybackStore();
+
+onMounted(() => {
+  const el = new Audio();
+  el.preload = 'none';
+  el.crossOrigin = 'anonymous';
+  el.volume = stream.volume;
+
+  el.addEventListener('loadedmetadata', () => {
+    stream.duration = isFinite(el.duration) ? el.duration : 0;
+  });
+
+  el.addEventListener('timeupdate', () => {
+    stream.currentTime = el.currentTime;
+  });
+
+  el.addEventListener('play', () => stream.isPlaying = true);
+  el.addEventListener('pause', () => stream.isPlaying = false);
+
+  stream.instance = el;
+});
 </script>
 
 <template>
@@ -104,22 +66,20 @@ function repeatModeTooltip() {
       <Previous
         v-tooltip="t('media-player.previous')"
         class="icon pointerable"
-        @click="previousTrack()"
       />
       <button
-        v-tooltip="isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
+        v-tooltip="stream.isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
         class="icon musicState pointerable"
-        @click="toggleTrackPlaying()"
       >
         <PlayingState
-          :state="isPlaying"
+          :state="stream.isPlaying"
           class="icon"
+          @click="stream.setAudioUrl(currentPlayback.currentTrackId!); stream.play()"
         />
       </button>
       <Next
         v-tooltip="t('media-player.next')"
         class="icon pointerable"
-        @click="nextTrack()"
       />
       <Repeat
         v-tooltip="repeatModeTooltip()"
@@ -134,21 +94,22 @@ function repeatModeTooltip() {
 
     <div class="progress">
       <div class="currentTime">
-        {{ formatTime(currentTime) }}
+        {{formatTime(stream.currentTime)}}
       </div>
 
       <Range
         class="range"
-        :max="duration"
-        :current="currentTime"
-        :thumb-fix="1"
-        @on-value-change="timeUpdate"
-        @mousedown="audio!.pause()"
-        @mouseup="audio!.play()"
+        :current="stream.currentTime"
+        :max="stream.duration"
+        :thumb-fix="1.5"
+        use-local
+        @on-value-change="stream.seek"
+        @mousedown="stream.pause()"
+        @mouseup="stream.play()"
       />
 
       <div class="duration">
-        {{ formatTime(duration) }}
+        {{formatTime(stream.duration)}}
       </div>
     </div>
   </div>

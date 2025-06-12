@@ -1,35 +1,61 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed, ref, watch} from 'vue';
 
 interface Props {
   current: number;
   min?: number;
   max: number;
   step?: number;
+
   thumbFix?: number;
   disabled?: boolean;
+
+  useLocal?: boolean;
+  useTransition?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   min: 0,
-  step: 0,
-  thumbFix: 2
+  step: 0.1,
+  thumbFix: 2,
+  useLocal: false
+});
+
+const localValue = ref(props.current);
+
+const isDragging = ref(false);
+
+watch(() => props.current, (value) => {
+  if (!isDragging.value) {
+    localValue.value = value;
+  }
 });
 
 const progress = computed(() => {
   const min = props.min || 0;
   const max = props.max;
-  const current = props.current;
+  const current = localValue.value;
 
   return ((current - min) / (max - min)) * 100;
 });
 
-function updateCurrentValue(event: Event) {
+function onInput(event: Event) {
   const target = event.target as HTMLInputElement;
-  const value =
-    props.min + (props.max - props.min) * (parseFloat(target.value) / 100);
 
-  emit('onValueChange', value);
+  const value = props.min + (props.max - props.min) * (parseFloat(target.value) / 100);
+
+  localValue.value = Number(value);
+
+  !props.useLocal && emit('onValueChange', localValue.value);
+}
+
+function onMouseDown() {
+  isDragging.value = true;
+}
+
+function onMouseUp() {
+  isDragging.value = false;
+  emit('onValueChange', localValue.value);
 }
 
 const emit = defineEmits<{
@@ -42,21 +68,17 @@ const emit = defineEmits<{
     <input
       min="0"
       max="100"
-      :step="step ?? 1"
+      :step="step"
       type="range"
       :value="progress"
       :disabled="disabled"
-      @input="updateCurrentValue($event)"
+      @input="onInput"
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
     >
-    <div
-      class="range-progress"
-      :style="`width: ${progress}%`"
-    />
+    <div class="range-progress" />
 
-    <div
-      class="thumb"
-      :style="`left: ${progress - thumbFix}%`"
-    />
+    <div class="thumb"/>
   </div>
 </template>
 
@@ -66,6 +88,8 @@ const emit = defineEmits<{
   background-color: hsla(0, 0%, 100%, .3);
   border-radius: 2px;
   position: relative;
+
+  --progress: calc(v-bind(progress) * 1%);
 
   &:hover,
   &:active,
@@ -140,15 +164,15 @@ const emit = defineEmits<{
     height: 100%;
     background-color: var(--white);
     border-radius: 2px;
-    width: 0;
+    width: var(--progress);
   }
 
   .thumb {
     opacity: 0;
     position: absolute;
     top: 1.6px;
+    left: calc(var(--progress) - (v-bind(thumbFix) * 1%));
     transform: translateY(-50%);
-    left: calc(v-bind('progress'));
     height: 12px;
     border-radius: 50%;
     aspect-ratio: 1/1;

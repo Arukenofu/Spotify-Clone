@@ -3,11 +3,14 @@ import {computed} from 'vue';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
-import type {Track} from '@/services/types/Entities/Track';
 import {useI18n} from "vue-i18n";
+import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
+import {currentTrackImage} from "@/features/MediaPlayer";
+import type {PlayerTypes} from "@/features/MediaPlayer/types/PlayerTypes";
 
 const props = defineProps<{
-  music: Track;
+  playback: PlayerTypes,
+  music: Track | SimplifiedTrack;
   state: boolean;
 }>();
 
@@ -22,6 +25,10 @@ const playingStateTooltip = computed(() => {
   const action = props.state ? 'pause' : 'play';
 
   return t(`music-actions.${action}TrackByArtist`, [musicName, artists])
+});
+
+const currentImage = computed(() => {
+  return currentTrackImage(props.playback, props.music)
 });
 </script>
 
@@ -39,7 +46,7 @@ const playingStateTooltip = computed(() => {
 
       <div
         class="image"
-        :style="`background-image: url('${music.avatar}')`"
+        :style="`background-image: url('${currentImage}')`"
       />
     </div>
 

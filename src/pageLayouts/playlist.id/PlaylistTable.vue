@@ -10,13 +10,15 @@ import type {PlaylistedTrack, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
 import formatRelativeDate from "@/shared/utils/formatRelativeDate";
 import PlaylistTableVar1 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue";
 import PlaylistTableVar2 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue";
+import {setCurrentPlayback} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 const {format} = useMusicCollectionFormat();
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
 defineProps<{
-  items: PlaylistedTrack<Track>[] | SavedTrack[]
+  items: PlaylistedTrack<Track>[] | SavedTrack[],
+  playlistId: string;
 }>();
 
 const currentFormatClass = computed(() => {
@@ -63,6 +65,7 @@ const currentFormatClass = computed(() => {
           :show-artists="true"
           :compact="format === 'Compact'"
           class="row computedGrid"
+          @click="setCurrentPlayback('playlist', playlistId, track.id)"
         >
           <template #var1>
             <PlaylistTableVar1 

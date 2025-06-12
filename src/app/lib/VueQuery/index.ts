@@ -1,6 +1,9 @@
-import {VueQueryPlugin, type VueQueryPluginOptions} from '@tanstack/vue-query';
+import {QueryClient, VueQueryPlugin, type VueQueryPluginOptions} from '@tanstack/vue-query';
+
+const queryClient = new QueryClient()
 
 const VueQueryPluginConfig: VueQueryPluginOptions = {
+    queryClient: queryClient,
     enableDevtoolsV6Plugin: true,
     queryClientConfig: {
         defaultOptions: {
@@ -12,4 +15,4 @@ const VueQueryPluginConfig: VueQueryPluginOptions = {
     }
 }
 
-export {VueQueryPlugin, VueQueryPluginConfig};
+export {queryClient, VueQueryPlugin, VueQueryPluginConfig};

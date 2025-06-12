@@ -6,21 +6,15 @@ import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNon
 import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue';
 import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
 import FullScreen from "@/widgets/MediaPlayer/components/FullScreen.vue";
-import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
-import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
 import useScreen from "@/shared/composables/useScreen";
 import {provide} from "vue";
 
-const musicStore = useMusicStore();
-
-const {toggleTrackPlaying} = useMusicUtils();
 const {isFullscreen, enableFullscreen, exitFullScreen} = useScreen();
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
   if (event.repeat) return;
 
   if (event.code === 'Space') {
-    toggleTrackPlaying();
     event.preventDefault();
   }
 });
@@ -32,7 +26,7 @@ provide('exitFullScreenFunc', exitFullScreen);
 <template>
   <FullScreen v-if="isFullscreen" />
 
-  <div v-else-if="musicStore.audio" class="player">
+  <div v-if="true" class="player">
     <TrackDetails />
     <TrackControls />
     <AdditionalControls />

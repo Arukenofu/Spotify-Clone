@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
 import {inject} from 'vue';
 import {router} from '@/app/router';
 import Range from '@/shared/components/Range.vue';
@@ -11,46 +10,16 @@ import Volume from '@/shared/UI/Icons/Volume.vue';
 import VolumeSilent from '@/shared/UI/Icons/VolumeSilent.vue';
 import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue';
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
-import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import {infoPanel} from '@/features/InfoPanel';
 import {useI18n} from "vue-i18n";
+import {useAudioStream} from "@/features/MediaPlayer";
+import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
 
 const {t} = useI18n();
 
-const musicStore = useMusicStore();
-const { audio, volume } = storeToRefs(musicStore);
+const {setVolume, volume} = useAudioStream();
 
 const { currentPanelName, setNewPanel } = infoPanel();
-
-function volumeUpdate(newVolume: number) {
-  audio.value!.volume = newVolume;
-  volume.value = newVolume;
-}
-
-function toggleVolume() {
-  if (
-    volume.value === 0 &&
-    audio.value?.volume === 0 &&
-    !localStorage.getItem('volumeCached')
-  ) {
-    audio.value!.volume = 1;
-    volume.value = 1;
-
-    return;
-  }
-
-  if (audio.value!.volume === 0) {
-    audio.value!.volume = JSON.parse(localStorage.getItem('volumeCached')!);
-    volume.value = JSON.parse(localStorage.getItem('volumeCached')!);
-    localStorage.removeItem('volumeCached');
-
-    return;
-  }
-
-  localStorage.setItem('volumeCached', JSON.stringify(volume.value));
-  volume.value = 0;
-  audio.value!.volume = 0;
-}
 
 const { currentRoutePath } = useCurrentRoutePath('path');
 
@@ -101,13 +70,13 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
           v-if="volume !== 0"
           v-tooltip="t('media-player.disableVoice')"
           class="icon"
-          @click="toggleVolume()"
+          @click="toggleVolume(volume, setVolume)"
         />
         <VolumeSilent
           v-else
           v-tooltip="t('media-player.enableVoice')"
           class="icon"
-          @click="toggleVolume()"
+          @click="toggleVolume(volume, setVolume)"
         />
 
         <Range
@@ -116,7 +85,7 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
           :thumb-fix="6"
           :current="volume!"
           :step="0.01"
-          @on-value-change="volumeUpdate"
+          @on-value-change="setVolume"
         />
       </div>
 

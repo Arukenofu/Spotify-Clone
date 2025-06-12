@@ -6,80 +6,22 @@ import Previous from "@/shared/UI/Icons/Previous.vue";
 import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
 import Next from "@/shared/UI/Icons/Next.vue";
 import Repeat from "@/shared/UI/Icons/Repeat.vue";
-import useMusicStore from "@/features/MediaPlayer/store/useMusicStore";
-import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
-import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
 import {storeToRefs} from "pinia";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
-import {inject, onMounted, ref, watch} from "vue";
-import getRandomNumber from "@/shared/utils/getRandomNumber";
+import {inject, reactive, ref} from "vue";
 import formatTimeMMSS from "../../../shared/utils/format/formatTimeMMSS";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import ShowText from "@/shared/UI/Icons/ShowText.vue";
 import VolumeSilent from "@/shared/UI/Icons/VolumeSilent.vue";
 import Volume from "@/shared/UI/Icons/Volume.vue";
 import UnFullscreen from "@/shared/UI/Icons/UnFullscreen.vue";
+import {useAudioStream} from "@/features/MediaPlayer";
+import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
 
-const musicStore = useMusicStore();
-const playlistStore = usePlaylistStore();
-const currentMusicStore = useCurrentMusicStore();
-
-const { audio, isPlaying, currentTime, duration, volume } = storeToRefs(musicStore);
-const { currentQueue } = storeToRefs(playlistStore);
-const { currentAudioIndexInQueue } = storeToRefs(currentMusicStore);
-
-const { toggleTrackPlaying, nextTrack, previousTrack, loadSongFromCurrentQueue } = useMusicUtils();
-const {loadMetaData, autoTimeUpdate} = musicStore;
+const stream = reactive(useAudioStream());
 
 const userConfig = useUserSettings();
 const { isShuffle, currentRepeatMode } = storeToRefs(userConfig);
-
-onMounted(() => {
-  loadMetaData();
-  autoTimeUpdate(onMusicEnded);
-
-  setInterval(() => {
-    loadMetaData();
-    autoTimeUpdate(onMusicEnded);
-  }, 1500);
-});
-
-watch(audio, () => {
-  loadMetaData();
-});
-
-async function onMusicEnded() {
-  if (!currentAudioIndexInQueue.value) {
-    return;
-  }
-
-  if (currentRepeatMode.value === 'repeatCurrentMusic') {
-    return audio.value?.play();
-  }
-
-  if (isShuffle.value) {
-    return loadSongFromCurrentQueue(
-        currentQueue.value[
-            getRandomNumber(
-                currentQueue.value.length - 1,
-                currentAudioIndexInQueue.value
-            )
-            ]
-    );
-  }
-
-  if (currentRepeatMode.value === 'repeatCurrentPlaylist') {
-    return nextTrack();
-  }
-
-  isPlaying.value = false;
-}
-
-function timeUpdate(time: number) {
-  audio.value!.currentTime = time;
-  isPlaying.value = true;
-}
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 const isHover = ref<boolean>(false);
@@ -92,37 +34,7 @@ function onMouseMove() {
 
   timeoutId = setTimeout(() => {
     isHover.value = false;
-  }, 2000)
-}
-
-function volumeUpdate(newVolume: number) {
-  audio.value!.volume = newVolume;
-  volume.value = newVolume;
-}
-
-function toggleVolume() {
-  if (
-      volume.value === 0 &&
-      audio.value?.volume === 0 &&
-      !localStorage.getItem('volumeCached')
-  ) {
-    audio.value!.volume = 1;
-    volume.value = 1;
-
-    return;
-  }
-
-  if (audio.value!.volume === 0) {
-    audio.value!.volume = JSON.parse(localStorage.getItem('volumeCached')!);
-    volume.value = JSON.parse(localStorage.getItem('volumeCached')!);
-    localStorage.removeItem('volumeCached');
-
-    return;
-  }
-
-  localStorage.setItem('volumeCached', JSON.stringify(volume.value));
-  volume.value = 0;
-  audio.value!.volume = 0;
+  }, 2000);
 }
 
 const exitFullScreen = inject<void>('exitFullScreenFunc');
@@ -133,21 +45,22 @@ const exitFullScreen = inject<void>('exitFullScreenFunc');
     <div class="controls-layout">
       <div class="timebar">
         <div class="current">
-          {{formatTimeMMSS(currentTime)}}
+          {{formatTimeMMSS(stream.currentTime)}}
         </div>
         <div class="progress">
           <Range
             class="range"
-            :current="currentTime"
-            :max="duration"
+            :current="stream.currentTime"
+            :max="stream.duration"
             :thumb-fix=".5"
-            @on-value-change="timeUpdate"
-            @mousedown="audio!.pause()"
-            @mouseup="audio!.play()"
+            use-local
+            @on-value-change="stream.seek"
+            @mousedown="stream.pause()"
+            @mouseup="stream.play()"
           />
         </div>
         <div class="duration">
-          {{formatTimeMMSS(duration)}}
+          {{formatTimeMMSS(stream.duration)}}
         </div>
       </div>
 
@@ -159,11 +72,11 @@ const exitFullScreen = inject<void>('exitFullScreenFunc');
         </div>
         <div class="main">
           <RandomOrder class="icon" @click="isShuffle = !isShuffle" />
-          <Previous class="icon" @click="previousTrack()" />
-          <button class="state" @click="toggleTrackPlaying()">
-            <PlayingState class="icon" :state="isPlaying" />
+          <Previous class="icon" />
+          <button class="state">
+            <PlayingState class="icon" :state="stream.isPlaying" />
           </button>
-          <Next class="icon" @click="nextTrack()" />
+          <Next class="icon" />
           <Repeat
             class="icon"
             :state="currentRepeatMode === 'repeatCurrentMusic'"
@@ -176,23 +89,23 @@ const exitFullScreen = inject<void>('exitFullScreenFunc');
 
           <div class="volume-option">
             <Volume
-              v-if="volume !== 0"
+              v-if="stream.volume !== 0"
               class="icon"
-              @click="toggleVolume()"
+              @click="toggleVolume(stream.volume, stream.setVolume)"
             />
             <VolumeSilent
               v-else
               class="icon"
-              @click="toggleVolume()"
+              @click="toggleVolume(stream.volume, stream.setVolume)"
             />
 
             <Range
               class="range"
               :max="1"
               :thumb-fix="6"
-              :current="volume!"
+              :current="stream.volume"
               :step="0.01"
-              @on-value-change="volumeUpdate"
+              @on-value-change="stream.setVolume"
             />
           </div>
 

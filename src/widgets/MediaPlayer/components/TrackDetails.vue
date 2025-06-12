@@ -1,42 +1,47 @@
 <script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
+import {currentPlaybackStore} from "@/features/MediaPlayer/store/currentPlaybackStore";
+import {computed} from "vue";
+import {currentTrackImage} from "@/features/MediaPlayer/utils/currentTrackImage";
 
-const store = useCurrentMusicStore();
-const { currentAudioData } = storeToRefs(store)
+const store = currentPlaybackStore();
+const {currentPlaybackInfo, currentTrack} = storeToRefs(store);
+
+const trackImage = computed(() => {
+  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!);
+});
 </script>
 
 <template>
-  <div v-if="currentAudioData" class="track-details">
-    <div class="track-image-outer">
-      <img
-        :src="currentAudioData.avatar ?? ''"
-        alt=""
-      >
-    </div>
+  <div class="track-details">
+    <template v-if="currentTrack">
+      <div class="track-image-outer">
+        <img :src="trackImage" alt="">
+      </div>
 
-    <MainTrackInfo class="track-info">
-      <template #title>
-        <Marquee v-slot="{startMarquee}">
-          <RouterLink
-            class="track-link"
-            :to="`/track/${currentAudioData.id}`"
-            @mouseenter="startMarquee()"
-          >
-            {{currentAudioData.name}}
-          </RouterLink>
-        </Marquee>
-      </template>
-      <template #artists>
-        <CommaSeparatedArtistsLink
-          class="artist"
-          :artists="currentAudioData.artists"
-        />
-      </template>
-    </MainTrackInfo>
+      <MainTrackInfo class="track-info">
+        <template #title>
+          <Marquee v-slot="{startMarquee}">
+            <RouterLink
+              class="track-link"
+              :to="`/track/${currentTrack.id}`"
+              @mouseenter="startMarquee()"
+            >
+              {{currentTrack.name}}
+            </RouterLink>
+          </Marquee>
+        </template>
+        <template #artists>
+          <CommaSeparatedArtistsLink
+            class="artist"
+            :artists="currentTrack.artists"
+          />
+        </template>
+      </MainTrackInfo>
+    </template>
   </div>
 </template>
 

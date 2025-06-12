@@ -13,15 +13,14 @@ import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutSta
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
-import {sdk} from "@/services/sdk";
-import type {Artist} from "@spotify/web-api-ts-sdk";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
-import {getMaskColor} from "@/shared/utils/getMaskColor";
+import {fetchAlbum} from "@/services/sdk/entities/album";
+import {setCurrentPlayback} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
@@ -31,28 +30,14 @@ const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent'
 
 const albumId = computed(() => route.params.id);
 
-async function fetchAlbumData() {
-  return sdk.albums.get(albumId.value);
-}
-
-async function fetchArtistData(artists: Artist[]) {
-  if (artists.length === 1) {
-    return [await sdk.artists.get(artists[0].id)];
-  }
-
-  return artists;
-}
-
 const {data, isFetching, isError} = useQuery({
   queryKey: ['album', albumId],
   queryFn: async () => {
-    const data = await fetchAlbumData();
-    const maskColor = await getMaskColor(data);
-    const artists = await fetchArtistData(data.artists);
+    const data = await fetchAlbum(albumId.value);
 
     setTitle(`${data.name} - Album by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
 
-    return {...data, artists, maskColor};
+    return data;
   },
   staleTime: Infinity
 });
@@ -110,10 +95,10 @@ const {format, setFormat} = useMusicCollectionFormat();
 
       <TrackTableWrapper>
         <TrackRow
-          v-for="(music, index) of data.tracks.items"
-          :key="music.id"
+          v-for="(track, index) of data.tracks.items"
+          :key="track.id"
           :index="index + 1"
-          :track="music"
+          :track="track"
           :is-current="false"
           :is-playing="false"
           :is-added="false"
@@ -122,9 +107,10 @@ const {format, setFormat} = useMusicCollectionFormat();
           class="row"
           show-artists
           hide-image
+          @click="setCurrentPlayback('album', albumId, track.id)"
         >
           <template v-if="format === 'Compact'" #var1>
-            <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
+            <CommaSeparatedArtistsLink class="artist" :artists="track.artists" />
           </template>
         </TrackRow>
       </TrackTableWrapper>

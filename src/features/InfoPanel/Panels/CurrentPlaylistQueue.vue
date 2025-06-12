@@ -1,26 +1,19 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {storeToRefs} from 'pinia';
+import {computed, reactive} from 'vue';
 import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
 import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue';
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
-import useMusicUtils from '@/features/MediaPlayer/composables/useMusicUtils';
-import useCurrentMusicStore from '@/features/MediaPlayer/store/useCurrentMusicStore';
-import usePlaylistStore from '@/features/MediaPlayer/store/usePlaylistStore';
-import useMusicStore from '@/features/MediaPlayer/store/useMusicStore';
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
-
-const store = useCurrentMusicStore();
-const playlistStore = usePlaylistStore();
-const musicStore = useMusicStore();
-const { currentAudioData, currentAudioIndexInQueue } = storeToRefs(store);
-const { toggleTrackPlaying, loadSongFromCurrentQueue } = useMusicUtils();
+import {currentPlaybackStore, useAudioStream} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
+const stream = reactive(useAudioStream());
+const currentPlayback = currentPlaybackStore();
+
 const isNoQueue = computed(() => {
-  return !playlistStore.currentQueue.length || currentAudioIndexInQueue.value == null
+  return true;
 })
 
 const nextSongsInQueue = computed(() => {
@@ -28,14 +21,14 @@ const nextSongsInQueue = computed(() => {
     return [];
   }
 
-  return playlistStore.currentQueue.slice(currentAudioIndexInQueue.value! + 1);
+  return [];
 });
 
 const headTextValue = computed(() => {
   let output = t('info-panel.queue.next');
 
-  if (playlistStore.currentPlaylistInfo?.name) {
-    output += ` ${t('info-panel.queue.from')}: ${playlistStore.currentPlaylistInfo?.name}`;
+  if (currentPlayback.currentPlaybackInfo?.name) {
+    output += ` ${t('info-panel.queue.from')}: ${currentPlayback.currentPlaybackInfo.name}`;
   } else {
     output += ':';
   }
@@ -55,20 +48,20 @@ const headTextValue = computed(() => {
     </PanelHeader>
 
     <ScrollableBlock class="content">
-      <div v-if="currentAudioData" class="now-playing section">
+      <div v-if="currentPlayback.currentTrack" class="now-playing section">
         <div class="head-text">
           {{t('info-panel.queue.nowPlaying')}}
         </div>
         <div class="currentMusic">
           <Transition
-            :name="currentAudioIndexInQueue !== 0 ? 'v' : ''"
+            :name="currentPlayback.currentTrackIndex !== 0 ? 'v' : ''"
             mode="out-in"
           >
             <MusicBlock
-              :key="currentAudioData.id"
-              :music="currentAudioData"
-              :state="musicStore.isPlaying"
-              @on-image-block-click="toggleTrackPlaying"
+              :key="currentPlayback.currentTrack.id"
+              :playback="currentPlayback.currentPlaybackInfo!"
+              :music="currentPlayback.currentTrack"
+              :state="stream.isPlaying"
             />
           </Transition>
         </div>

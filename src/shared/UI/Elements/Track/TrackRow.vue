@@ -308,15 +308,17 @@ const {t} = useI18n();
         color: var(--text-soft);
         display: -webkit-box;
         -webkit-line-clamp: 1;
+        line-clamp: 1;
         -webkit-box-orient: vertical;
         white-space: unset;
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
-        line-height: 1.375;
+        height: 19.2px;
+        font-size: .95rem;
 
         :deep(.artist) {
-          line-height: 1.5;
+          line-height: 0;
 
           &:hover {
             color: var(--white);

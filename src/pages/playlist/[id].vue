@@ -3,53 +3,26 @@ import {useRoute} from 'vue-router';
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
-import {useQuery, useQueryClient} from "@tanstack/vue-query";
+import {useQuery} from "@tanstack/vue-query";
 import {computed, inject, ref} from "vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import {sdk} from "@/services/sdk";
-import type {User} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
-import {getMaskColor} from "@/shared/utils/getMaskColor";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
-import {proxy} from "@/shared/utils/proxy";
+import {fetchPlaylist} from "@/services/sdk/entities/playlist";
 
 const route = useRoute('/playlist/[id]');
 const scrollY = inject('layoutScrollY', ref(0));
-const queryClient = useQueryClient();
 const albumId = computed(() => route.params.id);
 
-async function fetchPlaylistData() {
-  return sdk.playlists.getPlaylist(albumId.value);
-}
-
-async function getOwnerData(id: string) {
-  const cachedUser = queryClient.getQueryData<User & {maskColor: string | null}>(['user', id])
-
-  if (cachedUser && cachedUser.id === id) {
-    return cachedUser;
-  }
-
-  const owner = await sdk.users.profile(id);
-  const maskColor = await getMaskColor(owner)
-  queryClient.setQueryData(['user', owner.id], {...owner, maskColor});
-
-  return {...owner, maskColor};
-}
-
 const {data, isFetched, isFetching, isError} = useQuery({
-  queryKey: ['playlistInfo', albumId],
+  queryKey: ['playlist', albumId],
   queryFn: async () => {
-    const data = await fetchPlaylistData();
-
-    data.images[0].url = proxy(data.images[0].url)!;
-
-    const maskColor = await getMaskColor(data);
-    const owner = await getOwnerData(data.owner.id);
+    const data = await fetchPlaylist(albumId.value);
 
     setTitle(`${data.name} | Spotify Playlist`);
 
-    return {...data, owner, maskColor};
+    return data;
   },
   staleTime: 10000
 });
@@ -91,6 +64,7 @@ const {data, isFetched, isFetching, isError} = useQuery({
 
       <PlaylistTable
         :items="data.tracks.items"
+        :playlist-id="data.id"
       />
     </div>
   </HandleEntityLayoutStates>
