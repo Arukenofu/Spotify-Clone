@@ -20,7 +20,7 @@ const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
     });
 
     const currentTrack = computed<Track | SimplifiedTrack | null>(() => {
-        if (!currentTrackIndex.value) return null;
+        if (currentTrackIndex.value === null || currentTrackIndex.value === -1) return null;
 
         const item = currentPlaybackInfo.value?.tracks.items[currentTrackIndex.value];
         if (!item) return null;
