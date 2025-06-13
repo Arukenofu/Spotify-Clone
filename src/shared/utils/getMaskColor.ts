@@ -1,5 +1,5 @@
 import type {Album, PartialSearchResult, User} from "@spotify/web-api-ts-sdk";
-import {FastAverageColor} from "fast-average-color";
+import {FastAverageColor, type FastAverageColorOptions} from "fast-average-color";
 
 type Item = NonNullable<PartialSearchResult[keyof PartialSearchResult]>['items'][number] | User | Album;
 
@@ -52,12 +52,13 @@ export function findImage(data: Item, arrayKey: number) {
     return null;
 }
 
-export async function facColor(url: string) {
+export async function facColor(url: string, options: FastAverageColorOptions = {}) {
     const fac = new FastAverageColor();
 
     return fac.getColorAsync(url, {
         algorithm: 'sqrt',
-        mode: 'speed'
+        mode: 'speed',
+        ...options
     })
 }
 

@@ -67,4 +67,4 @@ const startFastifyServer = async (): Promise<void> => {
     }
 };
 
-await startFastifyServer();
+startFastifyServer();

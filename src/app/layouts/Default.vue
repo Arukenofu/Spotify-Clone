@@ -13,6 +13,7 @@ import {Toast} from "@/widgets/Toast";
 import {useQuery} from "@tanstack/vue-query";
 import {sdk} from "@/services/sdk";
 import {MediaPlayer} from "@/widgets/MediaPlayer";
+import {useRoute} from "vue-router";
 
 const layout = ref();
 const layoutScrollY = ref<number>(0);
@@ -27,6 +28,7 @@ router.afterEach(() => {
   layoutScrollY.value = 0;
 });
 
+const route = useRoute();
 const { isMobile } = useResponsive();
 
 onMounted(() => {
@@ -70,7 +72,7 @@ await suspense();
         >
           <SpotifyView />
 
-          <PageFooter />
+          <PageFooter v-if="route.path !== '/lyrics'" />
         </ScrollableBlock>
 
         <LayoutInfoContent />
