@@ -2,21 +2,20 @@ import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 import type {PlayerTypes, PlayerTypesStr} from "@/features/MediaPlayer/types/PlayerTypes";
 import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
+import getSimplifiedTrack from "@/features/MediaPlayer/utils/getSimplifiedTrack";
 
 const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
     const currentPlaybackType = ref<PlayerTypesStr | null>(null);
     const currentPlaybackInfo = ref<PlayerTypes | null>(null);
-    const currentTrackId = ref<string | null>(null);
+    const currentTrackId = ref<string>('none');
 
     const currentTrackIndex = computed<number>(() => {
         if (!currentPlaybackInfo.value || !currentTrackId.value) return -1;
 
         return currentPlaybackInfo.value.tracks?.items?.findIndex((track) => {
-            if ('added_at' in track) {
-                return track.track.id === currentTrackId.value;
-            }
+            const simplifiedTrack = getSimplifiedTrack(track);
 
-            return track.id === currentTrackId.value;
+            return simplifiedTrack.id === currentTrackId.value;
         });
     });
 
@@ -26,11 +25,7 @@ const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
         const item = currentPlaybackInfo.value?.tracks.items[currentTrackIndex.value];
         if (!item) return null;
 
-        if ('added_at' in item) {
-            return {...item.track}
-        }
-
-        return item;
+        return getSimplifiedTrack(item);
     });
 
     return {

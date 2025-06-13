@@ -11,7 +11,6 @@ import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import {inject, ref} from "vue";
 import type {UserProfile} from "@spotify/web-api-ts-sdk";
 import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
@@ -21,7 +20,6 @@ const maskColor = 'rgb(80, 56, 160)';
 
 const {t} = useI18n();
 const queryClient = useQueryClient();
-const scrollY = inject('layoutScrollY', ref(0));
 
 const currentUserData = queryClient.getQueryData<UserProfile>(['currentUser']);
 const currentUserAvatar = getImageFromEntity(currentUserData!.images, 1);
@@ -47,7 +45,6 @@ const {format, setFormat} = useMusicCollectionFormat();
     <div v-if="favoriteTracks" class="collection">
       <PlayHeaderWithPlayingState
         title="Любимые треки"
-        :scroll-y="scrollY"
         :is-playing="false"
         :mask="maskColor"
       />

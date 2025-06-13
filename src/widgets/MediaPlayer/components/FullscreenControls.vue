@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {inject, reactive, ref} from "vue";
+import {useUserPreferences} from "@/widgets/MediaPlayer/store/useUserPreferences";
+import formatTimeMMSS from "@/shared/utils/format/formatTimeMMSS";
+import getActiveColor from "@/shared/utils/getActiveColor";
+import {useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
+import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
 import Range from "@/shared/components/Range.vue";
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import RandomOrder from "@/shared/UI/Icons/RandomOrder.vue";
@@ -6,22 +12,15 @@ import Previous from "@/shared/UI/Icons/Previous.vue";
 import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
 import Next from "@/shared/UI/Icons/Next.vue";
 import Repeat from "@/shared/UI/Icons/Repeat.vue";
-import {storeToRefs} from "pinia";
-import {useUserSettings} from "@/widgets/MediaPlayer/store/useUserSettings";
-import {inject, reactive, ref} from "vue";
-import formatTimeMMSS from "../../../shared/utils/format/formatTimeMMSS";
-import getActiveColor from "@/shared/utils/getActiveColor";
 import ShowText from "@/shared/UI/Icons/ShowText.vue";
 import VolumeSilent from "@/shared/UI/Icons/VolumeSilent.vue";
 import Volume from "@/shared/UI/Icons/Volume.vue";
 import UnFullscreen from "@/shared/UI/Icons/UnFullscreen.vue";
-import {useAudioStream} from "@/features/MediaPlayer";
-import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
 
 const stream = reactive(useAudioStream());
+const controls = reactive(usePlaybackControls());
 
-const userConfig = useUserSettings();
-const { isShuffle, currentRepeatMode } = storeToRefs(userConfig);
+const preferences = useUserPreferences();
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 const isHover = ref<boolean>(false);
@@ -71,17 +70,17 @@ const exitFullScreen = inject<void>('exitFullScreenFunc');
           </button>
         </div>
         <div class="main">
-          <RandomOrder class="icon" @click="isShuffle = !isShuffle" />
-          <Previous class="icon" />
-          <button class="state">
+          <RandomOrder class="icon" @click="preferences.toggleIsShuffle" />
+          <Previous class="icon" @click="controls.previousTrack" />
+          <button class="state" @click="controls.toggleCurrentTrack">
             <PlayingState class="icon" :state="stream.isPlaying" />
           </button>
-          <Next class="icon" />
+          <Next class="icon" @click="controls.nextTrack" />
           <Repeat
             class="icon"
-            :state="currentRepeatMode === 'repeatCurrentMusic'"
-            :style="getActiveColor(currentRepeatMode !== 'onlyCurrentMusic', 'fill')"
-            @click="userConfig.toggleRepeatMode()"
+            :state="preferences.currentRepeatMode === 'repeatCurrentMusic'"
+            :style="getActiveColor(preferences.currentRepeatMode !== 'onlyCurrentMusic', 'fill')"
+            @click="preferences.toggleRepeatMode"
           />
         </div>
         <div class="additional">

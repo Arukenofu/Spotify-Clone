@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, type Ref} from 'vue';
+import {computed, inject, reactive, type Ref} from 'vue';
 import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
@@ -10,15 +10,19 @@ import type {PlaylistedTrack, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
 import formatRelativeDate from "@/shared/utils/formatRelativeDate";
 import PlaylistTableVar1 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue";
 import PlaylistTableVar2 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue";
-import {setCurrentPlayback} from "@/features/MediaPlayer";
+import {currentPlaybackStore, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 const {format} = useMusicCollectionFormat();
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
+const stream = reactive(useAudioStream());
+const currentPlayback = currentPlaybackStore();
+
 defineProps<{
   items: PlaylistedTrack<Track>[] | SavedTrack[],
   playlistId: string;
+  isCurrent: boolean;
 }>();
 
 const currentFormatClass = computed(() => {
@@ -57,8 +61,8 @@ const currentFormatClass = computed(() => {
         <MusicRow
           v-if="track"
           :index="index + 1"
-          :is-current="false"
-          :is-playing="false"
+          :is-current="currentPlayback.currentTrackId === track.id"
+          :is-playing="stream.isPlaying"
           :track="track"
           :color="null"
           :is-added="false"

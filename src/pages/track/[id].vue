@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {computed, inject, ref} from "vue";
+import {computed} from "vue";
 import {useQuery} from "@tanstack/vue-query";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
@@ -24,7 +24,6 @@ import {getMaskColor} from "@/shared/utils/getMaskColor";
 const {t} = useI18n();
 
 const route = useRoute('/track/[id]');
-const layoutScrollY = inject('layoutScrollY', ref(0));
 
 const trackId = computed(() => {
   return route.params.id;
@@ -68,7 +67,6 @@ const {isThisMusic} = useMusicUtils();
     <div v-if="trackInfo" class="recommended-cards">
       <PlayHeaderWithPlayingState
         :title="trackInfo.name"
-        :scroll-y="layoutScrollY"
         :mask="trackInfo.maskColor"
         :is-playing="isThisMusic(trackInfo.id, true)"
       />

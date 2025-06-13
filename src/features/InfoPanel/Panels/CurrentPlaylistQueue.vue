@@ -5,12 +5,13 @@ import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue';
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
-import {currentPlaybackStore, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
+import {currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 import type {PlaylistedTrack, SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
 
 const {t} = useI18n();
 
 const stream = reactive(useAudioStream());
+const controls = reactive(usePlaybackControls());
 const currentPlayback = currentPlaybackStore();
 
 const isNoQueue = computed(() => {
@@ -82,13 +83,14 @@ const headTextValue = computed(() => {
               :playback="currentPlayback.currentPlaybackInfo!"
               :music="currentPlayback.currentTrack"
               :state="stream.isPlaying"
+              @on-image-block-click="controls.toggleCurrentTrack"
             />
           </Transition>
         </div>
       </div>
 
       <div
-        v-if="queue.length"
+        v-if="nextSongsInQueue.length"
         class="next-queue section"
       >
         <div class="head-text">

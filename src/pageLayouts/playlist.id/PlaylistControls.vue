@@ -15,6 +15,7 @@ const props = defineProps<{
   playlistName: string;
   maskColor: string | null;
   isAdded: boolean;
+  isPlaying: boolean;
 }>();
 
 const {format, setFormat} = useMusicCollectionFormat();
@@ -30,7 +31,7 @@ const tooltips = reactive({
 
 <template>
   <GeneralGradientSectionWithControls
-    :is-playing="false"
+    :is-playing="isPlaying"
     :tooltip-str="tooltips.options"
     :bg-color="maskColor"
   >

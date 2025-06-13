@@ -4,21 +4,24 @@ import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/Pla
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
 import {useQuery} from "@tanstack/vue-query";
-import {computed, inject, ref} from "vue";
+import {computed, reactive} from "vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import setTitle from "@/shared/utils/setTitle";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
 import {fetchPlaylist} from "@/services/sdk/entities/playlist";
+import {useAudioStream, usePlaybackStates} from "@/features/MediaPlayer";
 
 const route = useRoute('/playlist/[id]');
-const scrollY = inject('layoutScrollY', ref(0));
-const albumId = computed(() => route.params.id);
+const playlistId = computed(() => route.params.id);
+
+const stream = reactive(useAudioStream());
+const states = reactive(usePlaybackStates());
 
 const {data, isFetched, isFetching, isError} = useQuery({
-  queryKey: ['playlist', albumId],
+  queryKey: ['playlist', playlistId],
   queryFn: async () => {
-    const data = await fetchPlaylist(albumId.value);
+    const data = await fetchPlaylist(playlistId.value);
 
     setTitle(`${data.name} | Spotify Playlist`);
 
@@ -26,6 +29,9 @@ const {data, isFetched, isFetching, isError} = useQuery({
   },
   staleTime: 10000
 });
+
+const isCurrentAlbum = computed(() => states.isCurrentPlayback('playlist', playlistId.value));
+const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
 </script>
 
 <template>
@@ -37,9 +43,8 @@ const {data, isFetched, isFetching, isError} = useQuery({
     <div v-if="isFetched && data" class="playlist" :style="`--bg-mask: ${data.maskColor}`">
       <PlayHeaderWithPlayingState
         :title="data.name"
-        :scroll-y="scrollY"
         :mask="data.maskColor"
-        :is-playing="false"
+        :is-playing="isAlbumPlaying"
       />
 
       <PlaylistInfo
@@ -59,12 +64,14 @@ const {data, isFetched, isFetching, isError} = useQuery({
         :playlist-id="data.id"
         :playlist-name="data.name"
         :mask-color="data.maskColor"
+        :is-playing="isAlbumPlaying"
         :is-added="false"
       />
 
       <PlaylistTable
         :items="data.tracks.items"
         :playlist-id="data.id"
+        :is-current="isCurrentAlbum"
       />
     </div>
   </HandleEntityLayoutStates>

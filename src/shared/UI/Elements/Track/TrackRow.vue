@@ -67,7 +67,7 @@ const {t} = useI18n();
         {{index}}
       </span>
       <button class="toggle show-on-hover">
-        <img v-if="isPlaying" src="/src/assets/images/equalizer-animated.gif" alt="" />
+        <img v-if="isPlaying && isCurrent" src="/src/assets/images/equalizer-animated.gif" alt="" />
         <PlayingState v-else class="icon" />
       </button>
     </div>

@@ -7,7 +7,7 @@ import GeneralGradientSectionWithControls
 import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
 import TrackRow from "@/shared/UI/Elements/Track/TrackRow.vue";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import {computed, inject, type Ref, ref} from "vue";
+import {computed, inject, reactive, type Ref} from "vue";
 import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
@@ -20,13 +20,16 @@ import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedStri
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
 import {fetchAlbum} from "@/services/sdk/entities/album";
-import {setCurrentPlayback} from "@/features/MediaPlayer";
+import {currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackStates} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
 const route = useRoute('/playlist/[id]');
-const scrollY = inject('layoutScrollY', ref(0));
 const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
+
+const currentPlayback = currentPlaybackStore();
+const stream = reactive(useAudioStream());
+const states = reactive(usePlaybackStates());
 
 const albumId = computed(() => route.params.id);
 
@@ -42,6 +45,9 @@ const {data, isFetching, isError} = useQuery({
   staleTime: Infinity
 });
 
+const isCurrentAlbum = computed(() => states.isCurrentPlayback('album', albumId.value));
+const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
+
 const {format, setFormat} = useMusicCollectionFormat();
 </script>
 
@@ -54,9 +60,8 @@ const {format, setFormat} = useMusicCollectionFormat();
     <div v-if="data" class="album">
       <PlayHeaderWithPlayingState
         :title="data.name"
-        :scroll-y="scrollY"
         :passing-height="280"
-        :is-playing="false"
+        :is-playing="isAlbumPlaying"
         :mask="data.maskColor"
       />
 
@@ -70,7 +75,7 @@ const {format, setFormat} = useMusicCollectionFormat();
       />
 
       <GeneralGradientSectionWithControls
-        :is-playing="false"
+        :is-playing="isAlbumPlaying"
         :bg-color="data.maskColor"
         :tooltip-str="t('music-actions.moreOptionsFor', [data.name])"
       >
@@ -99,8 +104,8 @@ const {format, setFormat} = useMusicCollectionFormat();
           :key="track.id"
           :index="index + 1"
           :track="track"
-          :is-current="false"
-          :is-playing="false"
+          :is-current="currentPlayback.currentTrackId === track.id"
+          :is-playing="stream.isPlaying"
           :is-added="false"
           :compact="format === 'Compact'"
           :class="format === 'Compact' && 'compact'"

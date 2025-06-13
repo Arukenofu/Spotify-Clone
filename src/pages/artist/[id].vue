@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
+import {computed, ref} from "vue";
 import {useRoute} from 'vue-router';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
@@ -20,7 +20,6 @@ import type {FollowedArtists, SimplifiedAlbum} from "@spotify/web-api-ts-sdk";
 const {t} = useI18n();
 
 const route = useRoute('/artist/[id]');
-const layoutScrollY = inject('layoutScrollY', ref(0));
 const queryClient = useQueryClient();
 
 const {data: artistInfo, isFetching, isError} = useQuery({
@@ -128,7 +127,6 @@ const discography = computed(() => {
     <div v-if="artistInfo" class="recommended-cards">
       <PlayHeaderWithPlayingState
         :title="artistInfo.name"
-        :scroll-y="layoutScrollY"
         :mask="artistInfo.maskColor"
         :is-playing="false"
       />

@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import useCachedRef from '@/shared/composables/useCachedRef';
 import repeatModes from '@/widgets/MediaPlayer/constants/repeatModes';
 
 type RepeatModes = 'onlyCurrentMusic' | 'repeatCurrentPlaylist' | 'repeatCurrentMusic';
 
-export const useUserSettings = defineStore('useUserSettings', () => {
+export const useUserPreferences = defineStore('useUserSettings', () => {
   const currentRepeatMode = useCachedRef<RepeatModes>(
       'repeatMode',
       'onlyCurrentMusic',
@@ -29,10 +29,14 @@ export const useUserSettings = defineStore('useUserSettings', () => {
     currentRepeatMode.value = repeatModes[nextIndex];
   }
 
+  function toggleIsShuffle() {
+    isShuffle.value = !isShuffle.value
+  }
+
   return {
     currentRepeatMode,
     isShuffle,
     toggleRepeatMode,
-
+    toggleIsShuffle
   };
 });

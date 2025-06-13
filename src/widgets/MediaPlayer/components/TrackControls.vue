@@ -1,41 +1,36 @@
 <script setup lang="ts">
-import {onMounted, reactive, watch} from "vue";
-import {storeToRefs} from 'pinia';
+import {computed, onMounted, reactive, watch} from "vue";
+import {useI18n} from "vue-i18n";
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
 import Previous from '@/shared/UI/Icons/Previous.vue';
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
 import Next from '@/shared/UI/Icons/Next.vue';
 import Repeat from '@/shared/UI/Icons/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
-import {useUserSettings} from '@/widgets/MediaPlayer/store/useUserSettings';
+import {useUserPreferences} from '@/widgets/MediaPlayer/store/useUserPreferences';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import formatTime from '@/shared/utils/format/formatTimeMMSS';
-import {useI18n} from "vue-i18n";
-import {currentPlaybackStore, useAudioStream} from "@/features/MediaPlayer";
+import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
-const userConfig = useUserSettings();
-const { isShuffle, currentRepeatMode } = storeToRefs(userConfig);
+const preferences = useUserPreferences();
 
-function repeatModeTooltip() {
-  if (currentRepeatMode.value === 'onlyCurrentMusic') {
+const stream = reactive(useAudioStream());
+const controls = reactive(usePlaybackControls());
+const currentPlayback = currentPlaybackStore();
+
+const repeatModeTooltip = computed(() => {
+  if (preferences.currentRepeatMode === 'onlyCurrentMusic') {
     return t('media-player.repeat');
   }
 
-  if (currentRepeatMode.value === 'repeatCurrentPlaylist') {
+  if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
     return t('media-player.repeatOnlyOne');
   }
 
   return t('media-player.repeatStop');
-}
-
-const stream = reactive(useAudioStream());
-const currentPlayback = currentPlaybackStore();
-
-function toggleCurrentTrack() {
-  stream.isPlaying ? stream.pause() : stream.play();
-}
+})
 
 watch(() => currentPlayback.currentTrackId, (value) => {
   stream.loadTrack(value!).then(stream.play);
@@ -66,19 +61,20 @@ onMounted(() => {
   <div class="track-controls">
     <div class="options">
       <RandomOrder
-        v-tooltip="isShuffle ? t('media-player.shuffleDisable') : t('media-player.shuffleEnable')"
+        v-tooltip="preferences.isShuffle ? t('media-player.shuffleDisable') : t('media-player.shuffleEnable')"
         class="icon"
-        :style="getActiveColor(isShuffle, 'fill')"
-        @click="isShuffle = !isShuffle"
+        :style="getActiveColor(preferences.isShuffle, 'fill')"
+        @click="preferences.toggleIsShuffle"
       />
       <Previous
         v-tooltip="t('media-player.previous')"
         class="icon pointerable"
+        @click="controls.previousTrack"
       />
       <button
         v-tooltip="stream.isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
         class="icon musicState pointerable"
-        @click="toggleCurrentTrack()"
+        @click="controls.toggleCurrentTrack"
       >
         <PlayingState
           :state="stream.isPlaying"
@@ -88,15 +84,16 @@ onMounted(() => {
       <Next
         v-tooltip="t('media-player.next')"
         class="icon pointerable"
+        @click="controls.nextTrack"
       />
       <Repeat
-        v-tooltip="repeatModeTooltip()"
+        v-tooltip="repeatModeTooltip"
         :style="
-          getActiveColor(currentRepeatMode !== 'onlyCurrentMusic', 'fill')
+          getActiveColor(preferences.currentRepeatMode !== 'onlyCurrentMusic', 'fill')
         "
-        :state="currentRepeatMode === 'repeatCurrentMusic'"
+        :state="preferences.currentRepeatMode === 'repeatCurrentMusic'"
         class="icon"
-        @click="userConfig.toggleRepeatMode()"
+        @click="preferences.toggleRepeatMode()"
       />
     </div>
 

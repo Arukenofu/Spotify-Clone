@@ -73,7 +73,7 @@ const lyricsStructure = computed(() => {
 <template>
   <LoadingBlock v-if="isLoading" />
 
-  <div v-else-if="!lyrics" class="noText">
+  <div v-else-if="!lyrics" class="noText container">
     {{t('lyrics.noLyrics')}}
   </div>
 
@@ -93,11 +93,12 @@ const lyricsStructure = computed(() => {
   padding-top: 62px;
   padding-bottom: 62px;
   background-color: var(--mask);
+  container: lyrics / inline-size;
 
   .text {
     width: min(100% - 2*64px,1024px);
     margin: 0 auto;
-    font-size: 32px;
+    font-size: 2rem;
     white-space: pre-line;
 
     .parent {
@@ -107,7 +108,7 @@ const lyricsStructure = computed(() => {
         font-weight: 700;
         opacity: 0.7;
         cursor: pointer;
-        transition: opacity .1s ease-out;
+        transition: all .1s ease-out;
 
         &:hover {
           opacity: 1;
@@ -123,6 +124,12 @@ const lyricsStructure = computed(() => {
         margin-bottom: 1em;
       }
     }
+  }
+}
+
+@container lyrics (max-width: 800px) {
+  .container .text {
+    font-size: 3rem !important;
   }
 }
 

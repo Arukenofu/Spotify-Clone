@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue';
 import PlayHeader from "@/shared/UI/Blocks/PlayHeader.vue";
+import {inject, ref} from "vue";
 
 interface Props {
   title: string;
-  scrollY: number;
   isPlaying: boolean;
   mask: string | null;
   passingHeight?: number;
@@ -18,10 +18,12 @@ type Emits = {
   playClick: []
 }
 defineEmits<Emits>();
+
+const scrollY = inject('layoutScrollY', ref(0));
 </script>
 
 <template>
-  <PlayHeader class="play-header" :mask :passing-height :scroll-y>
+  <PlayHeader class="play-header" :mask="mask" :passing-height="$props.passingHeight" :scroll-y="scrollY">
     <div class="content">
       <GreenPlayingButton class="button" :state="isPlaying" @click="$emit('playClick')" />
       <div class="title">{{title}}</div>
