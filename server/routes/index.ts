@@ -1,6 +1,6 @@
 import type {FastifyInstance} from "fastify";
 import proxyImageHandler from "./proxy-image";
-import trackIdHandler from "./track/id";
+import trackIdHandler from "./track";
 import trackLyricsHandler from "./lyrics";
 
 async function apiRoutes (fastify: FastifyInstance) {

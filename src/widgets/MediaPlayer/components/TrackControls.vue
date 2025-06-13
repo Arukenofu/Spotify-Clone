@@ -32,8 +32,11 @@ const repeatModeTooltip = computed(() => {
   return t('media-player.repeatStop');
 })
 
-watch(() => currentPlayback.currentTrackId, (value) => {
-  stream.loadTrack(value!).then(stream.play);
+watch(() => currentPlayback.currentTrackId, () => {
+  stream.loadTrack(
+      currentPlayback.currentTrack!.name,
+      currentPlayback.currentPlaybackInfo!.name
+  ).then(stream.play);
 });
 
 onMounted(() => {

@@ -9,7 +9,7 @@ const duration = ref(0);
 const volume = useCachedRef<number>('volume', 0.75, { min: 0, max: 1 });
 
 export function useAudioStream() {
-    async function loadTrack(id: string) {
+    async function loadTrack(name: string, artist: string) {
         if (!audio.value) return;
 
         isLoading.value = true;
@@ -30,7 +30,7 @@ export function useAudioStream() {
             audio.value!.addEventListener('loadedmetadata', onCanPlay, {once: true});
             audio.value!.addEventListener('error', onError, {once: true});
 
-            audio.value!.src = `/api/track/${id}`;
+            audio.value!.src = `/api/track/?name=${encodeURIComponent(name)}&artist=${encodeURIComponent(artist)}`;
             audio.value!.load();
         });
 
