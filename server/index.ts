@@ -6,7 +6,7 @@ import formbody from '@fastify/formbody';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import * as fs from "fs/promises";
-import apiRoutes from "./routes/api";
+import apiRoutes from "./routes";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

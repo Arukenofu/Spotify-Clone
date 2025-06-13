@@ -8,8 +8,10 @@ import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.
 import FullScreen from "@/widgets/MediaPlayer/components/FullScreen.vue";
 import useScreen from "@/shared/composables/useScreen";
 import {provide} from "vue";
+import {currentPlaybackStore} from "@/features/MediaPlayer";
 
 const {isFullscreen, enableFullscreen, exitFullScreen} = useScreen();
+const store = currentPlaybackStore();
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
   if (event.repeat) return;
@@ -26,7 +28,7 @@ provide('exitFullScreenFunc', exitFullScreen);
 <template>
   <FullScreen v-if="isFullscreen" />
 
-  <div v-if="true" class="player">
+  <div v-if="store.currentTrackId" v-show="!isFullscreen" class="player">
     <TrackDetails />
     <TrackControls />
     <AdditionalControls />

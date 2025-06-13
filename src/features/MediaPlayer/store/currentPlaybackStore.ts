@@ -1,16 +1,17 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
-import type {PlayerTypes} from "@/features/MediaPlayer/types/PlayerTypes";
+import type {PlayerTypes, PlayerTypesStr} from "@/features/MediaPlayer/types/PlayerTypes";
 import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
 
 const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
+    const currentPlaybackType = ref<PlayerTypesStr | null>(null);
     const currentPlaybackInfo = ref<PlayerTypes | null>(null);
     const currentTrackId = ref<string | null>(null);
 
     const currentTrackIndex = computed<number>(() => {
         if (!currentPlaybackInfo.value || !currentTrackId.value) return -1;
 
-        return currentPlaybackInfo.value.tracks.items.findIndex((track) => {
+        return currentPlaybackInfo.value.tracks?.items?.findIndex((track) => {
             if ('added_at' in track) {
                 return track.track.id === currentTrackId.value;
             }
@@ -34,6 +35,7 @@ const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
 
     return {
         currentPlaybackInfo,
+        currentPlaybackType,
         currentTrackId,
         currentTrackIndex,
         currentTrack

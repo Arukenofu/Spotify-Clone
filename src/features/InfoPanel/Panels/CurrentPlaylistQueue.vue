@@ -5,7 +5,8 @@ import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue';
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
-import {currentPlaybackStore, useAudioStream} from "@/features/MediaPlayer";
+import {currentPlaybackStore, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
+import type {PlaylistedTrack, SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
 
 const {t} = useI18n();
 
@@ -13,16 +14,35 @@ const stream = reactive(useAudioStream());
 const currentPlayback = currentPlaybackStore();
 
 const isNoQueue = computed(() => {
-  return true;
-})
+  return !currentPlayback.currentPlaybackInfo;
+});
+
+const queue = computed(() => {
+  const track = currentPlayback.currentPlaybackInfo?.tracks.items[0];
+  if (!track) return [];
+
+  if ('added_at' in track) {
+    return (currentPlayback.currentPlaybackInfo!.tracks.items as PlaylistedTrack<Track>[]).map((item) => item.track);
+  }
+
+  return currentPlayback.currentPlaybackInfo!.tracks.items as SimplifiedTrack[];
+});
 
 const nextSongsInQueue = computed(() => {
   if (isNoQueue.value) {
     return [];
   }
 
-  return [];
+  return queue.value.slice(currentPlayback.currentTrackIndex! + 1);
 });
+
+function setTrack(id: string) {
+  setCurrentPlayback(
+      currentPlayback.currentPlaybackType!,
+      currentPlayback.currentPlaybackInfo?.id!,
+      id
+  )
+}
 
 const headTextValue = computed(() => {
   let output = t('info-panel.queue.next');
@@ -68,7 +88,7 @@ const headTextValue = computed(() => {
       </div>
 
       <div
-        v-if="nextSongsInQueue.length"
+        v-if="queue.length"
         class="next-queue section"
       >
         <div class="head-text">
@@ -77,13 +97,15 @@ const headTextValue = computed(() => {
 
         <div class="music-wrap">
           <MusicBlock
-            v-for="(music, index) in nextSongsInQueue"
-            :key="music.id"
+            v-for="(track, index) in nextSongsInQueue"
+            :key="track.id"
             class="music"
-            :music="music"
+            :playback="currentPlayback.currentPlaybackInfo!"
+            :music="track"
             :state="false"
             :style="`top: ${index * 64}px`"
-            @on-image-block-click="loadSongFromCurrentQueue(music)"
+            @on-image-block-click="setTrack(track.id)"
+            @dblclick="setTrack(track.id)"
           />
         </div>
       </div>
@@ -108,6 +130,7 @@ const headTextValue = computed(() => {
         font-weight: 700;
         padding: 0 8px;
         margin-bottom: 9px;
+        line-height: 1.3;
       }
 
       .music-wrap {

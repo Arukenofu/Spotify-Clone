@@ -5,7 +5,7 @@ import {currentPlaybackStore} from "@/features/MediaPlayer/store/currentPlayback
 import type {PlayerTypesStr} from "@/features/MediaPlayer/types/PlayerTypes";
 import type {Album, Playlist, Track} from "@spotify/web-api-ts-sdk";
 
-const queryHandlers: Record<PlayerTypesStr, Function> = {
+const queryHandlers: Record<PlayerTypesStr, (id: string) => Promise<Album | Playlist<Track>>> = {
     'playlist': fetchPlaylist,
     'album': fetchAlbum
 }
@@ -19,14 +19,17 @@ export async function setCurrentPlayback(
 
     if (!data) {
         const queryHandler = queryHandlers[type];
+        data = await queryHandler(playbackId);
 
-        data = queryClient.setQueryData<Album | Playlist<Track>>([type, playbackId], () => {
-            return queryHandler(playbackId)
-        });
+        queryClient.setQueryData<Album | Playlist<Track>>([type, playbackId], data);
     }
 
     const currentPlayback = currentPlaybackStore();
 
-    currentPlayback.currentPlaybackInfo = data!;
     currentPlayback.currentTrackId = trackId;
+    currentPlayback.currentPlaybackType = type;
+
+    if (playbackId !== currentPlayback.currentPlaybackInfo?.id) {
+        currentPlayback.currentPlaybackInfo = data;
+    }
 }

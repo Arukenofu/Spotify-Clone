@@ -15,7 +15,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.11",
+    "@distube/ytdl-core": "^4.16.12",
     "@fastify/cors": "^11.0.1",
     "@fastify/formbody": "^8.0.2",
     "@fastify/send": "^4.1.0",
@@ -31,13 +31,10 @@
     "ofetch": "^1.4.1",
     "pinia": "^2.3.1",
     "spottydl": "^0.2.7",
-    "spottydl-better": "^0.3.121",
     "vue": "^3.5.13",
     "vue-i18n": "11.1.2",
     "vue-router": "^4.5.0",
-    "vue-tippy": "^6.5.0",
-    "yt-stream": "^1.7.4",
-    "ytdl-core": "^4.11.5"
+    "vue-tippy": "^6.5.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",

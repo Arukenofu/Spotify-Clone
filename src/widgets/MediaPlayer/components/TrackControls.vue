@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, watch} from "vue";
 import {storeToRefs} from 'pinia';
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
 import Previous from '@/shared/UI/Icons/Previous.vue';
@@ -32,6 +32,14 @@ function repeatModeTooltip() {
 
 const stream = reactive(useAudioStream());
 const currentPlayback = currentPlaybackStore();
+
+function toggleCurrentTrack() {
+  stream.isPlaying ? stream.pause() : stream.play();
+}
+
+watch(() => currentPlayback.currentTrackId, (value) => {
+  stream.loadTrack(value!).then(stream.play);
+});
 
 onMounted(() => {
   const el = new Audio();
@@ -70,11 +78,11 @@ onMounted(() => {
       <button
         v-tooltip="stream.isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
         class="icon musicState pointerable"
+        @click="toggleCurrentTrack()"
       >
         <PlayingState
           :state="stream.isPlaying"
           class="icon"
-          @click="stream.setAudioUrl(currentPlayback.currentTrackId!); stream.play()"
         />
       </button>
       <Next
@@ -163,6 +171,8 @@ onMounted(() => {
 
     .currentTime,
     .duration {
+      width: 24px;
+      max-width: 24px;
       line-height: 1;
       color: var(--text-soft);
       font-size: .75rem;
