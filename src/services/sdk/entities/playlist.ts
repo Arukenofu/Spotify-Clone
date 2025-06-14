@@ -1,6 +1,6 @@
 import {sdk} from "@/services/sdk";
 import type {Page, PlaylistedTrack, Track, User} from "@spotify/web-api-ts-sdk";
-import {getMaskColor} from "@/shared/utils/getMaskColor";
+import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
 import {queryClient} from "@/app/lib/VueQuery";
 import {proxy} from "@/shared/utils/proxy";
 

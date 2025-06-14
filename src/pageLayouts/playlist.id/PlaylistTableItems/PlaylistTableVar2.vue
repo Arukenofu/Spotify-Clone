@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {FormatTypes} from "#imports";
-import formatRelativeDate from "@/shared/utils/formatRelativeDate";
+import formatRelativeDate from "@/shared/utils/date/formatRelativeDate";
 
 defineProps<{
   albumId: string;

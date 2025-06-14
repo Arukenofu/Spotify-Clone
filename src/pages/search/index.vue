@@ -10,14 +10,16 @@ import {useI18n} from "vue-i18n";
 import {sdk} from "@/services/sdk";
 import getLocale from "@/app/lib/i18n/utils/getLocale";
 import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
-import getAsyncPalette from "@/shared/utils/getAsyncPalette";
 import GenreCard from "@/pageLayouts/search/GenreCard.vue";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 import {history, removeFromHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
 import type {Categories, ItemTypes} from "@spotify/web-api-ts-sdk";
 import InfiniteScroll from "@/shared/components/InfiniteScroll.vue";
 import {proxy} from "@/shared/utils/proxy";
+import {onUnmounted} from "vue";
+import {destroyAccentWorker} from "@/shared/utils/colors/accentColorWorker";
+import {getAccentColor} from "@/shared/utils/colors/getAccentColor";
 
 const {t} = useI18n();
 
@@ -35,8 +37,8 @@ const {data: categories, suspense} = useQuery({
     const maskColors: (string | null)[] = [];
 
     for (const item of data.categories.items) {
-      const palettes = await getAsyncPalette(item.icons[0].url);
-      maskColors.push(palettes.Vibrant?.hex ?? null);
+      const color = await getAccentColor(item.icons[0].url);
+      maskColors.push(color);
     }
 
     return {
@@ -45,6 +47,7 @@ const {data: categories, suspense} = useQuery({
     };
   }
 });
+await suspense();
 
 async function nextPage() {
   const next = categories.value?.next;
@@ -56,8 +59,8 @@ async function nextPage() {
   const maskColors: (string | null)[] = [];
 
   for (const item of data.categories.items) {
-    const palettes = await getAsyncPalette(item.icons[0].url);
-    maskColors.push(palettes.Vibrant?.hex ?? null);
+    const color = await getAccentColor(item.icons[0].url);
+    maskColors.push(color);
   }
 
   queryClient.setQueryData(['categories'], (oldData: Categories['categories']) => {
@@ -73,7 +76,9 @@ async function nextPage() {
   });
 }
 
-await suspense();
+onUnmounted(() => {
+  destroyAccentWorker();
+});
 </script>
 
 <template>

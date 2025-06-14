@@ -3,7 +3,7 @@ import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import {Modal} from "@/features/Modal";
 import {computed, ref} from "vue";
 import type {Image, ItemTypes} from "@spotify/web-api-ts-sdk";
-import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
+import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
 
 interface Props {
   images: Image[];

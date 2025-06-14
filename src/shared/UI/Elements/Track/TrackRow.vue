@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import getActiveColor from "@/shared/utils/getActiveColor";
+import getActiveColor from "@/shared/utils/colors/getActiveColor";
 import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
 import NoMusicOrPlaylistAvatar from "@/shared/UI/Icons/NoMusicOrPlaylistAvatar.vue";
 import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
@@ -11,7 +11,7 @@ import {useI18n} from "vue-i18n";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 import {computed} from "vue";
 
 interface Props {

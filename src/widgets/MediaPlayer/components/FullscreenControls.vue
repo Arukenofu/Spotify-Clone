@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {inject, reactive, ref} from "vue";
 import formatTimeMMSS from "@/shared/utils/format/formatTimeMMSS";
-import getActiveColor from "@/shared/utils/getActiveColor";
+import getActiveColor from "@/shared/utils/colors/getActiveColor";
 import {useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
 import Range from "@/shared/components/Range.vue";

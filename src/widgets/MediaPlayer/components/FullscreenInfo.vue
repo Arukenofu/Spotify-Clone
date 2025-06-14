@@ -3,7 +3,7 @@ import {computed} from "vue";
 import {storeToRefs} from "pinia";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import {currentPlaybackStore, currentTrackImage} from "@/features/MediaPlayer";
-import getAsyncPalette from "@/shared/utils/getAsyncPalette";
+import {getAccentColor} from "@/shared/utils/colors/getAccentColor";
 
 const store = currentPlaybackStore();
 const {currentPlaybackInfo, currentTrack} = storeToRefs(store);
@@ -12,7 +12,7 @@ const trackImage = computed(() => {
   return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!);
 });
 
-const maskColor = (await getAsyncPalette(trackImage.value)).Vibrant?.hex;
+const maskColor = await getAccentColor(trackImage.value)
 </script>
 
 <template>

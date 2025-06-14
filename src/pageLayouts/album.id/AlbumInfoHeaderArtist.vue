@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import type {Album} from "@spotify/web-api-ts-sdk";
 

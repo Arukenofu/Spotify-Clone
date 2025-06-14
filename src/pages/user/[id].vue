@@ -13,8 +13,8 @@ import {useI18n} from "vue-i18n";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import {sdk} from "@/services/sdk";
 import type {UserProfile} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
-import {getMaskColor} from "@/shared/utils/getMaskColor";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
+import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 
 const {t} = useI18n();

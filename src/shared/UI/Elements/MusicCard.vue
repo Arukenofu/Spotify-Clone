@@ -4,7 +4,7 @@ import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue';
 import {useI18n} from "vue-i18n";
 import type {ItemTypes} from "@spotify/web-api-ts-sdk";
 import {onBeforeMount, ref} from "vue";
-import {getPaletteWorker} from "@/shared/utils/getPaletteWorker";
+import {accentColorWorker} from "@/shared/utils/colors/accentColorWorker";
 
 const {t} = useI18n();
 
@@ -30,8 +30,7 @@ onBeforeMount(async () => {
   const loaderImage = props.maskLoaderImage ?? props.image;
 
   if (loaderImage) {
-    const data = await getPaletteWorker(loaderImage);
-    maskColor.value = data.Vibrant?.hex ?? null;
+    maskColor.value = await accentColorWorker(loaderImage);
   }
 });
 </script>

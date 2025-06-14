@@ -3,9 +3,10 @@ import SearchRouterHeader from "@/pageLayouts/search/SearchRouterHeader.vue";
 import {useQuery} from "@tanstack/vue-query";
 import {sdk} from "@/services/sdk";
 import {useRoute} from "vue-router";
-import {computed} from "vue";
+import {computed, onUnmounted} from "vue";
 import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
 import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import {destroyAccentWorker} from "@/shared/utils/colors/accentColorWorker";
 
 const route = useRoute('/search/[...query]/[...path]');
 const q = computed(() => {
@@ -33,6 +34,10 @@ function getAvailableSearchEntities() {
 
   return output;
 }
+
+onUnmounted(() => {
+  destroyAccentWorker();
+});
 </script>
 
 <template>

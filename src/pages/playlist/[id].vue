@@ -7,7 +7,7 @@ import {useQuery} from "@tanstack/vue-query";
 import {computed, reactive} from "vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import setTitle from "@/shared/utils/setTitle";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
 import {fetchPlaylist} from "@/services/sdk/entities/playlist";
 import {useAudioStream, usePlaybackStates} from "@/features/MediaPlayer";

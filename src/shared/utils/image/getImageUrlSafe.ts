@@ -9,7 +9,7 @@ const qualities: Record<Quality, number> = {
 }
 
 export function getImageUrlSafe(
-    images: Image[],
+    images: Image[] | {url: string}[],
     quality: number | Quality = images.length - 1
 ): string | null {
     const from = typeof quality === 'string' ? qualities[quality] : quality;
@@ -19,7 +19,6 @@ export function getImageUrlSafe(
     for (let i = maxIndex; i >= 0; i--) {
         const image = images[i];
         if (image?.url) {
-            console.log(image);
             return image.url;
         }
     }

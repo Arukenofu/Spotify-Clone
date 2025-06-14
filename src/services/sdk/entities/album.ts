@@ -1,4 +1,4 @@
-import {getMaskColor} from "@/shared/utils/getMaskColor";
+import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
 import {sdk} from "@/services/sdk";
 import type {Artist, Page, SimplifiedTrack} from "@spotify/web-api-ts-sdk";
 

@@ -14,11 +14,11 @@ import ArtistFullWidthBlock from "@/shared/UI/EntityPageElements/ArtistFullWidth
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 import {sdk} from "@/services/sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 import type {Artist} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
-import {getMaskColor} from "@/shared/utils/getMaskColor";
+import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
 import {usePlaybackStates} from "@/features/MediaPlayer";
 
 const {t} = useI18n();

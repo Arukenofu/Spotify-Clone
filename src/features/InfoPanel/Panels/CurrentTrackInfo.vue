@@ -14,7 +14,7 @@ import AboutTrackInfo from "@/features/InfoPanel/components/AboutTrackInfo.vue";
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
 import {currentPlaybackStore} from "@/features/MediaPlayer";
-import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
+import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
 
 const {t} = useI18n();
 

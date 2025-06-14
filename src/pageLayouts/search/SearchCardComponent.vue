@@ -1,23 +1,16 @@
 <script setup lang="ts">
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {Image, ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import type {ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
 import {addToHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
-import {proxy} from "@/shared/utils/proxy";
+import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
 
 type SearchResultKeys = `${Exclude<ItemTypes, 'track'>}s`
 
-const props = defineProps<{
+defineProps<{
   item: NonNullable<PartialSearchResult[SearchResultKeys]>['items'][number];
   type: SearchResultKeys
 }>();
-
-function loadImage(images: Image[], index: number = 0) {
-  const image = getImageFromEntity(images, index);
-
-  return props.type === 'playlists' ? proxy(image || '') : image;
-}
 </script>
 
 <template>
@@ -25,8 +18,8 @@ function loadImage(images: Image[], index: number = 0) {
     :id="item.id"
     :type="item.type as ItemTypes"
     :name="item.name"
-    :image="loadImage(item.images)"
-    :mask-loader-image="loadImage(item.images, 2)"
+    :image="getImageUrlSafe(item.images, 'medium')"
+    :mask-loader-image="getImageUrlSafe(item.images, 'low')"
     @click="addToHistory(item)"
   >
     <SearchCardDescriptionRenderer :entity="item" />

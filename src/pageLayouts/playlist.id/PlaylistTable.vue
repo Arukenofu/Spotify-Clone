@@ -6,7 +6,7 @@ import {useI18n} from "vue-i18n";
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
 import type {PlaylistedTrack, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
-import formatRelativeDate from "@/shared/utils/formatRelativeDate";
+import formatRelativeDate from "@/shared/utils/date/formatRelativeDate";
 import PlaylistTableVar1 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue";
 import PlaylistTableVar2 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue";
 import {currentPlaybackStore, loadNextPlayback, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";

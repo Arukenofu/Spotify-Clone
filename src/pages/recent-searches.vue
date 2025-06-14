@@ -6,7 +6,7 @@ import {useI18n} from "vue-i18n";
 import {clearHistory, history, removeFromHistory} from "@/features/SearchHistory";
 import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
 import type {ItemTypes} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 
 const {t} = useI18n();
 </script>

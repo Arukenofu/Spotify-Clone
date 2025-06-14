@@ -4,9 +4,9 @@ import {currentPlaybackStore} from "@/features/MediaPlayer";
 import api from "@/services/api";
 import {computed, watch} from "vue";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
-import {facColor} from "@/shared/utils/getMaskColor";
 import {useQuery} from "@tanstack/vue-query";
-import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
+import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
+import {getAccentColor} from "@/shared/utils/colors/getAccentColor";
 
 const {t} = useI18n();
 const currentPlayback = currentPlaybackStore();
@@ -19,18 +19,18 @@ const trackInfo = computed(() => ({
   images: currentPlayback.currentPlaybackInfo?.images
 }));
 
-const getLyrics = async (name: string | undefined, artist: string | undefined) => {
+function getLyrics (name: string | undefined, artist: string | undefined) {
   if (!name || !artist) return '';
   return api(`/api/lyrics?name=${encodeURIComponent(name)}&artist=${encodeURIComponent(artist)}`);
-};
+}
 
-const getMaskColor = async (images: any[] | undefined) => {
+function getMaskColor(images: any[] | undefined) {
   if (!images) return '';
   const url = getImageUrlSafe(images);
   if (!url) return '';
-  const color = await facColor(url, { algorithm: 'dominant' });
-  return color.hex;
-};
+
+  return getAccentColor(url);
+}
 
 const { data: lyricsData, isLoading, refetch } = useQuery({
   queryKey: ['lyrics', trackId],

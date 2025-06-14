@@ -12,7 +12,7 @@ import {useI18n} from "vue-i18n";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
 import type {UserProfile} from "@spotify/web-api-ts-sdk";
 import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
+import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
 import {sdk} from "@/services/sdk";
 
 const maskColor = 'rgb(80, 56, 160)';

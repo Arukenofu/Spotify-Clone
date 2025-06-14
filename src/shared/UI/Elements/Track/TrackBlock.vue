@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed} from 'vue';
-import getActiveColor from '@/shared/utils/getActiveColor';
+import getActiveColor from '@/shared/utils/colors/getActiveColor';
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
 import {useI18n} from "vue-i18n";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Tippy} from "vue-tippy";
-import type {ComponentPropsType} from "@/shared/utils/componentPropsType";
+import type {ComponentPropsType} from "@/shared/utils/typescript/componentPropsType";
 
 /* @vue-ignore */
 interface Props extends ComponentPropsType<typeof Tippy> {

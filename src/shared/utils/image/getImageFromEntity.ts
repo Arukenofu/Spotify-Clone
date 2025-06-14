@@ -1,3 +1,5 @@
+import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
+
 type Item = {url: string}[];
 
 export default function getImageFromEntity(
@@ -8,5 +10,5 @@ export default function getImageFromEntity(
         return null;
     }
 
-    return item[arrayKey]?.url ?? null;
+    return getImageUrlSafe(item, arrayKey);
 }

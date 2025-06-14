@@ -7,7 +7,7 @@ import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
 import Next from '@/shared/UI/Icons/Next.vue';
 import Repeat from '@/shared/UI/Icons/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
-import getActiveColor from '@/shared/utils/getActiveColor';
+import getActiveColor from '@/shared/utils/colors/getActiveColor';
 import formatTime from '@/shared/utils/format/formatTimeMMSS';
 import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 import {userPreferencesStore} from "@/features/UserPreferences";
