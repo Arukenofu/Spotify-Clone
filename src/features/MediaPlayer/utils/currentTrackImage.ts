@@ -1,5 +1,6 @@
 import type {PlayerTypes} from "@/features/MediaPlayer/types/PlayerTypes";
 import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
+import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
 
 export function currentTrackImage(
     currentPlaybackInfo: PlayerTypes,
@@ -9,8 +10,8 @@ export function currentTrackImage(
     if (!currentPlaybackInfo || !currentTrack) return '';
 
     if ('album' in currentTrack!) {
-        return currentTrack.album.images[index].url;
+        return getImageUrlSafe(currentTrack.album.images, index);
     }
 
-    return currentPlaybackInfo!.images[index].url;
+    return getImageUrlSafe(currentPlaybackInfo.images, index);
 }

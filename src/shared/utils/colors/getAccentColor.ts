@@ -33,6 +33,8 @@ async function medianCutColors(image: string) {
 }
 
 async function getAccentColor(url: string) {
+    if (!url) return null;
+
     const colors = await medianCutColors(url);
     const {r, g, b} = getMostSaturatedColor(colors);
 

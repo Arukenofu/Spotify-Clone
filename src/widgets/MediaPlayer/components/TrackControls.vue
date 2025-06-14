@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, watch} from "vue";
+import {computed, reactive,} from "vue";
 import {useI18n} from "vue-i18n";
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
 import Previous from '@/shared/UI/Icons/Previous.vue';
@@ -9,10 +9,8 @@ import Repeat from '@/shared/UI/Icons/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
 import getActiveColor from '@/shared/utils/colors/getActiveColor';
 import formatTime from '@/shared/utils/format/formatTimeMMSS';
-import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
+import {useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 import {userPreferencesStore} from "@/features/UserPreferences";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import {sdk} from "@/services/sdk";
 
 const {t} = useI18n();
 
@@ -20,7 +18,6 @@ const preferences = userPreferencesStore();
 
 const stream = reactive(useAudioStream());
 const controls = reactive(usePlaybackControls());
-const currentPlayback = currentPlaybackStore();
 
 const repeatModeTooltip = computed(() => {
   if (preferences.currentRepeatMode === 'onlyCurrentMusic') {
@@ -32,45 +29,6 @@ const repeatModeTooltip = computed(() => {
   }
 
   return t('media-player.repeatStop');
-})
-
-watch(() => currentPlayback.currentTrackId, async (value) => {
-  currentPlayback.currentTrack = await sdk.tracks.get(value);
-
-  stream.loadTrack(
-      currentPlayback.currentTrack!.name,
-      getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name')
-  ).then(stream.play);
-});
-
-onMounted(() => {
-  const el = new Audio();
-  el.preload = 'none';
-  el.crossOrigin = 'anonymous';
-  el.volume = stream.volume;
-
-  el.addEventListener('loadedmetadata', () => {
-    stream.duration = isFinite(el.duration) ? el.duration : 0;
-  });
-
-  el.addEventListener('ended', () => {
-    if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
-      controls.nextTrack(); return;
-    }
-
-    if (preferences.currentRepeatMode === 'repeatCurrentMusic') {
-      stream.play(); return;
-    }
-  })
-
-  el.addEventListener('timeupdate', () => {
-    stream.currentTime = el.currentTime;
-  });
-
-  el.addEventListener('play', () => stream.isPlaying = true);
-  el.addEventListener('pause', () => stream.isPlaying = false);
-
-  stream.instance = el;
 });
 </script>
 

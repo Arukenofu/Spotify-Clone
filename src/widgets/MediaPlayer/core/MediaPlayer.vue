@@ -7,11 +7,19 @@ import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalC
 import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
 import FullScreen from "@/widgets/MediaPlayer/components/FullScreen.vue";
 import useScreen from "@/shared/composables/useScreen";
-import {provide} from "vue";
-import {currentPlaybackStore} from "@/features/MediaPlayer";
+import {onMounted, provide, reactive, watch} from "vue";
+import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
+import {userPreferencesStore} from "@/features/UserPreferences";
+import {sdk} from "@/services/sdk";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 
 const {isFullscreen, enableFullscreen, exitFullScreen} = useScreen();
-const store = currentPlaybackStore();
+
+const preferences = userPreferencesStore();
+const currentPlayback = currentPlaybackStore();
+
+const stream = reactive(useAudioStream());
+const controls = reactive(usePlaybackControls());
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
   if (event.repeat) return;
@@ -21,6 +29,46 @@ window.addEventListener('keyup', (event: KeyboardEvent) => {
   }
 });
 
+watch(() => currentPlayback.currentTrackId, async (value) => {
+  stream.pause();
+  currentPlayback.currentTrack = await sdk.tracks.get(value);
+
+  stream.loadTrack(
+      currentPlayback.currentTrack!.name,
+      getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name')
+  ).then(stream.play);
+});
+
+onMounted(() => {
+  const el = new Audio();
+  el.preload = 'none';
+  el.crossOrigin = 'anonymous';
+  el.volume = stream.volume;
+
+  el.addEventListener('loadedmetadata', () => {
+    stream.duration = isFinite(el.duration) ? el.duration : 0;
+  });
+
+  el.addEventListener('ended', () => {
+    if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
+      controls.nextTrack(); return;
+    }
+
+    if (preferences.currentRepeatMode === 'repeatCurrentMusic') {
+      stream.play(); return;
+    }
+  })
+
+  el.addEventListener('timeupdate', () => {
+    stream.currentTime = el.currentTime;
+  });
+
+  el.addEventListener('play', () => stream.isPlaying = true);
+  el.addEventListener('pause', () => stream.isPlaying = false);
+
+  stream.instance = el;
+});
+
 provide('enableFullScreenFunc', enableFullscreen);
 provide('exitFullScreenFunc', exitFullScreen);
 </script>
@@ -28,7 +76,7 @@ provide('exitFullScreenFunc', exitFullScreen);
 <template>
   <FullScreen v-if="isFullscreen" />
 
-  <div v-if="store.currentTrackId" v-show="!isFullscreen" class="player">
+  <div v-if="currentPlayback.currentTrack" v-show="!isFullscreen" class="player">
     <TrackDetails />
     <TrackControls />
     <AdditionalControls />

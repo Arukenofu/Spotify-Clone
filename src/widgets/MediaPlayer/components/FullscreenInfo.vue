@@ -9,10 +9,10 @@ const store = currentPlaybackStore();
 const {currentPlaybackInfo, currentTrack} = storeToRefs(store);
 
 const trackImage = computed(() => {
-  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!);
+  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!, 0);
 });
 
-const maskColor = await getAccentColor(trackImage.value)
+const maskColor = trackImage.value && await getAccentColor(trackImage.value);
 </script>
 
 <template>
