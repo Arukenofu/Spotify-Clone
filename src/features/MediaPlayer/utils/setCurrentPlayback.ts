@@ -10,11 +10,7 @@ const queryHandlers: Record<PlayerTypesStr, (id: string) => Promise<Album | Play
     'album': fetchAlbum
 }
 
-export async function setCurrentPlayback(
-    type: PlayerTypesStr,
-    playbackId: string,
-    trackId: string
-) {
+async function getData(type: PlayerTypesStr, playbackId: string) {
     let data = queryClient.getQueryData<Album | Playlist<Track>>([type, playbackId]);
 
     if (!data) {
@@ -23,6 +19,16 @@ export async function setCurrentPlayback(
 
         queryClient.setQueryData<Album | Playlist<Track>>([type, playbackId], data);
     }
+
+    return data;
+}
+
+export async function setCurrentPlayback(
+    type: PlayerTypesStr,
+    playbackId: string,
+    trackId: string
+) {
+    const data = await getData(type, playbackId);
 
     const currentPlayback = currentPlaybackStore();
 

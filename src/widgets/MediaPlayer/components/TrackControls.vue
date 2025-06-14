@@ -49,6 +49,16 @@ onMounted(() => {
     stream.duration = isFinite(el.duration) ? el.duration : 0;
   });
 
+  el.addEventListener('ended', () => {
+    if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
+      controls.nextTrack(); return;
+    }
+
+    if (preferences.currentRepeatMode === 'repeatCurrentMusic') {
+      stream.play(); return;
+    }
+  })
+
   el.addEventListener('timeupdate', () => {
     stream.currentTime = el.currentTime;
   });

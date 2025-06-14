@@ -1,4 +1,4 @@
-    type Item = {url: string}[];
+type Item = {url: string}[];
 
 export default function getImageFromEntity(
     item: Item,

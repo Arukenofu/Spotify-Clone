@@ -6,6 +6,7 @@ import {computed, onMounted, ref, watch} from "vue";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import {facColor} from "@/shared/utils/getMaskColor";
 import {queryClient} from "@/app/lib/VueQuery";
+import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
 
 const {t} = useI18n();
 
@@ -28,7 +29,9 @@ function getLyrics() {
 }
 
 async function getMaskColor() {
-  const url = currentPlayback.currentPlaybackInfo?.images[2].url!;
+  if (!currentPlayback.currentPlaybackInfo) return;
+
+  const url = getImageUrlSafe(currentPlayback.currentPlaybackInfo!.images);
 
   if (!url) return '';
 
@@ -61,6 +64,14 @@ async function update() {
   isLoading.value = false;
 }
 
+function getInvertedColor(hex: string) {
+  const color = hex.replace('#', '');
+  const r = 255 - parseInt(color.substring(0, 2), 16);
+  const g = 255 - parseInt(color.substring(2, 4), 16);
+  const b = 255 - parseInt(color.substring(4, 6), 16);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 watch(() => currentPlayback.currentTrackId, update);
 onMounted(update);
 
@@ -77,7 +88,7 @@ const lyricsStructure = computed(() => {
     {{t('lyrics.noLyrics')}}
   </div>
 
-  <div v-else class="container" :style="`--mask: ${maskColor};`">
+  <div v-else class="container" :style="`--mask: ${maskColor}; --text: ${getInvertedColor(maskColor)}`">
     <div class="text">
       <div v-for="(parent, parentIndex) in lyricsStructure" :key="parentIndex" class="parent">
         <p v-for="(text, textIndex) in parent" :key="textIndex" class="child">
@@ -104,9 +115,10 @@ const lyricsStructure = computed(() => {
     .parent {
 
       .child {
+        color: var(--text);
         line-height: 1.2;
         font-weight: 700;
-        opacity: 0.7;
+        opacity: 0.8;
         cursor: pointer;
         transition: all .1s ease-out;
 

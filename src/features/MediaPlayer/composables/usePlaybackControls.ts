@@ -12,25 +12,26 @@ function usePlaybackControls() {
 
     function nextTrack() {
         const index = currentPlayback.currentTrackIndex!;
-        const playbackInfo = currentPlayback.currentPlaybackInfo!
+        const queue = currentPlayback.currentTracksQueue!
 
-        if (index === playbackInfo.tracks.items.length - 1) return;
+        if (index === queue.length - 1) return;
 
-        const nextTrackId = getSimplifiedTrack(playbackInfo.tracks.items[index + 1]).id;
-        setCurrentPlayback(
-            currentPlayback.currentPlaybackType!,
-            currentPlayback.currentPlaybackInfo!.id,
-            nextTrackId
-        );
+        setTrackByIndex(index + 1);
     }
 
     function previousTrack() {
         const index = currentPlayback.currentTrackIndex!;
-        const playbackInfo = currentPlayback.currentPlaybackInfo!
-
         if (index === 0) return;
 
-        const nextTrackId = getSimplifiedTrack(playbackInfo.tracks.items[index - 1]).id;
+        setTrackByIndex(index - 1);
+    }
+
+    function setTrackByIndex(index: number) {
+        const queue = currentPlayback.currentTracksQueue!;
+        const nextTrackId = getSimplifiedTrack(queue[index]).id;
+
+        if (!nextTrackId) return;
+
         setCurrentPlayback(
             currentPlayback.currentPlaybackType!,
             currentPlayback.currentPlaybackInfo!.id,
@@ -41,7 +42,8 @@ function usePlaybackControls() {
     return {
         toggleCurrentTrack,
         nextTrack,
-        previousTrack
+        previousTrack,
+        setTrackByIndex
     }
 }
 

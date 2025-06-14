@@ -83,6 +83,7 @@ const {format, setFormat} = useMusicCollectionFormat();
           <AddToMediaLib
             class="add"
             :state="true"
+            @click="currentPlayback.loadNextTracks"
           />
         </template>
         <template #additional-options>

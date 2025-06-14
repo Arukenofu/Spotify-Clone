@@ -1,8 +1,11 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
+import getSimplifiedTrack from "@/features/MediaPlayer/utils/getSimplifiedTrack";
 import type {PlayerTypes, PlayerTypesStr} from "@/features/MediaPlayer/types/PlayerTypes";
 import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
-import getSimplifiedTrack from "@/features/MediaPlayer/utils/getSimplifiedTrack";
+import {fetchNextPlaylist} from "@/services/sdk/entities/playlist";
+import {fetchNextAlbum} from "@/services/sdk/entities/album";
+import {queryClient} from "@/app/lib/VueQuery";
 
 const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
     const currentPlaybackType = ref<PlayerTypesStr | null>(null);
@@ -28,12 +31,48 @@ const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
         return getSimplifiedTrack(item);
     });
 
+    const currentTracksQueue = computed(() => {
+        if (!currentPlaybackInfo.value) return [];
+        const queue = currentPlaybackInfo.value.tracks.items;
+
+        if ('added_at' in queue[0]) {
+            return queue.map((track) => track.track) as SimplifiedTrack[];
+        }
+
+        return queue as SimplifiedTrack[];
+    });
+
+    async function loadNextTracks() {
+        const nextLink = currentPlaybackInfo.value?.tracks.next?.replace('https://api.spotify.com/v1/', '');
+        const type = currentPlaybackType.value!;
+        if (!nextLink) return;
+
+        const entities = {
+            'playlist': fetchNextPlaylist,
+            'album': fetchNextAlbum
+        }
+
+        const data = await entities[type](nextLink);
+
+        // @ts-ignore
+        currentPlaybackInfo.value!.tracks.items = [
+            ...currentPlaybackInfo.value!.tracks.items,
+            ...data.items,
+        ];
+        currentPlaybackInfo.value!.tracks.next = data.next;
+        console.log(nextLink, data.next);
+
+        queryClient.setQueryData([type, currentPlaybackInfo.value!.id], currentPlaybackInfo.value);
+    }
+
     return {
         currentPlaybackInfo,
+        currentTracksQueue,
         currentPlaybackType,
         currentTrackId,
         currentTrackIndex,
-        currentTrack
+        currentTrack,
+        loadNextTracks
     }
 });
 

@@ -1,10 +1,10 @@
 import {sdk} from "@/services/sdk";
-import type {User} from "@spotify/web-api-ts-sdk";
+import type {Page, PlaylistedTrack, Track, User} from "@spotify/web-api-ts-sdk";
 import {getMaskColor} from "@/shared/utils/getMaskColor";
 import {queryClient} from "@/app/lib/VueQuery";
 import {proxy} from "@/shared/utils/proxy";
 
-async function fetchPlaylistData(albumId: string) {
+function fetchPlaylistData(albumId: string) {
     return sdk.playlists.getPlaylist(albumId);
 }
 
@@ -25,10 +25,16 @@ async function getOwnerData(id: string) {
 export async function fetchPlaylist(playlistId: string) {
     const data = await fetchPlaylistData(playlistId);
 
-    data.images[0].url = proxy(data.images[0].url)!;
+    for (const image of data.images) {
+        image.url = proxy(image.url)!;
+    }
 
     const maskColor = await getMaskColor(data);
     const owner = await getOwnerData(data.owner.id);
 
     return {...data, owner, maskColor};
+}
+
+export function fetchNextPlaylist(nextLink: string) {
+    return sdk.makeRequest<Page<PlaylistedTrack<Track>>>('GET', nextLink);
 }

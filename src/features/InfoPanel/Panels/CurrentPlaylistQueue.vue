@@ -6,7 +6,6 @@ import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
 import {currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
-import type {PlaylistedTrack, SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
 
 const {t} = useI18n();
 
@@ -15,18 +14,11 @@ const controls = reactive(usePlaybackControls());
 const currentPlayback = currentPlaybackStore();
 
 const isNoQueue = computed(() => {
-  return !currentPlayback.currentPlaybackInfo;
+  return !currentPlayback.currentTracksQueue.length;
 });
 
 const queue = computed(() => {
-  const track = currentPlayback.currentPlaybackInfo?.tracks.items[0];
-  if (!track) return [];
-
-  if ('added_at' in track) {
-    return (currentPlayback.currentPlaybackInfo!.tracks.items as PlaylistedTrack<Track>[]).map((item) => item.track);
-  }
-
-  return currentPlayback.currentPlaybackInfo!.tracks.items as SimplifiedTrack[];
+  return currentPlayback.currentTracksQueue;
 });
 
 const nextSongsInQueue = computed(() => {
