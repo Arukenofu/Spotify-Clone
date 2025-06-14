@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {inject, reactive, ref} from "vue";
-import {useUserPreferences} from "@/widgets/MediaPlayer/store/useUserPreferences";
 import formatTimeMMSS from "@/shared/utils/format/formatTimeMMSS";
 import getActiveColor from "@/shared/utils/getActiveColor";
 import {useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
@@ -16,11 +15,12 @@ import ShowText from "@/shared/UI/Icons/ShowText.vue";
 import VolumeSilent from "@/shared/UI/Icons/VolumeSilent.vue";
 import Volume from "@/shared/UI/Icons/Volume.vue";
 import UnFullscreen from "@/shared/UI/Icons/UnFullscreen.vue";
+import {userPreferencesStore} from "@/features/UserPreferences";
 
 const stream = reactive(useAudioStream());
 const controls = reactive(usePlaybackControls());
 
-const preferences = useUserPreferences();
+const preferences = userPreferencesStore();
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 const isHover = ref<boolean>(false);

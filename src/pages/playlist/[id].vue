@@ -70,6 +70,7 @@ const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
 
       <PlaylistTable
         :items="data.tracks.items"
+        :next-track-link="data.tracks.next"
         :playlist-id="data.id"
         :is-current="isCurrentAlbum"
       />

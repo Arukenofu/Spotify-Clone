@@ -2,7 +2,6 @@
 import {computed, inject, reactive, type Ref} from 'vue';
 import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
@@ -10,23 +9,30 @@ import type {PlaylistedTrack, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
 import formatRelativeDate from "@/shared/utils/formatRelativeDate";
 import PlaylistTableVar1 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue";
 import PlaylistTableVar2 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue";
-import {currentPlaybackStore, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
+import {currentPlaybackStore, loadNextPlayback, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
+import {userPreferencesStore} from "@/features/UserPreferences";
 
 const {t} = useI18n();
-const {format} = useMusicCollectionFormat();
 const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
 
 const stream = reactive(useAudioStream());
 const currentPlayback = currentPlaybackStore();
 
-defineProps<{
+const preferences = userPreferencesStore();
+
+const props = defineProps<{
   items: PlaylistedTrack<Track>[] | SavedTrack[],
+  nextTrackLink: string | null;
   playlistId: string;
   isCurrent: boolean;
 }>();
 
+const tracks = computed(() => {
+  return props.items.map(item => item.track);
+})
+
 const currentFormatClass = computed(() => {
-  return format.value.toLowerCase();
+  return preferences.tracksFormat.toLowerCase();
 });
 </script>
 
@@ -35,7 +41,7 @@ const currentFormatClass = computed(() => {
     <MusicRowHeaderWrapper :parent-element="layoutContent!.content">
       <MusicRowHeader class="computedGrid">
         <template #var1>
-          <template v-if="format === 'Compact'">
+          <template v-if="preferences.tracksFormat === 'Compact'">
             {{t('entities.artist')}}
           </template>
           <template v-else>
@@ -43,53 +49,60 @@ const currentFormatClass = computed(() => {
           </template>
         </template>
         <template #var2>
-          <template v-if="format === 'Compact'">
+          <template v-if="preferences.tracksFormat === 'Compact'">
             {{t('entities.album')}}
           </template>
           <template v-else>
             {{t('music-table.dateAdded')}}
           </template>
         </template>
-        <template v-if="format === 'Compact'" #var3>
+        <template v-if="preferences.tracksFormat === 'Compact'" #var3>
           {{t('music-table.dateAdded')}}
         </template>
       </MusicRowHeader>
     </MusicRowHeaderWrapper>
 
-    <TrackTableWrapper>
-      <template v-for="({track, ...item}, index) of items" :key="index">
-        <MusicRow
-          v-if="track"
-          :index="index + 1"
-          :is-current="currentPlayback.currentTrackId === track.id"
-          :is-playing="stream.isPlaying"
-          :track="track"
-          :color="null"
-          :is-added="false"
-          :show-artists="true"
-          :compact="format === 'Compact'"
-          class="row computedGrid"
-          @click="setCurrentPlayback('playlist', playlistId, track.id)"
-        >
-          <template #var1>
-            <PlaylistTableVar1 
-              :album-id="track.album.id" :album-name="track.album.name"
-              :format="format" :artists="track.artists"
-            />
-          </template>
-          <template #var2>
-            <PlaylistTableVar2
-              :album-id="track.album.id" :album-name="track.album.name"
-              :format="format" :added-at="item.added_at"
-            />
-          </template>
-          <template v-if="format === 'Compact'" #var3>
-            <span class="added-at">
-              {{formatRelativeDate(item.added_at)}}
-            </span>
-          </template>
-        </MusicRow>
-      </template>
+    <TrackTableWrapper
+      v-slot="{track, index}"
+      :list="tracks"
+      :size="preferences.tracksFormat === 'Compact' ? 32 : 56"
+      @load-more="loadNextPlayback(
+        playlistId,
+        'playlist',
+        nextTrackLink
+      )"
+    >
+      <MusicRow
+        v-if="track"
+        :index="index + 1"
+        :is-current="currentPlayback.currentTrackId === track.id"
+        :is-playing="stream.isPlaying"
+        :track="track"
+        :color="null"
+        :is-added="false"
+        :show-artists="true"
+        :compact="preferences.tracksFormat === 'Compact'"
+        class="row computedGrid"
+        @click="setCurrentPlayback('playlist', playlistId, track.id)"
+      >
+        <template #var1>
+          <PlaylistTableVar1
+            :album-id="track.album.id" :album-name="track.album.name"
+            :format="preferences.tracksFormat" :artists="track.artists"
+          />
+        </template>
+        <template #var2>
+          <PlaylistTableVar2
+            :album-id="track.album.id" :album-name="track.album.name"
+            :format="preferences.tracksFormat" :added-at="items[index].added_at"
+          />
+        </template>
+        <template v-if="preferences.tracksFormat === 'Compact'" #var3>
+          <span class="added-at">
+            {{formatRelativeDate(items[index].added_at)}}
+          </span>
+        </template>
+      </MusicRow>
     </TrackTableWrapper>
   </div>
 </template>

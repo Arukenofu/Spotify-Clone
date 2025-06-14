@@ -5,7 +5,6 @@ import GeneralGradientSectionWithControls
 import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n();
@@ -17,8 +16,6 @@ const props = defineProps<{
   isAdded: boolean;
   isPlaying: boolean;
 }>();
-
-const {format, setFormat} = useMusicCollectionFormat();
 
 const tooltips = reactive({
   addButton: {
@@ -43,7 +40,7 @@ const tooltips = reactive({
     </template>
 
     <template #additional-options>
-      <FormatLibraryButton :format @set-format="setFormat" />
+      <FormatLibraryButton />
     </template>
   </GeneralGradientSectionWithControls>
 </template>

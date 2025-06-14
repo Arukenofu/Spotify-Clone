@@ -26,18 +26,15 @@ interface Props {
   hideImage?: boolean;
 }
 
-type Emits = {
-  setPlay: [],
-  addPlaylist: [],
-  showContextMenu: [],
-}
-
 const props = withDefaults(defineProps<Props>(), {
   showArtists: true
 });
-defineEmits<Emits>();
 
-const image = 'album' in props.track ? getImageFromEntity(props.track.album.images, 2) : null;
+const image = computed(() =>
+    'album' in props.track ? getImageFromEntity(props.track.album.images, 2) : null
+);
+const showImage = computed(() => !(props.compact || props.hideImage))
+const showEqualizer = computed(() => props.isPlaying && props.isCurrent);
 
 const optionsContextMenu = computed(() => ({
   content:
@@ -55,80 +52,45 @@ const {t} = useI18n();
 </script>
 
 <template>
-  <div
-    class="row"
-    :class="compact && 'row-compact'"
-  >
+  <div v-memo="[track.id, isCurrent, isPlaying, isAdded, compact]" class="row" :class="{ 'row-compact': compact }">
     <div v-if="index" class="index">
-      <span
-        class="order hide-on-hover"
-        :style="getActiveColor(isCurrent)"
-      >
-        {{index}}
-      </span>
+      <span class="order hide-on-hover" :style="getActiveColor(isCurrent)">{{ index }}</span>
       <button class="toggle show-on-hover">
-        <img v-if="isPlaying && isCurrent" src="/src/assets/images/equalizer-animated.gif" alt="" />
+        <img v-if="showEqualizer" src="/src/assets/images/equalizer-animated.gif" alt="" />
         <PlayingState v-else class="icon" />
       </button>
     </div>
+
     <div class="main">
-      <div v-if="!(compact || hideImage)" class="image-wrapper" :class="!index && 'noindex'">
-        <LazyImage v-if="image !== null" :image="image" class="image" />
-
-        <div v-else class="icon image">
-          <NoMusicOrPlaylistAvatar class="icon" />
-        </div>
-
+      <div v-if="showImage" class="image-wrapper" :class="{ noindex: !index }">
+        <LazyImage v-if="image" :image="image" class="image" />
+        <div v-else class="icon image"><NoMusicOrPlaylistAvatar class="icon" /></div>
         <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
       </div>
+
       <div class="track-info">
-        <RouterLink
-          v-tooltip="track.name"
-          :to="`/track/${track.id}`"
-          :style="getActiveColor(isCurrent)"
-          class="musicName"
-          @click.stop
-        >
-          {{track.name}}
+        <RouterLink v-tooltip="track.name" :to="`/track/${track.id}`" :style="getActiveColor(isCurrent)" class="musicName" @click.stop>
+          {{ track.name }}
         </RouterLink>
-        <span
-          v-if="showArtists && !compact"
-          class="artists"
-          @click.stop
-        >
+        <span v-if="showArtists && !compact" class="artists" @click.stop>
           <CommaSeparatedArtistsLink class="artist" :artists="track.artists" />
         </span>
       </div>
     </div>
 
-    <div v-if="$slots.var1" class="var1">
-      <slot name="var1" />
-    </div>
-    <div v-if="$slots.var2" class="var2">
-      <slot name="var2" />
-    </div>
-    <div v-if="$slots.var3" class="var3">
-      <slot name="var3" />
-    </div>
+    <template v-for="n in 3" :key="n">
+      <div v-if="$slots[`var${n}`]" :class="`var${n}`">
+        <slot :name="`var${n}`" />
+      </div>
+    </template>
 
     <div class="time">
-      <button
-        v-tooltip="isAdded ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
-        class="addState show-on-hover"
-        @click.stop
-      >
+      <button v-tooltip="isAdded ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')" class="addState show-on-hover" @click.stop>
         <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
         <RoundPlusIcon v-else class="add" />
       </button>
-      <span>
-        {{formatTime(track.duration_ms / 1000)}}
-      </span>
-
-      <button
-        v-tooltip="optionsContextMenu"
-        class="contextMenu show-on-hover"
-        @click.stop
-      >
+      <span>{{ formatTime(track.duration_ms / 1000) }}</span>
+      <button v-tooltip="optionsContextMenu" class="contextMenu show-on-hover" @click.stop>
         <ThreeDots />
       </button>
     </div>
@@ -314,7 +276,7 @@ const {t} = useI18n();
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
-        height: 19.2px;
+        height: 16px;
         font-size: .95rem;
 
         :deep(.artist) {

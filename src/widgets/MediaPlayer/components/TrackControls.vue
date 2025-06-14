@@ -7,14 +7,15 @@ import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
 import Next from '@/shared/UI/Icons/Next.vue';
 import Repeat from '@/shared/UI/Icons/Repeat.vue';
 import Range from '@/shared/components/Range.vue';
-import {useUserPreferences} from '@/widgets/MediaPlayer/store/useUserPreferences';
 import getActiveColor from '@/shared/utils/getActiveColor';
 import formatTime from '@/shared/utils/format/formatTimeMMSS';
 import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
+import {userPreferencesStore} from "@/features/UserPreferences";
+import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 
 const {t} = useI18n();
 
-const preferences = useUserPreferences();
+const preferences = userPreferencesStore();
 
 const stream = reactive(useAudioStream());
 const controls = reactive(usePlaybackControls());
@@ -35,7 +36,7 @@ const repeatModeTooltip = computed(() => {
 watch(() => currentPlayback.currentTrackId, () => {
   stream.loadTrack(
       currentPlayback.currentTrack!.name,
-      currentPlayback.currentPlaybackInfo!.name
+      getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name')
   ).then(stream.play);
 });
 

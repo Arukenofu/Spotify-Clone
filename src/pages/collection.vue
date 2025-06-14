@@ -7,7 +7,6 @@ import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useQuery, useQueryClient} from "@tanstack/vue-query";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
-import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
@@ -32,8 +31,6 @@ const {data: favoriteTracks, isFetching, isError, suspense} = useQuery({
   suspense: true
 });
 await suspense();
-
-const {format, setFormat} = useMusicCollectionFormat();
 </script>
 
 <template>
@@ -84,7 +81,7 @@ const {format, setFormat} = useMusicCollectionFormat();
         turnoff-options
       >
         <template #additional-options>
-          <FormatLibraryButton :format @set-format="setFormat" />
+          <FormatLibraryButton />
         </template>
       </GeneralGradientSectionWithControls>
 

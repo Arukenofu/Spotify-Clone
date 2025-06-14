@@ -7,3 +7,4 @@ export * from './store/currentPlaybackStore';
 export * from './utils/setCurrentPlayback';
 export * from './utils/currentTrackImage';
 export * from './utils/getSimplifiedTrack'
+export * from './utils/loadNextPlayback';

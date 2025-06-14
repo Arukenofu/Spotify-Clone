@@ -11,7 +11,6 @@ import {computed, inject, reactive, type Ref} from "vue";
 import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import {useMusicCollectionFormat} from "@/features/MusicCollectionFormat";
 import {useI18n} from "vue-i18n";
 import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
@@ -21,6 +20,8 @@ import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.
 import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
 import {fetchAlbum} from "@/services/sdk/entities/album";
 import {currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackStates} from "@/features/MediaPlayer";
+import {loadNextPlayback} from "@/features/MediaPlayer/utils/loadNextPlayback";
+import {userPreferencesStore} from "@/features/UserPreferences";
 
 const {t} = useI18n();
 
@@ -48,7 +49,7 @@ const {data, isFetching, isError} = useQuery({
 const isCurrentAlbum = computed(() => states.isCurrentPlayback('album', albumId.value));
 const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
 
-const {format, setFormat} = useMusicCollectionFormat();
+const preferences = userPreferencesStore();
 </script>
 
 <template>
@@ -87,35 +88,43 @@ const {format, setFormat} = useMusicCollectionFormat();
           />
         </template>
         <template #additional-options>
-          <FormatLibraryButton :format @set-format="setFormat" />
+          <FormatLibraryButton />
         </template>
       </GeneralGradientSectionWithControls>
 
       <MusicRowHeaderWrapper :parent-element="layout!.content">
-        <MusicRowHeader class="row-header" :class="format === 'Compact' && 'compact'">
-          <template v-if="format === 'Compact'" #var1>
+        <MusicRowHeader class="row-header" :class="preferences.tracksFormat === 'Compact' && 'compact'">
+          <template v-if="preferences.tracksFormat === 'Compact'" #var1>
             {{t('entities.artist')}}
           </template>
         </MusicRowHeader>
       </MusicRowHeaderWrapper>
 
-      <TrackTableWrapper>
+      <TrackTableWrapper
+        v-slot="{track, index}"
+        :list="data.tracks.items"
+        :size="preferences.tracksFormat === 'Compact' ? 32 : 56"
+        :has-next="!!data.tracks.next"
+        @load-more="loadNextPlayback(
+          albumId,
+          'album',
+          data.tracks.next
+        )"
+      >
         <TrackRow
-          v-for="(track, index) of data.tracks.items"
-          :key="track.id"
           :index="index + 1"
           :track="track"
           :is-current="currentPlayback.currentTrackId === track.id"
           :is-playing="stream.isPlaying"
           :is-added="false"
-          :compact="format === 'Compact'"
-          :class="format === 'Compact' && 'compact'"
+          :compact="preferences.tracksFormat === 'Compact'"
+          :class="preferences.tracksFormat === 'Compact' && 'compact'"
           class="row"
           show-artists
           hide-image
           @click="setCurrentPlayback('album', albumId, track.id)"
         >
-          <template v-if="format === 'Compact'" #var1>
+          <template v-if="preferences.tracksFormat === 'Compact'" #var1>
             <CommaSeparatedArtistsLink class="artist" :artists="track.artists" />
           </template>
         </TrackRow>
