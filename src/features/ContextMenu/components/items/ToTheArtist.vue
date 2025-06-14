@@ -2,12 +2,12 @@
 import {BasicContextMenuItem, WithSubtree} from "@/features/ContextMenu";
 import ArtistIcon from "@/shared/UI/Icons/ArtistIcon.vue";
 import {RouterLink} from "vue-router";
-import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import TriangleIcon from "@/shared/UI/Icons/TriangleIcon.vue";
 import ctxT from "../../helpers/ctx-t";
+import type {SimplifiedArtist} from "@spotify/web-api-ts-sdk";
 
 defineProps<{
-  artists: SimpleArtist[]
+  artists: SimplifiedArtist[]
 }>();
 </script>
 
@@ -24,7 +24,7 @@ defineProps<{
     {{ctxT('toTheArtist')}}
   </BasicContextMenuItem>
 
-  <WithSubtree>
+  <WithSubtree v-else>
     <BasicContextMenuItem>
       <template #icon>
         <ArtistIcon />

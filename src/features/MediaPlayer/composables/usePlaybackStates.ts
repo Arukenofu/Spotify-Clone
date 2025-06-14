@@ -8,8 +8,13 @@ function usePlaybackStates() {
         return type === currentPlayback.currentPlaybackType && id === currentPlayback.currentPlaybackInfo?.id;
     }
 
+    function isCurrentTrack(id: string) {
+        return id === currentPlayback.currentTrackId;
+    }
+
     return {
         isCurrentPlayback,
+        isCurrentTrack
     }
 }
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
-import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
 import {computed, watch} from "vue";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
 import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
@@ -10,60 +9,52 @@ import ScrollableBlock from "@/shared/UI/Blocks/ScrollableBlock.vue";
 import {useQuery} from "@tanstack/vue-query";
 import apiArtistService from "@/services/api/artist/apiArtistService";
 import type {Artist} from "@/services/types/Entities/Artist";
-import usePlaylistStore from "@/features/MediaPlayer/store/usePlaylistStore";
 import AboutArtistCard from "@/features/InfoPanel/components/AboutArtistCard.vue";
 import AboutTrackInfo from "@/features/InfoPanel/components/AboutTrackInfo.vue";
-import NextTrackInQueue from "@/features/InfoPanel/components/NextTrackInQueue.vue";
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
+import {currentPlaybackStore, currentTrackImage} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
-const store = useCurrentMusicStore();
-const playlist = usePlaylistStore();
-
-const currentAudioData = computed(() => store.currentAudioData);
+const currentPlayback = currentPlaybackStore();
 
 const {data: artistDossier, suspense, refetch} = useQuery<Artist | null>({
   queryKey: ['artistInfo'],
-  queryFn: async () => {
-    if (!currentAudioData.value) {
+  queryFn: async () => {currentPlayback.currentTrack
+    if (!currentPlayback.currentTrack) {
       return null;
     }
 
-    const artists = currentAudioData.value!.artists;
+    const artists = currentPlayback.currentTrack!.artists;
 
     return await apiArtistService.getArtistInfo(artists[0].id);
   },
   suspense: true
 });
 
-watch(() => store.currentAudioId, () => {
+watch(() => currentPlayback.currentTrackId, () => {
   refetch();
 });
 
 await suspense();
 
 const nextSongInQueue = computed(() => {
-  if (!playlist.currentQueue.length || store.currentAudioIndexInQueue == null) {
-    return;
-  }
-
-  return playlist.currentQueue[store.currentAudioIndexInQueue + 1];
+  return currentPlayback.currentPlaybackInfo?.tracks.items[currentPlayback.currentTrackIndex];
 });
 </script>
 
 <template>
-  <NoQueue v-if="!currentAudioData" />
+  <NoQueue v-if="!currentPlayback.currentTrack" />
 
   <div v-else class="now-playing">
     <PanelHeader class="head-panel">
       <template #name>
-        {{currentAudioData.name}}
+        {{currentPlayback.currentTrack.name}}
       </template>
       <template #options>
         <ContextMenu trigger="click" placement="bottom-end">
-          <RoundButton v-tooltip="t('music-actions.moreOptionsFor', [currentAudioData.name])">
+          <RoundButton v-tooltip="t('music-actions.moreOptionsFor', [currentPlayback.currentTrack.name])">
             <ThreeDots class="icon" />
           </RoundButton>
 
@@ -77,12 +68,15 @@ const nextSongInQueue = computed(() => {
     <ScrollableBlock class="content">
       <div class="content-wrapper">
         <AboutTrackInfo
-          :id="currentAudioData.id"
-          :name="currentAudioData.name"
-          :avatar="currentAudioData.avatar"
-          :loading-color="currentAudioData.color"
-          :artists="currentAudioData.artists"
-          :is-added-to-favorites="currentAudioData.isAddedToFavorites"
+          :id="currentPlayback.currentTrack.id"
+          :name="currentPlayback.currentTrack.name"
+          :avatar="currentTrackImage(
+            currentPlayback.currentPlaybackInfo!,
+            currentPlayback.currentTrack!
+          )"
+          :loading-color="''"
+          :artists="currentPlayback.currentTrack.artists"
+          :is-added-to-favorites="false"
         />
 
         <AboutArtistCard
@@ -93,11 +87,6 @@ const nextSongInQueue = computed(() => {
           :cover-image="artistDossier.profile.coverImage"
           :listeners-quantity="artistDossier.listenersQuantityPerMonth"
           :description="artistDossier.profile.description"
-        />
-
-        <NextTrackInQueue
-          v-if="nextSongInQueue"
-          :next-song="nextSongInQueue"
         />
       </div>
     </ScrollableBlock>

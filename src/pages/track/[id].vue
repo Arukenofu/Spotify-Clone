@@ -5,7 +5,6 @@ import {useQuery} from "@tanstack/vue-query";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
 import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import formatTimeMMSS from "../../shared/utils/format/formatTimeMMSS";
 import GeneralGradientSectionWithControls
@@ -20,6 +19,7 @@ import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedStri
 import type {Artist} from "@spotify/web-api-ts-sdk";
 import setTitle from "@/shared/utils/setTitle";
 import {getMaskColor} from "@/shared/utils/getMaskColor";
+import {usePlaybackStates} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
@@ -55,7 +55,7 @@ const {data: trackInfo, isFetching, isError} = useQuery({
   }
 });
 
-const {isThisMusic} = useMusicUtils();
+const {isCurrentTrack} = usePlaybackStates();
 </script>
 
 <template>
@@ -68,7 +68,7 @@ const {isThisMusic} = useMusicUtils();
       <PlayHeaderWithPlayingState
         :title="trackInfo.name"
         :mask="trackInfo.maskColor"
-        :is-playing="isThisMusic(trackInfo.id, true)"
+        :is-playing="isCurrentTrack(trackInfo.id)"
       />
       <EntityInfoHeader
         :image="getImageFromEntity(trackInfo.album.images, 0)"

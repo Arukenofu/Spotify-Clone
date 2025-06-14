@@ -8,19 +8,19 @@ import {
   ToTheAlbum,
   ToTheArtist
 } from "@/features/ContextMenu";
-import useCurrentMusicStore from "@/features/MediaPlayer/store/useCurrentMusicStore";
+import {currentPlaybackStore} from "@/features/MediaPlayer";
 
-const store = useCurrentMusicStore();
+const currentPlayback = currentPlaybackStore();
 </script>
 
 <template>
   <BasicContextMenuView class="contextmenu">
     <AddToPlaylist />
-    <AddToFavouriteTracksState :state="store.currentAudioData!.isAddedToFavorites" />
+    <AddToFavouriteTracksState :state="false" />
     <AddToQueue underline />
-    <ToTheArtist :artists="store.currentAudioData!.artists" />
-    <ToTheAlbum :to="`/album/${store.currentAudioData!.album.id}`" underline />
-    <Share :entity-id="store.currentAudioData!.id" type="Track" />
+    <ToTheArtist :artists="currentPlayback.currentTrack!.artists" />
+    <ToTheAlbum :to="`/album/${currentPlayback.currentTrack?.album.id}`" underline />
+    <Share :entity-id="currentPlayback.currentPlaybackInfo!.id" type="Track" />
   </BasicContextMenuView>
 </template>
 

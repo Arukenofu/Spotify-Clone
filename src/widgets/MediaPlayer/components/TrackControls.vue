@@ -12,6 +12,7 @@ import formatTime from '@/shared/utils/format/formatTimeMMSS';
 import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 import {userPreferencesStore} from "@/features/UserPreferences";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
+import {sdk} from "@/services/sdk";
 
 const {t} = useI18n();
 
@@ -33,7 +34,9 @@ const repeatModeTooltip = computed(() => {
   return t('media-player.repeatStop');
 })
 
-watch(() => currentPlayback.currentTrackId, () => {
+watch(() => currentPlayback.currentTrackId, async (value) => {
+  currentPlayback.currentTrack = await sdk.tracks.get(value);
+
   stream.loadTrack(
       currentPlayback.currentTrack!.name,
       getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name')

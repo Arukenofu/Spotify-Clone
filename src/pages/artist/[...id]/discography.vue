@@ -2,7 +2,7 @@
 import {useRoute} from "vue-router";
 import {useQuery} from "@tanstack/vue-query";
 import artistService from "@/services/api/artist/apiArtistService";
-import {computed, inject, ref} from "vue";
+import {computed, inject, reactive, ref} from "vue";
 import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
 import ListIcon from "@/shared/UI/Icons/ListIcon.vue";
 import GridIcon from "@/shared/UI/Icons/GridIcon.vue";
@@ -11,10 +11,10 @@ import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
 import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
 import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import useMusicUtils from "@/features/MediaPlayer/composables/useMusicUtils";
 import setTitle from "@/shared/utils/setTitle";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
+import {usePlaybackStates} from "@/features/MediaPlayer";
 
 const {t} = useI18n();
 
@@ -34,7 +34,7 @@ const {data: artistInfo, isFetched} = useQuery({
 
 // TODO: add localization for current route
 
-const {isThisPlaylist, loadPlaylist} = useMusicUtils();
+const states = reactive(usePlaybackStates());
 
 const layoutHeadingStyle = computed(() => {
   if (layoutScrollY.value > 1) {
@@ -88,13 +88,13 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
 
             <div class="controls">
               <button
-                v-tooltip="isThisPlaylist(album.id, true) ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
+                v-tooltip="states.isCurrentPlayback('album', '') ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
                 class="playingState"
-                @click="loadPlaylist(album.id)"
+                @click="states.isCurrentPlayback('album', '')"
               >
                 <PlayingState
                   class="icon"
-                  :state="isThisPlaylist(album.id, true)" 
+                  :state="states.isCurrentPlayback('album', '')"
                 />
               </button>
               <button v-tooltip="'Добавить в медиатеку'" class="addingState">

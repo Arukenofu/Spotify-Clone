@@ -4,18 +4,18 @@ import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
 import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
 import ShareIcon from "@/shared/UI/Icons/ShareIcon.vue";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import type {SimpleArtist} from "@/services/types/Entities/Artist";
 import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
 import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";
 import Marquee from "@/shared/components/Marquee.vue";
 import {useI18n} from "vue-i18n";
+import type {SimplifiedArtist} from "@spotify/web-api-ts-sdk";
 
 const {id} = defineProps<{
   id: string | number;
   name: string;
   avatar: string | null;
   loadingColor: string | null;
-  artists: SimpleArtist[]
+  artists: SimplifiedArtist[]
   isAddedToFavorites: boolean;
 }>();
 

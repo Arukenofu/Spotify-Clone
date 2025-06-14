@@ -8,6 +8,7 @@ import {loadNextPlayback} from "@/features/MediaPlayer/utils/loadNextPlayback";
 const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
     const currentPlaybackType = ref<PlayerTypesStr | null>(null);
     const currentPlaybackInfo = ref<PlayerTypes | null>(null);
+    const currentTrack = ref<Track | null>(null);
     const currentTrackId = ref<string>('none');
 
     const currentTrackIndex = computed<number>(() => {
@@ -18,15 +19,6 @@ const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
 
             return simplifiedTrack.id === currentTrackId.value;
         });
-    });
-
-    const currentTrack = computed<Track | SimplifiedTrack | null>(() => {
-        if (currentTrackIndex.value === null || currentTrackIndex.value === -1) return null;
-
-        const item = currentPlaybackInfo.value?.tracks.items[currentTrackIndex.value];
-        if (!item) return null;
-
-        return getSimplifiedTrack(item);
     });
 
     const currentTracksQueue = computed(() => {
