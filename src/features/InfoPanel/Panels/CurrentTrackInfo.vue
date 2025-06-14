@@ -13,7 +13,8 @@ import AboutArtistCard from "@/features/InfoPanel/components/AboutArtistCard.vue
 import AboutTrackInfo from "@/features/InfoPanel/components/AboutTrackInfo.vue";
 import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
 import {useI18n} from "vue-i18n";
-import {currentPlaybackStore, currentTrackImage} from "@/features/MediaPlayer";
+import {currentPlaybackStore} from "@/features/MediaPlayer";
+import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
 
 const {t} = useI18n();
 
@@ -70,10 +71,7 @@ const nextSongInQueue = computed(() => {
         <AboutTrackInfo
           :id="currentPlayback.currentTrack.id"
           :name="currentPlayback.currentTrack.name"
-          :avatar="currentTrackImage(
-            currentPlayback.currentPlaybackInfo!,
-            currentPlayback.currentTrack!
-          )"
+          :avatar="getImageUrlSafe(currentPlayback.currentTrack.album.images, 'high')"
           :loading-color="''"
           :artists="currentPlayback.currentTrack.artists"
           :is-added-to-favorites="false"

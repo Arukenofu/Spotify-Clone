@@ -12,7 +12,6 @@ import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
 import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
 import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
 import {useI18n} from "vue-i18n";
-import getImageFromEntity from "@/shared/utils/getImageFromEntity";
 import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
 import setTitle from "@/shared/utils/setTitle";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
@@ -67,7 +66,7 @@ const preferences = userPreferencesStore();
       />
 
       <AlbumInfoHeader
-        :image="getImageFromEntity(data.images)"
+        :images="data.images"
         :mask="data.maskColor"
         :name="data.name"
         :creator="data.artists"

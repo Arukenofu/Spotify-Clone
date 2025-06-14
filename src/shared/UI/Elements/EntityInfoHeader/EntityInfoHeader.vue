@@ -1,21 +1,26 @@
-  <script setup lang="ts">
-  import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-  import {Modal} from "@/features/Modal";
-  import {ref} from "vue";
-  import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+<script setup lang="ts">
+import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
+import {Modal} from "@/features/Modal";
+import {computed, ref} from "vue";
+import type {Image, ItemTypes} from "@spotify/web-api-ts-sdk";
+import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
 
-  interface Props {
-  image: string | null;
+interface Props {
+  images: Image[];
   mask?: string | null;
   type: ItemTypes | 'user';
 }
 
-const {mask, image} = defineProps<Props>();
+const {mask, images} = defineProps<Props>();
 
 const isModalOpened = ref<boolean>(false);
 
+const mediumImageUrl = computed(() => {
+  return getImageUrlSafe(images, 'medium');
+});
+
 function toggleModal(): void {
-  if (!image) {
+  if (!images.length) {
     return;
   }
 
@@ -28,13 +33,13 @@ function toggleModal(): void {
     <div class="info">
       <div
         class="info-image"
-        :class="image && 'hoverable'"
+        :class="mediumImageUrl && 'hoverable'"
         @click="toggleModal()"
       >
         <EntityAvatar1x1
           class="img"
           :type="type"
-          :image="image"
+          :image="mediumImageUrl"
         />
       </div>
       <div class="text-info">
@@ -48,7 +53,7 @@ function toggleModal(): void {
     <Modal v-model="isModalOpened">
       <Transition name="appear-animation" appear>
         <div class="modal-inner">
-          <EntityAvatar1x1 class="image" :type="type" :image="image" />
+          <EntityAvatar1x1 class="image" :type="type" :image="getImageUrlSafe(images, 'high')" />
 
           <button class="button" @click="toggleModal">
             Закрыть

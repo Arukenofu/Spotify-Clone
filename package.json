@@ -9,7 +9,7 @@
     "dev:all": "run-p dev:client dev:server",
     "build:client": "vite build",
     "build:client:check": "run-p type-check \"build:client {@}\" --",
-    "prod": "cross-env NODE_ENV=production vite-node ./server/index.ts",
+    "prod": "cross-env NODE_ENV=production tsx ./server/index.ts",
     "preview": "vite preview",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"

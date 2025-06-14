@@ -50,7 +50,7 @@ const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
       <PlaylistInfo
         :playlist-name="data.name"
         :playlist-description="data.description"
-        :image="getImageFromEntity(data.images, 0)"
+        :images="data.images"
         :mask="data.maskColor"
         :total-duration="100"
         :creator="data.owner"

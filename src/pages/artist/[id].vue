@@ -135,7 +135,7 @@ const discography = computed(() => {
         :name="artistInfo.name"
         :mask="artistInfo.maskColor"
         :listeners-per-month="artistInfo.followers.total"
-        :image="artistInfo.images[0].url"
+        :images="artistInfo.images"
       />
 
       <GeneralGradientSectionWithControls

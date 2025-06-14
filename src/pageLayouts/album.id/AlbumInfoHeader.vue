@@ -3,14 +3,14 @@ import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHe
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
-import type {Album} from "@spotify/web-api-ts-sdk";
+import type {Album, Image} from "@spotify/web-api-ts-sdk";
 import AlbumInfoHeaderArtist from "@/pageLayouts/album.id/AlbumInfoHeaderArtist.vue";
 import getUserLanguage from "@/app/lib/i18n/utils/getUserLanguage";
 
 const {t} = useI18n();
 
 defineProps<{
-  image: string | null;
+  images: Image[];
   mask: string | null;
   name: string;
   creator: Album['artists'],
@@ -38,7 +38,7 @@ function formatDate(dateString: string) {
 </script>
 
 <template>
-  <EntityInfoHeader class="info" :image :mask type="album">
+  <EntityInfoHeader class="info" :images="images" :mask="mask" type="album">
     <div class="type">{{t('entities.album')}}</div>
     <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
 

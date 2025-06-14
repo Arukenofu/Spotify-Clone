@@ -86,7 +86,12 @@ function linkToCurrentUserRoute(push: string) {
         <span class="name">{{user.display_name}}</span>
       </PlayHeader>
 
-      <EntityInfoHeader class="info-header" :image="currentProfilePicture" :mask="currentMaskColor" type="user">
+      <EntityInfoHeader
+        class="info-header"
+        :images="currentProfilePicture ? [{url: currentProfilePicture, width: 300, height: 300}] : []"
+        :mask="currentMaskColor"
+        type="user"
+      >
         <span class="type">{{t('user.title')}}</span>
         <EntityInfoHeaderTitle>
           {{user.display_name}}

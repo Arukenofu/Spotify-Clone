@@ -71,7 +71,7 @@ const {isCurrentTrack} = usePlaybackStates();
         :is-playing="isCurrentTrack(trackInfo.id)"
       />
       <EntityInfoHeader
-        :image="getImageFromEntity(trackInfo.album.images, 0)"
+        :images="trackInfo.album.images"
         :mask="trackInfo.maskColor"
         type="track"
         class="info"

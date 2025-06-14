@@ -4,13 +4,13 @@ import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
 import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
 import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
 import {useI18n} from "vue-i18n";
-import type {Playlist} from "@spotify/web-api-ts-sdk";
-import readableNumber from "../../shared/utils/format/readableNumber";
+import type {Image, Playlist} from "@spotify/web-api-ts-sdk";
+import readableNumber from "@/shared/utils/format/readableNumber";
 
 const {t} = useI18n();
 
 defineProps<{
-  image: string | null;
+  images: Image[];
   mask: string | null;
   playlistName: string;
   playlistDescription?: string;
@@ -23,7 +23,7 @@ defineProps<{
 </script>
 
 <template>
-  <EntityInfoHeader class="playlist_about" :image :mask type="playlist">
+  <EntityInfoHeader class="playlist_about" :images="images" :mask="mask" type="playlist">
     <span class="type">{{t('entities.playlist')}}</span>
 
     <EntityInfoHeaderTitle>

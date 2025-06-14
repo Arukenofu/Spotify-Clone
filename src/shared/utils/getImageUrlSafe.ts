@@ -1,12 +1,28 @@
 import type {Image} from "@spotify/web-api-ts-sdk";
 
+type Quality = 'low' | 'medium' | 'high';
+
+const qualities: Record<Quality, number> = {
+    'low': 2,
+    'medium': 1,
+    'high': 0,
+}
+
 export function getImageUrlSafe(
-    images: Image[]
-) {
-    for (let i = images.length - 1; i >= 0; i--) {
-        if (images[i].url) {
-            return images[i].url;
+    images: Image[],
+    quality: number | Quality = images.length - 1
+): string | null {
+    const from = typeof quality === 'string' ? qualities[quality] : quality;
+
+    const maxIndex = Math.min(from, images.length - 1);
+
+    for (let i = maxIndex; i >= 0; i--) {
+        const image = images[i];
+        if (image?.url) {
+            console.log(image);
+            return image.url;
         }
     }
+
     return null;
 }

@@ -2,67 +2,53 @@
 import {useI18n} from "vue-i18n";
 import {currentPlaybackStore} from "@/features/MediaPlayer";
 import api from "@/services/api";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, watch} from "vue";
 import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
 import {facColor} from "@/shared/utils/getMaskColor";
-import {queryClient} from "@/app/lib/VueQuery";
+import {useQuery} from "@tanstack/vue-query";
 import {getImageUrlSafe} from "@/shared/utils/getImageUrlSafe";
 
 const {t} = useI18n();
-
 const currentPlayback = currentPlaybackStore();
 
-const lyrics = ref<string>('');
-const isLoading = ref(false);
-const maskColor = ref('');
+const trackId = computed(() => currentPlayback.currentTrackId);
+const trackInfo = computed(() => ({
+  id: currentPlayback.currentTrack?.id,
+  name: currentPlayback.currentTrack?.name,
+  artist: currentPlayback.currentPlaybackInfo?.name,
+  images: currentPlayback.currentPlaybackInfo?.images
+}));
 
-function getLyrics() {
-  const name = currentPlayback.currentTrack?.name;
-  const artist = currentPlayback.currentPlaybackInfo?.name;
-
+const getLyrics = async (name: string | undefined, artist: string | undefined) => {
   if (!name || !artist) return '';
-
-  const cached = queryClient.getQueryData<{lyrics: string}>(['lyrics', currentPlayback.currentTrackId])?.lyrics;
-  if (cached) return cached;
-
   return api(`/api/lyrics?name=${encodeURIComponent(name)}&artist=${encodeURIComponent(artist)}`);
-}
+};
 
-async function getMaskColor() {
-  if (!currentPlayback.currentPlaybackInfo) return;
-
-  const url = getImageUrlSafe(currentPlayback.currentPlaybackInfo!.images);
-
+const getMaskColor = async (images: any[] | undefined) => {
+  if (!images) return '';
+  const url = getImageUrlSafe(images);
   if (!url) return '';
-
-  const cached = queryClient.getQueryData<{maskColor: string}>(['lyrics', currentPlayback.currentTrackId])?.maskColor;
-  if (cached) return cached;
-
-  const color = await facColor(url, {
-    algorithm: 'dominant'
-  });
-
+  const color = await facColor(url, { algorithm: 'dominant' });
   return color.hex;
-}
+};
 
-async function update() {
-  isLoading.value = true;
+const { data: lyricsData, isLoading, refetch } = useQuery({
+  queryKey: ['lyrics', trackId],
+  queryFn: async () => {
+    const { name, artist, images } = trackInfo.value;
+    const [lyrics, maskColor] = await Promise.all([
+      getLyrics(name, artist),
+      getMaskColor(images)
+    ]);
 
-  const [rLyrics, rMaskColor] = await Promise.all([
-    getLyrics(),
-    getMaskColor()
-  ]);
-
-  lyrics.value = rLyrics;
-  maskColor.value = rMaskColor;
-
-  rLyrics && queryClient.setQueryData(['lyrics', currentPlayback.currentTrackId], {
-    lyrics: rLyrics,
-    maskColor: rMaskColor
-  });
-
-  isLoading.value = false;
-}
+    return { lyrics, maskColor };
+  },
+  enabled: false
+});
+    
+watch(() => trackInfo.value.id, () => {
+  refetch();
+}, { immediate: true });
 
 function getInvertedColor(hex: string) {
   const color = hex.replace('#', '');
@@ -72,23 +58,20 @@ function getInvertedColor(hex: string) {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-watch(() => currentPlayback.currentTrackId, update);
-onMounted(update);
-
 const lyricsStructure = computed(() => {
-  return lyrics.value.trim().split(/\n{2,}/)
-      .map(block => block.split('\n').map(line => line.trim()).filter(Boolean));
+  return lyricsData.value?.lyrics.trim().split(/\n{2,}/)
+      .map((block: string) => block.split('\n').map((line: string) => line.trim()).filter(Boolean)) ?? [];
 })
 </script>
 
 <template>
   <LoadingBlock v-if="isLoading" />
 
-  <div v-else-if="!lyrics" class="noText container">
+  <div v-else-if="!lyricsData?.lyrics" class="noText container">
     {{t('lyrics.noLyrics')}}
   </div>
 
-  <div v-else class="container" :style="`--mask: ${maskColor}; --text: ${getInvertedColor(maskColor)}`">
+  <div v-else class="container" :style="`--mask: ${lyricsData.maskColor}; --text: ${getInvertedColor(lyricsData.maskColor)}`">
     <div class="text">
       <div v-for="(parent, parentIndex) in lyricsStructure" :key="parentIndex" class="parent">
         <p v-for="(text, textIndex) in parent" :key="textIndex" class="child">

@@ -12,7 +12,7 @@ const {t} = useI18n();
 <template>
   <EntityInfoHeader
     class="info-header"
-    :image="image ?? null"
+    :images="images"
     :mask="mask"
     type="artist"
   >

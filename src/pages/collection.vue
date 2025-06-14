@@ -47,7 +47,7 @@ await suspense();
       />
 
       <EntityInfoHeader
-        :image="LikedSongsImage"
+        :images="[{url: LikedSongsImage, width: 300, height: 300}]"
         :mask="maskColor"
         type="playlist"
         class="header"
