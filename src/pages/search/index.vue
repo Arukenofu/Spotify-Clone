@@ -72,7 +72,7 @@ async function nextPage() {
     next: data.categories.next,
     previous: data.categories.previous,
     items: oldData.items.concat(data.categories.items),
-    // @ts-ignore
+    // @ts-expect-error mask colors are seldom for most spotify types
     maskColors: oldData.maskColors.concat(maskColors),
   }))
 }
