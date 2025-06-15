@@ -10,7 +10,7 @@
       "#imports": [".generated/imports"]
     },
     "types": [
-      "vite-plugin-vue-layouts/client",
+      "vite-plugin-vue-layouts-next/client",
       "unplugin-vue-router/client"
     ],
     "verbatimModuleSyntax": true
@@ -20,6 +20,7 @@
     "src/**/*",
     "src/**/*.vue",
     "src/app/global.d.ts",
+    "./.generated/router.d.ts",
     ".generated/*.d.ts"
   ],
   "exclude": ["src/**/__tests__/*"]

@@ -2,6 +2,7 @@
 import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import EqualizerAnimated from '@/assets/images/equalizer-animated.gif'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
 import CheckedRoundCircleIcon from '@/shared/UI/Icons/CheckedRoundCircleIcon.vue'
@@ -30,6 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
   showArtists: true,
 })
 
+const { t } = useI18n()
+
 const image = computed(() =>
   'album' in props.track ? getImageFromEntity(props.track.album.images, 2) : null,
 )
@@ -46,8 +49,6 @@ const optionsContextMenu = computed(() => ({
     direction: 'revert',
   },
 }))
-
-const { t } = useI18n()
 </script>
 
 <template>
@@ -55,7 +56,7 @@ const { t } = useI18n()
     <div v-if="index" class="index">
       <span class="order hide-on-hover" :style="getActiveColor(isCurrent)">{{ index }}</span>
       <button class="toggle show-on-hover">
-        <img v-if="showEqualizer" src="/src/assets/images/equalizer-animated.gif" alt="">
+        <img v-if="showEqualizer" :src="EqualizerAnimated" alt="">
         <PlayingState v-else class="icon" />
       </button>
     </div>

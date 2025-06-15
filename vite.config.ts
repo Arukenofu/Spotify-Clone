@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 import compression from 'vite-plugin-compression2'
 import sassGlobImports from 'vite-plugin-sass-glob-import'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import { ClientSideLayout } from 'vite-plugin-vue-layouts'
+import Layout from 'vite-plugin-vue-layouts-next'
 
 import FolderTypesConfig from './config/folderTypes.config'
 import LayoutConfig from './config/layout.config'
@@ -22,7 +22,7 @@ export default defineConfig({
     createTypesByFolder(FolderTypesConfig),
     Router(RouterEnvConfig),
     sassGlobImports(),
-    ClientSideLayout(LayoutConfig),
+    Layout(LayoutConfig),
     vueDevTools(),
     vue(),
   ],

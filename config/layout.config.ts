@@ -1,7 +1,8 @@
-import type { clientSideOptions } from 'vite-plugin-vue-layouts'
+import type { UserOptions } from 'vite-plugin-vue-layouts-next'
 
 export default {
-  layoutDir: 'src/app/layouts',
+  layoutsDirs: 'src/app/layouts',
+  pagesDirs: 'src/pages',
   defaultLayout: 'Default',
-  importMode: 'sync',
-} satisfies clientSideOptions
+  importMode: () => 'sync',
+} satisfies UserOptions
