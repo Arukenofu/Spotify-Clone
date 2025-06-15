@@ -12,9 +12,7 @@ const {
   iterationCount = Infinity
 } = defineProps<Props>();
 
-console.log(scrollSpeed);
-
-const marquee = useTemplateRef('marquee');
+const marquee = useTemplateRef<HTMLDivElement>('marquee');
 const remainingWidth = ref<number | null>(null);
 
 const transformX = ref<number>(0);

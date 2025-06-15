@@ -10,7 +10,6 @@ function initWorker() {
 
         worker.onmessage = (e) => {
             const result = e.data;
-            console.log(result);
             const handler = handlers.shift();
             handler?.(result);
         };

@@ -71,7 +71,7 @@ const headTextValue = computed(() => {
             mode="out-in"
           >
             <MusicBlock
-              :key="currentPlayback.currentTrack.id"
+              :key="currentPlayback.currentTrackId"
               :playback="currentPlayback.currentPlaybackInfo!"
               :music="currentPlayback.currentTrack"
               :state="stream.isPlaying"

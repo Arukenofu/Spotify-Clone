@@ -4,13 +4,14 @@ import {fetchAlbum} from "@/services/sdk/entities/album";
 import {currentPlaybackStore} from "@/features/MediaPlayer/store/currentPlaybackStore";
 import type {PlayerTypesStr} from "@/features/MediaPlayer/types/PlayerTypes";
 import type {Album, Playlist, Track} from "@spotify/web-api-ts-sdk";
+import {sdk} from "@/services/sdk";
 
 const queryHandlers: Record<PlayerTypesStr, (id: string) => Promise<Album | Playlist<Track>>> = {
     'playlist': fetchPlaylist,
     'album': fetchAlbum
 }
 
-async function getData(type: PlayerTypesStr, playbackId: string) {
+async function getPlaybackData(type: PlayerTypesStr, playbackId: string) {
     let data = queryClient.getQueryData<Album | Playlist<Track>>([type, playbackId]);
 
     if (!data) {
@@ -23,19 +24,30 @@ async function getData(type: PlayerTypesStr, playbackId: string) {
     return data;
 }
 
+async function getTrackData(id: string) {
+    let data = queryClient.getQueryData<Track>(['track', id]);
+
+    if (!data) {
+        data = await sdk.tracks.get(id);
+
+        queryClient.setQueryData<Track>(['track', id], data)
+    }
+
+    return data;
+}
+
 export async function setCurrentPlayback(
     type: PlayerTypesStr,
     playbackId: string,
     trackId: string
 ) {
-    const data = await getData(type, playbackId);
-
     const currentPlayback = currentPlaybackStore();
 
+    currentPlayback.currentTrack = await getTrackData(trackId);
     currentPlayback.currentTrackId = trackId;
     currentPlayback.currentPlaybackType = type;
 
     if (playbackId !== currentPlayback.currentPlaybackInfo?.id) {
-        currentPlayback.currentPlaybackInfo = data;
+        currentPlayback.currentPlaybackInfo = await getPlaybackData(type, playbackId);
     }
 }

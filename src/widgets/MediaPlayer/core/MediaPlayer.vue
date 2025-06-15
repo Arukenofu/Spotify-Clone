@@ -10,7 +10,6 @@ import useScreen from "@/shared/composables/useScreen";
 import {onMounted, provide, reactive, watch} from "vue";
 import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
 import {userPreferencesStore} from "@/features/UserPreferences";
-import {sdk} from "@/services/sdk";
 import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
 
 const {isFullscreen, enableFullscreen, exitFullScreen} = useScreen();
@@ -29,9 +28,8 @@ window.addEventListener('keyup', (event: KeyboardEvent) => {
   }
 });
 
-watch(() => currentPlayback.currentTrackId, async (value) => {
+watch(() => currentPlayback.currentTrackId, () => {
   stream.pause();
-  currentPlayback.currentTrack = await sdk.tracks.get(value);
 
   stream.loadTrack(
       currentPlayback.currentTrack!.name,

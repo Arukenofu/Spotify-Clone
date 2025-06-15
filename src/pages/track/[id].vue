@@ -44,7 +44,7 @@ async function fetchTrackData() {
 }
 
 const {data: trackInfo, isFetching, isError} = useQuery({
-  queryKey: ['trackInfo', trackId],
+  queryKey: ['track', trackId],
   queryFn: async () => {
     const data = await fetchTrackData();
     const maskColor = await getMaskColor(data.album);

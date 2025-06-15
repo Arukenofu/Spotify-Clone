@@ -17,7 +17,6 @@ export default function() {
 
     function handleFullscreen() {
         isFullscreen.value = !!document.fullscreenElement;
-        console.log('asd');
     }
 
     onMounted(() => {
