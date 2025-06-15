@@ -37,7 +37,7 @@ onBeforeMount(async () => {
 
 <template>
   <div
-    class="card"
+    class="card v-music-card"
     @click="$router.push(`/${type}/${id}`)"
   >
     <EntityAvatar1x1
@@ -84,7 +84,6 @@ onBeforeMount(async () => {
   transition: all ease 0.1s;
   user-select: none;
   position: relative;
-  width: calc(var(--content-max-width) / 10);
   scroll-snap-align: start;
 
   &:hover {

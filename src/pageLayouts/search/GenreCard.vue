@@ -9,9 +9,9 @@ defineProps<{
 </script>
 
 <template>
-  <a
+  <RouterLink
     class="card"
-    :href="href"
+    :to="href"
     draggable="false"
   >
     <div class="name">
@@ -22,7 +22,7 @@ defineProps<{
       class="image"
       :image="image"
     />
-  </a>
+  </RouterLink>
 </template>
 
 <style scoped lang="scss">
@@ -33,7 +33,6 @@ defineProps<{
   border-radius: 9px;
   position: relative;
   overflow: hidden;
-  pointer-events: none;
 
   .name {
     position: absolute;

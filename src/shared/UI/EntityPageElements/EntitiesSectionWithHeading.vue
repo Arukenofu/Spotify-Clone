@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import useResponsive from '@/shared/composables/useResponsive'
-import EntitiesSectionWrapper from '@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue'
+import ScrollableEntitiesSectionWrapper from '@/shared/UI/EntityPageElements/ScrollableEntitiesSectionWrapper.vue'
 
 interface Props {
   naming: string | null
@@ -47,9 +47,9 @@ const { t } = useI18n()
       </div>
     </div>
 
-    <EntitiesSectionWrapper :is-scrollable="isScrollable">
+    <ScrollableEntitiesSectionWrapper :is-scrollable="isScrollable">
       <slot />
-    </EntitiesSectionWrapper>
+    </ScrollableEntitiesSectionWrapper>
   </section>
 </template>
 

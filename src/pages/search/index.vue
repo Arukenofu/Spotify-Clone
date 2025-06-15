@@ -17,7 +17,6 @@ import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
 import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue'
 import { destroyAccentWorker } from '@/shared/utils/colors/accentColorWorker'
 import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
-import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe.ts'
 import { proxy } from '@/shared/utils/proxy.ts'
 import setTitle from '@/shared/utils/setTitle'
@@ -90,24 +89,22 @@ onUnmounted(() => {
       :naming="t('search.searchHistory')"
       href="/recent-searches"
     >
-      <KeepAlive>
-        <CardRemoveWrapper
-          v-for="(entity, index) in history"
-          :key="index"
-          @on-remove="removeFromHistory(index)"
+      <CardRemoveWrapper
+        v-for="(entity, index) in history"
+        :key="index"
+        @on-remove="removeFromHistory(index)"
+      >
+        <MusicCard
+          :id="entity.id"
+          :type="entity.type as ItemTypes"
+          :name="entity.name"
+          :image="proxy(getImageUrlSafe(entity.images, 'medium') ?? '')"
+          :mask-loader-image="proxy(getImageUrlSafe(entity.images, 'low') ?? '')"
+          class="music-card"
         >
-          <MusicCard
-            :id="entity.id"
-            :type="entity.type as ItemTypes"
-            :name="entity.name"
-            :image="proxy(getImageUrlSafe(entity.images, 'medium') ?? '')"
-            :mask-loader-image="proxy(getImageUrlSafe(entity.images, 'low') ?? '')"
-            class="music-card"
-          >
-            <SearchCardDescriptionRenderer :entity="entity" />
-          </MusicCard>
-        </CardRemoveWrapper>
-      </KeepAlive>
+          <SearchCardDescriptionRenderer :entity="entity" />
+        </MusicCard>
+      </CardRemoveWrapper>
     </EntitiesSectionWithHeading>
 
     <div v-if="isMobile" class="mobile-search-bar" @click="$router.push('/search/recent')">
@@ -126,8 +123,8 @@ onUnmounted(() => {
         <GenreCard
           v-for="(item, index) in categories.items"
           :key="item.id"
-          :href="item.href"
-          :image="getImageFromEntity(item.icons, 0)!"
+          :href="`/search/${item.name}`"
+          :image="getImageUrlSafe(item.icons, 'high') ?? ''"
           :mask-color="categories.maskColors[index]"
         >
           {{ item.name }}

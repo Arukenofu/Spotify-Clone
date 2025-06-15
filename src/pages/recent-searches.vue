@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { router } from '@/app/router'
 import { clearHistory, history, removeFromHistory } from '@/features/SearchHistory'
 import SearchCardDescriptionRenderer from '@/pageLayouts/search/SearchCardDescriptionRenderer.vue'
 import CardRemoveWrapper from '@/shared/UI/Elements/CardRemoveWrapper.vue'
@@ -9,10 +11,14 @@ import EntitiesSectionWrapper from '@/shared/UI/EntityPageElements/EntitiesSecti
 import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
 const { t } = useI18n()
+
+watch(history, ({ length }) => {
+  !length && router.push('/search')
+})
 </script>
 
 <template>
-  <div class="layout">
+  <div v-if="history.length" class="layout">
     <div class="heading">
       <h1 class="added-at">
         {{ t('search.searchHistory') }}
@@ -44,6 +50,7 @@ const { t } = useI18n()
 <style scoped lang="scss">
 .layout {
   margin-top: 32px;
+  margin-right: 16px;
   padding: 0 var(--content-spacing);
 
   .heading {
