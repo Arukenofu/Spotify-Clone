@@ -1,5 +1,5 @@
 export interface ModalBaseProps {
-    show: boolean,
-    disableTeleport?: boolean,
-    useTransition?: boolean
+  show: boolean
+  disableTeleport?: boolean
+  useTransition?: boolean
 }

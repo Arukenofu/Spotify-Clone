@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
-import EntityErrorBlock from "@/shared/UI/Blocks/ErrorBlock.vue";
-import localizeEntities from "@/services/utils/localizeEntities";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
-import ttt from "@/app/lib/i18n/utils/ttt";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import ttt from '@/app/lib/i18n/utils/ttt'
+import localizeEntities from '@/services/utils/localizeEntities'
+import EntityErrorBlock from '@/shared/UI/Blocks/ErrorBlock.vue'
+import LoadingBlock from '@/shared/UI/Blocks/LoadingBlock.vue'
 
 interface Props {
-  isFetching: boolean;
-  isError: boolean;
-  entity: ItemTypes | 'user';
+  isFetching: boolean
+  isError: boolean
+  entity: ItemTypes | 'user'
 }
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
@@ -19,10 +19,10 @@ defineProps<Props>();
     v-else-if="isError"
   >
     <template #title>
-      {{ttt('errors.cannotFindEntity', [localizeEntities(entity).toLowerCase()])}}
+      {{ ttt('errors.cannotFindEntity', [localizeEntities(entity).toLowerCase()]) }}
     </template>
     <template #body>
-      {{ttt('errors.tryLookingSomethingElse')}}
+      {{ ttt('errors.tryLookingSomethingElse') }}
     </template>
   </EntityErrorBlock>
 

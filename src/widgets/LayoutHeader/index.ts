@@ -1,1 +1,1 @@
-export { default as LayoutHeader } from './core/LayoutHeader.vue';
+export { default as LayoutHeader } from './core/LayoutHeader.vue'

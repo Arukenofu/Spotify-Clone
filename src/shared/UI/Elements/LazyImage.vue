@@ -1,37 +1,38 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from 'vue'
 
 interface Props {
-  image: string;
-  alt?: string;
-  color?: string | null;
-  loading?: 'lazy' | 'eager';
+  image: string
+  alt?: string
+  color?: string | null
+  loading?: 'lazy' | 'eager'
 }
 
-const {loading = 'lazy', image} = defineProps<Props>();
+const { loading = 'lazy', image } = defineProps<Props>()
 
-const imageClasses = ref<string>('');
+const imageClasses = ref<string>('')
 
 onMounted(async () => {
   const loadImage = (url: string) => {
     return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
-  };
+      const img = new Image()
+      img.onload = () => resolve(true)
+      img.onerror = () => resolve(false)
+      img.src = url
+    })
+  }
 
-  const startTime = performance.now();
-  const imageLoaded = await loadImage(image);
-  const loadTime = performance.now() - startTime;
+  const startTime = performance.now()
+  const imageLoaded = await loadImage(image)
+  const loadTime = performance.now() - startTime
 
   if (imageLoaded && loadTime < 50) {
     imageClasses.value = 'show'
-  } else {
-    imageClasses.value = 'animated-show';
   }
-});
+  else {
+    imageClasses.value = 'animated-show'
+  }
+})
 </script>
 
 <template>
@@ -44,7 +45,7 @@ onMounted(async () => {
       :loading="loading"
       class="image"
       draggable="false"
-    />
+    >
   </div>
 </template>
 

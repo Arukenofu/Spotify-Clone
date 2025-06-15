@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
-import {useI18n} from "vue-i18n";
+import type { MediaLibEntityProps } from '@/features/MedialibSidebar/types/MediaLibEntityProps'
+import { useI18n } from 'vue-i18n'
 
-const {t} = useI18n();
+const props = defineProps<MediaLibEntityProps>()
 
-const props = defineProps<MediaLibEntityProps>();
+const { t } = useI18n()
 </script>
 
 <template>
@@ -13,10 +13,10 @@ const props = defineProps<MediaLibEntityProps>();
       {{ t(`entities.${props.type.toLowerCase()}`) }} • {{ props.owner!.name }}
     </template>
     <template v-else-if="props.type === 'Artist'">
-      {{t('entities.artist')}}
+      {{ t('entities.artist') }}
     </template>
     <template v-else-if="props.type === 'Collection'">
-      {{t('entities.playlist')}} • {{ t('plurable-entities.track', props.itemsCount!).toLowerCase() }}
+      {{ t('entities.playlist') }} • {{ t('plurable-entities.track', props.itemsCount!).toLowerCase() }}
     </template>
     <template v-else-if="props.type === 'Folder'">
       {{ t('plurable-entities.playlist', 1) }}

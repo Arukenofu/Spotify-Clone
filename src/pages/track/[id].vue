@@ -1,61 +1,61 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {computed} from "vue";
-import {useQuery} from "@tanstack/vue-query";
-import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import formatTimeMMSS from "../../shared/utils/format/formatTimeMMSS";
+import type { Artist } from '@spotify/web-api-ts-sdk'
+import { useQuery } from '@tanstack/vue-query'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { usePlaybackStates } from '@/features/MediaPlayer'
+import { sdk } from '@/services/sdk'
+import AddToMediaLib from '@/shared/UI/Buttons/AddToMediaLib.vue'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
+import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
+import HandleEntityLayoutStates from '@/shared/UI/Elements/HandleEntityLayoutStates.vue'
+import ArtistFullWidthBlock from '@/shared/UI/EntityPageElements/ArtistFullWidthBlock.vue'
 import GeneralGradientSectionWithControls
-  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
-import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
-import ArtistFullWidthBlock from "@/shared/UI/EntityPageElements/ArtistFullWidthBlock.vue";
-import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import {useI18n} from "vue-i18n";
-import {sdk} from "@/services/sdk";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import type {Artist} from "@spotify/web-api-ts-sdk";
-import setTitle from "@/shared/utils/setTitle";
-import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
-import {usePlaybackStates} from "@/features/MediaPlayer";
+  from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
+import PlayHeaderWithPlayingState from '@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue'
+import { getMaskColor } from '@/shared/utils/colors/getMaskColor'
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
+import setTitle from '@/shared/utils/setTitle'
+import formatTimeMMSS from '../../shared/utils/format/formatTimeMMSS'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const route = useRoute('/track/[id]');
+const route = useRoute('/track/[id]')
 
 const trackId = computed(() => {
-  return route.params.id;
-});
+  return route.params.id
+})
 
 async function fetchTrackData() {
-  const data = await sdk.tracks.get(trackId.value);
+  const data = await sdk.tracks.get(trackId.value)
 
   const str = getCommaSeparatedString(data.artists, 'id')
-      .replace(/\s+/g, '')
-      .replace(/\s+/g, "%20");
-  const artists = await sdk.makeRequest<{artists: Artist[]}>('GET', `artists?ids=${str}`);
+    .replace(/\s+/g, '')
+    .replace(/\s+/g, '%20')
+  const artists = await sdk.makeRequest<{ artists: Artist[] }>('GET', `artists?ids=${str}`)
 
   return {
     ...data,
-    artists: artists.artists
-  };
+    artists: artists.artists,
+  }
 }
 
-const {data: trackInfo, isFetching, isError} = useQuery({
+const { data: trackInfo, isFetching, isError } = useQuery({
   queryKey: ['track', trackId],
   queryFn: async () => {
-    const data = await fetchTrackData();
-    const maskColor = await getMaskColor(data.album);
+    const data = await fetchTrackData()
+    const maskColor = await getMaskColor(data.album)
 
-    setTitle(`${data.name} - song by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
+    setTitle(`${data.name} - song by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`)
 
-    return {...data, maskColor}
-  }
-});
+    return { ...data, maskColor }
+  },
+})
 
-const {isCurrentTrack} = usePlaybackStates();
+const { isCurrentTrack } = usePlaybackStates()
 </script>
 
 <template>
@@ -76,13 +76,15 @@ const {isCurrentTrack} = usePlaybackStates();
         type="track"
         class="info"
       >
-        <span class="type">{{t('entities.track')}}</span>
-        <h1 class="name">{{trackInfo.name}}</h1>
+        <span class="type">{{ t('entities.track') }}</span>
+        <h1 class="name">
+          {{ trackInfo.name }}
+        </h1>
         <div class="additional">
           <div v-if="trackInfo.artists.length === 1" class="single-artist">
             <EntityAvatar1x1 :image="getImageFromEntity(trackInfo.artists[0].images, 2)" class="img" type="artist" />
             <RouterLink :to="`/artist/${trackInfo.artists[0].id}`" class="artist-name">
-              {{trackInfo.artists[0].name}}
+              {{ trackInfo.artists[0].name }}
             </RouterLink>
           </div>
           <div v-else class="artists">
@@ -94,22 +96,24 @@ const {isCurrentTrack} = usePlaybackStates();
                 :to="`/artist/${artist.id}`"
                 class="artist"
               >
-                {{artist.name}}
+                {{ artist.name }}
               </RouterLink>
 
-              <template v-if="index !== trackInfo.artists.length-1">&nbsp;•&nbsp;</template>
+              <template v-if="index !== trackInfo.artists.length - 1">
+                &nbsp;•&nbsp;
+              </template>
             </template>
           </div>
 
           <EntityInfoHeaderDot />
 
           <RouterLink class="album-link" :to="`/album/${trackInfo.album.id}`">
-            {{trackInfo.album.name}}
+            {{ trackInfo.album.name }}
           </RouterLink>
 
           <EntityInfoHeaderDot />
 
-          <span>{{formatTimeMMSS(trackInfo.duration_ms / 1000)}}</span>
+          <span>{{ formatTimeMMSS(trackInfo.duration_ms / 1000) }}</span>
         </div>
       </EntityInfoHeader>
 

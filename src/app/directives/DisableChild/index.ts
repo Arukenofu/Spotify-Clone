@@ -1,10 +1,10 @@
-import type { Directive } from 'vue';
+import type { Directive } from 'vue'
 
 export default {
   mounted: (el: HTMLElement) => {
-    const children = el.querySelectorAll<HTMLElement>('*');
+    const children = el.querySelectorAll<HTMLElement>('*')
     children.forEach((child) => {
-      child.style.pointerEvents = 'none';
-    });
-  }
-} satisfies Directive;
+      child.style.pointerEvents = 'none'
+    })
+  },
+} satisfies Directive

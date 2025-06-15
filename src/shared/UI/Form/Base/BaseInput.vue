@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type {InputHTMLAttributes} from "vue";
+import type { InputHTMLAttributes } from 'vue'
 
 /* @vue-ignore */
 interface Props extends InputHTMLAttributes {
 
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
-  <input class="v-input" v-bind="$props" />
+  <input class="v-input" v-bind="$props">
 </template>
 
 <style scoped lang="scss">

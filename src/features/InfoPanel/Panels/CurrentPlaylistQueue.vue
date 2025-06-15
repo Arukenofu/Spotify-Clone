@@ -1,53 +1,54 @@
 <script setup lang="ts">
-import {computed, reactive} from 'vue';
-import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
-import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue';
-import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
-import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
-import {useI18n} from "vue-i18n";
-import {currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
+import { computed, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import NoQueue from '@/features/InfoPanel/components/NoQueue.vue'
+import { currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
+import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue'
+import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const stream = reactive(useAudioStream());
-const controls = reactive(usePlaybackControls());
-const currentPlayback = currentPlaybackStore();
+const stream = reactive(useAudioStream())
+const controls = reactive(usePlaybackControls())
+const currentPlayback = currentPlaybackStore()
 
 const isNoQueue = computed(() => {
-  return !currentPlayback.currentTracksQueue.length;
-});
+  return !currentPlayback.currentTracksQueue.length
+})
 
 const queue = computed(() => {
-  return currentPlayback.currentTracksQueue;
-});
+  return currentPlayback.currentTracksQueue
+})
 
 const nextSongsInQueue = computed(() => {
   if (isNoQueue.value) {
-    return [];
+    return []
   }
 
-  return queue.value.slice(currentPlayback.currentTrackIndex! + 1);
-});
+  return queue.value.slice(currentPlayback.currentTrackIndex! + 1)
+})
 
 function setTrack(id: string) {
   setCurrentPlayback(
-      currentPlayback.currentPlaybackType!,
-      currentPlayback.currentPlaybackInfo?.id!,
-      id
+    currentPlayback.currentPlaybackType!,
+    currentPlayback.currentPlaybackInfo?.id!,
+    id,
   )
 }
 
 const headTextValue = computed(() => {
-  let output = t('info-panel.queue.next');
+  let output = t('info-panel.queue.next')
 
   if (currentPlayback.currentPlaybackInfo?.name) {
-    output += ` ${t('info-panel.queue.from')}: ${currentPlayback.currentPlaybackInfo.name}`;
-  } else {
-    output += ':';
+    output += ` ${t('info-panel.queue.from')}: ${currentPlayback.currentPlaybackInfo.name}`
+  }
+  else {
+    output += ':'
   }
 
-  return output;
-});
+  return output
+})
 </script>
 
 <template>
@@ -56,14 +57,14 @@ const headTextValue = computed(() => {
   <div v-else class="panel">
     <PanelHeader>
       <template #name>
-        {{t('info-panel.queue.queue')}}
+        {{ t('info-panel.queue.queue') }}
       </template>
     </PanelHeader>
 
     <ScrollableBlock class="content">
       <div v-if="currentPlayback.currentTrack" class="now-playing section">
         <div class="head-text">
-          {{t('info-panel.queue.nowPlaying')}}
+          {{ t('info-panel.queue.nowPlaying') }}
         </div>
         <div class="currentMusic">
           <Transition

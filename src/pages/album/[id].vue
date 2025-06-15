@@ -1,54 +1,54 @@
 <script setup lang="ts">
-import AlbumInfoHeader from "@/pageLayouts/album.id/AlbumInfoHeader.vue";
-import {useQuery} from "@tanstack/vue-query";
-import {useRoute} from "vue-router";
+import { useQuery } from '@tanstack/vue-query'
+import { computed, inject, reactive, type Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackStates } from '@/features/MediaPlayer'
+import { loadNextPlayback } from '@/features/MediaPlayer/utils/loadNextPlayback'
+import { userPreferencesStore } from '@/features/UserPreferences'
+import AlbumInfoHeader from '@/pageLayouts/album.id/AlbumInfoHeader.vue'
+import { fetchAlbum } from '@/services/sdk/entities/album'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import AddToMediaLib from '@/shared/UI/Buttons/AddToMediaLib.vue'
+import FormatLibraryButton from '@/shared/UI/Buttons/FormatLibraryButton.vue'
+import HandleEntityLayoutStates from '@/shared/UI/Elements/HandleEntityLayoutStates.vue'
+import TrackRow from '@/shared/UI/Elements/Track/TrackRow.vue'
+import MusicRowHeader from '@/shared/UI/EntityPageElements/MusicRowHeader.vue'
+import MusicRowHeaderWrapper from '@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue'
 import GeneralGradientSectionWithControls
-  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
-import AddToMediaLib from "@/shared/UI/Buttons/AddToMediaLib.vue";
-import TrackRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import {computed, inject, reactive, type Ref} from "vue";
-import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
-import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import {useI18n} from "vue-i18n";
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import setTitle from "@/shared/utils/setTitle";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
-import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
-import {fetchAlbum} from "@/services/sdk/entities/album";
-import {currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackStates} from "@/features/MediaPlayer";
-import {loadNextPlayback} from "@/features/MediaPlayer/utils/loadNextPlayback";
-import {userPreferencesStore} from "@/features/UserPreferences";
+  from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
+import PlayHeaderWithPlayingState from '@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue'
+import TrackTableWrapper from '@/shared/UI/EntityPageElements/TrackTableWrapper.vue'
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
+import setTitle from '@/shared/utils/setTitle'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const route = useRoute('/playlist/[id]');
-const layout = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
+const route = useRoute('/playlist/[id]')
+const layout = inject<Ref<HTMLElement & { content: HTMLElement }>>('layoutContent')
 
-const currentPlayback = currentPlaybackStore();
-const stream = reactive(useAudioStream());
-const states = reactive(usePlaybackStates());
+const currentPlayback = currentPlaybackStore()
+const stream = reactive(useAudioStream())
+const states = reactive(usePlaybackStates())
 
-const albumId = computed(() => route.params.id);
+const albumId = computed(() => route.params.id)
 
-const {data, isFetching, isError} = useQuery({
+const { data, isFetching, isError } = useQuery({
   queryKey: ['album', albumId],
   queryFn: async () => {
-    const data = await fetchAlbum(albumId.value);
+    const data = await fetchAlbum(albumId.value)
 
-    setTitle(`${data.name} - Album by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`);
+    setTitle(`${data.name} - Album by ${getCommaSeparatedString(data.artists, 'name')} | Spotify`)
 
-    return data;
+    return data
   },
-  staleTime: Infinity
-});
+  staleTime: Infinity,
+})
 
-const isCurrentAlbum = computed(() => states.isCurrentPlayback('album', albumId.value));
+const isCurrentAlbum = computed(() => states.isCurrentPlayback('album', albumId.value))
 const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
 
-const preferences = userPreferencesStore();
+const preferences = userPreferencesStore()
 </script>
 
 <template>
@@ -94,20 +94,20 @@ const preferences = userPreferencesStore();
       <MusicRowHeaderWrapper :parent-element="layout!.content">
         <MusicRowHeader class="row-header" :class="preferences.tracksFormat === 'Compact' && 'compact'">
           <template v-if="preferences.tracksFormat === 'Compact'" #var1>
-            {{t('entities.artist')}}
+            {{ t('entities.artist') }}
           </template>
         </MusicRowHeader>
       </MusicRowHeaderWrapper>
 
       <TrackTableWrapper
-        v-slot="{track, index}"
+        v-slot="{ track, index }"
         :list="data.tracks.items"
         :size="preferences.tracksFormat === 'Compact' ? 32 : 56"
         :has-next="!!data.tracks.next"
         @load-more="loadNextPlayback(
           albumId,
           'album',
-          data.tracks.next
+          data.tracks.next,
         )"
       >
         <TrackRow

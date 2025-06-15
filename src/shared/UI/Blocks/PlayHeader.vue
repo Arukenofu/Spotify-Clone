@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import StickyHeader from "@/shared/UI/Blocks/StickyHeader.vue";
-import {computed} from "vue";
+import { computed } from 'vue'
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue'
 
 interface Props {
-  scrollY: number;
-  mask: string | null;
-  passingHeight?: number;
+  scrollY: number
+  mask: string | null
+  passingHeight?: number
 }
 
 const {
   scrollY,
   passingHeight = 160,
-  mask
-} = defineProps<Props>();
+  mask,
+} = defineProps<Props>()
 
 const isHeightPassed = computed(() => {
-  return scrollY > passingHeight;
-});
+  return scrollY > passingHeight
+})
 </script>
 
 <template>

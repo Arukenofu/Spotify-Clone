@@ -1,73 +1,75 @@
-import {ref, watch} from 'vue';
-import getType from "@/shared/utils/getType";
+import { ref, watch } from 'vue'
+import getType from '@/shared/utils/getType'
 
 interface Options {
-  expectedValues?: any[];
-  expectedTypes?: string[];
-  min?: number;
-  max?: number;
+  expectedValues?: any[]
+  expectedTypes?: string[]
+  min?: number
+  max?: number
 }
 
-export default function <T>(
+export default function<T>(
   key: string,
   initialValue: T,
-  options: Options = {}
+  options: Options = {},
 ) {
-  const innerRef = ref(initialValue);
-  const cachedValue = localStorage.getItem(key);
+  const innerRef = ref(initialValue)
+  const cachedValue = localStorage.getItem(key)
 
-  innerRef.value =
-    !cachedValue || checkJSON(parseJSON(cachedValue), options) === 'fail'
+  innerRef.value
+    = !cachedValue || checkJSON(parseJSON(cachedValue), options) === 'fail'
       ? initialValue
-      : parseJSON(cachedValue);
+      : parseJSON(cachedValue)
 
   watch(innerRef, (value) => {
-    localStorage.setItem(key, stringifyJSON(value));
+    localStorage.setItem(key, stringifyJSON(value))
   }, {
-    deep: true
-  });
+    deep: true,
+  })
 
-  return innerRef;
+  return innerRef
 }
 
 function checkJSON<T>(value: T, options: Options = {}): 'passed' | 'fail' {
-  const { expectedValues, expectedTypes, min, max } = options;
+  const { expectedValues, expectedTypes, min, max } = options
 
   const checkByInclude = (value: any, expected: any[]) => {
-    return expected.includes(value);
-  };
+    return expected.includes(value)
+  }
 
   if (expectedTypes && !checkByInclude(getType(value), expectedTypes)) {
-    return 'fail';
+    return 'fail'
   }
 
   if (min && typeof value === 'number' && min > value) {
-    return 'fail';
+    return 'fail'
   }
 
   if (max && typeof value === 'number' && max < value) {
-    return 'fail';
+    return 'fail'
   }
 
   if (expectedValues && !checkByInclude(value, expectedValues)) {
-    return 'fail';
+    return 'fail'
   }
 
-  return 'passed';
+  return 'passed'
 }
 
 function parseJSON(value: string) {
   try {
-    return JSON.parse(value);
-  } catch {
-    return value;
+    return JSON.parse(value)
+  }
+  catch {
+    return value
   }
 }
 
 function stringifyJSON<T>(value: T) {
   if (typeof value === 'string') {
-    return value;
-  } else {
-    return JSON.stringify(value);
+    return value
+  }
+  else {
+    return JSON.stringify(value)
   }
 }

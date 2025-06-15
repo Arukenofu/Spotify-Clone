@@ -1,54 +1,57 @@
 <script setup lang="ts">
-import {computed, onMounted, ref, useTemplateRef} from "vue";
-import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
-import ArrowIcon2 from "@/shared/UI/Icons/ArrowIcon2.vue";
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import ArrowIcon2 from '@/shared/UI/Icons/ArrowIcon2.vue'
 
-const {isScrollable = true} = defineProps<{
-  isScrollable?: boolean;
-}>();
+const { isScrollable = true } = defineProps<{
+  isScrollable?: boolean
+}>()
 
-const scrollableSectionRef = useTemplateRef<HTMLElement>('scrollableSectionRef');
+const scrollableSectionRef = useTemplateRef<HTMLElement>('scrollableSectionRef')
 
-const canItScrollLeft = ref<boolean>(false);
-const canItScrollRight = ref<boolean>(true);
+const canItScrollLeft = ref<boolean>(false)
+const canItScrollRight = ref<boolean>(true)
 
 onMounted(() => {
-  const section = scrollableSectionRef.value;
-  if (!section) return;
+  const section = scrollableSectionRef.value
+  if (!section)
+    return
 
-  const maxScrollLeft = section.scrollWidth - section.clientWidth;
+  const maxScrollLeft = section.scrollWidth - section.clientWidth
 
   if (maxScrollLeft === 0) {
-    canItScrollRight.value = false;
+    canItScrollRight.value = false
   }
-});
+})
 
 const computeRootElementShadowClasses = computed(() => ([
-    canItScrollLeft.value && 'shadow-left',
-    canItScrollRight.value && 'shadow-right'
-]));
+  canItScrollLeft.value && 'shadow-left',
+  canItScrollRight.value && 'shadow-right',
+]))
 
 function onScroll() {
-  const section = scrollableSectionRef.value;
-  if (!section) return;
+  const section = scrollableSectionRef.value
+  if (!section)
+    return
 
-  const scrollLeft = section.scrollLeft;
-  const maxScrollLeft = section.scrollWidth - section.clientWidth;
+  const scrollLeft = section.scrollLeft
+  const maxScrollLeft = section.scrollWidth - section.clientWidth
 
-  canItScrollLeft.value = scrollLeft > 0;
-  canItScrollRight.value = scrollLeft !== maxScrollLeft;
+  canItScrollLeft.value = scrollLeft > 0
+  canItScrollRight.value = scrollLeft !== maxScrollLeft
 }
 
 function onScrollButtonClick(direction: 'left' | 'right') {
-  const section = scrollableSectionRef.value;
-  if (!section) return;
+  const section = scrollableSectionRef.value
+  if (!section)
+    return
 
-  const applicator = direction === 'left' ? -585 : 585;
+  const applicator = direction === 'left' ? -585 : 585
 
   section.scrollTo({
     left: section.scrollLeft + applicator,
-    behavior: 'smooth'
-  });
+    behavior: 'smooth',
+  })
 }
 </script>
 

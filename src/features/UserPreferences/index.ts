@@ -1,3 +1,3 @@
-export * from './core/userPreferencesStore';
-export * from './types/TrackListFormats';
-export * from './types/RepeatModes';
+export * from './core/userPreferencesStore'
+export * from './types/RepeatModes'
+export * from './types/TrackListFormats'

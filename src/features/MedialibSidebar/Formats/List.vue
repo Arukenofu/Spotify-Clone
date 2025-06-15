@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue';
-import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
-import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
-import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
-import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
+import type { MediaLibEntityProps } from '@/features/MedialibSidebar/types/MediaLibEntityProps'
+import EntityInfo from '@/features/MedialibSidebar/components/EntityInfo.vue'
+import PinnedComponent from '@/features/MedialibSidebar/components/PinnedComponent.vue'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 
-const props = defineProps<MediaLibEntityProps>();
+const props = defineProps<MediaLibEntityProps>()
 </script>
 
 <template>

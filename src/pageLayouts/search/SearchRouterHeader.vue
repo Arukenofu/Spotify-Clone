@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {router} from '@/app/router';
-import {useRoute} from 'vue-router';
-import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
-import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue';
-import {useI18n} from "vue-i18n";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
-
-const {t} = useI18n();
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { router } from '@/app/router'
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue'
+import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue'
 
 const props = defineProps<{
   availableRoutes: ItemTypes[]
-}>();
+}>()
 
-const route = useRoute('/search/[...query]/[...path]');
+const { t } = useI18n()
+
+const route = useRoute('/search/[...query]/[...path]')
 
 function setSearchRouteFilter(path: string) {
-  router.push(`/search/${route.params.query}${path}`);
+  router.push(`/search/${route.params.query}${path}`)
 }
 
 const getActiveFilterIndex = computed(() => {
-  return props.availableRoutes.findIndex((item) => item + 's' === route.params.path);
-});
+  return props.availableRoutes.findIndex(item => `${item}s` === route.params.path)
+})
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const getActiveFilterIndex = computed(() => {
         :design="!route.params.path ? 'active' : 'default'"
         @click="setSearchRouteFilter('')"
       >
-        {{t('search.entities.all')}}
+        {{ t('search.entities.all') }}
       </BubbleButton>
 
       <BubbleButton

@@ -1,1 +1,1 @@
-export type RepeatModes = 'onlyCurrentMusic' | 'repeatCurrentPlaylist' | 'repeatCurrentMusic';
+export type RepeatModes = 'onlyCurrentMusic' | 'repeatCurrentPlaylist' | 'repeatCurrentMusic'

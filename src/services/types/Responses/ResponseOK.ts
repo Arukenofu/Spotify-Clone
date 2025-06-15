@@ -1,3 +1,3 @@
 export interface ResponseOK {
-    message: 'OK'
+  message: 'OK'
 }

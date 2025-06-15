@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {BasicContextMenuItem} from "@/features/ContextMenu";
-import AddToQueueIcon from "@/shared/UI/Icons/AddToQueueIcon.vue";
-import ctxT from "../../helpers/ctx-t";
+import { BasicContextMenuItem } from '@/features/ContextMenu'
+import AddToQueueIcon from '@/shared/UI/Icons/AddToQueueIcon.vue'
+import ctxT from '../../helpers/ctx-t'
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import ctxT from "../../helpers/ctx-t";
     <template #icon>
       <AddToQueueIcon />
     </template>
-    {{ctxT('addToProfile')}}
+    {{ ctxT('addToProfile') }}
   </BasicContextMenuItem>
 </template>
 

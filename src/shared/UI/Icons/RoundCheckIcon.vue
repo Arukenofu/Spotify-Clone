@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  achieve: any;
-}>();
+  achieve: any
+}>()
 </script>
 
 <template>

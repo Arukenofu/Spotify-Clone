@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue';
-import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
-import PCDeviceIcon from '@/shared/UI/Icons/PCDeviceIcon.vue';
-import WifiIcon from '@/shared/UI/Icons/WifiIcon.vue';
-import PcAndDynamic from '@/shared/UI/Icons/PcAndDynamic.vue';
-import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
-import {useI18n} from "vue-i18n";
-import type InfoPanel from "@/app/lib/i18n/locales/en/info-panel";
+import type InfoPanel from '@/app/lib/i18n/locales/en/info-panel'
+import { useI18n } from 'vue-i18n'
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
+import PcAndDynamic from '@/shared/UI/Icons/PcAndDynamic.vue'
+import PCDeviceIcon from '@/shared/UI/Icons/PCDeviceIcon.vue'
+import WifiIcon from '@/shared/UI/Icons/WifiIcon.vue'
+import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue'
+import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue'
 
-const {t, tm} = useI18n();
+const { t, tm } = useI18n()
 
-type ConnectionPossibilities = typeof InfoPanel['connectToDevice']['connectionPossibilities'];
+type ConnectionPossibilities = typeof InfoPanel['connectToDevice']['connectionPossibilities']
 
 const connectionComponents = [
-    WifiIcon,
-    PcAndDynamic,
-    DownloadIcon,
-];
+  WifiIcon,
+  PcAndDynamic,
+  DownloadIcon,
+]
 </script>
 
 <template>
   <div class="panel">
     <PanelHeader>
       <template #name>
-        {{t('info-panel.connectToDevice.title')}}
+        {{ t('info-panel.connectToDevice.title') }}
       </template>
     </PanelHeader>
 
@@ -34,7 +34,7 @@ const connectionComponents = [
       <div class="currentDeviceWidget">
         <div class="line1">
           <PCDeviceIcon class="icon" />
-          <div>{{t('info-panel.connectToDevice.currentDevice')}}</div>
+          <div>{{ t('info-panel.connectToDevice.currentDevice') }}</div>
         </div>
         <div
           v-tooltip="t('info-panel.connectToDevice.currentDevice')"
@@ -61,9 +61,11 @@ const connectionComponents = [
                 v-tooltip="connection.title"
                 class="title"
               >
-                {{connection.title}}
+                {{ connection.title }}
               </div>
-              <div class="description">{{connection.description}}</div>
+              <div class="description">
+                {{ connection.description }}
+              </div>
             </div>
           </div>
         </div>

@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import EntitiesSectionWrapper from "@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue";
-import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
-import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import {useI18n} from "vue-i18n";
-import {clearHistory, history, removeFromHistory} from "@/features/SearchHistory";
-import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import { useI18n } from 'vue-i18n'
+import { clearHistory, history, removeFromHistory } from '@/features/SearchHistory'
+import SearchCardDescriptionRenderer from '@/pageLayouts/search/SearchCardDescriptionRenderer.vue'
+import CardRemoveWrapper from '@/shared/UI/Elements/CardRemoveWrapper.vue'
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
+import EntitiesSectionWrapper from '@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="layout">
     <div class="heading">
-      <h1 class="added-at">{{t('search.searchHistory')}}</h1>
+      <h1 class="added-at">
+        {{ t('search.searchHistory') }}
+      </h1>
       <button class="clear" @click="clearHistory()">
-        {{t('search.cleanHistory')}}
+        {{ t('search.cleanHistory') }}
       </button>
     </div>
 

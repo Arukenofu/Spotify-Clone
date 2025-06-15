@@ -1,61 +1,62 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 interface Props {
-  maxWidth: number;
-  minWidth: number;
-  fromRight?: boolean;
+  maxWidth: number
+  minWidth: number
+  fromRight?: boolean
 }
 
-type Emits = {
-  customResizeEvent: [newWidth: number, max: number, min: number];
-};
+interface Emits {
+  customResizeEvent: [newWidth: number, max: number, min: number]
+}
 
 const props = withDefaults(defineProps<Props>(), {
-  fromRight: false
-});
+  fromRight: false,
+})
+
+const emit = defineEmits<Emits>()
 
 const resizableWidth = defineModel<number>('currentWidth', {
-  required: true
-});
+  required: true,
+})
 
-const emit = defineEmits<Emits>();
-
-const isResizing = ref<boolean>(false);
-const initialWidth = ref<number>(0);
+const isResizing = ref<boolean>(false)
+const initialWidth = ref<number>(0)
 
 function initializeResize(): void {
-  isResizing.value = true;
-  initialWidth.value = resizableWidth.value;
+  isResizing.value = true
+  initialWidth.value = resizableWidth.value
 
-  document.addEventListener('mousemove', resize);
-  document.addEventListener('mouseup', stopResize);
+  document.addEventListener('mousemove', resize)
+  document.addEventListener('mouseup', stopResize)
 }
 
 function resize(event: MouseEvent): void {
-  if (!isResizing.value) return;
+  if (!isResizing.value)
+    return
 
-  const mouseX = event.clientX;
-  let newWidth = initialWidth.value + (mouseX - initialWidth.value);
+  const mouseX = event.clientX
+  let newWidth = initialWidth.value + (mouseX - initialWidth.value)
 
   if (props.fromRight) {
-    newWidth = window.innerWidth - newWidth;
+    newWidth = window.innerWidth - newWidth
   }
 
   if (newWidth >= props.minWidth && newWidth <= props.maxWidth) {
-    resizableWidth.value = newWidth - 10;
+    resizableWidth.value = newWidth - 10
   }
 
-  document.documentElement.style.userSelect = 'none';
-  emit('customResizeEvent', newWidth, props.maxWidth, props.minWidth);
+  document.documentElement.style.userSelect = 'none'
+  emit('customResizeEvent', newWidth, props.maxWidth, props.minWidth)
 }
 
 function stopResize(): void {
-  isResizing.value = false;
-  document.documentElement.style.userSelect = 'auto';
+  isResizing.value = false
+  document.documentElement.style.userSelect = 'auto'
 
-  document.removeEventListener('mousemove', resize);
-  document.removeEventListener('mouseup', stopResize);
+  document.removeEventListener('mousemove', resize)
+  document.removeEventListener('mouseup', stopResize)
 }
 </script>
 

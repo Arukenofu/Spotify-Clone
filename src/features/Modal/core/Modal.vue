@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import ModalBase from "@/features/Modal/components/ModalBase.vue";
-import {onMounted, onUnmounted} from "vue";
-
-const model = defineModel<boolean>({required: true});
-
-onMounted(() => {
-  window.addEventListener('keydown', onKeydown);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', onKeydown);
-});
-
-function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    model.value = false;
-    emit('close');
-  }
-}
+import { onMounted, onUnmounted } from 'vue'
+import ModalBase from '@/features/Modal/components/ModalBase.vue'
 
 const emit = defineEmits<{
   close: []
 }>()
+
+const model = defineModel<boolean>({ required: true })
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown)
+})
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    model.value = false
+    emit('close')
+  }
+}
 </script>
 
 <template>

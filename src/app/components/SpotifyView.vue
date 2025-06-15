@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Loading from "@/shared/components/Loading.vue";
+import Loading from '@/shared/components/Loading.vue'
 </script>
 
 <template>

@@ -1,121 +1,127 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {useRoute} from 'vue-router';
-import {useMutation, useQuery, useQueryClient} from "@tanstack/vue-query";
-import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import ArtistInfoHeaderNoCover from "@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue";
+import type { FollowedArtists, SimplifiedAlbum } from '@spotify/web-api-ts-sdk'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import getCountryCodeA2 from '@/app/lib/i18n/utils/getCountryCodeA2'
+import ArtistInfoHeaderNoCover from '@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue'
+import { sdk } from '@/services/sdk'
+import TracksSection from '@/shared/UI/Blocks/TracksSection.vue'
+import SubscribeButton from '@/shared/UI/Buttons/SubscribeButton.vue'
+import HandleEntityLayoutStates from '@/shared/UI/Elements/HandleEntityLayoutStates.vue'
+import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
 import GeneralGradientSectionWithControls
-  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import setTitle from '@/shared/utils/setTitle';
-import TracksSection from "@/shared/UI/Blocks/TracksSection.vue";
-import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import SubscribeButton from "@/shared/UI/Buttons/SubscribeButton.vue";
-import {useI18n} from "vue-i18n";
-import {sdk} from "@/services/sdk";
-import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
-import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
-import type {FollowedArtists, SimplifiedAlbum} from "@spotify/web-api-ts-sdk";
+  from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
+import PlayHeaderWithPlayingState from '@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue'
+import { getMaskColor } from '@/shared/utils/colors/getMaskColor'
+import setTitle from '@/shared/utils/setTitle'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const route = useRoute('/artist/[id]');
-const queryClient = useQueryClient();
+const route = useRoute('/artist/[id]')
+const queryClient = useQueryClient()
 
-const {data: artistInfo, isFetching, isError} = useQuery({
+const { data: artistInfo, isFetching, isError } = useQuery({
   queryKey: ['artist', route.params.id],
   queryFn: async () => {
-    const data = await sdk.artists.get(route.params.id);
-    if (!data) throw new Error("Error fetching artist");
+    const data = await sdk.artists.get(route.params.id)
+    if (!data)
+      throw new Error('Error fetching artist')
 
-    const maskColor = await getMaskColor(data);
-    const isSubscribed = await sdk.currentUser.followsArtistsOrUsers([route.params.id], 'artist');
+    const maskColor = await getMaskColor(data)
+    const isSubscribed = await sdk.currentUser.followsArtistsOrUsers([route.params.id], 'artist')
     // @ts-ignore
-    const topItems = await sdk.artists.topTracks(route.params.id, getCountryCodeA2());
-    const discography = await sdk.artists.albums(route.params.id);
+    const topItems = await sdk.artists.topTracks(route.params.id, getCountryCodeA2())
+    const discography = await sdk.artists.albums(route.params.id)
 
-    setTitle(`${data.name} | Spotify`);
-    
+    setTitle(`${data.name} | Spotify`)
+
     return {
       ...data,
       topItems,
       discography,
       maskColor,
-      isSubscribed: isSubscribed.length ? isSubscribed[0] : false
-    };
+      isSubscribed: isSubscribed.length ? isSubscribed[0] : false,
+    }
   },
-  staleTime: Infinity
-});
+  staleTime: Infinity,
+})
 
-const {mutate: toggleSubscription} = useMutation({
+const { mutate: toggleSubscription } = useMutation({
   mutationFn: async () => {
-    if (!artistInfo.value) return;
+    if (!artistInfo.value)
+      return
 
-    const action = artistInfo.value.isSubscribed ? 'unfollowArtistsOrUsers' : 'followArtistsOrUsers';
+    const action = artistInfo.value.isSubscribed ? 'unfollowArtistsOrUsers' : 'followArtistsOrUsers'
 
     await sdk.currentUser[action]([route.params.id], 'artist').catch(() => {
-      throw new Error("Error toggling artist subscription");
-    });
+      throw new Error('Error toggling artist subscription')
+    })
 
     const isSubscribed = !artistInfo.value.isSubscribed
 
     queryClient.setQueryData(['artist', route.params.id], () => ({
       ...artistInfo.value,
-      isSubscribed: isSubscribed
-    }));
+      isSubscribed,
+    }))
 
     queryClient.setQueryData(['currentUserFollowedArtists'], (oldData: FollowedArtists) => {
-      const { artists } = oldData;
+      const { artists } = oldData
       const updatedItems = artists.items.some(item => item.id === route.params.id)
-          ? artists.items.filter(item => item.id !== route.params.id)
-          : [...artists.items, { ...artistInfo.value }];
+        ? artists.items.filter(item => item.id !== route.params.id)
+        : [...artists.items, { ...artistInfo.value }]
 
       return {
         ...oldData,
         artists: {
           ...artists,
-          items: updatedItems
-        }
-      };
-    });
-  }
-});
+          items: updatedItems,
+        },
+      }
+    })
+  },
+})
 
-const isTopTracksExpanded = ref(false);
+const isTopTracksExpanded = ref(false)
 
 const isTopTracksHaveEnoughItems = computed(() => {
-  if (!artistInfo.value) return false;
+  if (!artistInfo.value)
+    return false
 
-  return artistInfo.value.topItems.tracks.length > 5;
-});
+  return artistInfo.value.topItems.tracks.length > 5
+})
 
 const topTracks = computed(() => {
-  if (!artistInfo.value) return [];
+  if (!artistInfo.value)
+    return []
 
   if (isTopTracksExpanded.value) {
-    return artistInfo.value.topItems.tracks;
-  } else {
-    return artistInfo.value.topItems.tracks.slice(0, 5);
+    return artistInfo.value.topItems.tracks
   }
-});
+  else {
+    return artistInfo.value.topItems.tracks.slice(0, 5)
+  }
+})
 
 const discography = computed(() => {
-  if (!artistInfo.value) return null;
+  if (!artistInfo.value)
+    return null
 
-  const items = artistInfo.value.discography.items;
+  const items = artistInfo.value.discography.items
 
-  const output: Record<string, SimplifiedAlbum[]> = {};
+  const output: Record<string, SimplifiedAlbum[]> = {}
 
   for (let i = 0; i < items.length; i++) {
     if (!(items[i].album_type in output)) {
-      output[items[i].album_type] = [];
+      output[items[i].album_type] = []
     }
 
-    output[items[i].album_type].push(items[i]);
+    output[items[i].album_type].push(items[i])
   }
 
-  return output;
-});
+  return output
+})
 </script>
 
 <template>
@@ -146,8 +152,8 @@ const discography = computed(() => {
           distance: 24,
           style: {
             fontSize: '.9rem',
-            padding: '6px 8px'
-          }
+            padding: '6px 8px',
+          },
         }"
         :bg-color="artistInfo.maskColor"
       >
@@ -242,7 +248,7 @@ const discography = computed(() => {
       margin-bottom: 16px;
     }
 
-    .card { 
+    .card {
       background-color: #282828;
       padding: 40px;
       border-radius: 8px;
@@ -277,8 +283,7 @@ const discography = computed(() => {
         font-weight: 400;
         line-height: 1.5;
       }
-    } 
-  } 
+    }
+  }
 }
-
 </style>

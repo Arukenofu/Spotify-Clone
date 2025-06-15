@@ -1,48 +1,49 @@
 <script setup lang="ts">
-import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
-import {computed, watch} from "vue";
-import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
-import NowPlayingOptionsContextMenu from "@/features/InfoPanel/components/NowPlayingOptionsContextMenu.vue";
-import {ContextMenu} from "@/features/ContextMenu";
-import ScrollableBlock from "@/shared/UI/Blocks/ScrollableBlock.vue";
-import {useQuery} from "@tanstack/vue-query";
-import apiArtistService from "@/services/api/artist/apiArtistService";
-import type {Artist} from "@/services/types/Entities/Artist";
-import AboutArtistCard from "@/features/InfoPanel/components/AboutArtistCard.vue";
-import AboutTrackInfo from "@/features/InfoPanel/components/AboutTrackInfo.vue";
-import NoQueue from "@/features/InfoPanel/components/NoQueue.vue";
-import {useI18n} from "vue-i18n";
-import {currentPlaybackStore} from "@/features/MediaPlayer";
-import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
+import type { Artist } from '@/services/types/Entities/Artist'
+import { useQuery } from '@tanstack/vue-query'
+import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { ContextMenu } from '@/features/ContextMenu'
+import AboutArtistCard from '@/features/InfoPanel/components/AboutArtistCard.vue'
+import AboutTrackInfo from '@/features/InfoPanel/components/AboutTrackInfo.vue'
+import NoQueue from '@/features/InfoPanel/components/NoQueue.vue'
+import NowPlayingOptionsContextMenu from '@/features/InfoPanel/components/NowPlayingOptionsContextMenu.vue'
+import { currentPlaybackStore } from '@/features/MediaPlayer'
+import apiArtistService from '@/services/api/artist/apiArtistService'
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
+import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe'
+import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const currentPlayback = currentPlaybackStore();
+const currentPlayback = currentPlaybackStore()
 
-const {data: artistDossier, suspense, refetch} = useQuery<Artist | null>({
+const { data: artistDossier, suspense, refetch } = useQuery<Artist | null>({
   queryKey: ['artistInfo'],
-  queryFn: async () => {currentPlayback.currentTrack
+  queryFn: async () => {
+    currentPlayback.currentTrack
     if (!currentPlayback.currentTrack) {
-      return null;
+      return null
     }
 
-    const artists = currentPlayback.currentTrack!.artists;
+    const artists = currentPlayback.currentTrack!.artists
 
-    return await apiArtistService.getArtistInfo(artists[0].id);
+    return await apiArtistService.getArtistInfo(artists[0].id)
   },
-  suspense: true
-});
+  suspense: true,
+})
 
 watch(() => currentPlayback.currentTrackId, () => {
-  refetch();
-});
+  refetch()
+})
 
-await suspense();
+await suspense()
 
 const nextSongInQueue = computed(() => {
-  return currentPlayback.currentPlaybackInfo?.tracks.items[currentPlayback.currentTrackIndex];
-});
+  return currentPlayback.currentPlaybackInfo?.tracks.items[currentPlayback.currentTrackIndex]
+})
 </script>
 
 <template>
@@ -51,7 +52,7 @@ const nextSongInQueue = computed(() => {
   <div v-else class="now-playing">
     <PanelHeader class="head-panel">
       <template #name>
-        {{currentPlayback.currentTrack.name}}
+        {{ currentPlayback.currentTrack.name }}
       </template>
       <template #options>
         <ContextMenu trigger="click" placement="bottom-end">
@@ -72,7 +73,7 @@ const nextSongInQueue = computed(() => {
           :id="currentPlayback.currentTrack.id"
           :name="currentPlayback.currentTrack.name"
           :avatar="getImageUrlSafe(currentPlayback.currentTrack.album.images, 'high')"
-          :loading-color="''"
+          loading-color=""
           :artists="currentPlayback.currentTrack.artists"
           :is-added-to-favorites="false"
         />

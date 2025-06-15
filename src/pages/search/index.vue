@@ -1,66 +1,68 @@
 <script setup lang="ts">
-import setTitle from '@/shared/utils/setTitle';
-import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
-import CardRemoveWrapper from "@/shared/UI/Elements/CardRemoveWrapper.vue";
-import {useQuery, useQueryClient} from "@tanstack/vue-query";
-import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import useResponsive from "@/shared/composables/useResponsive";
-import SearchMobileSearchBar from "@/pageLayouts/search/mobile/SearchMobileSearchBar.vue";
-import {useI18n} from "vue-i18n";
-import {sdk} from "@/services/sdk";
-import getLocale from "@/app/lib/i18n/utils/getLocale";
-import getCountryCodeA2 from "@/app/lib/i18n/utils/getCountryCodeA2";
-import GenreCard from "@/pageLayouts/search/GenreCard.vue";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import {history, removeFromHistory} from "@/features/SearchHistory";
-import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
-import type {Categories, ItemTypes} from "@spotify/web-api-ts-sdk";
-import InfiniteScroll from "@/shared/components/InfiniteScroll.vue";
-import {proxy} from "@/shared/utils/proxy";
-import {onUnmounted} from "vue";
-import {destroyAccentWorker} from "@/shared/utils/colors/accentColorWorker";
-import {getAccentColor} from "@/shared/utils/colors/getAccentColor";
+import type { Categories, ItemTypes } from '@spotify/web-api-ts-sdk'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import getCountryCodeA2 from '@/app/lib/i18n/utils/getCountryCodeA2'
+import getLocale from '@/app/lib/i18n/utils/getLocale'
+import { history, removeFromHistory } from '@/features/SearchHistory'
+import GenreCard from '@/pageLayouts/search/GenreCard.vue'
+import SearchMobileSearchBar from '@/pageLayouts/search/mobile/SearchMobileSearchBar.vue'
+import SearchCardDescriptionRenderer from '@/pageLayouts/search/SearchCardDescriptionRenderer.vue'
+import { sdk } from '@/services/sdk'
+import InfiniteScroll from '@/shared/components/InfiniteScroll.vue'
+import useResponsive from '@/shared/composables/useResponsive'
+import CardRemoveWrapper from '@/shared/UI/Elements/CardRemoveWrapper.vue'
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
+import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue'
+import { destroyAccentWorker } from '@/shared/utils/colors/accentColorWorker'
+import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
+import { proxy } from '@/shared/utils/proxy'
+import setTitle from '@/shared/utils/setTitle'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-setTitle(t('route-titles.search'));
+setTitle(t('route-titles.search'))
 
-const {isMobile} = useResponsive();
+const { isMobile } = useResponsive()
 
-const queryClient = useQueryClient();
+const queryClient = useQueryClient()
 
-const {data: categories, suspense} = useQuery({
+const { data: categories, suspense } = useQuery({
   queryKey: ['categories'],
   queryFn: async () => {
-    const data = await sdk.browse.getCategories(getCountryCodeA2(), getLocale());
+    const data = await sdk.browse.getCategories(getCountryCodeA2(), getLocale())
 
-    const maskColors: (string | null)[] = [];
+    const maskColors: (string | null)[] = []
 
     for (const item of data.categories.items) {
-      const color = await getAccentColor(item.icons[0].url);
-      maskColors.push(color);
+      const color = await getAccentColor(item.icons[0].url)
+      maskColors.push(color)
     }
 
     return {
       ...data.categories,
-      maskColors
-    };
-  }
-});
-await suspense();
+      maskColors,
+    }
+  },
+})
+await suspense()
 
 async function nextPage() {
-  const next = categories.value?.next;
-  if (!next) return;
+  const next = categories.value?.next
+  if (!next)
+    return
 
-  const data = await sdk.makeRequest('GET', next.replace('https://api.spotify.com/v1/', '')) as Categories | undefined;
-  if (!data) return;
+  const data = await sdk.makeRequest('GET', next.replace('https://api.spotify.com/v1/', '')) as Categories | undefined
+  if (!data)
+    return
 
-  const maskColors: (string | null)[] = [];
+  const maskColors: (string | null)[] = []
 
   for (const item of data.categories.items) {
-    const color = await getAccentColor(item.icons[0].url);
-    maskColors.push(color);
+    const color = await getAccentColor(item.icons[0].url)
+    maskColors.push(color)
   }
 
   queryClient.setQueryData(['categories'], (oldData: Categories['categories']) => {
@@ -73,12 +75,12 @@ async function nextPage() {
       // @ts-ignore
       maskColors: oldData.maskColors.concat(maskColors),
     }
-  });
+  })
 }
 
 onUnmounted(() => {
-  destroyAccentWorker();
-});
+  destroyAccentWorker()
+})
 </script>
 
 <template>
@@ -107,24 +109,26 @@ onUnmounted(() => {
     </EntitiesSectionWithHeading>
 
     <div v-if="isMobile" class="mobile-search-bar" @click="$router.push('/search/recent')">
-      <h1 class="search-title">{{t('search.search')}}</h1>
+      <h1 class="search-title">
+        {{ t('search.search') }}
+      </h1>
       <SearchMobileSearchBar disabled />
     </div>
 
     <div class="recommended-cards">
       <h1 class="title">
-        {{t('search.browseAll')}}
+        {{ t('search.browseAll') }}
       </h1>
 
       <InfiniteScroll v-if="categories" class="cards" @data-update="nextPage()">
-        <GenreCard 
+        <GenreCard
           v-for="(item, index) in categories.items"
           :key="item.id"
           :href="item.href"
           :image="getImageFromEntity(item.icons, 0)!"
           :mask-color="categories.maskColors[index]"
         >
-          {{item.name}}
+          {{ item.name }}
         </GenreCard>
       </InfiniteScroll>
     </div>

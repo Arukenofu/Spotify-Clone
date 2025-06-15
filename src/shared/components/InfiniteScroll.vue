@@ -1,36 +1,36 @@
 <script setup lang="ts" generic="T extends any[]">
-import {onMounted, onUnmounted, useTemplateRef} from "vue";
+import { onMounted, onUnmounted, useTemplateRef } from 'vue'
 
 const emit = defineEmits<{
   dataUpdate: []
-}>();
+}>()
 
-const sentinel = useTemplateRef<HTMLElement>('sentinel');
-let observer: IntersectionObserver | null = null;
+const sentinel = useTemplateRef<HTMLElement>('sentinel')
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
   observer = new IntersectionObserver((entries) => {
-    const [entry] = entries;
+    const [entry] = entries
     if (entry.isIntersecting) {
-      emit('dataUpdate');
+      emit('dataUpdate')
     }
-  });
+  })
 
   if (sentinel.value) {
-    observer.observe(sentinel.value);
+    observer.observe(sentinel.value)
   }
-});
+})
 
 onUnmounted(() => {
   if (observer && sentinel.value) {
-    observer.unobserve(sentinel.value);
+    observer.unobserve(sentinel.value)
   }
-});
+})
 </script>
 
 <template>
   <div class="v-scroll">
-    <slot></slot>
+    <slot />
 
     <div ref="sentinel" class="sentinel" />
   </div>

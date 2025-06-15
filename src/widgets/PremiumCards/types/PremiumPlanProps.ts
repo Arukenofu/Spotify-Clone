@@ -1,17 +1,17 @@
-import type { CSSProperties } from 'vue';
+import type { CSSProperties } from 'vue'
 
 export interface PremiumPlanProps {
-  name: string;
-  color: CSSProperties['color'];
-  benefits: string[];
-  buttonText: string;
-  about: string;
+  name: string
+  color: CSSProperties['color']
+  benefits: string[]
+  buttonText: string
+  about: string
 
   additionalConditions:
     | {
-        head: string;
-        tail: string;
-      }
-    | string;
-  topSideText?: string;
+      head: string
+      tail: string
+    }
+    | string
+  topSideText?: string
 }

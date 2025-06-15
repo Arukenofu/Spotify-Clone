@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import readableNumber from "@/shared/utils/format/readableNumber";
-import type {Artist} from "@/services/types/Entities/Artist";
-import {AppearModal, Modal} from "@/features/Modal";
-import {useI18n} from "vue-i18n";
+import type { Artist } from '@/services/types/Entities/Artist'
+import { useI18n } from 'vue-i18n'
+import { AppearModal, Modal } from '@/features/Modal'
+import readableNumber from '@/shared/utils/format/readableNumber'
 
-const {t} = useI18n();
+defineProps<Props>()
+
+const { t } = useI18n()
 
 const model = defineModel<boolean>({
-  required: true
-});
+  required: true,
+})
 
 interface Props {
-  subscriptions: Artist['subscriptionsTotalQuantity'];
-  listeners: Artist['listenersQuantityPerMonth'];
-  cityPlaybackData: Artist['cityPlaybackData'],
-  description: Artist['profile']['description'];
+  subscriptions: Artist['subscriptionsTotalQuantity']
+  listeners: Artist['listenersQuantityPerMonth']
+  cityPlaybackData: Artist['cityPlaybackData']
+  description: Artist['profile']['description']
 }
-
-defineProps<Props>();
 </script>
 
 <template>
@@ -26,22 +26,34 @@ defineProps<Props>();
       <div class="modal-content">
         <div class="left-clm">
           <div class="stat">
-            <div class="title">{{readableNumber(subscriptions)}}</div>
-            <div class="body">{{t('artist.subscribers', subscriptions)}}</div>
+            <div class="title">
+              {{ readableNumber(subscriptions) }}
+            </div>
+            <div class="body">
+              {{ t('artist.subscribers', subscriptions) }}
+            </div>
           </div>
           <div class="stat">
-            <div class="title">{{readableNumber(listeners)}}</div>
-            <div class="body">{{t('artist.monthlyListeners', listeners)}}</div>
+            <div class="title">
+              {{ readableNumber(listeners) }}
+            </div>
+            <div class="body">
+              {{ t('artist.monthlyListeners', listeners) }}
+            </div>
           </div>
 
           <div v-for="data in cityPlaybackData" :key="data.cityName" class="city">
-            <div class="title">{{`${data.cityName}, ${data.countryShortName}`}}</div>
-            <div class="body">{{t('social.listeners', listeners)}}</div>
+            <div class="title">
+              {{ `${data.cityName}, ${data.countryShortName}` }}
+            </div>
+            <div class="body">
+              {{ t('social.listeners', listeners) }}
+            </div>
           </div>
         </div>
         <div class="right-clm">
           <p v-if="description">
-            {{description}}
+            {{ description }}
           </p>
         </div>
       </div>

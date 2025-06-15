@@ -1,74 +1,75 @@
 <script setup lang="ts">
-import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue';
-import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue';
-import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue';
-import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNone.vue';
-import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue';
-import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue';
-import FullScreen from "@/widgets/MediaPlayer/components/FullScreen.vue";
-import useScreen from "@/shared/composables/useScreen";
-import {onMounted, provide, reactive, watch} from "vue";
-import {currentPlaybackStore, useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
-import {userPreferencesStore} from "@/features/UserPreferences";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
+import { onMounted, provide, reactive, watch } from 'vue'
+import { currentPlaybackStore, useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
+import { userPreferencesStore } from '@/features/UserPreferences'
+import useScreen from '@/shared/composables/useScreen'
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
+import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue'
+import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue'
+import FullScreen from '@/widgets/MediaPlayer/components/FullScreen.vue'
+import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue'
+import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNone.vue'
+import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue'
+import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue'
 
-const {isFullscreen, enableFullscreen, exitFullScreen} = useScreen();
+const { isFullscreen, enableFullscreen, exitFullScreen } = useScreen()
 
-const preferences = userPreferencesStore();
-const currentPlayback = currentPlaybackStore();
+const preferences = userPreferencesStore()
+const currentPlayback = currentPlaybackStore()
 
-const stream = reactive(useAudioStream());
-const controls = reactive(usePlaybackControls());
+const stream = reactive(useAudioStream())
+const controls = reactive(usePlaybackControls())
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
-  if (event.repeat) return;
+  if (event.repeat)
+    return
 
   if (event.code === 'Space') {
-    event.preventDefault();
+    event.preventDefault()
   }
-});
+})
 
 watch(() => currentPlayback.currentTrackId, () => {
-  stream.pause();
+  stream.pause()
 
   stream.loadTrack(
-      currentPlayback.currentTrack!.name,
-      getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name')
-  ).then(stream.play);
-});
+    currentPlayback.currentTrack!.name,
+    getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name'),
+  ).then(stream.play)
+})
 
 onMounted(() => {
-  const el = new Audio();
-  el.preload = 'none';
-  el.crossOrigin = 'anonymous';
-  el.volume = stream.volume;
+  const el = new Audio()
+  el.preload = 'none'
+  el.crossOrigin = 'anonymous'
+  el.volume = stream.volume
 
   el.addEventListener('loadedmetadata', () => {
-    stream.duration = isFinite(el.duration) ? el.duration : 0;
-  });
+    stream.duration = isFinite(el.duration) ? el.duration : 0
+  })
 
   el.addEventListener('ended', () => {
     if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
-      controls.nextTrack(); return;
+      controls.nextTrack(); return
     }
 
     if (preferences.currentRepeatMode === 'repeatCurrentMusic') {
-      stream.play(); return;
+      stream.play()
     }
   })
 
   el.addEventListener('timeupdate', () => {
-    stream.currentTime = el.currentTime;
-  });
+    stream.currentTime = el.currentTime
+  })
 
-  el.addEventListener('play', () => stream.isPlaying = true);
-  el.addEventListener('pause', () => stream.isPlaying = false);
+  el.addEventListener('play', () => stream.isPlaying = true)
+  el.addEventListener('pause', () => stream.isPlaying = false)
 
-  stream.instance = el;
-});
+  stream.instance = el
+})
 
-provide('enableFullScreenFunc', enableFullscreen);
-provide('exitFullScreenFunc', exitFullScreen);
+provide('enableFullScreenFunc', enableFullscreen)
+provide('exitFullScreenFunc', exitFullScreen)
 </script>
 
 <template>

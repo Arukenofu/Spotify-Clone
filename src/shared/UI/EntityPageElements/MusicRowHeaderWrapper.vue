@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref, useTemplateRef} from "vue";
+import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 
 const {
   parentElement,
-  passingHeight = 128
+  passingHeight = 128,
 } = defineProps<{
-  parentElement: HTMLElement;
-  passingHeight?: number;
-}>();
+  parentElement: HTMLElement
+  passingHeight?: number
+}>()
 
-const stickyTableHead = useTemplateRef<HTMLElement>('stickyTableHead');
-const isSticky = ref<boolean>(false);
+const stickyTableHead = useTemplateRef<HTMLElement>('stickyTableHead')
+const isSticky = ref<boolean>(false)
 
 function setIsSticky() {
-  isSticky.value = !!(stickyTableHead.value && stickyTableHead.value.getBoundingClientRect().top <= passingHeight);
+  isSticky.value = !!(stickyTableHead.value && stickyTableHead.value.getBoundingClientRect().top <= passingHeight)
 }
 
 onMounted(() => {
-  parentElement.addEventListener('scroll', setIsSticky);
-});
+  parentElement.addEventListener('scroll', setIsSticky)
+})
 
 onUnmounted(() => {
-  parentElement.removeEventListener('scroll', setIsSticky);
-});
+  parentElement.removeEventListener('scroll', setIsSticky)
+})
 </script>
 
 <template>

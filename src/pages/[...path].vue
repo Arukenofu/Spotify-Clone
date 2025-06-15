@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import setTitle from '@/shared/utils/setTitle';
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import setTitle from '@/shared/utils/setTitle'
 
 definePage({
   meta: {
-    layout: false
+    layout: false,
   },
-});
+})
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-setTitle(t('route-titles.404'));
+setTitle(t('route-titles.404'))
 </script>
 
 <template>
@@ -22,11 +22,11 @@ setTitle(t('route-titles.404'));
           alt="logo"
         >
       </div>
-      <h1>{{t('404.title')}}</h1>
-      <p>{{t('404.description')}}</p>
+      <h1>{{ t('404.title') }}</h1>
+      <p>{{ t('404.description') }}</p>
 
       <RouterLink to="/">
-        {{t('404.home')}}
+        {{ t('404.home') }}
       </RouterLink>
     </div>
   </div>

@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import SubscribeToArtistButton from "@/shared/UI/Buttons/SubscribeButton.vue";
-import {useMutation} from "@tanstack/vue-query";
-import artistService from "@/services/api/artist/apiArtistService";
-import {useI18n} from "vue-i18n";
+import { useMutation } from '@tanstack/vue-query'
+import { useI18n } from 'vue-i18n'
+import artistService from '@/services/api/artist/apiArtistService'
+import SubscribeToArtistButton from '@/shared/UI/Buttons/SubscribeButton.vue'
 
-const {artistId} = defineProps<{
-  artistId: number | string;
-  artistName: string;
-  coverImage: string | null;
-  listenersQuantity: number;
-  description: string | null;
-}>();
+const { artistId } = defineProps<{
+  artistId: number | string
+  artistName: string
+  coverImage: string | null
+  listenersQuantity: number
+  description: string | null
+}>()
 
-const {t} = useI18n();
+const { t } = useI18n()
 
 const isSubscribed = defineModel<boolean>({
-  required: true
-});
+  required: true,
+})
 
-const {mutate: toggleArtistSubscription} = useMutation({
+const { mutate: toggleArtistSubscription } = useMutation({
   mutationFn: async () => {
     const data = await artistService.toggleArtistSubscription(
-        isSubscribed.value,
-        artistId
-    );
+      isSubscribed.value,
+      artistId,
+    )
 
     if (data.message === 'OK') {
       isSubscribed.value = !isSubscribed.value
     }
-  }
-});
+  },
+})
 </script>
 
 <template>
@@ -38,15 +38,17 @@ const {mutate: toggleArtistSubscription} = useMutation({
       class="artist-image"
       :style="`background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url(${coverImage})`"
     >
-      <div class="title">{{t('artist.aboutArtist')}}</div>
+      <div class="title">
+        {{ t('artist.aboutArtist') }}
+      </div>
     </div>
     <div class="about-artist">
       <RouterLink :to="`/artist/${artistId}`" class="artist-name">
-        {{artistName}}
+        {{ artistName }}
       </RouterLink>
       <div class="secondary">
         <div class="listenings">
-          {{t('social.countPerMonth', [t('social.listeners', listenersQuantity)])}}
+          {{ t('social.countPerMonth', [t('social.listeners', listenersQuantity)]) }}
         </div>
         <div class="subscribe-state">
           <SubscribeToArtistButton
@@ -56,7 +58,7 @@ const {mutate: toggleArtistSubscription} = useMutation({
         </div>
       </div>
       <div class="description">
-        {{description}}
+        {{ description }}
       </div>
     </div>
   </div>

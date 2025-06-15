@@ -1,50 +1,53 @@
-import getSimplifiedTrack from "@/features/MediaPlayer/utils/getSimplifiedTrack";
-import {currentPlaybackStore, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
-import {reactive} from "vue";
+import { reactive } from 'vue'
+import { currentPlaybackStore, setCurrentPlayback, useAudioStream } from '@/features/MediaPlayer'
+import getSimplifiedTrack from '@/features/MediaPlayer/utils/getSimplifiedTrack'
 
 function usePlaybackControls() {
-    const stream = reactive(useAudioStream());
-    const currentPlayback = currentPlaybackStore();
+  const stream = reactive(useAudioStream())
+  const currentPlayback = currentPlaybackStore()
 
-    function toggleCurrentTrack() {
-        stream.isPlaying ? stream.pause() : stream.play();
-    }
+  function toggleCurrentTrack() {
+    stream.isPlaying ? stream.pause() : stream.play()
+  }
 
-    function nextTrack() {
-        const index = currentPlayback.currentTrackIndex!;
-        const queue = currentPlayback.currentTracksQueue!
+  function nextTrack() {
+    const index = currentPlayback.currentTrackIndex!
+    const queue = currentPlayback.currentTracksQueue!
 
-        if (index === queue.length - 1) return;
+    if (index === queue.length - 1)
+      return
 
-        setTrackByIndex(index + 1);
-    }
+    setTrackByIndex(index + 1)
+  }
 
-    function previousTrack() {
-        const index = currentPlayback.currentTrackIndex!;
-        if (index === 0) return;
+  function previousTrack() {
+    const index = currentPlayback.currentTrackIndex!
+    if (index === 0)
+      return
 
-        setTrackByIndex(index - 1);
-    }
+    setTrackByIndex(index - 1)
+  }
 
-    function setTrackByIndex(index: number) {
-        const queue = currentPlayback.currentTracksQueue!;
-        const nextTrackId = getSimplifiedTrack(queue[index]).id;
+  function setTrackByIndex(index: number) {
+    const queue = currentPlayback.currentTracksQueue!
+    const nextTrackId = getSimplifiedTrack(queue[index]).id
 
-        if (!nextTrackId) return;
+    if (!nextTrackId)
+      return
 
-        setCurrentPlayback(
-            currentPlayback.currentPlaybackType!,
-            currentPlayback.currentPlaybackInfo!.id,
-            nextTrackId
-        );
-    }
+    setCurrentPlayback(
+      currentPlayback.currentPlaybackType!,
+      currentPlayback.currentPlaybackInfo!.id,
+      nextTrackId,
+    )
+  }
 
-    return {
-        toggleCurrentTrack,
-        nextTrack,
-        previousTrack,
-        setTrackByIndex
-    }
+  return {
+    toggleCurrentTrack,
+    nextTrack,
+    previousTrack,
+    setTrackByIndex,
+  }
 }
 
-export {usePlaybackControls};
+export { usePlaybackControls }

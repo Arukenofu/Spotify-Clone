@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import SpotifyLogo from '@/shared/UI/Icons/SpotifyLogo.vue';
-import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
-import HomeIcon from '@/shared/UI/Icons/HomeIcon.vue';
-import Search from '@/widgets/LayoutHeader/components/Search.vue';
-import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue';
-import BellIcon from '@/widgets/LayoutHeader/UI/BellIcon.vue';
-import User from '@/widgets/LayoutHeader/components/User.vue';
-import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
-import LongRoundButton from "@/shared/UI/Buttons/LongRoundButton.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath'
+import LongRoundButton from '@/shared/UI/Buttons/LongRoundButton.vue'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import HomeIcon from '@/shared/UI/Icons/HomeIcon.vue'
+import SpotifyLogo from '@/shared/UI/Icons/SpotifyLogo.vue'
+import Search from '@/widgets/LayoutHeader/components/Search.vue'
+import User from '@/widgets/LayoutHeader/components/User.vue'
+import BellIcon from '@/widgets/LayoutHeader/UI/BellIcon.vue'
+import DownloadIcon from '@/widgets/LayoutHeader/UI/DownloadIcon.vue'
 
-const { currentRoutePath } = useCurrentRoutePath('path');
+const { currentRoutePath } = useCurrentRoutePath('path')
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const {t} = useI18n();
         class="premium-button"
         @click="$router.push('/premium')"
       >
-        {{t('app-header.premium')}}
+        {{ t('app-header.premium') }}
       </LongRoundButton>
 
       <LongRoundButton
@@ -50,7 +50,7 @@ const {t} = useI18n();
         @click="$router.push('/download')"
       >
         <DownloadIcon class="icon" />
-        <span> {{t('app-header.download')}} </span>
+        <span> {{ t('app-header.download') }} </span>
       </LongRoundButton>
 
       <div

@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import ErrorBlock from "@/shared/UI/Blocks/ErrorBlock.vue";
+import ErrorBlock from '@/shared/UI/Blocks/ErrorBlock.vue'
 
 defineProps<{
-  query: string;
-}>();
-
+  query: string
+}>()
 </script>
 
 <template>
   <ErrorBlock
     class="not-found"
     :is-icon="false"
-    :size="'small'"
+    size="small"
   >
     <template #title>
-      По запросу «<span>{{query}}</span>» ничего не найдено
+      По запросу «<span>{{ query }}</span>» ничего не найдено
     </template>
     <template #body>
       Проверь, нет ли опечаток, или попробуй ввести другой запрос.

@@ -1,32 +1,33 @@
 <script setup lang="ts">
-import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue';
-import PlayHeader from "@/shared/UI/Blocks/PlayHeader.vue";
-import {inject, ref} from "vue";
+import { inject, ref } from 'vue'
+import PlayHeader from '@/shared/UI/Blocks/PlayHeader.vue'
+import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
 
 interface Props {
-  title: string;
-  isPlaying: boolean;
-  mask: string | null;
-  passingHeight?: number;
+  title: string
+  isPlaying: boolean
+  mask: string | null
+  passingHeight?: number
 }
 
 const {
-  mask = '#333333'
-} = defineProps<Props>();
+  mask = '#333333',
+} = defineProps<Props>()
 
-type Emits = {
+defineEmits<Emits>()
+interface Emits {
   playClick: []
 }
-defineEmits<Emits>();
-
-const scrollY = inject('layoutScrollY', ref(0));
+const scrollY = inject('layoutScrollY', ref(0))
 </script>
 
 <template>
   <PlayHeader class="play-header" :mask="mask" :passing-height="$props.passingHeight" :scroll-y="scrollY">
     <div class="content">
       <GreenPlayingButton class="button" :state="isPlaying" @click="$emit('playClick')" />
-      <div class="title">{{title}}</div>
+      <div class="title">
+        {{ title }}
+      </div>
     </div>
   </PlayHeader>
 </template>

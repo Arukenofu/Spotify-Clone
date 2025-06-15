@@ -1,1 +1,1 @@
-export default 255;
+export default 255

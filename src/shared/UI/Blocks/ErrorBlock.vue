@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import DangerIcon from "@/shared/UI/Icons/DangerIcon.vue";
+import DangerIcon from '@/shared/UI/Icons/DangerIcon.vue'
 
 interface Props {
-  isIcon?: boolean;
-  size?: 'regular' | 'small';
+  isIcon?: boolean
+  size?: 'regular' | 'small'
 }
 
 withDefaults(defineProps<Props>(), {
   isIcon: true,
-  size: 'regular'
-});
+  size: 'regular',
+})
 </script>
 
 <template>

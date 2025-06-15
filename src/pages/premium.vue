@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import {computed, inject, ref} from 'vue';
-import {PremiumCards} from '@/widgets/PremiumCards';
-import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
-import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue';
-import Logo from '@/shared/UI/Icons/Logo.vue';
-import setTitle from '@/shared/utils/setTitle';
+import { computed, inject, ref } from 'vue'
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue'
+import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue'
+import Logo from '@/shared/UI/Icons/Logo.vue'
+import setTitle from '@/shared/utils/setTitle'
+import { PremiumCards } from '@/widgets/PremiumCards'
 
-setTitle('Spotify — Premium');
+setTitle('Spotify — Premium')
 
-const layoutScrollY = inject('layoutScrollY', ref(0));
+const layoutScrollY = inject('layoutScrollY', ref(0))
 
 const computeOpacity = computed<number>(() => {
   if (layoutScrollY.value === 0) {
-    return 0;
+    return 0
   }
 
-  return Math.min(layoutScrollY.value / 8, 1);
-});
+  return Math.min(layoutScrollY.value / 8, 1)
+})
 
 const benefits = [
   'Музыка без рекламы',
@@ -24,41 +24,41 @@ const benefits = [
   'Треки в любом порядке',
   'Высокое качество звука',
   'Групповые сеансы с друзьями',
-  'Добавление треков в очередь'
-];
+  'Добавление треков в очередь',
+]
 
 const comparisons = [
   {
     text: 'Музыка без рекламы',
-    bubble: 'Слушайте музыку без рекламных пауз'
+    bubble: 'Слушайте музыку без рекламных пауз',
   },
   {
     text: 'Скачать треки',
     bubble:
-      'Слушайте альбомы и плейлисты даже без подключения к интернету. Скачивйте до 10000 треков на разных устройствах.'
+      'Слушайте альбомы и плейлисты даже без подключения к интернету. Скачивйте до 10000 треков на разных устройствах.',
   },
   {
     text: 'Треки в любом порядке',
     bubble:
-      'Полный контроль над воспроизведением: повтор и перемотка треков, а также прослушивание композиции из альбомов в любом порядке'
+      'Полный контроль над воспроизведением: повтор и перемотка треков, а также прослушивание композиции из альбомов в любом порядке',
   },
   {
     text: 'Высокое качество звука',
     bubble: `Бесплатная версия Spotify: <br>
              стандартное качество звука (~160 кбит/с) <br>
-             Premium-подписка: высокое качество звука(~320 кбит/с)`
+             Premium-подписка: высокое качество звука(~320 кбит/с)`,
   },
   {
     text: 'Групповые сеансы с друзьями',
     bubble: `Приглашайте друзей и близких, где бы они ни находились. <br>
              Вместе управляйте порядком треков. <br>
-             Выбирайте композиции и слушайте их на колонке.`
+             Выбирайте композиции и слушайте их на колонке.`,
   },
   {
     text: 'Добавление треков в очередь',
-    bubble: 'Добавляйте, удаляйте и меняйте местами треки в очереди.'
-  }
-];
+    bubble: 'Добавляйте, удаляйте и меняйте местами треки в очереди.',
+  },
+]
 </script>
 
 <template>

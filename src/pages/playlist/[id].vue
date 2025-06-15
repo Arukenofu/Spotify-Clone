@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import {useRoute} from 'vue-router';
-import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue';
-import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue';
-import {useQuery} from "@tanstack/vue-query";
-import {computed, reactive} from "vue";
-import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import setTitle from "@/shared/utils/setTitle";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import PlaylistControls from "@/pageLayouts/playlist.id/PlaylistControls.vue";
-import {fetchPlaylist} from "@/services/sdk/entities/playlist";
-import {useAudioStream, usePlaybackStates} from "@/features/MediaPlayer";
+import { useQuery } from '@tanstack/vue-query'
+import { computed, reactive } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAudioStream, usePlaybackStates } from '@/features/MediaPlayer'
+import PlaylistControls from '@/pageLayouts/playlist.id/PlaylistControls.vue'
+import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue'
+import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue'
+import { fetchPlaylist } from '@/services/sdk/entities/playlist'
+import HandleEntityLayoutStates from '@/shared/UI/Elements/HandleEntityLayoutStates.vue'
+import PlayHeaderWithPlayingState from '@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
+import setTitle from '@/shared/utils/setTitle'
 
-const route = useRoute('/playlist/[id]');
-const playlistId = computed(() => route.params.id);
+const route = useRoute('/playlist/[id]')
+const playlistId = computed(() => route.params.id)
 
-const stream = reactive(useAudioStream());
-const states = reactive(usePlaybackStates());
+const stream = reactive(useAudioStream())
+const states = reactive(usePlaybackStates())
 
-const {data, isFetched, isFetching, isError} = useQuery({
+const { data, isFetched, isFetching, isError } = useQuery({
   queryKey: ['playlist', playlistId],
   queryFn: async () => {
-    const data = await fetchPlaylist(playlistId.value);
+    const data = await fetchPlaylist(playlistId.value)
 
-    setTitle(`${data.name} | Spotify Playlist`);
+    setTitle(`${data.name} | Spotify Playlist`)
 
-    return data;
+    return data
   },
-  staleTime: 10000
-});
+  staleTime: 10000,
+})
 
-const isCurrentAlbum = computed(() => states.isCurrentPlayback('playlist', playlistId.value));
+const isCurrentAlbum = computed(() => states.isCurrentPlayback('playlist', playlistId.value))
 const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
 </script>
 

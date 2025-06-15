@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type {Component} from 'vue';
+import type { Component } from 'vue'
 
 defineProps<{
-  to: string;
-  icon: Component;
-  isMinimized: boolean;
-}>();
+  to: string
+  icon: Component
+  isMinimized: boolean
+}>()
 </script>
 
 <template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Resizer from '@/shared/components/Resizer.vue';
-import {infoPanel, maxInfoPanelWidth, minInfoPanelWidth, useInfoPanelWidth} from '@/features/InfoPanel';
-import LoadingComponent from "@/widgets/LayoutInfoPanel/components/LoadingComponent.vue";
+import { infoPanel, maxInfoPanelWidth, minInfoPanelWidth, useInfoPanelWidth } from '@/features/InfoPanel'
+import Resizer from '@/shared/components/Resizer.vue'
+import LoadingComponent from '@/widgets/LayoutInfoPanel/components/LoadingComponent.vue'
 
-const { currentPanelComponent } = infoPanel();
-const { currentPanelWidth } = useInfoPanelWidth();
+const { currentPanelComponent } = infoPanel()
+const { currentPanelWidth } = useInfoPanelWidth()
 </script>
 
 <template>

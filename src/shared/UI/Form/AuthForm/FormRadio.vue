@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  index: any;
-  text: any;
-  name: any;
-}>();
+  index: any
+  text: any
+  name: any
+}>()
 
-const model = defineModel<string | null>();
+const model = defineModel<string | null>()
 </script>
 
 <template>

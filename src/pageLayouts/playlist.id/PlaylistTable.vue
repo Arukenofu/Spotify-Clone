@@ -1,39 +1,38 @@
 <script setup lang="ts">
-import {computed, inject, reactive, type Ref} from 'vue';
-import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import {useI18n} from "vue-i18n";
-import TrackTableWrapper from "@/shared/UI/EntityPageElements/TrackTableWrapper.vue";
-import MusicRowHeaderWrapper from "@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue";
-import type {PlaylistedTrack, SavedTrack, Track} from "@spotify/web-api-ts-sdk";
-import formatRelativeDate from "@/shared/utils/date/formatRelativeDate";
-import PlaylistTableVar1 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue";
-import PlaylistTableVar2 from "@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue";
-import {currentPlaybackStore, loadNextPlayback, setCurrentPlayback, useAudioStream} from "@/features/MediaPlayer";
-import {userPreferencesStore} from "@/features/UserPreferences";
-
-const {t} = useI18n();
-const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
-
-const stream = reactive(useAudioStream());
-const currentPlayback = currentPlaybackStore();
-
-const preferences = userPreferencesStore();
+import type { PlaylistedTrack, SavedTrack, Track } from '@spotify/web-api-ts-sdk'
+import { computed, inject, reactive, type Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { currentPlaybackStore, loadNextPlayback, setCurrentPlayback, useAudioStream } from '@/features/MediaPlayer'
+import { userPreferencesStore } from '@/features/UserPreferences'
+import PlaylistTableVar1 from '@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue'
+import PlaylistTableVar2 from '@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue'
+import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
+import MusicRowHeader from '@/shared/UI/EntityPageElements/MusicRowHeader.vue'
+import MusicRowHeaderWrapper from '@/shared/UI/EntityPageElements/MusicRowHeaderWrapper.vue'
+import TrackTableWrapper from '@/shared/UI/EntityPageElements/TrackTableWrapper.vue'
+import formatRelativeDate from '@/shared/utils/date/formatRelativeDate'
 
 const props = defineProps<{
-  items: PlaylistedTrack<Track>[] | SavedTrack[],
-  nextTrackLink: string | null;
-  playlistId: string;
-  isCurrent: boolean;
-}>();
+  items: PlaylistedTrack<Track>[] | SavedTrack[]
+  nextTrackLink: string | null
+  playlistId: string
+  isCurrent: boolean
+}>()
+const { t } = useI18n()
+const layoutContent = inject<Ref<HTMLElement & { content: HTMLElement }>>('layoutContent')
+
+const stream = reactive(useAudioStream())
+const currentPlayback = currentPlaybackStore()
+
+const preferences = userPreferencesStore()
 
 const tracks = computed(() => {
-  return props.items.map(item => item.track);
+  return props.items.map(item => item.track)
 })
 
 const currentFormatClass = computed(() => {
-  return preferences.tracksFormat.toLowerCase();
-});
+  return preferences.tracksFormat.toLowerCase()
+})
 </script>
 
 <template>
@@ -42,34 +41,34 @@ const currentFormatClass = computed(() => {
       <MusicRowHeader class="computedGrid">
         <template #var1>
           <template v-if="preferences.tracksFormat === 'Compact'">
-            {{t('entities.artist')}}
+            {{ t('entities.artist') }}
           </template>
           <template v-else>
-            {{t('entities.album')}}
+            {{ t('entities.album') }}
           </template>
         </template>
         <template #var2>
           <template v-if="preferences.tracksFormat === 'Compact'">
-            {{t('entities.album')}}
+            {{ t('entities.album') }}
           </template>
           <template v-else>
-            {{t('music-table.dateAdded')}}
+            {{ t('music-table.dateAdded') }}
           </template>
         </template>
         <template v-if="preferences.tracksFormat === 'Compact'" #var3>
-          {{t('music-table.dateAdded')}}
+          {{ t('music-table.dateAdded') }}
         </template>
       </MusicRowHeader>
     </MusicRowHeaderWrapper>
 
     <TrackTableWrapper
-      v-slot="{track, index}"
+      v-slot="{ track, index }"
       :list="tracks"
       :size="preferences.tracksFormat === 'Compact' ? 32 : 56"
       @load-more="loadNextPlayback(
         playlistId,
         'playlist',
-        nextTrackLink
+        nextTrackLink,
       )"
     >
       <MusicRow
@@ -99,7 +98,7 @@ const currentFormatClass = computed(() => {
         </template>
         <template v-if="preferences.tracksFormat === 'Compact'" #var3>
           <span class="added-at">
-            {{formatRelativeDate(items[index].added_at)}}
+            {{ formatRelativeDate(items[index].added_at) }}
           </span>
         </template>
       </MusicRow>
@@ -213,7 +212,6 @@ const currentFormatClass = computed(() => {
         [var3] 0
         [time] minmax(120px, 1fr);
 
-
       &:deep(.var3) {
         display: none;
       }
@@ -230,7 +228,6 @@ const currentFormatClass = computed(() => {
         [var3] 0
         [time] minmax(120px, 1fr);
 
-
       &:deep(.var2, .var3,) {
         display: none;
       }
@@ -246,7 +243,6 @@ const currentFormatClass = computed(() => {
         [var2] 0
         [var3] 0
         [time] minmax(120px, 1fr);
-
 
       &:deep(.var1, .var2, .var3) {
         display: none;

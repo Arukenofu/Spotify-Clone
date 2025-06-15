@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import ShareIcon from "@/shared/UI/Icons/ShareIcon.vue";
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import {copyLinkToClipboard} from "@/shared/utils/copyLinkToClipboard";
-import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";
-import Marquee from "@/shared/components/Marquee.vue";
-import {useI18n} from "vue-i18n";
-import type {SimplifiedArtist} from "@spotify/web-api-ts-sdk";
+import type { SimplifiedArtist } from '@spotify/web-api-ts-sdk'
+import { useI18n } from 'vue-i18n'
+import Marquee from '@/shared/components/Marquee.vue'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import MainTrackInfo from '@/shared/UI/Elements/MainTrackInfo.vue'
+import CheckedRoundCircleIcon from '@/shared/UI/Icons/CheckedRoundCircleIcon.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
+import ShareIcon from '@/shared/UI/Icons/ShareIcon.vue'
+import { copyLinkToClipboard } from '@/shared/utils/copyLinkToClipboard'
 
-const {id} = defineProps<{
-  id: string | number;
-  name: string;
-  avatar: string | null;
-  loadingColor: string | null;
+const { id } = defineProps<{
+  id: string | number
+  name: string
+  avatar: string | null
+  loadingColor: string | null
   artists: SimplifiedArtist[]
-  isAddedToFavorites: boolean;
-}>();
+  isAddedToFavorites: boolean
+}>()
 
-const {t} = useI18n();
+const { t } = useI18n()
 
 function copyLink() {
-  copyLinkToClipboard(`${window.location.host}/track/${id}`);
+  copyLinkToClipboard(`${window.location.host}/track/${id}`)
 }
 </script>
 
@@ -36,13 +36,13 @@ function copyLink() {
   <div class="main-track-info">
     <MainTrackInfo class="track-info">
       <template #title>
-        <Marquee v-slot="{startMarquee}">
+        <Marquee v-slot="{ startMarquee }">
           <RouterLink
             class="track-title"
             :to="`/track/${id}`"
             @mouseenter="startMarquee"
           >
-            {{name}}
+            {{ name }}
           </RouterLink>
         </Marquee>
       </template>
@@ -51,7 +51,7 @@ function copyLink() {
           class="artist"
           :artists="artists.map(artist => ({
             name: artist.name,
-            id: artist.id as string
+            id: artist.id as string,
           }))"
         />
       </template>

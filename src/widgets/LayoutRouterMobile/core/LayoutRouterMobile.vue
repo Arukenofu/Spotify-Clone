@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import HomeIcon from '@/shared/UI/Icons/HomeIcon.vue';
-import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue';
-import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue';
-import Logo from '@/shared/UI/Icons/Logo.vue';
-import LinkButton from '@/widgets/LayoutRouterMobile/components/LinkButton.vue';
-import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath'
+import HomeIcon from '@/shared/UI/Icons/HomeIcon.vue'
+import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue'
+import Logo from '@/shared/UI/Icons/Logo.vue'
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue'
+import LinkButton from '@/widgets/LayoutRouterMobile/components/LinkButton.vue'
 
-const { currentRoutePath } = useCurrentRoutePath('path');
+const { currentRoutePath } = useCurrentRoutePath('path')
 
 const routes = [
   {
     path: '/',
     text: 'Главная',
-    icon: HomeIcon
+    icon: HomeIcon,
   },
   {
     path: '/search',
     text: 'Поиск',
-    icon: SearchIcon
+    icon: SearchIcon,
   },
   {
     path: '/library',
     text: 'Моя медиатека',
-    icon: LibraryIcon
+    icon: LibraryIcon,
   },
   {
     path: '/download',
     text: 'Скачать приложение',
-    icon: Logo
-  }
-];
+    icon: Logo,
+  },
+]
 </script>
 
 <template>

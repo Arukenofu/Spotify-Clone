@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue';
-import MusicCard from '@/shared/UI/Elements/MusicCard.vue';
-import {useQuery} from "@tanstack/vue-query";
-import recommendationService from "@/services/api/recommendations/apiRecommendationService";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import { useQuery } from '@tanstack/vue-query'
+import recommendationService from '@/services/api/recommendations/apiRecommendationService'
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
+import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue'
 
-const {data: recommendations} = useQuery({
+const { data: recommendations } = useQuery({
   queryKey: ['recommendations'],
-  queryFn: async () => await recommendationService.getRecommendations()
-});
+  queryFn: async () => await recommendationService.getRecommendations(),
+})
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const {data: recommendations} = useQuery({
       :color="entity.color"
       :state="false"
     >
-      {{entity.description}}
+      {{ entity.description }}
     </MusicCard>
   </EntitiesSectionWithHeading>
 </template>

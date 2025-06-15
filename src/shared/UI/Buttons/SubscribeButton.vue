@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import {useI18n} from "vue-i18n";
-import type {ButtonHTMLAttributes} from "vue";
+import type { ButtonHTMLAttributes } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 interface Props extends /* @vue-ignore */ ButtonHTMLAttributes {
   isSubscribed: boolean
 }
-defineProps<Props>();
+defineProps<Props>()
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>

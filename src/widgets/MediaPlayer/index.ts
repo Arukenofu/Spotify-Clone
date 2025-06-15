@@ -1,1 +1,1 @@
-export { default as MediaPlayer } from './core/MediaPlayer.vue';
+export { default as MediaPlayer } from './core/MediaPlayer.vue'

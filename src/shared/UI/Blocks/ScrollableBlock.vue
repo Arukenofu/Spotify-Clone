@@ -1,120 +1,120 @@
 <script setup lang="ts">
-import type {Component} from 'vue';
-import {type CSSProperties, nextTick, onMounted, onUnmounted, ref} from 'vue';
+import type { Component } from 'vue'
+import { type CSSProperties, nextTick, onMounted, onUnmounted, ref } from 'vue'
 
 interface Props {
-  is?: Component | string;
-  contentPadding?: CSSProperties['padding'];
-  scrollbarWidth?: string;
-  allowStyleShadow?: boolean;
+  is?: Component | string
+  contentPadding?: CSSProperties['padding']
+  scrollbarWidth?: string
+  allowStyleShadow?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
   is: 'div',
   scrollbarWidth: '12px',
-  allowStyleShadow: true
-});
+  allowStyleShadow: true,
+})
 
-const isScrolled = ref<boolean>(false);
+const isScrolled = ref<boolean>(false)
 
-const block = ref<HTMLElement>();
-const content = ref<HTMLElement>();
-const scrollbar = ref<HTMLElement>();
+const block = ref<HTMLElement>()
+const content = ref<HTMLElement>()
+const scrollbar = ref<HTMLElement>()
 
-const scrollY = defineModel<number>();
+const scrollY = defineModel<number>()
 
 defineExpose({
-  content
-});
+  content,
+})
 
-let scrollBarOpacityTimeOut: ReturnType<typeof setTimeout>;
+let scrollBarOpacityTimeOut: ReturnType<typeof setTimeout>
 
 function updateScrollBar() {
-  clearTimeout(scrollBarOpacityTimeOut);
-  const contentHeight = content.value!.scrollHeight;
-  const customBlockHeight = block.value!.clientHeight;
+  clearTimeout(scrollBarOpacityTimeOut)
+  const contentHeight = content.value!.scrollHeight
+  const customBlockHeight = block.value!.clientHeight
 
   if (contentHeight <= customBlockHeight) {
-    scrollbar.value!.style.display = 'none';
-    isScrolled.value = false;
+    scrollbar.value!.style.display = 'none'
+    isScrolled.value = false
 
-    return;
+    return
   }
-  scrollbar.value!.style.display = 'block';
+  scrollbar.value!.style.display = 'block'
 
-  const scrollbarHeight =
-    (customBlockHeight / contentHeight) * customBlockHeight;
-  const scrollTop = content.value!.scrollTop;
-  const scrollbarTop = (scrollTop / contentHeight) * customBlockHeight;
+  const scrollbarHeight
+    = (customBlockHeight / contentHeight) * customBlockHeight
+  const scrollTop = content.value!.scrollTop
+  const scrollbarTop = (scrollTop / contentHeight) * customBlockHeight
 
-  isScrolled.value = scrollTop !== 0;
+  isScrolled.value = scrollTop !== 0
 
-  scrollY.value = scrollTop;
+  scrollY.value = scrollTop
 
-  scrollbar.value!.style.height = `${scrollbarHeight}px`;
-  scrollbar.value!.style.top = `${scrollbarTop}px`;
+  scrollbar.value!.style.height = `${scrollbarHeight}px`
+  scrollbar.value!.style.top = `${scrollbarTop}px`
 
   scrollBarOpacityTimeOut = setTimeout(() => {
-    scrollbar.value?.style.removeProperty('opacity');
-  }, 800);
+    scrollbar.value?.style.removeProperty('opacity')
+  }, 800)
 }
 
 function onMouseDown(event: MouseEvent) {
-  const startY = event.pageY;
-  const startTop = parseInt(window.getComputedStyle(scrollbar.value!).top, 10);
+  const startY = event.pageY
+  const startTop = Number.parseInt(window.getComputedStyle(scrollbar.value!).top, 10)
 
   function onMouseMove(e: MouseEvent) {
-    const deltaY = e.pageY - startY;
-    const newTop = startTop + deltaY;
-    const maxTop = block.value!.clientHeight - scrollbar.value!.clientHeight;
-    const boundedTop = Math.max(0, Math.min(newTop, maxTop));
+    const deltaY = e.pageY - startY
+    const newTop = startTop + deltaY
+    const maxTop = block.value!.clientHeight - scrollbar.value!.clientHeight
+    const boundedTop = Math.max(0, Math.min(newTop, maxTop))
 
-    scrollbar.value!.style.top = `${boundedTop}px`;
+    scrollbar.value!.style.top = `${boundedTop}px`
 
-    const scrollPercent = boundedTop / block.value!.clientHeight;
-    content.value!.scrollTop = scrollPercent * content.value!.scrollHeight;
+    const scrollPercent = boundedTop / block.value!.clientHeight
+    content.value!.scrollTop = scrollPercent * content.value!.scrollHeight
   }
 
   function onMouseUp() {
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
   }
 
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
 }
 
 function scrollTo(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-  const rect = target.getBoundingClientRect();
+  const target = event.target as HTMLElement
+  const rect = target.getBoundingClientRect()
 
-  const mouseY = event.clientY - rect.top;
-  const contentHeight = content.value!.scrollHeight;
-  const currentPercentage = mouseY / rect.height;
+  const mouseY = event.clientY - rect.top
+  const contentHeight = content.value!.scrollHeight
+  const currentPercentage = mouseY / rect.height
 
-  const scrollTopCoordinate =
-    (contentHeight * currentPercentage) - scrollbar.value!.offsetHeight;
+  const scrollTopCoordinate
+    = (contentHeight * currentPercentage) - scrollbar.value!.offsetHeight
 
   content.value!.scrollTo({
     top: scrollTopCoordinate,
-    behavior: 'smooth'
-  });
+    behavior: 'smooth',
+  })
 }
 
 const mutationObserver = new MutationObserver(() => {
   nextTick(() => {
-    updateScrollBar();
+    updateScrollBar()
   })
 })
 
 onMounted(() => {
-  updateScrollBar();
-  mutationObserver.observe(content.value!, {childList: true, subtree: true});
-});
+  updateScrollBar()
+  mutationObserver.observe(content.value!, { childList: true, subtree: true })
+})
 
 onUnmounted(() => {
-  mutationObserver.disconnect();
-});
+  mutationObserver.disconnect()
+})
 </script>
 
 <template>

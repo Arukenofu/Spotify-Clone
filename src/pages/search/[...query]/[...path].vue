@@ -1,62 +1,63 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {computed} from "vue";
-import {useQuery, useQueryClient} from "@tanstack/vue-query";
-import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
-import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
-import SearchError from "@/pageLayouts/search/SearchError.vue";
-import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
-import {sdk} from "@/services/sdk";
-import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
-import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import SearchCardScroller from "@/pageLayouts/search/SearchCardScroller.vue";
-import type {PartialSearchResult} from "@spotify/web-api-ts-sdk";
+import type { PartialSearchResult } from '@spotify/web-api-ts-sdk'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import SearchCardComponent from '@/pageLayouts/search/SearchCardComponent.vue'
+import SearchCardScroller from '@/pageLayouts/search/SearchCardScroller.vue'
+import SearchError from '@/pageLayouts/search/SearchError.vue'
+import SearchNotFound from '@/pageLayouts/search/SearchNotFound.vue'
+import { sdk } from '@/services/sdk'
+import { allSearchEntities } from '@/services/sdk/constants/allSearchEntities'
+import LoadingBlock from '@/shared/UI/Blocks/LoadingBlock.vue'
+import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
+import MusicRowHeader from '@/shared/UI/EntityPageElements/MusicRowHeader.vue'
 
-const route = useRoute('/search/[...query]/[...path]');
+const route = useRoute('/search/[...query]/[...path]')
 
-const query = computed(() => route.params.query);
-const path = computed(() => route.params.path);
+const query = computed(() => route.params.query)
+const path = computed(() => route.params.path)
 
 const entity = computed(() => {
-  const output = allSearchEntities.find(value => {
-    return path.value === `${value}s`;
+  const output = allSearchEntities.find((value) => {
+    return path.value === `${value}s`
   })
 
-  if (!output) return null;
+  if (!output)
+    return null
 
-  return output;
-});
+  return output
+})
 
-const queryClient = useQueryClient();
+const queryClient = useQueryClient()
 
 const {
   data,
   isFetching,
   isSuccess,
-  error
+  error,
 } = useQuery({
   queryKey: ['searchEntity', query, path],
   queryFn: async () => {
-    return sdk.search(query.value, [entity.value!], 'US', 30);
+    return sdk.search(query.value, [entity.value!], 'US', 30)
   },
   staleTime: Infinity,
   maxPages: 10,
-});
+})
 
 function nextPage(
-    newData: NonNullable<PartialSearchResult[keyof PartialSearchResult]>
+  newData: NonNullable<PartialSearchResult[keyof PartialSearchResult]>,
 ) {
   queryClient.setQueryData(['searchEntity', query, path], (oldData: PartialSearchResult) => {
-    const key: keyof PartialSearchResult = `${entity.value!}s`;
+    const key: keyof PartialSearchResult = `${entity.value!}s`
 
     return {
       [key]: {
         ...oldData[key],
         next: newData.next,
         previous: newData.previous,
-        items: newData.items
-      }
+        items: newData.items,
+      },
     }
   })
 }
@@ -77,7 +78,7 @@ function nextPage(
         <MusicRow
           v-for="(track, index) in data.tracks.items"
           :key="track.id"
-          :index="index+1"
+          :index="index + 1"
           class="track"
           :track="track"
           :is-current="false"
@@ -87,9 +88,7 @@ function nextPage(
       </div>
     </div>
 
-    <div v-else-if="entity === 'episode'">
-
-    </div>
+    <div v-else-if="entity === 'episode'" />
 
     <SearchCardScroller
       v-else
@@ -97,7 +96,7 @@ function nextPage(
       :type="`${entity}s`"
       @data-update="nextPage"
     >
-      <template #default="{item}">
+      <template #default="{ item }">
         <SearchCardComponent :item="item" :type="`${entity}s`" />
       </template>
     </SearchCardScroller>

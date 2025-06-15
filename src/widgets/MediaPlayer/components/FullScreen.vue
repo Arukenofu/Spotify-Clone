@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import FullscreenInfo from "@/widgets/MediaPlayer/components/FullscreenInfo.vue";
-import FullscreenControls from "@/widgets/MediaPlayer/components/FullscreenControls.vue";
+import FullscreenControls from '@/widgets/MediaPlayer/components/FullscreenControls.vue'
+import FullscreenInfo from '@/widgets/MediaPlayer/components/FullscreenInfo.vue'
 </script>
 
 <template>

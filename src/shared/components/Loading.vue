@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue';
+import type { CSSProperties } from 'vue'
 
 interface Props {
-  size?: CSSProperties['width'],
-  distance?: CSSProperties['width'],
+  size?: CSSProperties['width']
+  distance?: CSSProperties['width']
   position?: CSSProperties['position']
 }
 
@@ -11,8 +11,7 @@ const {
   size = '12px',
   distance = '16px',
   position = 'relative',
-} = defineProps<Props>();
-
+} = defineProps<Props>()
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type {Component} from 'vue';
+import type { Component } from 'vue'
 
 interface Props {
-  active: boolean;
-  component: Component;
+  active: boolean
+  component: Component
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>

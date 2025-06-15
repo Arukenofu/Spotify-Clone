@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
-import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
-import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
+import type { MediaLibEntityProps } from '@/features/MedialibSidebar/types/MediaLibEntityProps'
+import EntityInfo from '@/features/MedialibSidebar/components/EntityInfo.vue'
+import PinnedComponent from '@/features/MedialibSidebar/components/PinnedComponent.vue'
 
-const props = defineProps<MediaLibEntityProps>();
+const props = defineProps<MediaLibEntityProps>()
 </script>
 
 <template>

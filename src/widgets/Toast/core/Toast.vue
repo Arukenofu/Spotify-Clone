@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {useToastStore} from "@/widgets/Toast/store/useToastStore";
+import { useToastStore } from '@/widgets/Toast/store/useToastStore'
 
-const store = useToastStore();
+const store = useToastStore()
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const store = useToastStore();
         class="toast"
         @click="store.toasts.splice(index, 1)"
       >
-        {{toast}}
+        {{ toast }}
       </div>
     </TransitionGroup>
   </div>

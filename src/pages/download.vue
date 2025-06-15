@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import {computed, inject, ref} from 'vue';
-import {BackgroundNoise} from '@/features/BackgroundNoise';
-import DesktopImage from '@/assets/images/desktop-app.png';
-import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue';
-import setTitle from '@/shared/utils/setTitle';
-import {useI18n} from "vue-i18n";
+import { computed, inject, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import DesktopImage from '@/assets/images/desktop-app.png'
+import { BackgroundNoise } from '@/features/BackgroundNoise'
+import StickyHeader from '@/shared/UI/Blocks/StickyHeader.vue'
+import setTitle from '@/shared/utils/setTitle'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-setTitle(t('route-titles.downloadDesktop'));
+setTitle(t('route-titles.downloadDesktop'))
 
-const layoutScrollY = inject('layoutScrollY', ref(0));
+const layoutScrollY = inject('layoutScrollY', ref(0))
 
 const computeOpacity = computed<number>(() => {
   if (layoutScrollY.value === 0) {
-    return 0;
+    return 0
   }
 
-  return Math.min(layoutScrollY.value / 8, 1);
-});
+  return Math.min(layoutScrollY.value / 8, 1)
+})
 </script>
 
 <template>

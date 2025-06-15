@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue';
-import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
-import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore';
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const { removePanel } = useInfoContentStore();
+const { removePanel } = useInfoContentStore()
 </script>
 
 <template>

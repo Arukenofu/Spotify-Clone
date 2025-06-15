@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import {computed} from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps<{
-  direction: 'top' | 'bottom' | 'left' | 'right';
-}>();
+  direction: 'top' | 'bottom' | 'left' | 'right'
+}>()
 
 const directionRotate = computed(() => {
   if (props.direction === 'top') {
-    return '-90deg';
+    return '-90deg'
   }
   if (props.direction === 'bottom') {
-    return '90deg';
+    return '90deg'
   }
   if (props.direction === 'left') {
-    return '180deg';
+    return '180deg'
   }
 
-  return '0deg';
-});
+  return '0deg'
+})
 </script>
 
 <template>

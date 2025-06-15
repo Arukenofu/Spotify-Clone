@@ -1,10 +1,8 @@
 <script setup lang="ts">
-
 interface Props {
   bgColor: string | null
 }
-const {bgColor = '#333333'} = defineProps<Props>()
-
+const { bgColor = '#333333' } = defineProps<Props>()
 </script>
 
 <template>

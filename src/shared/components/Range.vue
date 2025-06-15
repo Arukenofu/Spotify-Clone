@@ -1,66 +1,66 @@
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue';
+import { computed, ref, watch } from 'vue'
 
 interface Props {
-  current: number;
-  min?: number;
-  max: number;
-  step?: number;
+  current: number
+  min?: number
+  max: number
+  step?: number
 
-  thumbFix?: number;
-  disabled?: boolean;
+  thumbFix?: number
+  disabled?: boolean
 
-  useLocal?: boolean;
-  useTransition?: boolean;
+  useLocal?: boolean
+  useTransition?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   min: 0,
   step: 0.1,
   thumbFix: 2,
-  useLocal: false
-});
+  useLocal: false,
+})
 
-const localValue = ref(props.current);
+const emit = defineEmits<{
+  onValueChange: [value: number]
+}>()
 
-const isDragging = ref(false);
+const localValue = ref(props.current)
+
+const isDragging = ref(false)
 
 watch(() => props.current, (value) => {
   if (!isDragging.value) {
-    localValue.value = value;
+    localValue.value = value
   }
-});
+})
 
 const progress = computed(() => {
-  const min = props.min || 0;
-  const max = props.max;
-  const current = localValue.value;
+  const min = props.min || 0
+  const max = props.max
+  const current = localValue.value
 
-  return ((current - min) / (max - min)) * 100;
-});
+  return ((current - min) / (max - min)) * 100
+})
 
 function onInput(event: Event) {
-  const target = event.target as HTMLInputElement;
+  const target = event.target as HTMLInputElement
 
-  const value = props.min + (props.max - props.min) * (parseFloat(target.value) / 100);
+  const value = props.min + (props.max - props.min) * (Number.parseFloat(target.value) / 100)
 
-  localValue.value = Number(value);
+  localValue.value = Number(value)
 
-  !props.useLocal && emit('onValueChange', localValue.value);
+  !props.useLocal && emit('onValueChange', localValue.value)
 }
 
 function onMouseDown() {
-  isDragging.value = true;
+  isDragging.value = true
 }
 
 function onMouseUp() {
-  isDragging.value = false;
-  emit('onValueChange', localValue.value);
+  isDragging.value = false
+  emit('onValueChange', localValue.value)
 }
-
-const emit = defineEmits<{
-  onValueChange: [value: number];
-}>();
 </script>
 
 <template>
@@ -78,7 +78,7 @@ const emit = defineEmits<{
     >
     <div class="range-progress" />
 
-    <div class="thumb"/>
+    <div class="thumb" />
   </div>
 </template>
 

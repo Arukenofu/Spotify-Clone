@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import UserProfileMenu from "@/widgets/LayoutHeader/contextmenu/UserProfileMenu.vue";
-import RoundButton from "@/shared/UI/Buttons/RoundButton.vue";
-import {ContextMenu} from "@/features/ContextMenu";
-import {useQuery} from "@tanstack/vue-query";
-import {sdk} from "@/services/sdk";
-import {computed} from "vue";
+import { useQuery } from '@tanstack/vue-query'
+import { computed } from 'vue'
+import { ContextMenu } from '@/features/ContextMenu'
+import { sdk } from '@/services/sdk'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import UserProfileMenu from '@/widgets/LayoutHeader/contextmenu/UserProfileMenu.vue'
 
-const {data: currentUser} = useQuery({
+const { data: currentUser } = useQuery({
   queryKey: ['currentUser'],
   queryFn: async () => {
-    return sdk.currentUser.profile();
+    return sdk.currentUser.profile()
   },
-  staleTime: Infinity
-});
+  staleTime: Infinity,
+})
 
-const isHasAvatar = computed(() => !!currentUser.value!.images.length);
+const isHasAvatar = computed(() => !!currentUser.value!.images.length)
 </script>
 
 <template>

@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import {computed, reactive,} from "vue";
-import {useI18n} from "vue-i18n";
-import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
-import Previous from '@/shared/UI/Icons/Previous.vue';
-import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
-import Next from '@/shared/UI/Icons/Next.vue';
-import Repeat from '@/shared/UI/Icons/Repeat.vue';
-import Range from '@/shared/components/Range.vue';
-import getActiveColor from '@/shared/utils/colors/getActiveColor';
-import formatTime from '@/shared/utils/format/formatTimeMMSS';
-import {useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
-import {userPreferencesStore} from "@/features/UserPreferences";
+import { computed, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
+import { userPreferencesStore } from '@/features/UserPreferences'
+import Range from '@/shared/components/Range.vue'
+import Next from '@/shared/UI/Icons/Next.vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
+import Previous from '@/shared/UI/Icons/Previous.vue'
+import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue'
+import Repeat from '@/shared/UI/Icons/Repeat.vue'
+import getActiveColor from '@/shared/utils/colors/getActiveColor'
+import formatTime from '@/shared/utils/format/formatTimeMMSS'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const preferences = userPreferencesStore();
+const preferences = userPreferencesStore()
 
-const stream = reactive(useAudioStream());
-const controls = reactive(usePlaybackControls());
+const stream = reactive(useAudioStream())
+const controls = reactive(usePlaybackControls())
 
 const repeatModeTooltip = computed(() => {
   if (preferences.currentRepeatMode === 'onlyCurrentMusic') {
-    return t('media-player.repeat');
+    return t('media-player.repeat')
   }
 
   if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
-    return t('media-player.repeatOnlyOne');
+    return t('media-player.repeatOnlyOne')
   }
 
-  return t('media-player.repeatStop');
-});
+  return t('media-player.repeatStop')
+})
 </script>
 
 <template>
@@ -74,7 +74,7 @@ const repeatModeTooltip = computed(() => {
 
     <div class="progress">
       <div class="currentTime">
-        {{formatTime(stream.currentTime)}}
+        {{ formatTime(stream.currentTime) }}
       </div>
 
       <Range
@@ -89,7 +89,7 @@ const repeatModeTooltip = computed(() => {
       />
 
       <div class="duration">
-        {{formatTime(stream.duration)}}
+        {{ formatTime(stream.duration) }}
       </div>
     </div>
   </div>

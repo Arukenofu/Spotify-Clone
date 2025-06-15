@@ -1,42 +1,42 @@
 <script setup lang="ts">
-import EntityCard from "@/shared/UI/Elements/EntityCard.vue";
-import {useQuery} from "@tanstack/vue-query";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
-import {computed} from "vue";
-import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
-import SearchNotFound from "@/pageLayouts/search/SearchNotFound.vue";
-import SearchError from "@/pageLayouts/search/SearchError.vue";
-import {useRoute} from "vue-router";
-import {useI18n} from "vue-i18n";
-import {sdk} from "@/services/sdk";
-import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
-import SearchCardComponent from "@/pageLayouts/search/SearchCardComponent.vue";
-import type {SearchResults} from "@spotify/web-api-ts-sdk";
+import type { SearchResults } from '@spotify/web-api-ts-sdk'
+import { useQuery } from '@tanstack/vue-query'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import SearchCardComponent from '@/pageLayouts/search/SearchCardComponent.vue'
+import SearchError from '@/pageLayouts/search/SearchError.vue'
+import SearchNotFound from '@/pageLayouts/search/SearchNotFound.vue'
+import { sdk } from '@/services/sdk'
+import { allSearchEntities } from '@/services/sdk/constants/allSearchEntities'
+import LoadingBlock from '@/shared/UI/Blocks/LoadingBlock.vue'
+import EntityCard from '@/shared/UI/Elements/EntityCard.vue'
+import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
+import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue'
 
-const {t} = useI18n();
-const route = useRoute('/search/[...query]/');
+const { t } = useI18n()
+const route = useRoute('/search/[...query]/')
 
-const q = computed(() => route.params.query);
+const q = computed(() => route.params.query)
 
-const {data, isFetching, isSuccess} = useQuery({
+const { data, isFetching, isSuccess } = useQuery({
   queryKey: ['search', q],
   queryFn: async () => {
     return sdk.search(q.value, allSearchEntities, 'US', 10)
   },
-  staleTime: Infinity
+  staleTime: Infinity,
 })
 
 const bestResult = computed(() => {
   if (!data.value?.playlists?.items?.length) {
-    return null;
+    return null
   }
 
-  return data.value?.playlists.items[0];
-});
+  return data.value?.playlists.items[0]
+})
 
 const allowedEntitiesSection:
-      Exclude<(keyof SearchResults<typeof allSearchEntities>), 'tracks'>[] = ['playlists', 'albums', 'artists'];
+Exclude<(keyof SearchResults<typeof allSearchEntities>), 'tracks'>[] = ['playlists', 'albums', 'artists']
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const allowedEntitiesSection:
     <section class="top-result">
       <div v-if="bestResult" class="best-result">
         <div class="title">
-          {{t('search.bestResult')}}
+          {{ t('search.bestResult') }}
         </div>
         <EntityCard
           :id="bestResult.id"
@@ -55,14 +55,14 @@ const allowedEntitiesSection:
           :image="bestResult.images[0]?.url"
           :artists="[{
             id: bestResult.owner.id,
-            name: bestResult.owner.display_name
+            name: bestResult.owner.display_name,
           }]"
-          :type="'Playlist'"
+          type="Playlist"
         />
       </div>
       <div class="tracks">
         <div class="title">
-          {{t('search.entities.track')}}
+          {{ t('search.entities.track') }}
         </div>
         <div v-if="data.tracks" class="tracks-wrapper">
           <MusicRow

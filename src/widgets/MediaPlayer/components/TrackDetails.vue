@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import MainTrackInfo from "@/shared/UI/Elements/MainTrackInfo.vue";
-import Marquee from "@/shared/components/Marquee.vue";
-import {currentPlaybackStore} from "@/features/MediaPlayer/store/currentPlaybackStore";
-import {computed} from "vue";
-import {currentTrackImage} from "@/features/MediaPlayer/utils/currentTrackImage";
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { currentPlaybackStore } from '@/features/MediaPlayer/store/currentPlaybackStore'
+import { currentTrackImage } from '@/features/MediaPlayer/utils/currentTrackImage'
+import Marquee from '@/shared/components/Marquee.vue'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import MainTrackInfo from '@/shared/UI/Elements/MainTrackInfo.vue'
 
-const store = currentPlaybackStore();
-const {currentPlaybackInfo, currentTrack} = storeToRefs(store);
+const store = currentPlaybackStore()
+const { currentPlaybackInfo, currentTrack } = storeToRefs(store)
 
 const trackImage = computed(() => {
-  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!);
-});
+  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!)
+})
 </script>
 
 <template>
@@ -24,13 +24,13 @@ const trackImage = computed(() => {
 
       <MainTrackInfo class="track-info">
         <template #title>
-          <Marquee v-slot="{startMarquee}">
+          <Marquee v-slot="{ startMarquee }">
             <RouterLink
               class="track-link"
               :to="`/track/${currentTrack.id}`"
               @mouseenter="startMarquee()"
             >
-              {{currentTrack.name}}
+              {{ currentTrack.name }}
             </RouterLink>
           </Marquee>
         </template>

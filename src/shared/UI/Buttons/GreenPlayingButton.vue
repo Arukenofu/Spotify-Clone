@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
-import type {CSSProperties} from 'vue';
+import type { CSSProperties } from 'vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 
 interface Props {
-  state: boolean;
-  innerStyle?: CSSProperties;
+  state: boolean
+  innerStyle?: CSSProperties
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>

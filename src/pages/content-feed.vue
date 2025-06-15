@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import setTitle from '@/shared/utils/setTitle';
-import NoUpdates from "@/pageLayouts/content-feed/NoUpdates.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import NoUpdates from '@/pageLayouts/content-feed/NoUpdates.vue'
+import setTitle from '@/shared/utils/setTitle'
 
-setTitle('Spotify — Web Player');
+setTitle('Spotify — Web Player')
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="recommended-cards">
     <div class="heading">
-      <h1 class="heading-title">{{t('content-feed.headingTitle')}}</h1>
-      <p class="heading-body">{{t('content-feed.headingText')}}</p>
+      <h1 class="heading-title">
+        {{ t('content-feed.headingTitle') }}
+      </h1>
+      <p class="heading-body">
+        {{ t('content-feed.headingText') }}
+      </p>
     </div>
 
     <NoUpdates />

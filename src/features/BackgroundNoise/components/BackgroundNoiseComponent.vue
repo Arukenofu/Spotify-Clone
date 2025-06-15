@@ -1,8 +1,8 @@
 <script setup lang="ts">
 defineProps<{
-  currentColor: string;
-  height?: string;
-}>();
+  currentColor: string
+  height?: string
+}>()
 </script>
 
 <template>

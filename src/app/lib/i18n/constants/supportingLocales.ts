@@ -1,4 +1,4 @@
 export default [
-    'en',
-    'ru'
+  'en',
+  'ru',
 ]

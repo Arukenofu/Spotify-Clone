@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
+import type { BaseItemProps } from '@/features/ContextMenu/types/defaults/BaseItemProps'
+import { computed } from 'vue'
 
 defineOptions({
-  inheritAttrs: false
-});
+  inheritAttrs: false,
+})
 
-const {underline, active, as = 'button'} = defineProps<BaseItemProps>();
+const { underline, active, as = 'button' } = defineProps<BaseItemProps>()
 
 const computedClasses = computed(() => {
-  return [underline && 'underline', active && active];
-});
+  return [underline && 'underline', active && active]
+})
 </script>
 
 <template>

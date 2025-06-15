@@ -1,38 +1,39 @@
-import AccentColorWorker from './__accentColorWorker.ts?worker';
+import AccentColorWorker from './__accentColorWorker.ts?worker'
 
-let worker: Worker | null = null;
-const queue = new Map<string, Promise<string>>();
-let handlers: ((value: string) => void)[] = [];
+let worker: Worker | null = null
+const queue = new Map<string, Promise<string>>()
+let handlers: ((value: string) => void)[] = []
 
 function initWorker() {
-    if (!worker) {
-        worker = new AccentColorWorker();
+  if (!worker) {
+    worker = new AccentColorWorker()
 
-        worker.onmessage = (e) => {
-            const result = e.data;
-            const handler = handlers.shift();
-            handler?.(result);
-        };
+    worker.onmessage = (e) => {
+      const result = e.data
+      const handler = handlers.shift()
+      handler?.(result)
     }
+  }
 }
 
 export function accentColorWorker(url: string): Promise<string> {
-    if (queue.has(url)) return queue.get(url)!;
+  if (queue.has(url))
+    return queue.get(url)!
 
-    initWorker();
+  initWorker()
 
-    const promise = new Promise<string>((resolve) => {
-        handlers.push(resolve);
-        worker!.postMessage(url);
-    });
+  const promise = new Promise<string>((resolve) => {
+    handlers.push(resolve)
+    worker!.postMessage(url)
+  })
 
-    queue.set(url, promise);
-    return promise;
+  queue.set(url, promise)
+  return promise
 }
 
 export function destroyAccentWorker() {
-    worker?.terminate();
-    worker = null;
-    queue.clear();
-    handlers = [];
+  worker?.terminate()
+  worker = null
+  queue.clear()
+  handlers = []
 }

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
-import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
-import {useI18n} from "vue-i18n";
+import type { HeaderProps } from '@/pageLayouts/artist.id/props/HeaderProps'
+import { computed, inject, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const {t} = useI18n();
+defineProps<HeaderProps>()
 
-const layoutScrollY = inject('layoutScrollY', ref(0));
+const { t } = useI18n()
+
+const layoutScrollY = inject('layoutScrollY', ref(0))
 
 const scrollPercentage = computed(() => {
   if (layoutScrollY.value > 500) {
-    return 0.37;
+    return 0.37
   }
 
-  return (layoutScrollY.value / (600));
-});
-
-defineProps<HeaderProps>();
+  return (layoutScrollY.value / (600))
+})
 </script>
 
 <template>
@@ -24,9 +24,11 @@ defineProps<HeaderProps>();
     <div class="mask" />
   </div>
   <div class="info-layout">
-    <h1 class="artist-name">{{name}}</h1>
+    <h1 class="artist-name">
+      {{ name }}
+    </h1>
     <span class="artist-listeners-quantity">
-      {{t('social.countPerMonth', [t('social.listeners', listenersPerMonth)])}}
+      {{ t('social.countPerMonth', [t('social.listeners', listenersPerMonth)]) }}
     </span>
   </div>
 </template>

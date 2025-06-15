@@ -1,52 +1,55 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import {Tippy} from "vue-tippy";
-import {useI18n} from "vue-i18n";
-import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue';
-import PlusIcon from '@/shared/UI/Icons/PlusIcon.vue';
-import ArrowIcon from '@/shared/UI/Icons/ArrowIcon.vue';
-import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
-import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue';
-import {useSidebarWidthStore} from '@/features/MedialibSidebar';
-import {defaultWidth, maximalWidth} from "@/widgets/LayoutSideBar/constants/layoutWidth";
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
+import { useSidebarWidthStore } from '@/features/MedialibSidebar'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import ArrowIcon from '@/shared/UI/Icons/ArrowIcon.vue'
+import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue'
+import PlusIcon from '@/shared/UI/Icons/PlusIcon.vue'
+import { defaultWidth, maximalWidth } from '@/widgets/LayoutSideBar/constants/layoutWidth'
+import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const { isMinimized, currentWidth } = useSidebarWidthStore();
+const { isMinimized, currentWidth } = useSidebarWidthStore()
 
 function toggleSidebar() {
   if (isMinimized.value) {
-    currentWidth.value = defaultWidth.value;
-  } else {
-    currentWidth.value = 72;
+    currentWidth.value = defaultWidth.value
+  }
+  else {
+    currentWidth.value = 72
   }
 }
 
 const widthArrowDirection = computed(() => {
   if (currentWidth.value <= defaultWidth.value) {
-    return 'right';
-  } else {
-    return 'left';
+    return 'right'
   }
-});
+  else {
+    return 'left'
+  }
+})
 
 function toggleWidth() {
   if (widthArrowDirection.value === 'left') {
-    currentWidth.value = defaultWidth.value;
-  } else {
-    currentWidth.value = maximalWidth.value;
+    currentWidth.value = defaultWidth.value
+  }
+  else {
+    currentWidth.value = maximalWidth.value
   }
 }
 
 const tooltip = computed(() => {
-  const placement = isMinimized.value ? 'right' : 'top';
-  const content = isMinimized.value ? t('medialib.open') : t('medialib.close');
+  const placement = isMinimized.value ? 'right' : 'top'
+  const content = isMinimized.value ? t('medialib.open') : t('medialib.close')
 
   return {
     content,
-    placement
-  };
-});
+    placement,
+  }
+})
 </script>
 
 <template>
@@ -61,7 +64,7 @@ const tooltip = computed(() => {
       <span
         v-if="!isMinimized"
         class="added-at"
-      > {{t('medialib.myMedialib')}} </span>
+      > {{ t('medialib.myMedialib') }} </span>
     </button>
 
     <div
@@ -81,7 +84,7 @@ const tooltip = computed(() => {
           <PlusIcon class="icon" />
         </RoundButton>
 
-        <template #content="{hide}">
+        <template #content="{ hide }">
           <CreatePlaylistContextMenu @click="hide()" />
         </template>
       </Tippy>

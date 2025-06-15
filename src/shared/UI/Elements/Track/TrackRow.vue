@@ -1,54 +1,53 @@
 <script setup lang="ts">
-import getActiveColor from "@/shared/utils/colors/getActiveColor";
-import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
-import NoMusicOrPlaylistAvatar from "@/shared/UI/Icons/NoMusicOrPlaylistAvatar.vue";
-import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import formatTime from "@/shared/utils/format/formatTimeMMSS";
-import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
-import {useI18n} from "vue-i18n";
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import getCommaSeparatedString from "@/shared/utils/format/getCommaSeparatedString";
-import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import {computed} from "vue";
+import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
+import CheckedRoundCircleIcon from '@/shared/UI/Icons/CheckedRoundCircleIcon.vue'
+import NoMusicOrPlaylistAvatar from '@/shared/UI/Icons/NoMusicOrPlaylistAvatar.vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
+import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
+import getActiveColor from '@/shared/utils/colors/getActiveColor'
+import formatTime from '@/shared/utils/format/formatTimeMMSS'
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
 interface Props {
-  index?: number;
-  track: Track | SimplifiedTrack;
-  isCurrent: boolean;
-  isPlaying: boolean;
-  isAdded: boolean;
+  index?: number
+  track: Track | SimplifiedTrack
+  isCurrent: boolean
+  isPlaying: boolean
+  isAdded: boolean
 
-  compact?: boolean;
-  showArtists?: boolean;
-  hideImage?: boolean;
+  compact?: boolean
+  showArtists?: boolean
+  hideImage?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  showArtists: true
-});
+  showArtists: true,
+})
 
 const image = computed(() =>
-    'album' in props.track ? getImageFromEntity(props.track.album.images, 2) : null
-);
+  'album' in props.track ? getImageFromEntity(props.track.album.images, 2) : null,
+)
 const showImage = computed(() => !(props.compact || props.hideImage))
-const showEqualizer = computed(() => props.isPlaying && props.isCurrent);
+const showEqualizer = computed(() => props.isPlaying && props.isCurrent)
 
 const optionsContextMenu = computed(() => ({
   content:
-      t('music-actions.moreOptionsFor',
-          [`${getCommaSeparatedString(props.track.artists, 'name')} — ${props.track.name}`]
+      t('music-actions.moreOptionsFor', [`${getCommaSeparatedString(props.track.artists, 'name')} — ${props.track.name}`],
       ),
   style: {
     overflow: 'hidden',
     textAlign: 'right',
-    direction: 'revert'
-  }
-}));
+    direction: 'revert',
+  },
+}))
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
@@ -56,7 +55,7 @@ const {t} = useI18n();
     <div v-if="index" class="index">
       <span class="order hide-on-hover" :style="getActiveColor(isCurrent)">{{ index }}</span>
       <button class="toggle show-on-hover">
-        <img v-if="showEqualizer" src="/src/assets/images/equalizer-animated.gif" alt="" />
+        <img v-if="showEqualizer" src="/src/assets/images/equalizer-animated.gif" alt="">
         <PlayingState v-else class="icon" />
       </button>
     </div>
@@ -64,7 +63,9 @@ const {t} = useI18n();
     <div class="main">
       <div v-if="showImage" class="image-wrapper" :class="{ noindex: !index }">
         <LazyImage v-if="image" :image="image" class="image" />
-        <div v-else class="icon image"><NoMusicOrPlaylistAvatar class="icon" /></div>
+        <div v-else class="icon image">
+          <NoMusicOrPlaylistAvatar class="icon" />
+        </div>
         <PlayingState v-if="!index" :state="isPlaying && isCurrent" class="state-icon" />
       </div>
 

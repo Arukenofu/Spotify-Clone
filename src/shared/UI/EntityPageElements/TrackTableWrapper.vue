@@ -1,18 +1,18 @@
 <script setup lang="ts" generic="T extends SimplifiedTrack[] | Track[]">
-import {RecycleScroller} from "vue-virtual-scroller";
-import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
+import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
+import { RecycleScroller } from 'vue-virtual-scroller'
 
 defineProps<{
-  list: T,
+  list: T
   size: 32 | 56
-}>();
+}>()
 
 const emits = defineEmits<{
   loadMore: []
-}>();
+}>()
 
 function onUpdateVisible() {
-  emits('loadMore');
+  emits('loadMore')
 }
 </script>
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    color?: string;
-    margin?: string;
-    fontWeight?: number | string;
-    fontSize?: string;
-    lineHeight?: number | string;
+    color?: string
+    margin?: string
+    fontWeight?: number | string
+    fontSize?: string
+    lineHeight?: number | string
   }>(),
   {
     color: 'inherit',
@@ -13,8 +13,8 @@ withDefaults(
     fontWeight: 700,
     fontSize: '.9rem',
     lineHeight: 'auto',
-  }
-);
+  },
+)
 </script>
 
 <template>

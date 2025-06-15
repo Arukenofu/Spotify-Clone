@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import Logo from "@/shared/UI/Icons/Logo.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import Logo from '@/shared/UI/Icons/Logo.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="wrapper">
     <Logo class="logo" />
 
-    <h1>{{t('not-supports.title')}}</h1>
-    <p>{{t('not-supports.description')}}</p>
+    <h1>{{ t('not-supports.title') }}</h1>
+    <p>{{ t('not-supports.description') }}</p>
   </div>
 </template>
 

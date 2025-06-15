@@ -1,36 +1,38 @@
 <script setup lang="ts">
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
 
 interface Props {
-  naming: string;
-  prefix?: string;
-  postfix?: string;
-  showExpanded?: boolean;
+  naming: string
+  prefix?: string
+  postfix?: string
+  showExpanded?: boolean
 }
 withDefaults(defineProps<Props>(), {
   showExpanded: true,
-});
+})
 
 const isExpanded = defineModel<boolean>('isExpanded', {
   required: false,
-  default: null
-});
+  default: null,
+})
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="v-tracks-section">
     <div class="heading">
-      <span v-if="prefix" class="span">{{prefix}}</span>
-      <h2 class="naming">{{naming}}</h2>
-      <span v-if="postfix" class="span">{{postfix}}</span>
+      <span v-if="prefix" class="span">{{ prefix }}</span>
+      <h2 class="naming">
+        {{ naming }}
+      </h2>
+      <span v-if="postfix" class="span">{{ postfix }}</span>
     </div>
     <div class="wrapper">
       <slot />
     </div>
     <button v-if="showExpanded" class="expand" @click="isExpanded = !isExpanded">
-      {{isExpanded ? t('music-table.showLess') : t('music-table.seeMore')}}
+      {{ isExpanded ? t('music-table.showLess') : t('music-table.seeMore') }}
     </button>
   </section>
 </template>

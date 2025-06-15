@@ -1,44 +1,44 @@
 <script setup lang="ts">
-import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue';
-import ListIcon from '@/shared/UI/Icons/ListIcon.vue';
-import GridIcon from '@/shared/UI/Icons/GridIcon.vue';
-import Range from '@/shared/components/Range.vue';
-import {BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView} from "@/features/ContextMenu";
-import CheckIcon from "@/shared/UI/Icons/CheckIcon.vue";
-import {gridColumnMaxWidth, gridColumnMinWidth, sorts} from "@/features/MedialibSidebar"
-import type {FormatTypes} from "#imports";
-import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
-import type {Component} from "vue";
-import {useI18n} from "vue-i18n";
-
-const {t} = useI18n();
+import type { FormatTypes } from '#imports'
+import type { Component } from 'vue'
+import type { sortOption } from '@/features/MedialibSidebar/constants/sorts'
+import { useI18n } from 'vue-i18n'
+import { BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView } from '@/features/ContextMenu'
+import { gridColumnMaxWidth, gridColumnMinWidth, sorts } from '@/features/MedialibSidebar'
+import Range from '@/shared/components/Range.vue'
+import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue'
+import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue'
+import GridIcon from '@/shared/UI/Icons/GridIcon.vue'
+import ListIcon from '@/shared/UI/Icons/ListIcon.vue'
 
 defineProps<{
-  componentName: FormatTypes;
-  gridWidth: number;
-  sortName: sortOption;
-}>();
+  componentName: FormatTypes
+  gridWidth: number
+  sortName: sortOption
+}>()
 
 const emit = defineEmits<{
-  setComponentName: [name: FormatTypes];
-  setGridWidth: [width: number],
+  setComponentName: [name: FormatTypes]
+  setGridWidth: [width: number]
   setSortName: [newValue: sortOption]
-}>();
+}>()
+
+const { t } = useI18n()
 
 function setComponentName(name: FormatTypes): void {
-  emit('setComponentName', name);
+  emit('setComponentName', name)
 }
 
 function setGridWidth(width: number): void {
-  emit('setGridWidth', width);
+  emit('setGridWidth', width)
 }
 
 function setSortName(name: sortOption): void {
-  emit('setSortName', name);
+  emit('setSortName', name)
 }
 
 interface FormatMap {
-  id: FormatTypes,
+  id: FormatTypes
   icon: Component
 }
 
@@ -53,15 +53,15 @@ const formatMap: FormatMap[] = [
   },
   {
     id: 'Grid',
-    icon: GridIcon
-  }
+    icon: GridIcon,
+  },
 ]
 </script>
 
 <template>
   <BasicContextMenuView class="menu">
     <BasicContextMenuTitle>
-      {{t('medialib.librarySort')}}
+      {{ t('medialib.librarySort') }}
     </BasicContextMenuTitle>
     <BasicContextMenuItem
       v-for="(sort, index) in sorts"
@@ -77,7 +77,7 @@ const formatMap: FormatMap[] = [
     </BasicContextMenuItem>
 
     <BasicContextMenuTitle>
-      {{t('medialib.libraryFormat')}}
+      {{ t('medialib.libraryFormat') }}
     </BasicContextMenuTitle>
     <BasicContextMenuItem
       v-for="format in formatMap"
@@ -85,7 +85,7 @@ const formatMap: FormatMap[] = [
       :active="componentName === format.id && 'active'"
       @click="setComponentName(format.id)"
     >
-      {{t(`medialib.formats.${format.id.toLowerCase()}`)}}
+      {{ t(`medialib.formats.${format.id.toLowerCase()}`) }}
       <template #icon>
         <Component :is="format.icon" />
       </template>

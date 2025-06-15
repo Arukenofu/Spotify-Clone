@@ -1,54 +1,56 @@
 <script setup lang="ts">
-import {onMounted, ref, useTemplateRef} from "vue";
+import { onMounted, ref, useTemplateRef } from 'vue'
 
 interface Props {
-  scrollSpeed?: number;
-  iterationCount?: number;
+  scrollSpeed?: number
+  iterationCount?: number
 }
-type Direction = 'toLeft' | 'toRight';
+type Direction = 'toLeft' | 'toRight'
 
 const {
-  scrollSpeed = .1,
-  iterationCount = Infinity
-} = defineProps<Props>();
+  scrollSpeed = 0.1,
+  iterationCount = Infinity,
+} = defineProps<Props>()
 
-const marquee = useTemplateRef<HTMLDivElement>('marquee');
-const remainingWidth = ref<number | null>(null);
+const marquee = useTemplateRef<HTMLDivElement>('marquee')
+const remainingWidth = ref<number | null>(null)
 
-const transformX = ref<number>(0);
+const transformX = ref<number>(0)
 
 onMounted(() => {
-  const showingContentWidth = marquee.value!.offsetWidth;
-  const fullContentWidth = marquee.value!.scrollWidth;
+  const showingContentWidth = marquee.value!.offsetWidth
+  const fullContentWidth = marquee.value!.scrollWidth
 
-  remainingWidth.value = fullContentWidth - showingContentWidth;
+  remainingWidth.value = fullContentWidth - showingContentWidth
 })
 
-let direction: Direction = 'toLeft';
-let isPaused = true;
-let currentIterationCount = 0;
+let direction: Direction = 'toLeft'
+let isPaused = true
+let currentIterationCount = 0
 
-let activeAnimationFrame: number | null = null;
+let activeAnimationFrame: number | null = null
 
 function scrollMarquee() {
-  if (isPaused || !remainingWidth.value) return;
+  if (isPaused || !remainingWidth.value)
+    return
   if (iterationCount === currentIterationCount) {
-    currentIterationCount = 0;
-    activeAnimationFrame = null;
-    return;
+    currentIterationCount = 0
+    activeAnimationFrame = null
+    return
   }
 
   if (direction === 'toLeft') {
-    transformX.value -= scrollSpeed;
+    transformX.value -= scrollSpeed
 
     if (transformX.value <= -(remainingWidth.value + 10)) {
-      onDirectionEnd('toRight');
+      onDirectionEnd('toRight')
     }
-  } else {
-    transformX.value += scrollSpeed;
+  }
+  else {
+    transformX.value += scrollSpeed
 
     if (transformX.value >= 0) {
-      onDirectionEnd('toLeft');
+      onDirectionEnd('toLeft')
     }
   }
 
@@ -57,43 +59,43 @@ function scrollMarquee() {
 
 function startMarquee() {
   if (activeAnimationFrame) {
-    cancelAnimationFrame(activeAnimationFrame);
+    cancelAnimationFrame(activeAnimationFrame)
   }
 
-  activeAnimationFrame = null;
-  isPaused = false;
-  scrollMarquee();
+  activeAnimationFrame = null
+  isPaused = false
+  scrollMarquee()
 }
 
 function stopMarquee() {
   if (activeAnimationFrame) {
-    cancelAnimationFrame(activeAnimationFrame);
-    activeAnimationFrame = null;
+    cancelAnimationFrame(activeAnimationFrame)
+    activeAnimationFrame = null
   }
 
-  isPaused = true;
+  isPaused = true
 }
 
 function resetMarquee() {
   if (activeAnimationFrame) {
-    cancelAnimationFrame(activeAnimationFrame);
-    activeAnimationFrame = null;
+    cancelAnimationFrame(activeAnimationFrame)
+    activeAnimationFrame = null
   }
 
-  transformX.value = 0;
-  currentIterationCount = 0;
-  isPaused = true;
+  transformX.value = 0
+  currentIterationCount = 0
+  isPaused = true
 }
 
 function onDirectionEnd(newDirection: Direction) {
-  isPaused = true;
-  currentIterationCount++;
+  isPaused = true
+  currentIterationCount++
 
   setTimeout(() => {
-    direction = newDirection;
-    isPaused = false;
-    scrollMarquee();
-  }, 1000);
+    direction = newDirection
+    isPaused = false
+    scrollMarquee()
+  }, 1000)
 }
 </script>
 

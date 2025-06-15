@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue';
-import FullScreen from '@/shared/UI/Icons/FullScreen.vue';
-import Range from '@/shared/components/Range.vue';
-import Volume from '@/shared/UI/Icons/Volume.vue';
-import ShowText from '@/shared/UI/Icons/ShowText.vue';
-import ConnectToDevice from '@/shared/UI/Icons/ConnectToDevice.vue';
-import ShowQueue from '@/shared/UI/Icons/ShowQueue.vue';
+import Range from '@/shared/components/Range.vue'
+import ConnectToDevice from '@/shared/UI/Icons/ConnectToDevice.vue'
+import FullScreen from '@/shared/UI/Icons/FullScreen.vue'
+import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue'
+import ShowQueue from '@/shared/UI/Icons/ShowQueue.vue'
+import ShowText from '@/shared/UI/Icons/ShowText.vue'
+import Volume from '@/shared/UI/Icons/Volume.vue'
 </script>
 
 <template>
@@ -71,5 +71,4 @@ import ShowQueue from '@/shared/UI/Icons/ShowQueue.vue';
     }
   }
 }
-
 </style>

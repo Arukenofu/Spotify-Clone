@@ -1,28 +1,33 @@
-import {ref} from 'vue';
+import { ref } from 'vue'
 
 export default function () {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  const screenWidth = ref<number>(window.innerWidth);
-  const screenHeight = ref<number>(window.innerHeight);
+  const screenWidth = ref<number>(window.innerWidth)
+  const screenHeight = ref<number>(window.innerHeight)
 
   function getOs() {
-    const userAgent = window.navigator.userAgent.toLowerCase();
+    const userAgent = window.navigator.userAgent.toLowerCase()
 
-    if (userAgent.indexOf('android') !== -1) {
-      return 'Android';
-    } else if (
-      userAgent.indexOf('iphone') !== -1 ||
-      userAgent.indexOf('ipad') !== -1
+    if (userAgent.includes('android')) {
+      return 'Android'
+    }
+    else if (
+      userAgent.includes('iphone')
+      || userAgent.includes('ipad')
     ) {
-      return 'iOS';
-    } else if (userAgent.indexOf('win') !== -1) {
-      return 'Windows';
-    } else if (userAgent.indexOf('mac') !== -1) {
-      return 'macOS';
-    } else if (userAgent.indexOf('linux') !== -1) {
-      return 'Linux';
-    } else {
-      return 'Unknown';
+      return 'iOS'
+    }
+    else if (userAgent.includes('win')) {
+      return 'Windows'
+    }
+    else if (userAgent.includes('mac')) {
+      return 'macOS'
+    }
+    else if (userAgent.includes('linux')) {
+      return 'Linux'
+    }
+    else {
+      return 'Unknown'
     }
   }
 
@@ -30,6 +35,6 @@ export default function () {
     isMobile,
     screenWidth,
     screenHeight,
-    getOs
+    getOs,
   }
 }

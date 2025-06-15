@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import NoMusicOrPlaylistAvatar from '@/shared/UI/Icons/NoMusicOrPlaylistAvatar.vue';
-import NoFolderAvatar from '@/shared/UI/Icons/NoFolderAvatar.vue';
-import NoArtistAvatar from "@/shared/UI/Icons/NoArtistAvatar.vue";
-import LikedSongs from '@/assets/images/liked-songs.png';
-import type {Component} from 'vue';
-import NoUserAvatar from "@/shared/UI/Icons/NoUserAvatar.vue";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import type { Component } from 'vue'
+import LikedSongs from '@/assets/images/liked-songs.png'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
+import NoArtistAvatar from '@/shared/UI/Icons/NoArtistAvatar.vue'
+import NoFolderAvatar from '@/shared/UI/Icons/NoFolderAvatar.vue'
+import NoMusicOrPlaylistAvatar from '@/shared/UI/Icons/NoMusicOrPlaylistAvatar.vue'
+import NoUserAvatar from '@/shared/UI/Icons/NoUserAvatar.vue'
 
 interface Props {
-  image?: string | null,
-  type: ItemTypes | 'user' | 'Folder' | 'Collection',
-  as?: Component | string,
-  loading?: 'lazy' | 'eager',
+  image?: string | null
+  type: ItemTypes | 'user' | 'Folder' | 'Collection'
+  as?: Component | string
+  loading?: 'lazy' | 'eager'
   loadingColor?: string | null
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>

@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue';
-import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue';
-import {useI18n} from "vue-i18n";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
-import {onBeforeMount, ref} from "vue";
-import {accentColorWorker} from "@/shared/utils/colors/accentColorWorker";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import { onBeforeMount, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import { accentColorWorker } from '@/shared/utils/colors/accentColorWorker'
 
-const {t} = useI18n();
+const props = defineProps<Props>()
+
+defineEmits<Emits>()
+
+const { t } = useI18n()
 
 interface Props {
-  id: number | string;
-  type: ItemTypes;
-  name: string;
-  image: string | null;
-  maskLoaderImage?: string | null;
-  state?: boolean;
+  id: number | string
+  type: ItemTypes
+  name: string
+  image: string | null
+  maskLoaderImage?: string | null
+  state?: boolean
 }
-const props = defineProps<Props>();
-
-type Emits = {
+interface Emits {
   onPlayClick: []
 }
 
-defineEmits<Emits>();
-
-const maskColor = ref<string | null>(null);
+const maskColor = ref<string | null>(null)
 
 onBeforeMount(async () => {
-  const loaderImage = props.maskLoaderImage ?? props.image;
+  const loaderImage = props.maskLoaderImage ?? props.image
 
   if (loaderImage) {
-    maskColor.value = await accentColorWorker(loaderImage);
+    maskColor.value = await accentColorWorker(loaderImage)
   }
-});
+})
 </script>
 
 <template>
@@ -63,7 +63,7 @@ onBeforeMount(async () => {
 
     <div class="textInfo">
       <template v-if="type === 'artist'">
-        {{t('entities.artist')}}
+        {{ t('entities.artist') }}
       </template>
       <slot v-else />
     </div>

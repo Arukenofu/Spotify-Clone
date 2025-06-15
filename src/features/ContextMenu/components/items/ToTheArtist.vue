@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {BasicContextMenuItem, WithSubtree} from "@/features/ContextMenu";
-import ArtistIcon from "@/shared/UI/Icons/ArtistIcon.vue";
-import {RouterLink} from "vue-router";
-import TriangleIcon from "@/shared/UI/Icons/TriangleIcon.vue";
-import ctxT from "../../helpers/ctx-t";
-import type {SimplifiedArtist} from "@spotify/web-api-ts-sdk";
+import type { SimplifiedArtist } from '@spotify/web-api-ts-sdk'
+import { RouterLink } from 'vue-router'
+import { BasicContextMenuItem, WithSubtree } from '@/features/ContextMenu'
+import ArtistIcon from '@/shared/UI/Icons/ArtistIcon.vue'
+import TriangleIcon from '@/shared/UI/Icons/TriangleIcon.vue'
+import ctxT from '../../helpers/ctx-t'
 
 defineProps<{
   artists: SimplifiedArtist[]
-}>();
+}>()
 </script>
 
 <template>
@@ -21,7 +21,7 @@ defineProps<{
     <template #icon>
       <ArtistIcon />
     </template>
-    {{ctxT('toTheArtist')}}
+    {{ ctxT('toTheArtist') }}
   </BasicContextMenuItem>
 
   <WithSubtree v-else>
@@ -29,7 +29,7 @@ defineProps<{
       <template #icon>
         <ArtistIcon />
       </template>
-      {{ctxT('toTheArtist')}}
+      {{ ctxT('toTheArtist') }}
       <template #additionalIcon>
         <TriangleIcon />
       </template>
@@ -43,7 +43,7 @@ defineProps<{
         :to="`/artist/${artist.id}`"
         class="subtree-item"
       >
-        {{artist.name}}
+        {{ artist.name }}
       </BasicContextMenuItem>
     </template>
   </WithSubtree>

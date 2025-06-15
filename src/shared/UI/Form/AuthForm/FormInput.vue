@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import { ref } from 'vue'
 
 interface Props {
-  error?: any;
-  onlyNumber?: boolean;
+  error?: any
+  onlyNumber?: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const model = defineModel<any | null>();
+const model = defineModel<any | null>()
 
-const inputModel = ref();
+const inputModel = ref()
 
 function updateModelValue() {
   if (props.onlyNumber) {
-    inputModel.value = inputModel.value.replace(/\D/g, '');
+    inputModel.value = inputModel.value.replace(/\D/g, '')
   }
 
-  model.value = inputModel.value;
+  model.value = inputModel.value
 }
 </script>
 

@@ -1,72 +1,72 @@
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import {useRoute} from "vue-router";
-import GeneralGradientSection from "@/shared/UI/EntityPageElements/GeneralGradientSection.vue";
-import SubscribeToArtistButton from "@/shared/UI/Buttons/SubscribeButton.vue";
-import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import EntitiesSectionWithHeading from "@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue";
-import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import PlayHeader from "@/shared/UI/Blocks/PlayHeader.vue";
-import {useI18n} from "vue-i18n";
-import {useQuery, useQueryClient} from "@tanstack/vue-query";
-import {sdk} from "@/services/sdk";
-import type {UserProfile} from "@spotify/web-api-ts-sdk";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import {getMaskColor} from "@/shared/utils/colors/getMaskColor";
-import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
+import type { UserProfile } from '@spotify/web-api-ts-sdk'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { computed, inject, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { sdk } from '@/services/sdk'
+import PlayHeader from '@/shared/UI/Blocks/PlayHeader.vue'
+import SubscribeToArtistButton from '@/shared/UI/Buttons/SubscribeButton.vue'
+import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
+import EntityInfoHeaderTitle from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue'
+import HandleEntityLayoutStates from '@/shared/UI/Elements/HandleEntityLayoutStates.vue'
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
+import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesSectionWithHeading.vue'
+import GeneralGradientSection from '@/shared/UI/EntityPageElements/GeneralGradientSection.vue'
+import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
+import { getMaskColor } from '@/shared/utils/colors/getMaskColor'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
-const {t} = useI18n();
-const route = useRoute('/user/[id]');
-const queryClient = useQueryClient();
-const layoutScrollY = inject('layoutScrollY', ref(0));
+const { t } = useI18n()
+const route = useRoute('/user/[id]')
+const queryClient = useQueryClient()
+const layoutScrollY = inject('layoutScrollY', ref(0))
 
-const routeId = computed(() => route.params.id);
+const routeId = computed(() => route.params.id)
 
 function getCurrentUserData() {
-  return queryClient.getQueryData<UserProfile>(['currentUser']);
+  return queryClient.getQueryData<UserProfile>(['currentUser'])
 }
 
 async function fetchUserData() {
-  return sdk.users.profile(route.params.id);
+  return sdk.users.profile(route.params.id)
 }
 
-const {data: user, isLoading, isError} = useQuery({
+const { data: user, isLoading, isError } = useQuery({
   queryKey: ['user', routeId],
   queryFn: async () => {
-    const data = await fetchUserData();
-    const color = await getMaskColor(data);
+    const data = await fetchUserData()
+    const color = await getMaskColor(data)
 
-    return {...data, maskColor: color}
+    return { ...data, maskColor: color }
   },
   staleTime: Infinity,
   maxPages: 3,
-});
+})
 
-const {data: followedArtists} = useQuery({
+const { data: followedArtists } = useQuery({
   queryKey: ['currentUserFollowedArtists'],
   queryFn: () => sdk.currentUser.followedArtists('', 10),
-  staleTime: Infinity
-});
+  staleTime: Infinity,
+})
 
 const currentMaskColor = computed(() => {
-  return user.value!.maskColor;
-});
+  return user.value!.maskColor
+})
 const isCurrentUser = computed(() => {
-  const currentUserData = getCurrentUserData();
+  const currentUserData = getCurrentUserData()
 
-  return currentUserData!.id === routeId.value;
-});
+  return currentUserData!.id === routeId.value
+})
 const currentProfilePicture = computed(() => {
   if (!user.value || !user.value.images.length) {
-    return null;
+    return null
   }
-  return user.value.images[0].url;
-});
+  return user.value.images[0].url
+})
 
 function linkToCurrentUserRoute(push: string) {
-  return (route.path + push).replace(/\/{2,}/g, '/');
+  return (route.path + push).replace(/\/{2,}/g, '/')
 }
 </script>
 
@@ -83,22 +83,22 @@ function linkToCurrentUserRoute(push: string) {
         :passing-height="150"
         class="play-header"
       >
-        <span class="name">{{user.display_name}}</span>
+        <span class="name">{{ user.display_name }}</span>
       </PlayHeader>
 
       <EntityInfoHeader
         class="info-header"
-        :images="currentProfilePicture ? [{url: currentProfilePicture, width: 300, height: 300}] : []"
+        :images="currentProfilePicture ? [{ url: currentProfilePicture, width: 300, height: 300 }] : []"
         :mask="currentMaskColor"
         type="user"
       >
-        <span class="type">{{t('user.title')}}</span>
+        <span class="type">{{ t('user.title') }}</span>
         <EntityInfoHeaderTitle>
-          {{user.display_name}}
+          {{ user.display_name }}
         </EntityInfoHeaderTitle>
         <div class="additional">
           <RouterLink :to="linkToCurrentUserRoute('/followers')" class="subscribers">
-            {{t('social.subscribers', user.followers.total)}}
+            {{ t('social.subscribers', user.followers.total) }}
           </RouterLink>
         </div>
       </EntityInfoHeader>

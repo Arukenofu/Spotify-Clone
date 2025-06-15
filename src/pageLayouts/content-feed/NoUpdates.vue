@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="no-updates">
-    <h1 class="updates-title">{{t('content-feed.noUpdatesTitle')}}</h1>
-    <p class="updates-body">{{t('content-feed.noUpdatesDescription')}}</p>
+    <h1 class="updates-title">
+      {{ t('content-feed.noUpdatesTitle') }}
+    </h1>
+    <p class="updates-body">
+      {{ t('content-feed.noUpdatesDescription') }}
+    </p>
   </section>
 </template>
 

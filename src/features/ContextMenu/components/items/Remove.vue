@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {BasicContextMenuItem} from "@/features/ContextMenu";
-import DangerIcon2 from "@/shared/UI/Icons/DangerIcon2.vue";
-import ctxT from "../../helpers/ctx-t";
+import { BasicContextMenuItem } from '@/features/ContextMenu'
+import DangerIcon2 from '@/shared/UI/Icons/DangerIcon2.vue'
+import ctxT from '../../helpers/ctx-t'
 </script>
 
 <template>
@@ -10,7 +10,7 @@ import ctxT from "../../helpers/ctx-t";
       <DangerIcon2 />
     </template>
 
-    {{ctxT('delete')}}
+    {{ ctxT('delete') }}
   </BasicContextMenuItem>
 </template>
 

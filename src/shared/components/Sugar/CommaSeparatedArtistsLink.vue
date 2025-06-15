@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import CommaSeparatedEntityLink from "@/shared/components/CommaSeparatedEntityLink.vue";
+import CommaSeparatedEntityLink from '@/shared/components/CommaSeparatedEntityLink.vue'
 
 defineProps<{
-  artists: {id: string, name: string}[],
-}>();
+  artists: { id: string, name: string }[]
+}>()
 </script>
 
 <template>

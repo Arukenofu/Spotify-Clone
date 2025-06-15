@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import useResponsive from '@/shared/composables/useResponsive';
-import EntitiesSectionWrapper from "@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import useResponsive from '@/shared/composables/useResponsive'
+import EntitiesSectionWrapper from '@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue'
 
 interface Props {
-  naming: string | null;
-  headTitle?: string | null;
-  href: string | null;
-  isShowAll?: boolean;
-  isScrollable?: boolean;
+  naming: string | null
+  headTitle?: string | null
+  href: string | null
+  isShowAll?: boolean
+  isScrollable?: boolean
 }
 
-const {isShowAll = true, isScrollable = true} = defineProps<Props>();
+const { isShowAll = true, isScrollable = true } = defineProps<Props>()
 
-const { isMobile } = useResponsive();
-const {t} = useI18n();
+const { isMobile } = useResponsive()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const {t} = useI18n();
         class="show-all"
       >
         <RouterLink :to="href">
-          {{t('entities-section.showAll')}}
+          {{ t('entities-section.showAll') }}
         </RouterLink>
       </div>
     </div>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import type {Album} from "@spotify/web-api-ts-sdk";
+import type { Album } from '@spotify/web-api-ts-sdk'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
 defineProps<{
-  creator: Album['artists'],
-}>();
+  creator: Album['artists']
+}>()
 </script>
 
 <template>
@@ -16,7 +16,7 @@ defineProps<{
       type="artist"
     />
     <RouterLink :to="`/artist/${creator[0].id}`" class="name">
-      {{creator[0].name}}
+      {{ creator[0].name }}
     </RouterLink>
   </div>
   <div v-else class="artists">
@@ -28,10 +28,12 @@ defineProps<{
         :to="`/artist/${artist.id}`"
         class="artist"
       >
-        {{artist.name}}
+        {{ artist.name }}
       </RouterLink>
 
-      <template v-if="index !== creator.length-1">&nbsp;•&nbsp;</template>
+      <template v-if="index !== creator.length - 1">
+        &nbsp;•&nbsp;
+      </template>
     </template>
   </div>
 </template>

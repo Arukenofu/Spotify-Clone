@@ -1,66 +1,68 @@
 <script setup lang="ts">
-import {useI18n} from "vue-i18n";
-import {currentPlaybackStore} from "@/features/MediaPlayer";
-import api from "@/services/api";
-import {computed, watch} from "vue";
-import LoadingBlock from "@/shared/UI/Blocks/LoadingBlock.vue";
-import {useQuery} from "@tanstack/vue-query";
-import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
-import {getAccentColor} from "@/shared/utils/colors/getAccentColor";
+import { useQuery } from '@tanstack/vue-query'
+import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { currentPlaybackStore } from '@/features/MediaPlayer'
+import api from '@/services/api'
+import LoadingBlock from '@/shared/UI/Blocks/LoadingBlock.vue'
+import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
+import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe'
 
-const {t} = useI18n();
-const currentPlayback = currentPlaybackStore();
+const { t } = useI18n()
+const currentPlayback = currentPlaybackStore()
 
-const trackId = computed(() => currentPlayback.currentTrackId);
+const trackId = computed(() => currentPlayback.currentTrackId)
 const trackInfo = computed(() => ({
   id: currentPlayback.currentTrack?.id,
   name: currentPlayback.currentTrack?.name,
   artist: currentPlayback.currentPlaybackInfo?.name,
-  images: currentPlayback.currentPlaybackInfo?.images
-}));
+  images: currentPlayback.currentPlaybackInfo?.images,
+}))
 
-function getLyrics (name: string | undefined, artist: string | undefined) {
-  if (!name || !artist) return '';
-  return api(`/api/lyrics?name=${encodeURIComponent(name)}&artist=${encodeURIComponent(artist)}`);
+function getLyrics(name: string | undefined, artist: string | undefined) {
+  if (!name || !artist)
+    return ''
+  return api(`/api/lyrics?name=${encodeURIComponent(name)}&artist=${encodeURIComponent(artist)}`)
 }
 
 function getMaskColor(images: any[] | undefined) {
-  if (!images) return '';
-  const url = getImageUrlSafe(images);
-  if (!url) return '';
+  if (!images)
+    return ''
+  const url = getImageUrlSafe(images)
+  if (!url)
+    return ''
 
-  return getAccentColor(url);
+  return getAccentColor(url)
 }
 
 const { data: lyricsData, isLoading, refetch } = useQuery({
   queryKey: ['lyrics', trackId],
   queryFn: async () => {
-    const { name, artist, images } = trackInfo.value;
+    const { name, artist, images } = trackInfo.value
     const [lyrics, maskColor] = await Promise.all([
       getLyrics(name, artist),
-      getMaskColor(images)
-    ]);
+      getMaskColor(images),
+    ])
 
-    return { lyrics, maskColor };
+    return { lyrics, maskColor }
   },
-  enabled: false
-});
-    
+  enabled: false,
+})
+
 watch(() => trackInfo.value.id, () => {
-  refetch();
-}, { immediate: true });
+  refetch()
+}, { immediate: true })
 
 function getInvertedColor(hex: string) {
-  const color = hex.replace('#', '');
-  const r = 255 - parseInt(color.substring(0, 2), 16);
-  const g = 255 - parseInt(color.substring(2, 4), 16);
-  const b = 255 - parseInt(color.substring(4, 6), 16);
-  return `rgb(${r}, ${g}, ${b})`;
+  const color = hex.replace('#', '')
+  const r = 255 - Number.parseInt(color.substring(0, 2), 16)
+  const g = 255 - Number.parseInt(color.substring(2, 4), 16)
+  const b = 255 - Number.parseInt(color.substring(4, 6), 16)
+  return `rgb(${r}, ${g}, ${b})`
 }
 
 const lyricsStructure = computed(() => {
-  return lyricsData.value?.lyrics.trim().split(/\n{2,}/)
-      .map((block: string) => block.split('\n').map((line: string) => line.trim()).filter(Boolean)) ?? [];
+  return lyricsData.value?.lyrics.trim().split(/\n{2,}/).map((block: string) => block.split('\n').map((line: string) => line.trim()).filter(Boolean)) ?? []
 })
 </script>
 
@@ -68,14 +70,14 @@ const lyricsStructure = computed(() => {
   <LoadingBlock v-if="isLoading" />
 
   <div v-else-if="!lyricsData?.lyrics" class="noText container">
-    {{t('lyrics.noLyrics')}}
+    {{ t('lyrics.noLyrics') }}
   </div>
 
   <div v-else class="container" :style="`--mask: ${lyricsData.maskColor}; --text: ${getInvertedColor(lyricsData.maskColor)}`">
     <div class="text">
       <div v-for="(parent, parentIndex) in lyricsStructure" :key="parentIndex" class="parent">
         <p v-for="(text, textIndex) in parent" :key="textIndex" class="child">
-          {{text}}
+          {{ text }}
         </p>
       </div>
     </div>

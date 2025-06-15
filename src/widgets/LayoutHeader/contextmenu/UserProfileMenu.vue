@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {BasicContextMenuItem, BasicContextMenuView} from "@/features/ContextMenu";
-import {RouterLink} from "vue-router";
-import {router} from "@/app/router";
-import {useI18n} from "vue-i18n";
-
-const {t} = useI18n();
+import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
+import { router } from '@/app/router'
+import { BasicContextMenuItem, BasicContextMenuView } from '@/features/ContextMenu'
 
 defineProps<{
-  userid: string;
+  userid: string
 }>()
+
+const { t } = useI18n()
 
 function exitFromAccount() {
   router.push(`/signup`)
@@ -18,16 +18,16 @@ function exitFromAccount() {
 <template>
   <BasicContextMenuView class="modal">
     <BasicContextMenuItem>
-      {{t('app-header.user.account')}}
+      {{ t('app-header.user.account') }}
     </BasicContextMenuItem>
     <BasicContextMenuItem :as="RouterLink" :to="`/user/${userid}`">
-      {{t('app-header.user.profile')}}
+      {{ t('app-header.user.profile') }}
     </BasicContextMenuItem>
     <BasicContextMenuItem :as="RouterLink" to="/preferences" underline>
-      {{t('app-header.user.settings')}}
+      {{ t('app-header.user.settings') }}
     </BasicContextMenuItem>
     <BasicContextMenuItem @click="exitFromAccount">
-      {{t('app-header.user.logout')}}
+      {{ t('app-header.user.logout') }}
     </BasicContextMenuItem>
   </BasicContextMenuView>
 </template>

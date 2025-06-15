@@ -1,59 +1,59 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {useQuery} from "@tanstack/vue-query";
-import artistService from "@/services/api/artist/apiArtistService";
-import {computed, inject, reactive, ref} from "vue";
-import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import ListIcon from "@/shared/UI/Icons/ListIcon.vue";
-import GridIcon from "@/shared/UI/Icons/GridIcon.vue";
-import useCachedRef from "@/shared/composables/useCachedRef";
-import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
-import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import setTitle from "@/shared/utils/setTitle";
-import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import {useI18n} from "vue-i18n";
-import {usePlaybackStates} from "@/features/MediaPlayer";
+import { useQuery } from '@tanstack/vue-query'
+import { computed, inject, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { usePlaybackStates } from '@/features/MediaPlayer'
+import artistService from '@/services/api/artist/apiArtistService'
+import useCachedRef from '@/shared/composables/useCachedRef'
+import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
+import GridIcon from '@/shared/UI/Icons/GridIcon.vue'
+import ListIcon from '@/shared/UI/Icons/ListIcon.vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
+import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
+import setTitle from '@/shared/utils/setTitle'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const route = useRoute('/artist/[...id]/discography');
-const layoutScrollY = inject('layoutScrollY', ref(0));
+const route = useRoute('/artist/[...id]/discography')
+const layoutScrollY = inject('layoutScrollY', ref(0))
 
-const {data: artistInfo, isFetched} = useQuery({
+const { data: artistInfo, isFetched } = useQuery({
   queryKey: ['artistFullInfo', route.params.id],
   queryFn: async () => {
-    const data = await artistService.getFullArtistInfoWithDiscography(Number(route.params.id));
+    const data = await artistService.getFullArtistInfoWithDiscography(Number(route.params.id))
 
-    setTitle(t('route-titles.discography', [data.profile.artistName]));
+    setTitle(t('route-titles.discography', [data.profile.artistName]))
 
-    return data;
-  }
-});
+    return data
+  },
+})
 
 // TODO: add localization for current route
 
-const states = reactive(usePlaybackStates());
+const states = reactive(usePlaybackStates())
 
 const layoutHeadingStyle = computed(() => {
   if (layoutScrollY.value > 1) {
-    return 'box-shadow: 0 6px 10px rgba(0,0,0,.6);';
+    return 'box-shadow: 0 6px 10px rgba(0,0,0,.6);'
   }
 
-  return '';
-});
+  return ''
+})
 
 const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 'Список', {
-  expectedValues: ['Список', 'Сетка']
-});
+  expectedValues: ['Список', 'Сетка'],
+})
 </script>
 
 <template>
   <div v-if="isFetched && artistInfo" class="recommended-cards">
     <div class="heading" :style="layoutHeadingStyle">
       <RouterLink :to="`/artist/${artistInfo.id}`" draggable="false">
-        {{artistInfo.profile.artistName}}
+        {{ artistInfo.profile.artistName }}
       </RouterLink>
 
       <div class="formats">
@@ -72,7 +72,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
           <LazyImage class="image" :image="album.image" :color="album.color" />
           <div class="added-at">
             <RouterLink :to="`/album/${album.id}`" class="title">
-              {{album.name}}
+              {{ album.name }}
             </RouterLink>
             <div class="additional">
               <span class="type">Альбом</span>
@@ -82,7 +82,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
               </span>
               <EntityInfoHeaderDot />
               <span class="amount">
-                {{t('plurable-entities.track', album.info.tracksAmount).toLowerCase()}}
+                {{ t('plurable-entities.track', album.info.tracksAmount).toLowerCase() }}
               </span>
             </div>
 
@@ -120,7 +120,7 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
           :state="isThisPlaylist(album.id, true)"
           @on-play-click="loadPlaylist(album.id)"
         >
-          {{album.info.uploadedDate}}
+          {{ album.info.uploadedDate }}
         </MusicCard>
       </template>
     </div>

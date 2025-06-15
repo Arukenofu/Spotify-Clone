@@ -1,22 +1,22 @@
 export function toggleVolume(
-    volume: number,
-    setVolume: (volume: number) => void,
+  volume: number,
+  setVolume: (volume: number) => void,
 ) {
-    const cachedVolume = JSON.parse(localStorage.getItem('volumeCached') || '1') as number | null;
+  const cachedVolume = JSON.parse(localStorage.getItem('volumeCached') || '1') as number | null
 
-    if (volume === 0 && !cachedVolume) {
-        setVolume(1);
+  if (volume === 0 && !cachedVolume) {
+    setVolume(1)
 
-        return;
-    }
+    return
+  }
 
-    if (volume === 0) {
-        setVolume(cachedVolume!)
-        localStorage.removeItem('volumeCached');
+  if (volume === 0) {
+    setVolume(cachedVolume!)
+    localStorage.removeItem('volumeCached')
 
-        return;
-    }
+    return
+  }
 
-    localStorage.setItem('volumeCached', JSON.stringify(volume));
-    setVolume(0);
+  localStorage.setItem('volumeCached', JSON.stringify(volume))
+  setVolume(0)
 }

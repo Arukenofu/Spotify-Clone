@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
 
 defineProps<{
-  entity: ItemTypes | 'user';
-  entities: {id: string, name: string}[];
-}>();
-
+  entity: ItemTypes | 'user'
+  entities: { id: string, name: string }[]
+}>()
 </script>
 
 <template>
@@ -18,9 +17,11 @@ defineProps<{
       class="v-link"
       v-bind="$attrs"
     >
-      {{artist.name}}
+      {{ artist.name }}
     </RouterLink>
-    <template v-if="index !== entities.length-1">,&nbsp;</template>
+    <template v-if="index !== entities.length - 1">
+      ,&nbsp;
+    </template>
   </template>
 </template>
 

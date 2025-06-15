@@ -1,60 +1,61 @@
 <script setup lang="ts">
-import {onMounted, ref, useTemplateRef} from 'vue';
-import {useRoute} from 'vue-router';
+import { onMounted, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import SearchReviewIcon from '@/shared/UI/Icons/SearchReviewIcon.vue';
-import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue';
-import CloseIcon from '@/shared/UI/Icons/CloseIcon.vue';
+import { useRoute } from 'vue-router'
+import { router } from '@/app/router'
+import useDebounce from '@/shared/composables/useDebounce'
+import CloseIcon from '@/shared/UI/Icons/CloseIcon.vue'
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue'
 
-import useDebounce from '@/shared/composables/useDebounce';
-import {router} from '@/app/router';
-import {useI18n} from "vue-i18n";
+import SearchReviewIcon from '@/shared/UI/Icons/SearchReviewIcon.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const route = useRoute('/search/[...query]/[...path]');
-const input = useTemplateRef<HTMLInputElement>('input');
-const inputValue = ref<string>('');
+const route = useRoute('/search/[...query]/[...path]')
+const input = useTemplateRef<HTMLInputElement>('input')
+const inputValue = ref<string>('')
 
 function onSearchClick() {
   if (inputValue.value) {
-    router.push(`/search/${inputValue.value}`);
-  } else if (!route.fullPath.startsWith('/search')) {
-    router.push('/search');
+    router.push(`/search/${inputValue.value}`)
+  }
+  else if (!route.fullPath.startsWith('/search')) {
+    router.push('/search')
   }
 
-  input.value!.focus();
+  input.value!.focus()
 }
 
-const {debounce, clear} = useDebounce();
+const { debounce, clear } = useDebounce()
 
 onMounted(() => {
   if (route.fullPath.startsWith('/search/') && route.params.query) {
-    inputValue.value = route.params.query;
+    inputValue.value = route.params.query
   }
 })
 
 function onInput(value: string) {
   if (!value) {
-    clear();
-    router.push('/search');
-    return;
+    clear()
+    router.push('/search')
+    return
   }
 
   debounce(() => {
-    const path = route.params.path ? `/${route.params.path}` : '';
-    router.push(`/search/${encodeURIComponent(value)}${path}`);
-  }, 1000);
+    const path = route.params.path ? `/${route.params.path}` : ''
+    router.push(`/search/${encodeURIComponent(value)}${path}`)
+  }, 1000)
 }
 
 function clearAll() {
-  router.push('/search');
-  inputValue.value = '';
+  router.push('/search')
+  inputValue.value = ''
 }
 
 router.afterEach((to) => {
   if (to.path.startsWith('/search/') && route.params.query) {
-    inputValue.value = route.params.query;
+    inputValue.value = route.params.query
   }
 })
 </script>
@@ -79,7 +80,7 @@ router.afterEach((to) => {
       v-if="!inputValue?.length"
       v-tooltip="{
         content: t('app-header.tooltip.browse'),
-        distance: 5
+        distance: 5,
       }"
       class="icon-container-box"
     >

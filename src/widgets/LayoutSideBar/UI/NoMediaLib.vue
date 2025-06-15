@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import LongRoundButton from "@/shared/UI/Buttons/LongRoundButton.vue";
+import LongRoundButton from '@/shared/UI/Buttons/LongRoundButton.vue'
 
 const buttonInfo = [
   {
     mainText: 'Создай свой первый плейлист',
     bodyText: 'Это совсем не сложно! Мы поможем.',
-    buttonText: 'Создать плейлист'
+    buttonText: 'Создать плейлист',
   },
   {
     mainText: 'Подпишись на интересные подкасты',
     bodyText: 'Ты будешь узнавать о новых выпусках.',
-    buttonText: 'Обзор'
-  }
-];
+    buttonText: 'Обзор',
+  },
+]
 </script>
 
 <template>
   <div class="no-media-lib">
     <section
-      v-for="{mainText, bodyText, buttonText} in buttonInfo"
+      v-for="{ mainText, bodyText, buttonText } in buttonInfo"
       :key="mainText"
       class="create-playlist"
     >
       <div class="head-text">
-        <span class="main">{{mainText}}</span>
-        <span class="body">{{bodyText}}</span>
+        <span class="main">{{ mainText }}</span>
+        <span class="body">{{ bodyText }}</span>
       </div>
 
       <LongRoundButton class="link-button">
-        {{buttonText}}
+        {{ buttonText }}
       </LongRoundButton>
     </section>
   </div>

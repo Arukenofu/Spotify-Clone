@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import verifyBrowserSupport from "@/shared/utils/verifyBrowserSupport";
-import NotSupports from "@/app/components/NotSupports.vue";
+import NotSupports from '@/app/components/NotSupports.vue'
+import verifyBrowserSupport from '@/shared/utils/verifyBrowserSupport'
 
-const {isPassed} = verifyBrowserSupport();
+const { isPassed } = verifyBrowserSupport()
 </script>
 
 <template>

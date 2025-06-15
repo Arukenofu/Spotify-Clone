@@ -1,43 +1,43 @@
 <script setup lang="ts">
-import SearchRouterHeader from "@/pageLayouts/search/SearchRouterHeader.vue";
-import {useQuery} from "@tanstack/vue-query";
-import {sdk} from "@/services/sdk";
-import {useRoute} from "vue-router";
-import {computed, onUnmounted} from "vue";
-import {allSearchEntities} from "@/services/sdk/constants/allSearchEntities";
-import type {ItemTypes} from "@spotify/web-api-ts-sdk";
-import {destroyAccentWorker} from "@/shared/utils/colors/accentColorWorker";
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
+import { useQuery } from '@tanstack/vue-query'
+import { computed, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import SearchRouterHeader from '@/pageLayouts/search/SearchRouterHeader.vue'
+import { sdk } from '@/services/sdk'
+import { allSearchEntities } from '@/services/sdk/constants/allSearchEntities'
+import { destroyAccentWorker } from '@/shared/utils/colors/accentColorWorker'
 
-const route = useRoute('/search/[...query]/[...path]');
+const route = useRoute('/search/[...query]/[...path]')
 const q = computed(() => {
-  return route.params.query;
-});
+  return route.params.query
+})
 
-const {data, suspense} = useQuery({
+const { data, suspense } = useQuery({
   queryKey: ['search', q],
   queryFn: async () => {
-    return sdk.search(q.value, allSearchEntities, 'US', 10);
+    return sdk.search(q.value, allSearchEntities, 'US', 10)
   },
-  staleTime: Infinity
-});
-await suspense();
+  staleTime: Infinity,
+})
+await suspense()
 
 function getAvailableSearchEntities() {
-  const output: ItemTypes[] = [];
+  const output: ItemTypes[] = []
 
   allSearchEntities.forEach((key) => {
     // @ts-ignore
-    if (data.value![key + 's'].items.length) {
-      output.push(key);
+    if (data.value![`${key}s`].items.length) {
+      output.push(key)
     }
-  });
+  })
 
-  return output;
+  return output
 }
 
 onUnmounted(() => {
-  destroyAccentWorker();
-});
+  destroyAccentWorker()
+})
 </script>
 
 <template>

@@ -1,7 +1,7 @@
-import type {Track} from "@/services/types/Entities/Track";
-import type {Playlist} from "@/services/types/Entities/Playlist";
+import type { Playlist } from '@/services/types/Entities/Playlist'
+import type { Track } from '@/services/types/Entities/Track'
 
 export interface PlaylistInfo {
-    playlistInfoDossier: Playlist,
-    playlistQueue: Track[],
+  playlistInfoDossier: Playlist
+  playlistQueue: Track[]
 }

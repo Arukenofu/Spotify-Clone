@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import MusicRow from "@/shared/UI/Elements/Track/TrackRow.vue";
-import MusicRowHeader from "@/shared/UI/EntityPageElements/MusicRowHeader.vue";
-import {computed, inject, type Ref} from "vue";
-import type {Track} from "@/services/types/Entities/Track";
+import type { Track } from '@/services/types/Entities/Track'
+import { computed, inject, type Ref } from 'vue'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
+import MusicRowHeader from '@/shared/UI/EntityPageElements/MusicRowHeader.vue'
 
-const layoutContent = inject<Ref<HTMLElement & {content: HTMLElement}>>('layoutContent');
-
-const {format} = defineProps<{
-  format: 'Компактный' | 'Список',
+const { format } = defineProps<{
+  format: 'Компактный' | 'Список'
   queue: Track[]
-}>();
+}>()
+
+const layoutContent = inject<Ref<HTMLElement & { content: HTMLElement }>>('layoutContent')
 
 const currentFormatClass = computed(() => {
-  return format === 'Компактный' ? 'compact' : 'list';
-});
-
+  return format === 'Компактный' ? 'compact' : 'list'
+})
 </script>
 
 <template>
@@ -80,7 +79,7 @@ const currentFormatClass = computed(() => {
             :to="`/album/${music.album.id}`"
             class="link"
           >
-            {{music.album.name}}
+            {{ music.album.name }}
           </RouterLink>
         </template>
         <template #var2>
@@ -89,15 +88,15 @@ const currentFormatClass = computed(() => {
             :to="`/album/${music.album.id}`"
             class="link"
           >
-            {{music.album.name}}
+            {{ music.album.name }}
           </RouterLink>
           <span v-else class="added-at">
-            {{music.uploadedDate}}
+            {{ music.uploadedDate }}
           </span>
         </template>
         <template v-if="format === 'Компактный'" #var3>
           <span class="added-at">
-            {{music.uploadedDate}}
+            {{ music.uploadedDate }}
           </span>
         </template>
       </MusicRow>
@@ -162,7 +161,6 @@ const currentFormatClass = computed(() => {
         [var3] 0
         [time] minmax(120px, 1fr);
 
-
       &:deep(.var3) {
         display: none;
       }
@@ -179,7 +177,6 @@ const currentFormatClass = computed(() => {
         [var3] 0
         [time] minmax(120px, 1fr);
 
-
       &:deep(.var2, .var3,) {
         display: none;
       }
@@ -195,7 +192,6 @@ const currentFormatClass = computed(() => {
         [var2] 0
         [var3] 0
         [time] minmax(120px, 1fr);
-
 
       &:deep(.var1, .var2, .var3) {
         display: none;

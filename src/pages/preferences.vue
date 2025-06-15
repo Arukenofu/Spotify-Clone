@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import PreferencesControl from "@/pageLayouts/preferences/PreferencesControl.vue";
-import PreferencesControlSection from "@/pageLayouts/preferences/PreferencesControlSection.vue";
-import OutsideLinkIcon from "@/shared/UI/Icons/OutsideLinkIcon.vue";
-import BaseIosCheckbox from "@/shared/UI/Form/Base/BaseIosCheckbox.vue";
-import {getCookie, setCookie} from "@/shared/utils/cookie-actions";
-import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
-import {useI18n} from "vue-i18n";
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import PreferencesControl from '@/pageLayouts/preferences/PreferencesControl.vue'
+import PreferencesControlSection from '@/pageLayouts/preferences/PreferencesControlSection.vue'
+import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue'
+import BaseIosCheckbox from '@/shared/UI/Form/Base/BaseIosCheckbox.vue'
+import OutsideLinkIcon from '@/shared/UI/Icons/OutsideLinkIcon.vue'
+import { getCookie, setCookie } from '@/shared/utils/cookie-actions'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const value = ref<boolean>(false);
+const value = ref<boolean>(false)
 
-const chosenLanguage = getCookie('locale') || 'en';
-const isLanguageChanged = ref<boolean>(false);
+const chosenLanguage = getCookie('locale') || 'en'
+const isLanguageChanged = ref<boolean>(false)
 
 const languages = [
   {
@@ -23,44 +23,45 @@ const languages = [
   {
     text: 'English (English)',
     value: 'en',
-  }
-];
+  },
+]
 
 function onLanguageChanged(event: Event) {
-  const value = (event.target as HTMLSelectElement).value;
+  const value = (event.target as HTMLSelectElement).value
 
-  setCookie('locale', value, 365);
+  setCookie('locale', value, 365)
 
-  isLanguageChanged.value = true;
+  isLanguageChanged.value = true
 }
 
 function reloadPage() {
-  location.reload();
+  location.reload()
 }
 </script>
 
 <template>
   <div class="preferences">
     <div class="heading">
-      <h1 class="heading-text">{{t('preferences.settings')}}</h1>
-      <div class="search">
-      </div>
+      <h1 class="heading-text">
+        {{ t('preferences.settings') }}
+      </h1>
+      <div class="search" />
     </div>
 
     <div class="controls-wrapper">
       <PreferencesControl>
         <template #name>
-          {{t('preferences.account')}}
+          {{ t('preferences.account') }}
         </template>
 
         <template #section>
           <PreferencesControlSection>
             <template #description>
-              {{t('preferences.accountDescription')}}
+              {{ t('preferences.accountDescription') }}
             </template>
             <template #action>
               <BubbleButton design="border" class="change-account-preferences">
-                {{t('preferences.accountEditButton')}}
+                {{ t('preferences.accountEditButton') }}
 
                 <OutsideLinkIcon class="icon" />
               </BubbleButton>
@@ -71,13 +72,13 @@ function reloadPage() {
 
       <PreferencesControl>
         <template #name>
-          {{t('preferences.language')}}
+          {{ t('preferences.language') }}
         </template>
 
         <template #section>
           <PreferencesControlSection>
             <template #description>
-              {{t('preferences.languageDescription')}}
+              {{ t('preferences.languageDescription') }}
             </template>
 
             <template #action>
@@ -88,7 +89,7 @@ function reloadPage() {
                   :value="language.value"
                   :selected="chosenLanguage === language.value"
                 >
-                  {{language.text}}
+                  {{ language.text }}
                 </option>
               </select>
             </template>
@@ -103,23 +104,23 @@ function reloadPage() {
           design="border"
           @click="reloadPage()"
         >
-          {{t('preferences.reload')}}
+          {{ t('preferences.reload') }}
         </BubbleButton>
       </div>
 
       <PreferencesControl>
         <template #name>
-          {{t('preferences.social')}}
+          {{ t('preferences.social') }}
         </template>
 
         <template #section>
           <PreferencesControlSection>
             <template #description>
-              {{t('preferences.socialDescription')}}
+              {{ t('preferences.socialDescription') }}
             </template>
 
             <template #action>
-              <BaseIosCheckbox v-model="value" @click="value =! value" />
+              <BaseIosCheckbox v-model="value" @click="value = !value" />
             </template>
           </PreferencesControlSection>
         </template>

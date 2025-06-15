@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  state?: boolean;
-}>();
+  state?: boolean
+}>()
 </script>
 
 <template>
@@ -30,4 +30,5 @@ defineProps<{
     />
   </svg>
 </template>
+
 <style></style>

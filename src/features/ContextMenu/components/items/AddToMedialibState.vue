@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
-import RoundCheckIcon from "@/shared/UI/Icons/RoundCheckIcon.vue";
-import type {BaseItemProps} from "@/features/ContextMenu/types/defaults/BaseItemProps";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import ctxT from "../../helpers/ctx-t";
+import type { BaseItemProps } from '@/features/ContextMenu/types/defaults/BaseItemProps'
+import BasicContextMenuItem from '@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue'
+import RoundCheckIcon from '@/shared/UI/Icons/RoundCheckIcon.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
+import ctxT from '../../helpers/ctx-t'
 
 interface Props extends BaseItemProps {
-  state: boolean;
+  state: boolean
 }
 
 defineProps<Props>()
@@ -14,7 +14,7 @@ defineProps<Props>()
 
 <template>
   <BasicContextMenuItem v-bind="$props">
-    {{state ? ctxT('removeFromMedialib') : ctxT('addToMedialib')}}
+    {{ state ? ctxT('removeFromMedialib') : ctxT('addToMedialib') }}
     <template #icon>
       <RoundCheckIcon v-if="state" achieve="yes" />
       <RoundPlusIcon v-else />

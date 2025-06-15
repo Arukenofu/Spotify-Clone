@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import ClockIcon from "@/shared/UI/Icons/ClockIcon.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import ClockIcon from '@/shared/UI/Icons/ClockIcon.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="v-music-row-header">
-    <div class="index">#</div>
-    <div class="name">{{t('music-table.naming')}}</div>
+    <div class="index">
+      #
+    </div>
+    <div class="name">
+      {{ t('music-table.naming') }}
+    </div>
     <div v-if="$slots.var1" class="var1">
       <slot name="var1" />
     </div>

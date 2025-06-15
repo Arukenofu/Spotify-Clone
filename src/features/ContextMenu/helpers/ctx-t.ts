@@ -1,7 +1,7 @@
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
 
 export default function (item: string, ...args: any) {
-    const {t} = useI18n();
+  const { t } = useI18n()
 
-    return t('contextmenu-items.' + item, args)
+  return t(`contextmenu-items.${item}`, args)
 }

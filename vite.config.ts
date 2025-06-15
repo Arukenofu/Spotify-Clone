@@ -1,19 +1,19 @@
-import {fileURLToPath, URL} from 'node:url';
-import {ClientSideLayout} from 'vite-plugin-vue-layouts';
-import {defineConfig} from 'vite';
+import { fileURLToPath, URL } from 'node:url'
+import vue from '@vitejs/plugin-vue'
+import Router from 'unplugin-vue-router/vite'
 
-import Router from 'unplugin-vue-router/vite';
-import vue from '@vitejs/plugin-vue';
-import vueDevTools from 'vite-plugin-vue-devtools';
-import sassGlobImports from 'vite-plugin-sass-glob-import';
-import {createTypesByFolder} from './plugins/createTypesByFolder';
+import { defineConfig } from 'vite'
+import compression from 'vite-plugin-compression2'
+import sassGlobImports from 'vite-plugin-sass-glob-import'
+import vueDevTools from 'vite-plugin-vue-devtools'
+import { ClientSideLayout } from 'vite-plugin-vue-layouts'
 
-import ScssConfig from "./config/scss.config";
-import RouterEnvConfig from "./config/routerEnv.config";
-import LayoutConfig from "./config/layout.config";
-import FolderTypesConfig from "./config/folderTypes.config";
-import ServerConfig from "./config/server.config";
-import compression from "vite-plugin-compression2";
+import FolderTypesConfig from './config/folderTypes.config'
+import LayoutConfig from './config/layout.config'
+import RouterEnvConfig from './config/routerEnv.config'
+import ScssConfig from './config/scss.config'
+import ServerConfig from './config/server.config'
+import { createTypesByFolder } from './plugins/createTypesByFolder'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,13 +24,13 @@ export default defineConfig({
     sassGlobImports(),
     ClientSideLayout(LayoutConfig),
     vueDevTools(),
-    vue()
+    vue(),
   ],
   css: ScssConfig,
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
-  server: ServerConfig
-});
+  server: ServerConfig,
+})

@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import {computed, defineComponent, h, ref} from 'vue';
-import {useRoute} from "vue-router";
-import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue';
-import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
-import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchMedialib.vue';
-import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue';
-import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue';
-import NoMediaLib from "@/widgets/LayoutSideBar/UI/NoMediaLib.vue";
-import QueryNotFound from "@/widgets/LayoutSideBar/UI/QueryNotFound.vue";
-import {ContextMenu} from "@/features/ContextMenu";
+import type { sortOption } from '@/features/MedialibSidebar/constants/sorts'
+import type { MediaLibTypes } from '@/services/api/medialib/types/MediaLibTypes'
+import type { EntityActionContextMenuProps } from '@/widgets/LayoutSideBar/types/EntityActionContextMenuProps'
+import { useQuery } from '@tanstack/vue-query'
+import { computed, defineComponent, h, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { useTippy } from 'vue-tippy'
+import { ContextMenu } from '@/features/ContextMenu'
 import {
   handleIsMedialibActive,
   handleMedialibClick,
@@ -17,65 +16,67 @@ import {
   useGridWidth,
   useMedialibsSort,
   usePlaylistFormat,
-  useSidebarWidthStore
-} from '@/features/MedialibSidebar';
-import {useQuery} from "@tanstack/vue-query";
-import apiMedialibService from "@/services/api/medialib/apiMedialibService";
-import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
-import {useTippy} from "vue-tippy";
-import EntityAction from "@/widgets/LayoutSideBar/contextMenu/EntityAction.vue";
-import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
-import {useI18n} from "vue-i18n";
-import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
+  useSidebarWidthStore,
+} from '@/features/MedialibSidebar'
+import apiMedialibService from '@/services/api/medialib/apiMedialibService'
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
+import EntityAction from '@/widgets/LayoutSideBar/contextMenu/EntityAction.vue'
+import FormatContextMenu from '@/widgets/LayoutSideBar/contextMenu/FormatContextMenu.vue'
+import FormatButton from '@/widgets/LayoutSideBar/UI/Button/FormatButton.vue'
+import MediaLibButton from '@/widgets/LayoutSideBar/UI/Button/MediaLibButton.vue'
+import SearchPlaylist from '@/widgets/LayoutSideBar/UI/Button/SearchMedialib.vue'
+import NoMediaLib from '@/widgets/LayoutSideBar/UI/NoMediaLib.vue'
+import QueryNotFound from '@/widgets/LayoutSideBar/UI/QueryNotFound.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const search = ref<string>('');
-const { isMinimized } = useSidebarWidthStore();
+const search = ref<string>('')
+const { isMinimized } = useSidebarWidthStore()
 
-const { currentComponent, getComponentName, setComponent } = usePlaylistFormat();
-const { gridWidth, setGridWidth } = useGridWidth();
-const { currentSort, setSort } = useMedialibsSort();
+const { currentComponent, getComponentName, setComponent } = usePlaylistFormat()
+const { gridWidth, setGridWidth } = useGridWidth()
+const { currentSort, setSort } = useMedialibsSort()
 
-const route = useRoute();
+const route = useRoute()
 
 const playlistsComputedClasses = computed(() => ({
   grid: getComponentName.value === 'Grid',
-  minimized: isMinimized.value
-}));
+  minimized: isMinimized.value,
+}))
 
-const {data: mediaLibs, isSuccess} = useQuery<MediaLibTypes[]>({
+const { data: mediaLibs, isSuccess } = useQuery<MediaLibTypes[]>({
   queryKey: ['mediaLib'],
-  queryFn: async () => await apiMedialibService.getMediaLib()
-});
+  queryFn: async () => await apiMedialibService.getMediaLib(),
+})
 
 const mediaLibsFiltered = computed(() => {
-  if (!mediaLibs.value || mediaLibs.value.length < 1) return [];
+  if (!mediaLibs.value || mediaLibs.value.length < 1)
+    return []
 
   return handleMedialibSortAndSearch(mediaLibs.value, {
     searchQuery: search.value,
-    sortBy: currentSort.value
-  });
-});
+    sortBy: currentSort.value,
+  })
+})
 
-const contextMenuProps = ref<EntityActionContextMenuProps | null>(null);
+const contextMenuProps = ref<EntityActionContextMenuProps | null>(null)
 
-const {setProps, show, hide} = useTippy(() => document.body, {
+const { setProps, show, hide } = useTippy(() => document.body, {
   content: defineComponent(() => {
     return () => contextMenuProps.value && h(EntityAction, {
       ...contextMenuProps.value,
-      onClick: hide
-    });
+      onClick: hide,
+    })
   }),
   offset: [1, 1],
   trigger: 'manual',
   placement: 'bottom-start',
   theme: 'context',
-  interactive: true
-});
+  interactive: true,
+})
 
 function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
-  contextMenuProps.value = props;
+  contextMenuProps.value = props
 
   setProps({
     getReferenceClientRect: () => ({
@@ -84,11 +85,11 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
       top: event.clientY,
       bottom: event.clientY,
       left: event.clientX,
-      right: event.clientX
-    })
-  });
+      right: event.clientX,
+    }),
+  })
 
-  show();
+  show()
 }
 </script>
 

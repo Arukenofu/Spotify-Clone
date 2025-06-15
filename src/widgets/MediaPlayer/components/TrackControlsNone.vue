@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Previous from '@/shared/UI/Icons/Previous.vue';
-import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue';
-import Repeat from '@/shared/UI/Icons/Repeat.vue';
-import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
-import Next from '@/shared/UI/Icons/Next.vue';
-import Range from '@/shared/components/Range.vue';
+import Range from '@/shared/components/Range.vue'
+import Next from '@/shared/UI/Icons/Next.vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
+import Previous from '@/shared/UI/Icons/Previous.vue'
+import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue'
+import Repeat from '@/shared/UI/Icons/Repeat.vue'
 </script>
 
 <template>

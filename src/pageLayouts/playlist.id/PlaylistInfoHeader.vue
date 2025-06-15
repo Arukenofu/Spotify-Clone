@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import {useI18n} from "vue-i18n";
-import type {Image, Playlist} from "@spotify/web-api-ts-sdk";
-import readableNumber from "@/shared/utils/format/readableNumber";
-
-const {t} = useI18n();
+import type { Image, Playlist } from '@spotify/web-api-ts-sdk'
+import { useI18n } from 'vue-i18n'
+import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
+import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
+import EntityInfoHeaderTitle from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
+import readableNumber from '@/shared/utils/format/readableNumber'
 
 defineProps<{
-  images: Image[];
-  mask: string | null;
-  playlistName: string;
-  playlistDescription?: string;
-  creator: Playlist['owner'],
-  creatorImage: string | null;
-  creatorMask: string | null;
-  tracksAmount: number;
-  savingsAmount: number;
-}>();
+  images: Image[]
+  mask: string | null
+  playlistName: string
+  playlistDescription?: string
+  creator: Playlist['owner']
+  creatorImage: string | null
+  creatorMask: string | null
+  tracksAmount: number
+  savingsAmount: number
+}>()
+
+const { t } = useI18n()
 </script>
 
 <template>
   <EntityInfoHeader class="playlist_about" :images="images" :mask="mask" type="playlist">
-    <span class="type">{{t('entities.playlist')}}</span>
+    <span class="type">{{ t('entities.playlist') }}</span>
 
     <EntityInfoHeaderTitle>
-      {{playlistName}}
+      {{ playlistName }}
     </EntityInfoHeaderTitle>
 
     <div v-if="playlistDescription" class="description">
-      {{playlistDescription}}
+      {{ playlistDescription }}
     </div>
 
     <div class="other-info">
@@ -48,7 +48,7 @@ defineProps<{
           />
 
           <span>
-            {{creator.display_name}}
+            {{ creator.display_name }}
           </span>
         </RouterLink>
       </div>
@@ -57,7 +57,7 @@ defineProps<{
         <EntityInfoHeaderDot />
 
         <div class="savings">
-          {{readableNumber(savingsAmount)}} {{t('playlist.savings', savingsAmount)}}
+          {{ readableNumber(savingsAmount) }} {{ t('playlist.savings', savingsAmount) }}
         </div>
       </template>
 

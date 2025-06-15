@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import getActiveColor from '@/shared/utils/colors/getActiveColor';
-import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString';
-import PlayingState from '@/shared/UI/Icons/PlayingState.vue';
-import {useI18n} from "vue-i18n";
-import type {SimplifiedTrack, Track} from "@spotify/web-api-ts-sdk";
-import {currentTrackImage} from "@/features/MediaPlayer";
-import type {PlayerTypes} from "@/features/MediaPlayer/types/PlayerTypes";
+import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
+import type { PlayerTypes } from '@/features/MediaPlayer/types/PlayerTypes'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { currentTrackImage } from '@/features/MediaPlayer'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
+import getActiveColor from '@/shared/utils/colors/getActiveColor'
+import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
 
 const props = defineProps<{
-  playback: PlayerTypes,
-  music: Track | SimplifiedTrack;
-  state: boolean;
-}>();
+  playback: PlayerTypes
+  music: Track | SimplifiedTrack
+  state: boolean
+}>()
 
-defineEmits(['onImageBlockClick']);
+defineEmits(['onImageBlockClick'])
 
-const {t} = useI18n();
+const { t } = useI18n()
 
 const playingStateTooltip = computed(() => {
-  const musicName = props.music.name;
-  const artists = getCommaSeparatedString(props.music.artists!, 'name');
+  const musicName = props.music.name
+  const artists = getCommaSeparatedString(props.music.artists!, 'name')
 
-  const action = props.state ? 'pause' : 'play';
+  const action = props.state ? 'pause' : 'play'
 
   return t(`music-actions.${action}TrackByArtist`, [musicName, artists])
-});
+})
 
 const currentImage = computed(() => {
   return currentTrackImage(props.playback, props.music)
-});
+})
 </script>
 
 <template>
@@ -67,7 +67,9 @@ const currentImage = computed(() => {
           <span>
             {{ artist.name }}
           </span>
-          <template v-if="index !== music.artists?.length - 1">, </template>
+          <template v-if="index !== music.artists?.length - 1">
+            ,
+          </template>
         </RouterLink>
       </div>
     </div>

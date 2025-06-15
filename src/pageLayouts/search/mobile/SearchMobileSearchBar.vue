@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import SearchIcon from "@/shared/UI/Icons/SearchIcon.vue";
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue'
 
 defineProps<{
-  disabled?: boolean;
-}>();
+  disabled?: boolean
+}>()
 </script>
 
 <template>
   <div class="searchbar input-outer">
     <SearchIcon class="icon" />
-    <input class="inner-input" type="text" placeholder="Что хочешь послушать?" :disabled="disabled" />
+    <input class="inner-input" type="text" placeholder="Что хочешь послушать?" :disabled="disabled">
   </div>
 </template>
 

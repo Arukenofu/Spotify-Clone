@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PremiumCard from '../components/PremiumCard.vue';
-import plans from '../constants/plans';
+import PremiumCard from '../components/PremiumCard.vue'
+import plans from '../constants/plans'
 </script>
 
 <template>

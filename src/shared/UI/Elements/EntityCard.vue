@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import GreenPlayingButton from "@/shared/UI/Buttons/GreenPlayingButton.vue";
-import type {Entities} from "@/services/types/Entities";
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import localizeEntities from "../../../services/utils/localizeEntities";
+import type { Entities } from '@/services/types/Entities'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import localizeEntities from '../../../services/utils/localizeEntities'
 
 interface Props {
-  id: string | number;
-  name: string;
-  image: string | null;
-  type: Entities;
-  artists?: {id: string; name: string}[];
-  isCurrent?: boolean;
-  isPlaying?: boolean;
+  id: string | number
+  name: string
+  image: string | null
+  type: Entities
+  artists?: { id: string, name: string }[]
+  isCurrent?: boolean
+  isPlaying?: boolean
 }
 
 const {
   isCurrent = false,
-  isPlaying = false
-} = defineProps<Props>();
+  isPlaying = false,
+} = defineProps<Props>()
 
-type Emits = {
-  onButtonClick: [];
+defineEmits<Emits>()
+interface Emits {
+  onButtonClick: []
 }
-defineEmits<Emits>();
 </script>
 
 <template>
@@ -44,7 +44,9 @@ defineEmits<Emits>();
         {{ localizeEntities(type) }}
       </div>
       <div v-if="artists" class="name">
-        <div class="dot">•</div>
+        <div class="dot">
+          •
+        </div>
 
         <CommaSeparatedArtistsLink class="link" :artists="artists" />
       </div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {BasicContextMenuItem} from "@/features/ContextMenu";
-import AlbumIcon from "@/shared/UI/Icons/AlbumIcon.vue";
-import {RouterLink} from "vue-router";
-import ctxT from "../../helpers/ctx-t";
+import { RouterLink } from 'vue-router'
+import { BasicContextMenuItem } from '@/features/ContextMenu'
+import AlbumIcon from '@/shared/UI/Icons/AlbumIcon.vue'
+import ctxT from '../../helpers/ctx-t'
 </script>
 
 <template>
@@ -10,7 +10,7 @@ import ctxT from "../../helpers/ctx-t";
     <template #icon>
       <AlbumIcon />
     </template>
-    {{ctxT('toTheAlbum')}}
+    {{ ctxT('toTheAlbum') }}
   </BasicContextMenuItem>
 </template>
 

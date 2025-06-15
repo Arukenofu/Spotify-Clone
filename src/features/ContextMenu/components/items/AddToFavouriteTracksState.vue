@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import {BasicContextMenuItem} from "@/features/ContextMenu";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
-import ctxT from "../../helpers/ctx-t";
-
+import { BasicContextMenuItem } from '@/features/ContextMenu'
+import CheckedRoundCircleIcon from '@/shared/UI/Icons/CheckedRoundCircleIcon.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
+import ctxT from '../../helpers/ctx-t'
 
 interface Props {
-  state: boolean;
+  state: boolean
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
@@ -20,7 +19,7 @@ defineProps<Props>();
       />
     </template>
     <template #default>
-      {{state ? ctxT('addToFavoriteTracks') : ctxT('removeFromFavoriteTracks')}}
+      {{ state ? ctxT('addToFavoriteTracks') : ctxT('removeFromFavoriteTracks') }}
     </template>
   </BasicContextMenuItem>
 </template>

@@ -1,48 +1,46 @@
 <script setup lang="ts">
-
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
 
 interface Links {
-  text: string;
-  url: string;
+  text: string
+  url: string
 }
 
-const {t} = useI18n();
+const { t } = useI18n()
 
 const links: Links[] = [
   {
     text: t('app-footer.client'),
-    url: 'https://github.com/Arukenofu/Spotify-Clone'
+    url: 'https://github.com/Arukenofu/Spotify-Clone',
   },
   {
     text: t('app-footer.original'),
-    url: 'https://open.spotify.com/'
+    url: 'https://open.spotify.com/',
   },
   {
     text: 'Arukenofu',
-    url: 'https://github.com/Arukenofu'
+    url: 'https://github.com/Arukenofu',
   },
   {
     text: t('app-footer.license'),
-    url: 'https://github.com/Arukenofu/Spotify-Clone/blob/master/LICENSE'
-  }
+    url: 'https://github.com/Arukenofu/Spotify-Clone/blob/master/LICENSE',
+  },
 ]
-
 </script>
 
 <template>
   <footer class="page-footer">
-    <hr class="horizontal-rule" />
+    <hr class="horizontal-rule">
 
     <div class="container">
       <div class="items">
-        <div 
+        <div
           v-for="link in links"
           :key="link.text"
           class="item"
         >
           <a :href="link.url" target="_blank">
-            {{link.text}}
+            {{ link.text }}
           </a>
         </div>
       </div>
@@ -96,7 +94,7 @@ const links: Links[] = [
       font-weight: 500;
     }
   }
-  
+
   @media (min-width: 992px) {
     padding-left: 32px;
     padding-right: 32px;

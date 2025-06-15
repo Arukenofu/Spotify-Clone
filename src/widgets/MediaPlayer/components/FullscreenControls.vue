@@ -1,42 +1,42 @@
 <script setup lang="ts">
-import {inject, reactive, ref} from "vue";
-import formatTimeMMSS from "@/shared/utils/format/formatTimeMMSS";
-import getActiveColor from "@/shared/utils/colors/getActiveColor";
-import {useAudioStream, usePlaybackControls} from "@/features/MediaPlayer";
-import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
-import Range from "@/shared/components/Range.vue";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import RandomOrder from "@/shared/UI/Icons/RandomOrder.vue";
-import Previous from "@/shared/UI/Icons/Previous.vue";
-import PlayingState from "@/shared/UI/Icons/PlayingState.vue";
-import Next from "@/shared/UI/Icons/Next.vue";
-import Repeat from "@/shared/UI/Icons/Repeat.vue";
-import ShowText from "@/shared/UI/Icons/ShowText.vue";
-import VolumeSilent from "@/shared/UI/Icons/VolumeSilent.vue";
-import Volume from "@/shared/UI/Icons/Volume.vue";
-import UnFullscreen from "@/shared/UI/Icons/UnFullscreen.vue";
-import {userPreferencesStore} from "@/features/UserPreferences";
+import { inject, reactive, ref } from 'vue'
+import { useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
+import { userPreferencesStore } from '@/features/UserPreferences'
+import Range from '@/shared/components/Range.vue'
+import Next from '@/shared/UI/Icons/Next.vue'
+import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
+import Previous from '@/shared/UI/Icons/Previous.vue'
+import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue'
+import Repeat from '@/shared/UI/Icons/Repeat.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
+import ShowText from '@/shared/UI/Icons/ShowText.vue'
+import UnFullscreen from '@/shared/UI/Icons/UnFullscreen.vue'
+import Volume from '@/shared/UI/Icons/Volume.vue'
+import VolumeSilent from '@/shared/UI/Icons/VolumeSilent.vue'
+import getActiveColor from '@/shared/utils/colors/getActiveColor'
+import formatTimeMMSS from '@/shared/utils/format/formatTimeMMSS'
+import { toggleVolume } from '@/widgets/MediaPlayer/shared/toggleVolume'
 
-const stream = reactive(useAudioStream());
-const controls = reactive(usePlaybackControls());
+const stream = reactive(useAudioStream())
+const controls = reactive(usePlaybackControls())
 
-const preferences = userPreferencesStore();
+const preferences = userPreferencesStore()
 
-let timeoutId: ReturnType<typeof setTimeout> | null = null;
-const isHover = ref<boolean>(false);
+let timeoutId: ReturnType<typeof setTimeout> | null = null
+const isHover = ref<boolean>(false)
 
-onMouseMove();
+onMouseMove()
 
 function onMouseMove() {
-  clearTimeout(timeoutId!);
-  isHover.value = true;
+  clearTimeout(timeoutId!)
+  isHover.value = true
 
   timeoutId = setTimeout(() => {
-    isHover.value = false;
-  }, 2000);
+    isHover.value = false
+  }, 2000)
 }
 
-const exitFullScreen = inject<void>('exitFullScreenFunc');
+const exitFullScreen = inject<void>('exitFullScreenFunc')
 </script>
 
 <template>
@@ -44,7 +44,7 @@ const exitFullScreen = inject<void>('exitFullScreenFunc');
     <div class="controls-layout">
       <div class="timebar">
         <div class="current">
-          {{formatTimeMMSS(stream.currentTime)}}
+          {{ formatTimeMMSS(stream.currentTime) }}
         </div>
         <div class="progress">
           <Range
@@ -59,7 +59,7 @@ const exitFullScreen = inject<void>('exitFullScreenFunc');
           />
         </div>
         <div class="duration">
-          {{formatTimeMMSS(stream.duration)}}
+          {{ formatTimeMMSS(stream.duration) }}
         </div>
       </div>
 

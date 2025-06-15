@@ -1,56 +1,57 @@
 <script setup lang="ts">
-import BaseInput from "@/shared/UI/Form/Base/BaseInput.vue";
-import DefaultModal from "@/features/Modal/UI/DefaultModal.vue";
-import CloseIcon from "@/shared/UI/Icons/CloseIcon.vue";
-import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
-import {Modal} from "@/features/Modal";
-import {useMutation, useQueryClient} from "@tanstack/vue-query";
-import apiMedialibService from "@/services/api/medialib/apiMedialibService";
-import type {MediaLibTypes} from "@/services/api/medialib/types/MediaLibTypes";
-import {useI18n} from "vue-i18n";
+import type { MediaLibTypes } from '@/services/api/medialib/types/MediaLibTypes'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { useI18n } from 'vue-i18n'
+import { Modal } from '@/features/Modal'
+import DefaultModal from '@/features/Modal/UI/DefaultModal.vue'
+import apiMedialibService from '@/services/api/medialib/apiMedialibService'
+import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue'
+import BaseInput from '@/shared/UI/Form/Base/BaseInput.vue'
+import CloseIcon from '@/shared/UI/Icons/CloseIcon.vue'
 
-const {id, currentName} = defineProps<{
-  id: number | string;
-  currentName: string;
-}>();
+const { id, currentName } = defineProps<{
+  id: number | string
+  currentName: string
+}>()
 
 const state = defineModel<boolean>({
-  required: true
-});
+  required: true,
+})
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const queryClient = useQueryClient();
+const queryClient = useQueryClient()
 
-const {mutate: rename} = useMutation({
+const { mutate: rename } = useMutation({
   mutationKey: ['renameFolder'],
   mutationFn: async ($event: Event) => {
-    const response = await apiMedialibService.renameFolder(id);
+    const response = await apiMedialibService.renameFolder(id)
 
     if (response.message !== 'OK') {
-      throw new Error(response.message);
+      throw new Error(response.message)
     }
 
     queryClient.setQueryData(['mediaLib'], (oldData: MediaLibTypes[]) => {
-      const itemIndex = oldData.findIndex(item => item.id === id);
-      if (itemIndex === -1) throw new Error('Медиатека не найдена');
+      const itemIndex = oldData.findIndex(item => item.id === id)
+      if (itemIndex === -1)
+        throw new Error('Медиатека не найдена')
 
-      const newData = [...oldData];
+      const newData = [...oldData]
 
       const data = Object.fromEntries(
-          new FormData($event.target as HTMLFormElement).entries()
-      ) as {newName: string};
+        new FormData($event.target as HTMLFormElement).entries(),
+      ) as { newName: string }
 
       newData[itemIndex] = {
         ...newData[itemIndex],
-        name: data.newName
+        name: data.newName,
       }
 
-      return newData;
-    });
+      return newData
+    })
 
-    state.value = false;
-  }
+    state.value = false
+  },
 })
 </script>
 
@@ -58,7 +59,9 @@ const {mutate: rename} = useMutation({
   <Modal v-model="state" :use-transition="false">
     <DefaultModal class="modal">
       <div class="heading">
-        <h1 class="title">{{t('contextmenu-items.rename')}}</h1>
+        <h1 class="title">
+          {{ t('contextmenu-items.rename') }}
+        </h1>
         <div class="close" @click="state = false">
           <CloseIcon class="icon" />
         </div>
@@ -68,7 +71,7 @@ const {mutate: rename} = useMutation({
         <BaseInput :value="currentName" name="newName" class="input" />
 
         <div class="controls">
-          <BubbleButton class="confirm" :design="'active'">
+          <BubbleButton class="confirm" design="active">
             Сохранить
           </BubbleButton>
         </div>

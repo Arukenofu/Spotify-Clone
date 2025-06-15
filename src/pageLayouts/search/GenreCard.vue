@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
 
 defineProps<{
-  href: string;
-  image: string;
-  maskColor: string | null;
-}>();
-
+  href: string
+  image: string
+  maskColor: string | null
+}>()
 </script>
 
 <template>

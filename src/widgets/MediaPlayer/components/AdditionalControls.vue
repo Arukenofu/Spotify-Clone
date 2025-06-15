@@ -1,37 +1,38 @@
 <script setup lang="ts">
-import {inject} from 'vue';
-import {router} from '@/app/router';
-import Range from '@/shared/components/Range.vue';
-import ShowQueue from '@/shared/UI/Icons/ShowQueue.vue';
-import FullScreen from '@/shared/UI/Icons/FullScreen.vue';
-import ShowText from '@/shared/UI/Icons/ShowText.vue';
-import ConnectToDevice from '@/shared/UI/Icons/ConnectToDevice.vue';
-import Volume from '@/shared/UI/Icons/Volume.vue';
-import VolumeSilent from '@/shared/UI/Icons/VolumeSilent.vue';
-import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue';
-import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath';
-import {infoPanel} from '@/features/InfoPanel';
-import {useI18n} from "vue-i18n";
-import {useAudioStream} from "@/features/MediaPlayer";
-import {toggleVolume} from "@/widgets/MediaPlayer/shared/toggleVolume";
+import { inject } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { router } from '@/app/router'
+import { infoPanel } from '@/features/InfoPanel'
+import { useAudioStream } from '@/features/MediaPlayer'
+import Range from '@/shared/components/Range.vue'
+import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath'
+import ConnectToDevice from '@/shared/UI/Icons/ConnectToDevice.vue'
+import FullScreen from '@/shared/UI/Icons/FullScreen.vue'
+import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue'
+import ShowQueue from '@/shared/UI/Icons/ShowQueue.vue'
+import ShowText from '@/shared/UI/Icons/ShowText.vue'
+import Volume from '@/shared/UI/Icons/Volume.vue'
+import VolumeSilent from '@/shared/UI/Icons/VolumeSilent.vue'
+import { toggleVolume } from '@/widgets/MediaPlayer/shared/toggleVolume'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const {setVolume, volume} = useAudioStream();
+const { setVolume, volume } = useAudioStream()
 
-const { currentPanelName, setNewPanel } = infoPanel();
+const { currentPanelName, setNewPanel } = infoPanel()
 
-const { currentRoutePath } = useCurrentRoutePath('path');
+const { currentRoutePath } = useCurrentRoutePath('path')
 
 function toggleLyricsPage() {
   if (currentRoutePath.value !== '/lyrics') {
-    router.push('/lyrics');
-  } else {
-    router.back();
+    router.push('/lyrics')
+  }
+  else {
+    router.back()
   }
 }
 
-const enableFullScreenFunc = inject<void>('enableFullScreenFunc');
+const enableFullScreenFunc = inject<void>('enableFullScreenFunc')
 </script>
 
 <template>

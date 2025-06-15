@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {BasicContextMenuItem} from "@/features/ContextMenu";
-import PencilIcon from "@/shared/UI/Icons/PencilIcon.vue";
-import ctxT from "../../helpers/ctx-t";
+import { BasicContextMenuItem } from '@/features/ContextMenu'
+import PencilIcon from '@/shared/UI/Icons/PencilIcon.vue'
+import ctxT from '../../helpers/ctx-t'
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import ctxT from "../../helpers/ctx-t";
     <template #icon>
       <PencilIcon />
     </template>
-    {{ctxT('changeData')}}
+    {{ ctxT('changeData') }}
   </BasicContextMenuItem>
 </template>
 

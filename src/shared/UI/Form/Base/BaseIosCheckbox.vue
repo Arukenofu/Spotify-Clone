@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const model = defineModel<boolean>();
+const model = defineModel<boolean>()
 </script>
 
 <template>
   <div class="v-checkbox">
-    <input v-model="model" type="checkbox" />
+    <input v-model="model" type="checkbox">
     <span class="indicator">
       <span class="thumb" />
     </span>
@@ -17,7 +17,6 @@ const model = defineModel<boolean>();
   align-items: center;
   position: relative;
   height: min-content;
-
 
   input {
     border: 0;

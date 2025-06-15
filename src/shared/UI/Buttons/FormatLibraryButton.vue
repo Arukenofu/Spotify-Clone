@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import {type Component, computed} from 'vue';
-import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue';
-import ListIcon from '@/shared/UI/Icons/ListIcon.vue';
-import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue';
-import {BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView, ContextMenu} from "@/features/ContextMenu";
-import type {Formats} from "@/features/MusicCollectionFormat";
-import {useI18n} from "vue-i18n";
-import {userPreferencesStore} from "@/features/UserPreferences";
-import {storeToRefs} from "pinia";
+import type { Formats } from '@/features/MusicCollectionFormat'
+import { storeToRefs } from 'pinia'
+import { type Component, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView, ContextMenu } from '@/features/ContextMenu'
+import { userPreferencesStore } from '@/features/UserPreferences'
+import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue'
+import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue'
+import ListIcon from '@/shared/UI/Icons/ListIcon.vue'
 
-const preferences = userPreferencesStore();
-const {tracksFormat} = storeToRefs(preferences);
+const preferences = userPreferencesStore()
+const { tracksFormat } = storeToRefs(preferences)
 
-const {t} = useI18n();
+const { t } = useI18n()
 
 interface FormatsData {
-  id: Formats,
+  id: Formats
   svgIcon: Component
 }
 
@@ -27,19 +27,19 @@ const formats: FormatsData[] = [
   {
     svgIcon: ListIcon,
     id: 'List',
-  }
+  },
 ]
 
 const currentIcon = computed(() => {
   if (tracksFormat.value === 'List') {
-    return ListIcon;
+    return ListIcon
   }
   if (tracksFormat.value === 'Compact') {
-    return CompactIcon;
+    return CompactIcon
   }
 
-  return null;
-});
+  return null
+})
 </script>
 
 <template>
@@ -56,10 +56,10 @@ const currentIcon = computed(() => {
     <template #menu>
       <BasicContextMenuView class="contextMenu">
         <BasicContextMenuTitle>
-          {{t('format-library.componentNaming')}}
+          {{ t('format-library.componentNaming') }}
         </BasicContextMenuTitle>
         <BasicContextMenuItem
-          v-for="{id, svgIcon} in formats"
+          v-for="{ id, svgIcon } in formats"
           :key="id"
           :active="tracksFormat === id && 'active'"
           @click="tracksFormat = id"

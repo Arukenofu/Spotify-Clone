@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
+import CheckedRoundCircleIcon from '@/shared/UI/Icons/CheckedRoundCircleIcon.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
 
 interface Props {
-  state: boolean;
+  state: boolean
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>

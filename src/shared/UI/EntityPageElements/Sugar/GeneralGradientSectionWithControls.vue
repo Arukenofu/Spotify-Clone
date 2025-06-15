@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import GreenPlayingButton from "@/shared/UI/Buttons/GreenPlayingButton.vue";
-import ThreeDots from "@/shared/UI/Icons/ThreeDots.vue";
-import GeneralGradientSection from "@/shared/UI/EntityPageElements/GeneralGradientSection.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
+import GeneralGradientSection from '@/shared/UI/EntityPageElements/GeneralGradientSection.vue'
+import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
 
 interface Props {
-  isPlaying: boolean;
-  tooltipStr: string | object;
-  bgColor: string | null;
-  turnoffOptions?: boolean;
+  isPlaying: boolean
+  tooltipStr: string | object
+  bgColor: string | null
+  turnoffOptions?: boolean
 }
 
-type Emit = {
-  playClick: [],
-  dotsClick: [];
+interface Emit {
+  playClick: []
+  dotsClick: []
 }
 
-const {bgColor = '#333333', turnoffOptions = false} = defineProps<Props>();
-defineEmits<Emit>();
+const { bgColor = '#333333', turnoffOptions = false } = defineProps<Props>()
+defineEmits<Emit>()
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>

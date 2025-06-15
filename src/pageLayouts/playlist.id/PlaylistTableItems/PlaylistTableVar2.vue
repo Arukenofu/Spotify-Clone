@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type {FormatTypes} from "#imports";
-import formatRelativeDate from "@/shared/utils/date/formatRelativeDate";
+import type { FormatTypes } from '#imports'
+import formatRelativeDate from '@/shared/utils/date/formatRelativeDate'
 
 defineProps<{
-  albumId: string;
-  albumName: string;
-  format: FormatTypes;
-  addedAt: string;
-}>();
+  albumId: string
+  albumName: string
+  format: FormatTypes
+  addedAt: string
+}>()
 </script>
 
 <template>
@@ -16,10 +16,10 @@ defineProps<{
     :to="`/album/${albumId}`"
     class="link"
   >
-    {{albumName}}
+    {{ albumName }}
   </RouterLink>
   <span v-else class="added-at">
-    {{formatRelativeDate(addedAt)}}
+    {{ formatRelativeDate(addedAt) }}
   </span>
 </template>
 

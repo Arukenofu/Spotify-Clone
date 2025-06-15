@@ -1,46 +1,48 @@
 <script setup lang="ts">
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import {useI18n} from "vue-i18n";
-import type {Album, Image} from "@spotify/web-api-ts-sdk";
-import AlbumInfoHeaderArtist from "@/pageLayouts/album.id/AlbumInfoHeaderArtist.vue";
-import getUserLanguage from "@/app/lib/i18n/utils/getUserLanguage";
-
-const {t} = useI18n();
+import type { Album, Image } from '@spotify/web-api-ts-sdk'
+import { useI18n } from 'vue-i18n'
+import getUserLanguage from '@/app/lib/i18n/utils/getUserLanguage'
+import AlbumInfoHeaderArtist from '@/pageLayouts/album.id/AlbumInfoHeaderArtist.vue'
+import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
+import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
+import EntityInfoHeaderTitle from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue'
 
 defineProps<{
-  images: Image[];
-  mask: string | null;
-  name: string;
-  creator: Album['artists'],
-  tracksAmount: number;
-  releaseDate: string;
-}>();
+  images: Image[]
+  mask: string | null
+  name: string
+  creator: Album['artists']
+  tracksAmount: number
+  releaseDate: string
+}>()
+
+const { t } = useI18n()
 
 function getYear(dateString: string) {
-  return dateString.split('-')[0];
+  return dateString.split('-')[0]
 }
 
 function formatDate(dateString: string) {
-  const date = new Date(dateString);
+  const date = new Date(dateString)
 
   if (isNaN(date.getTime())) {
-    return '';
+    return ''
   }
 
   return date.toLocaleDateString(getUserLanguage(), {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 }
 </script>
 
 <template>
   <EntityInfoHeader class="info" :images="images" :mask="mask" type="album">
-    <div class="type">{{t('entities.album')}}</div>
-    <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
+    <div class="type">
+      {{ t('entities.album') }}
+    </div>
+    <EntityInfoHeaderTitle>{{ name }}</EntityInfoHeaderTitle>
 
     <div class="additional">
       <AlbumInfoHeaderArtist :creator="creator" />
@@ -48,12 +50,12 @@ function formatDate(dateString: string) {
       <EntityInfoHeaderDot />
 
       <span v-tooltip="formatDate(releaseDate)" class="releaseDate">
-        {{getYear(releaseDate)}}
+        {{ getYear(releaseDate) }}
       </span>
 
       <EntityInfoHeaderDot />
 
-      <span>{{t('plurable-entities.track', tracksAmount).toLowerCase()}}</span>
+      <span>{{ t('plurable-entities.track', tracksAmount).toLowerCase() }}</span>
     </div>
   </EntityInfoHeader>
 </template>

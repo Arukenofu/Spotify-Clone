@@ -1,58 +1,59 @@
 <script setup lang="ts">
-import {onMounted, provide, ref} from 'vue';
-import {LayoutMobileRouter} from '@/widgets/LayoutRouterMobile';
-import {LayoutSideBar} from '@/widgets/LayoutSideBar';
-import {LayoutInfoContent} from '@/widgets/LayoutInfoPanel';
-import {LayoutHeader} from '@/widgets/LayoutHeader';
-import {router} from '@/app/router';
-import useResponsive from '@/shared/composables/useResponsive';
-import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue';
-import SpotifyView from "@/app/components/SpotifyView.vue";
-import PageFooter from "@/app/components/PageFooter.vue";
-import {Toast} from "@/widgets/Toast";
-import {useQuery} from "@tanstack/vue-query";
-import {sdk} from "@/services/sdk";
-import {MediaPlayer} from "@/widgets/MediaPlayer";
-import {useRoute} from "vue-router";
+import { useQuery } from '@tanstack/vue-query'
+import { onMounted, provide, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import PageFooter from '@/app/components/PageFooter.vue'
+import SpotifyView from '@/app/components/SpotifyView.vue'
+import { router } from '@/app/router'
+import { sdk } from '@/services/sdk'
+import useResponsive from '@/shared/composables/useResponsive'
+import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
+import { LayoutHeader } from '@/widgets/LayoutHeader'
+import { LayoutInfoContent } from '@/widgets/LayoutInfoPanel'
+import { LayoutMobileRouter } from '@/widgets/LayoutRouterMobile'
+import { LayoutSideBar } from '@/widgets/LayoutSideBar'
+import { MediaPlayer } from '@/widgets/MediaPlayer'
+import { Toast } from '@/widgets/Toast'
 
-const layout = ref();
-const layoutScrollY = ref<number>(0);
+const layout = ref()
+const layoutScrollY = ref<number>(0)
 
-provide('layoutScrollY', layoutScrollY);
+provide('layoutScrollY', layoutScrollY)
 provide('layoutContent', layout)
 
 router.afterEach(() => {
   layout.value?.content.scrollTo({
-    top: 0
-  });
-  layoutScrollY.value = 0;
-});
+    top: 0,
+  })
+  layoutScrollY.value = 0
+})
 
-const route = useRoute();
-const { isMobile } = useResponsive();
+const route = useRoute()
+const { isMobile } = useResponsive()
 
 onMounted(() => {
   function setStyleVar(property: string, value: string) {
-    document.documentElement.style.setProperty(property, value);
+    document.documentElement.style.setProperty(property, value)
   }
 
   if (isMobile) {
-    setStyleVar('--content-height', 'calc(100dvh - var(--mobile-router-height))');
-    setStyleVar('--layout-gap', '0px');
-  } else {
-    setStyleVar('--content-height', 'calc(100dvh - var(--player-height) - 72px)');
-    setStyleVar('--layout-gap', '8px');
+    setStyleVar('--content-height', 'calc(100dvh - var(--mobile-router-height))')
+    setStyleVar('--layout-gap', '0px')
   }
-});
+  else {
+    setStyleVar('--content-height', 'calc(100dvh - var(--player-height) - 72px)')
+    setStyleVar('--layout-gap', '8px')
+  }
+})
 
-const {suspense} = useQuery({
+const { suspense } = useQuery({
   queryKey: ['currentUser'],
   queryFn: async () => {
-    return sdk.currentUser.profile();
+    return sdk.currentUser.profile()
   },
-  staleTime: Infinity
-});
-await suspense();
+  staleTime: Infinity,
+})
+await suspense()
 </script>
 
 <template>

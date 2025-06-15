@@ -6,11 +6,11 @@ import {
   BasicContextMenuView,
   Share,
   ToTheAlbum,
-  ToTheArtist
-} from "@/features/ContextMenu";
-import {currentPlaybackStore} from "@/features/MediaPlayer";
+  ToTheArtist,
+} from '@/features/ContextMenu'
+import { currentPlaybackStore } from '@/features/MediaPlayer'
 
-const currentPlayback = currentPlaybackStore();
+const currentPlayback = currentPlaybackStore()
 </script>
 
 <template>

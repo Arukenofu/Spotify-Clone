@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {ModalBaseProps} from "@/features/Modal/types/ModalBaseProps";
+import type { ModalBaseProps } from '@/features/Modal/types/ModalBaseProps'
 
-const {useTransition = true} = defineProps<ModalBaseProps>()
+const { useTransition = true } = defineProps<ModalBaseProps>()
 defineEmits<{
   close: []
 }>()

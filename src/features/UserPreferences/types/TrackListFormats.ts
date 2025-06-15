@@ -1,1 +1,1 @@
-export type TrackListFormats = 'Compact' | 'List';
+export type TrackListFormats = 'Compact' | 'List'

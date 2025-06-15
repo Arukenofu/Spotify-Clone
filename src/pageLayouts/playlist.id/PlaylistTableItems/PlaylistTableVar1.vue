@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import CommaSeparatedArtistsLink from "@/shared/components/Sugar/CommaSeparatedArtistsLink.vue";
-import type {FormatTypes} from "#imports";
-import type {SimplifiedArtist} from "@spotify/web-api-ts-sdk";
+import type { FormatTypes } from '#imports'
+import type { SimplifiedArtist } from '@spotify/web-api-ts-sdk'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 
 defineProps<{
-  albumId: string;
-  albumName: string;
-  format: FormatTypes;
-  artists: SimplifiedArtist[];
-}>();
+  albumId: string
+  albumName: string
+  format: FormatTypes
+  artists: SimplifiedArtist[]
+}>()
 </script>
 
 <template>
@@ -22,7 +22,7 @@ defineProps<{
     :to="`/album/${albumId}`"
     class="link"
   >
-    {{albumName}}
+    {{ albumName }}
   </RouterLink>
 </template>
 

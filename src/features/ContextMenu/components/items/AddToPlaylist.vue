@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import BasicContextMenuItem from "@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue";
-import TriangleIcon from "@/shared/UI/Icons/TriangleIcon.vue";
-import PlusIcon from "@/shared/UI/Icons/PlusIcon.vue";
-import WithSubtree from "../helpers/WithSubtree.vue";
-import ctxT from "../../helpers/ctx-t";
+import BasicContextMenuItem from '@/features/ContextMenu/components/defaults/BasicContextMenuItem.vue'
+import PlusIcon from '@/shared/UI/Icons/PlusIcon.vue'
+import TriangleIcon from '@/shared/UI/Icons/TriangleIcon.vue'
+import ctxT from '../../helpers/ctx-t'
+import WithSubtree from '../helpers/WithSubtree.vue'
 
 defineProps<{
-  underline?: boolean,
-}>();
+  underline?: boolean
+}>()
 </script>
 
 <template>
   <WithSubtree>
     <BasicContextMenuItem :underline>
-      {{ctxT('addToPlaylist')}}
+      {{ ctxT('addToPlaylist') }}
       <template #icon>
         <PlusIcon />
       </template>

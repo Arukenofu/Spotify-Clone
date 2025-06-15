@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import {computed} from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps<{
-  direction: 'left' | 'right';
-}>();
+  direction: 'left' | 'right'
+}>()
 
 const computeDirection = computed(() => {
   if (props.direction === 'right') {
-    return 180;
+    return 180
   }
 
-  return 0;
-});
+  return 0
+})
 </script>
 
 <template>

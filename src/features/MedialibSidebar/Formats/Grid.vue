@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue';
-import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue';
-import EntityInfo from "@/features/MedialibSidebar/components/EntityInfo.vue";
-import type {MediaLibEntityProps} from "@/features/MedialibSidebar/types/MediaLibEntityProps";
-import {Tippy} from "vue-tippy";
-import PinnedComponent from "@/features/MedialibSidebar/components/PinnedComponent.vue";
-import {useI18n} from "vue-i18n";
+import type { MediaLibEntityProps } from '@/features/MedialibSidebar/types/MediaLibEntityProps'
+import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
+import EntityInfo from '@/features/MedialibSidebar/components/EntityInfo.vue'
+import PinnedComponent from '@/features/MedialibSidebar/components/PinnedComponent.vue'
+import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
 
 type GridFormatProps = {
-  minimized: boolean;
-} & MediaLibEntityProps;
+  minimized: boolean
+} & MediaLibEntityProps
 
-const props = defineProps<GridFormatProps>();
+const props = defineProps<GridFormatProps>()
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
@@ -44,7 +44,9 @@ const {t} = useI18n();
 
     <template #content>
       <div v-if="minimized" class="tooltip">
-        <p class="title">{{name}}</p>
+        <p class="title">
+          {{ name }}
+        </p>
         <p class="body">
           <PinnedComponent v-if="isPinned" class="pinned" />
           <EntityInfo class="info" v-bind="props" />

@@ -1,31 +1,31 @@
-let tempTitle: string;
+let tempTitle: string
 
 export default function (title: string, options?: Options) {
-  const isTemporarily = options?.temporarily || false;
+  const isTemporarily = options?.temporarily || false
 
   if (isTemporarily) {
     if (!title) {
-      document.title = tempTitle;
-      tempTitle = '';
+      document.title = tempTitle
+      tempTitle = ''
 
-      return;
+      return
     }
 
-    tempTitle = document.title;
-    document.title = title;
+    tempTitle = document.title
+    document.title = title
 
-    return;
+    return
   }
 
   if (tempTitle) {
-    tempTitle = title;
+    tempTitle = title
 
-    return;
+    return
   }
 
-  document.title = title;
+  document.title = title
 }
 
 interface Options {
-  temporarily?: boolean;
+  temporarily?: boolean
 }

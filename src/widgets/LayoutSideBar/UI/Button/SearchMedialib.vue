@@ -1,64 +1,64 @@
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from 'vue';
+import { onUnmounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue';
-import RoundButton from '@/shared/UI/Buttons/RoundButton.vue';
-import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue';
+import useDebounce from '@/shared/composables/useDebounce'
+import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
+import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue'
 
-import useDebounce from "@/shared/composables/useDebounce";
-import {useI18n} from "vue-i18n";
+import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-const isExpanded = ref<boolean>(false);
-const input = ref<HTMLInputElement>();
+const isExpanded = ref<boolean>(false)
+const input = ref<HTMLInputElement>()
 
 const model = defineModel<string>({
-  required: true
-});
+  required: true,
+})
 
-const currentScopeInputData = ref<string>('');
-const {debounce, clear} = useDebounce();
+const currentScopeInputData = ref<string>('')
+const { debounce, clear } = useDebounce()
 
 watch(currentScopeInputData, (value) => {
   if (!value) {
-    clear();
-    model.value = '';
-    return;
+    clear()
+    model.value = ''
+    return
   }
 
   debounce(() => {
-    model.value = value;
-  }, 500);
-});
+    model.value = value
+  }, 500)
+})
 
 function handleToggle() {
-  input.value?.focus();
+  input.value?.focus()
 
   if (isExpanded.value) {
-    return;
+    return
   }
 
-  isExpanded.value = !isExpanded.value;
+  isExpanded.value = !isExpanded.value
 }
 
 function handleClose() {
-  isExpanded.value = false;
-  model.value = '';
-  currentScopeInputData.value = '';
+  isExpanded.value = false
+  model.value = ''
+  currentScopeInputData.value = ''
 }
 
 function onUnFocus() {
   if (currentScopeInputData.value) {
-    return;
+    return
   }
 
-  isExpanded.value = false;
+  isExpanded.value = false
 }
 
 onUnmounted(() => {
-  model.value = '';
-});
+  model.value = ''
+})
 </script>
 
 <template>

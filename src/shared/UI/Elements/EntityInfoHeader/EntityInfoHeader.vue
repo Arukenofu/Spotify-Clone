@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
-import {Modal} from "@/features/Modal";
-import {computed, ref} from "vue";
-import type {Image, ItemTypes} from "@spotify/web-api-ts-sdk";
-import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
+import type { Image, ItemTypes } from '@spotify/web-api-ts-sdk'
+import { computed, ref } from 'vue'
+import { Modal } from '@/features/Modal'
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
+import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe'
 
 interface Props {
-  images: Image[];
-  mask?: string | null;
-  type: ItemTypes | 'user';
+  images: Image[]
+  mask?: string | null
+  type: ItemTypes | 'user'
 }
 
-const {mask, images} = defineProps<Props>();
+const { mask, images } = defineProps<Props>()
 
-const isModalOpened = ref<boolean>(false);
+const isModalOpened = ref<boolean>(false)
 
 const mediumImageUrl = computed(() => {
-  return getImageUrlSafe(images, 'medium');
-});
+  return getImageUrlSafe(images, 'medium')
+})
 
 function toggleModal(): void {
   if (!images.length) {
-    return;
+    return
   }
 
-  isModalOpened.value = !isModalOpened.value;
+  isModalOpened.value = !isModalOpened.value
 }
 </script>
 

@@ -1,17 +1,18 @@
 export default function getCommaSeparatedString<T>(array: T[], pick?: keyof T, separator: string = `, `) {
-  let result: string = '';
+  let result: string = ''
 
   array.map((value, index, array) => {
     if (pick) {
-      result += value[pick];
-    } else {
-      result += value;
+      result += value[pick]
+    }
+    else {
+      result += value
     }
 
     if (index !== array.length - 1) {
-      result += separator;
+      result += separator
     }
-  });
+  })
 
-  return result;
+  return result
 }

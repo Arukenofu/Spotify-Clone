@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import {BasicContextMenuItem, CreateFolder, MoveTo, Remove} from "@/features/ContextMenu";
-import Pin from "@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue";
-import PencilIcon from "@/shared/UI/Icons/PencilIcon.vue";
-import DangerIcon2 from "@/shared/UI/Icons/DangerIcon2.vue";
-import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
-import {useQueryClient} from "@tanstack/vue-query";
-import removeEntityFromMedialib from "@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib";
-import {ref} from "vue";
-import RenameFolderModal from "@/widgets/LayoutSideBar/contextMenu/EntityAction/modals/RenameFolderModal.vue";
-import {useI18n} from "vue-i18n";
+import type { EntityActionContextMenuProps } from '@/widgets/LayoutSideBar/types/EntityActionContextMenuProps'
+import { useQueryClient } from '@tanstack/vue-query'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { BasicContextMenuItem, CreateFolder, MoveTo, Remove } from '@/features/ContextMenu'
+import DangerIcon2 from '@/shared/UI/Icons/DangerIcon2.vue'
+import PencilIcon from '@/shared/UI/Icons/PencilIcon.vue'
+import Pin from '@/widgets/LayoutSideBar/contextMenu/EntityAction/components/Pin.vue'
+import RenameFolderModal from '@/widgets/LayoutSideBar/contextMenu/EntityAction/modals/RenameFolderModal.vue'
+import removeEntityFromMedialib from '@/widgets/LayoutSideBar/contextMenu/EntityAction/utils/removeEntityFromMedialib'
 
-defineProps<EntityActionContextMenuProps>();
+defineProps<EntityActionContextMenuProps>()
 
-const queryClient = useQueryClient();
+const queryClient = useQueryClient()
 
-const isRenameModal = ref<boolean>(false);
+const isRenameModal = ref<boolean>(false)
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <BasicContextMenuItem @click="isRenameModal = true">
-    {{t('contextmenu-items.rename')}}
+    {{ t('contextmenu-items.rename') }}
     <template #icon>
       <PencilIcon />
     </template>
   </BasicContextMenuItem>
 
   <Remove underline @click="removeEntityFromMedialib($props, queryClient)">
-    {{t('contextmenu-items.remove')}}
+    {{ t('contextmenu-items.remove') }}
     <template #icon>
       <DangerIcon2 />
     </template>

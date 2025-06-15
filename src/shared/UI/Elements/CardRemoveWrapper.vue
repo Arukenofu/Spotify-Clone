@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import CloseIcon from "@/shared/UI/Icons/CloseIcon.vue";
+import CloseIcon from '@/shared/UI/Icons/CloseIcon.vue'
 
 defineEmits<{
   onRemove: []
-}>();
+}>()
 </script>
 
 <template>

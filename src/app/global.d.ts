@@ -1,15 +1,15 @@
-import {Router} from 'vue-router';
+import type { Router } from 'vue-router'
 
 declare global {
   interface Window {
-    tempTitle: string;
+    tempTitle: string
   }
 }
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    $router: Router;
+    $router: Router
   }
 }
 
-export {};
+export {}

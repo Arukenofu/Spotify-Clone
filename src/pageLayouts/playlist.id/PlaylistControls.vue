@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import {reactive} from "vue";
+import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import FormatLibraryButton from '@/shared/UI/Buttons/FormatLibraryButton.vue'
 import GeneralGradientSectionWithControls
-  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
-import CheckedRoundCircleIcon from "@/shared/UI/Icons/CheckedRoundCircleIcon.vue";
-import RoundPlusIcon from "@/shared/UI/Icons/RoundPlusIcon.vue";
-import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import {useI18n} from "vue-i18n";
-
-const {t} = useI18n();
+  from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
+import CheckedRoundCircleIcon from '@/shared/UI/Icons/CheckedRoundCircleIcon.vue'
+import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
 
 const props = defineProps<{
-  playlistId: string;
-  playlistName: string;
-  maskColor: string | null;
-  isAdded: boolean;
-  isPlaying: boolean;
-}>();
+  playlistId: string
+  playlistName: string
+  maskColor: string | null
+  isAdded: boolean
+  isPlaying: boolean
+}>()
+
+const { t } = useI18n()
 
 const tooltips = reactive({
   addButton: {
     content: props.isAdded ? t('contextmenu-items.removeFromMedialib') : t('contextmenu-items.addToMedialib'),
-    distance: 24
+    distance: 24,
   },
-  options: t('music-actions.moreOptionsFor', [props.playlistName])
-});
+  options: t('music-actions.moreOptionsFor', [props.playlistName]),
+})
 </script>
 
 <template>

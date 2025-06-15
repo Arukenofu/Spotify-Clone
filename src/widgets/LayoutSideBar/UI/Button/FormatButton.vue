@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import {computed} from 'vue';
-import type {FormatTypes} from "#imports";
-import type {sortOption} from "@/features/MedialibSidebar/constants/sorts";
-import GridIcon from "@/shared/UI/Icons/GridIcon.vue";
-import CompactIcon from "@/shared/UI/Icons/CompactIcon.vue";
-import ListIcon from "@/shared/UI/Icons/ListIcon.vue";
+import type { FormatTypes } from '#imports'
+import type { sortOption } from '@/features/MedialibSidebar/constants/sorts'
+import { computed } from 'vue'
+import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue'
+import GridIcon from '@/shared/UI/Icons/GridIcon.vue'
+import ListIcon from '@/shared/UI/Icons/ListIcon.vue'
 
 interface Props {
-  formatComponentName: FormatTypes;
-  sortName: sortOption;
+  formatComponentName: FormatTypes
+  sortName: sortOption
 }
 
-const {formatComponentName} = defineProps<Props>();
+const { formatComponentName } = defineProps<Props>()
 
 const currentComponent = computed(() => {
   if (formatComponentName === 'Grid') {
-    return GridIcon;
+    return GridIcon
   }
   if (formatComponentName === 'Compact') {
-    return CompactIcon;
+    return CompactIcon
   }
-  return ListIcon;
+  return ListIcon
 })
 </script>
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 defineProps<{
-  text: string;
-  error?: any;
-}>();
+  text: string
+  error?: any
+}>()
 
-const model = defineModel<string>();
+const model = defineModel<string>()
 </script>
 
 <template>

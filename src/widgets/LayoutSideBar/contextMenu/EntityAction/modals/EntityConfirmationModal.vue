@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import {ConfirmationModal, Modal} from "@/features/Modal";
-import {ref} from "vue";
-import localizeEntities from "@/services/utils/localizeEntities";
-import type {EntityActionContextMenuProps} from "@/widgets/LayoutSideBar/types/EntityActionContextMenuProps";
-import type {Entities} from "@/services/types/Entities";
+import type { Entities } from '@/services/types/Entities'
+import type { EntityActionContextMenuProps } from '@/widgets/LayoutSideBar/types/EntityActionContextMenuProps'
+import { ref } from 'vue'
+import { ConfirmationModal, Modal } from '@/features/Modal'
+import localizeEntities from '@/services/utils/localizeEntities'
 
-const model = ref(true);
+defineProps<EntityActionContextMenuProps>()
 
 defineEmits<{
-  close: [];
-  confirm: [];
-}>();
+  close: []
+  confirm: []
+}>()
 
-defineProps<EntityActionContextMenuProps>();
+const model = ref(true)
 </script>
 
 <template>
@@ -31,15 +31,14 @@ defineProps<EntityActionContextMenuProps>();
       </template>
 
       <template v-if="type === 'Playlist'" #body>
-        Контент (<b>{{name}}</b>) будет удалён из твоей медиатеки
+        Контент (<b>{{ name }}</b>) будет удалён из твоей медиатеки
       </template>
 
-      <template v-else-if="type === 'Folder'" #body>
-      </template>
+      <template v-else-if="type === 'Folder'" #body />
 
       <template v-else #body>
         Мы удалим
-        {{type === 'Collection' ? 'плейлист' : localizeEntities(type as Entities)!.toLowerCase()}}
+        {{ type === 'Collection' ? 'плейлист' : localizeEntities(type as Entities)!.toLowerCase() }}
         <b>из твоей медиатеки</b>, но его все еще можно будет найти в Spotify.
       </template>
     </ConfirmationModal>

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import PanelHeader from "@/widgets/LayoutInfoPanel/components/PanelHeader.vue";
-import QueueIcon from "@/shared/UI/Icons/QueueIcon.vue";
-import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue'
+import QueueIcon from '@/shared/UI/Icons/QueueIcon.vue'
+import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue'
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="no-queue">
     <PanelHeader>
       <template #name>
-        {{t('info-panel.queue.queue')}}
+        {{ t('info-panel.queue.queue') }}
       </template>
     </PanelHeader>
 
@@ -19,10 +19,10 @@ const {t} = useI18n();
       <div class="message">
         <QueueIcon class="icon" />
 
-        <h1>{{t('info-panel.queue.addTracks')}}</h1>
+        <h1>{{ t('info-panel.queue.addTracks') }}</h1>
 
         <p>
-          {{t('info-panel.queue.addTrackDescription')}}
+          {{ t('info-panel.queue.addTrackDescription') }}
         </p>
 
         <BubbleButton
@@ -30,7 +30,7 @@ const {t} = useI18n();
           design="active"
           @click="$router.push('/search')"
         >
-          {{t('info-panel.queue.searchTracks')}}
+          {{ t('info-panel.queue.searchTracks') }}
         </BubbleButton>
       </div>
     </div>

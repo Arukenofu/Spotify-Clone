@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import setTitle from '@/shared/utils/setTitle';
-import {useI18n} from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import setTitle from '@/shared/utils/setTitle'
 
-const {t} = useI18n();
+const { t } = useI18n()
 
-setTitle(t('route-titles.section'));
+setTitle(t('route-titles.section'))
 </script>
 
 <template></template>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ErrorBlock from "@/shared/UI/Blocks/ErrorBlock.vue";
-import BubbleButton from "@/shared/UI/Buttons/BubbleButton.vue";
+import ErrorBlock from '@/shared/UI/Blocks/ErrorBlock.vue'
+import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue'
 
 function reloadPage() {
-  location.reload();
+  location.reload()
 }
 </script>
 

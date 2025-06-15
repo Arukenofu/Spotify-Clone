@@ -1,22 +1,28 @@
 <script setup lang="ts">
 defineEmits<{
-  onCancel: [];
-  onConfirm: [];
-}>();
+  onCancel: []
+  onConfirm: []
+}>()
 </script>
 
 <template>
   <Transition name="content" appear>
     <div class="content">
       <h1><slot name="title" /></h1>
-      <p v-if="$slots.body"><slot name="body" /></p>
+      <p v-if="$slots.body">
+        <slot name="body" />
+      </p>
 
       <div class="controls">
         <button class="cancel" @click="$emit('onCancel')">
-          <slot name="cancel">Отмена</slot>
+          <slot name="cancel">
+            Отмена
+          </slot>
         </button>
         <button class="confirm" @click="$emit('onConfirm'); $emit('onCancel')">
-          <slot name="confirm">Удалить</slot>
+          <slot name="confirm">
+            Удалить
+          </slot>
         </button>
       </div>
     </div>

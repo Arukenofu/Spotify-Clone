@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import useResponsive from '@/shared/composables/useResponsive';
-import setTitle from '@/shared/utils/setTitle';
-import MobileGreetings from '@/pageLayouts/index/Mobile/MobileGreetings.vue';
-import BackgroundNoiseStickyHeader from '@/pageLayouts/index/BackgroundNoiseStickyHeader.vue';
-import Recommendations from '@/pageLayouts/index/Recommendations.vue';
+import BackgroundNoiseStickyHeader from '@/pageLayouts/index/BackgroundNoiseStickyHeader.vue'
+import MobileGreetings from '@/pageLayouts/index/Mobile/MobileGreetings.vue'
+import Recommendations from '@/pageLayouts/index/Recommendations.vue'
+import useResponsive from '@/shared/composables/useResponsive'
+import setTitle from '@/shared/utils/setTitle'
 
-const { isMobile } = useResponsive();
+const { isMobile } = useResponsive()
 
-setTitle('Spotify - Web Player: Music for everyone');
+setTitle('Spotify - Web Player: Music for everyone')
 </script>
 
 <template>

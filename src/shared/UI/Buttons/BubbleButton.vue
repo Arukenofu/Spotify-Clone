@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
-const {design = 'default'} = defineProps<{
-  design?: 'default' | 'active' | 'none' | 'green' | 'border';
-}>();
+const { design = 'default' } = defineProps<{
+  design?: 'default' | 'active' | 'none' | 'green' | 'border'
+}>()
 </script>
 
 <template>

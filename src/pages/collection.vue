@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import LikedSongsImage from '@/assets/images/liked-songs.png';
+import type { UserProfile } from '@spotify/web-api-ts-sdk'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useI18n } from 'vue-i18n'
+import LikedSongsImage from '@/assets/images/liked-songs.png'
+import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue'
+import { sdk } from '@/services/sdk'
+import FormatLibraryButton from '@/shared/UI/Buttons/FormatLibraryButton.vue'
+import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
+import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
+import HandleEntityLayoutStates from '@/shared/UI/Elements/HandleEntityLayoutStates.vue'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
 import GeneralGradientSectionWithControls
-  from "@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue";
-import FormatLibraryButton from "@/shared/UI/Buttons/FormatLibraryButton.vue";
-import {useQuery, useQueryClient} from "@tanstack/vue-query";
-import HandleEntityLayoutStates from "@/shared/UI/Elements/HandleEntityLayoutStates.vue";
-import PlaylistTable from "@/pageLayouts/playlist.id/PlaylistTable.vue";
-import EntityInfoHeaderDot from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue";
-import {useI18n} from "vue-i18n";
-import PlayHeaderWithPlayingState from "@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue";
-import type {UserProfile} from "@spotify/web-api-ts-sdk";
-import LazyImage from "@/shared/UI/Elements/LazyImage.vue";
-import getImageFromEntity from "@/shared/utils/image/getImageFromEntity";
-import {sdk} from "@/services/sdk";
+  from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
+import PlayHeaderWithPlayingState from '@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue'
+import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
-const maskColor = 'rgb(80, 56, 160)';
+const maskColor = 'rgb(80, 56, 160)'
 
-const {t} = useI18n();
-const queryClient = useQueryClient();
+const { t } = useI18n()
+const queryClient = useQueryClient()
 
-const currentUserData = queryClient.getQueryData<UserProfile>(['currentUser']);
-const currentUserAvatar = getImageFromEntity(currentUserData!.images, 1);
+const currentUserData = queryClient.getQueryData<UserProfile>(['currentUser'])
+const currentUserAvatar = getImageFromEntity(currentUserData!.images, 1)
 
-const {data: favoriteTracks, isFetching, isError, suspense} = useQuery({
+const { data: favoriteTracks, isFetching, isError, suspense } = useQuery({
   queryKey: ['favoriteTracks'],
   queryFn: () => {
-    return sdk.currentUser.tracks.savedTracks();
+    return sdk.currentUser.tracks.savedTracks()
   },
-  suspense: true
-});
-await suspense();
+  suspense: true,
+})
+await suspense()
 </script>
 
 <template>
@@ -47,13 +47,15 @@ await suspense();
       />
 
       <EntityInfoHeader
-        :images="[{url: LikedSongsImage, width: 300, height: 300}]"
+        :images="[{ url: LikedSongsImage, width: 300, height: 300 }]"
         :mask="maskColor"
         type="playlist"
         class="header"
       >
-        <span class="type">{{t('entities.playlist')}}</span>
-        <h1 class="title">Любимые треки</h1>
+        <span class="type">{{ t('entities.playlist') }}</span>
+        <h1 class="title">
+          Любимые треки
+        </h1>
         <div class="other-info">
           <div class="user">
             <LazyImage
@@ -62,14 +64,14 @@ await suspense();
               class="user-avatar"
             />
             <RouterLink :to="`/user/${currentUserData!.id}`" class="user-link">
-              {{currentUserData!.display_name}}
+              {{ currentUserData!.display_name }}
             </RouterLink>
           </div>
 
           <EntityInfoHeaderDot />
 
           <span class="tracks-amount">
-            {{t('plurable-entities.track', favoriteTracks.total).toLowerCase()}}
+            {{ t('plurable-entities.track', favoriteTracks.total).toLowerCase() }}
           </span>
         </div>
       </EntityInfoHeader>
@@ -117,7 +119,6 @@ await suspense();
     width: min-content;
     font-size: 6rem;
   }
-
 
   @container collection-info (max-width: 1000px) {
     .title {

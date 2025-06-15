@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import MusicCard from "@/shared/UI/Elements/MusicCard.vue";
-import type {ItemTypes, PartialSearchResult} from "@spotify/web-api-ts-sdk";
-import {addToHistory} from "@/features/SearchHistory";
-import SearchCardDescriptionRenderer from "@/pageLayouts/search/SearchCardDescriptionRenderer.vue";
-import {getImageUrlSafe} from "@/shared/utils/image/getImageUrlSafe";
+import type { ItemTypes, PartialSearchResult } from '@spotify/web-api-ts-sdk'
+import { addToHistory } from '@/features/SearchHistory'
+import SearchCardDescriptionRenderer from '@/pageLayouts/search/SearchCardDescriptionRenderer.vue'
+import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
+import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe'
 
 type SearchResultKeys = `${Exclude<ItemTypes, 'track'>}s`
 
 defineProps<{
-  item: NonNullable<PartialSearchResult[SearchResultKeys]>['items'][number];
+  item: NonNullable<PartialSearchResult[SearchResultKeys]>['items'][number]
   type: SearchResultKeys
-}>();
+}>()
 </script>
 
 <template>

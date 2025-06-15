@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Tippy} from "vue-tippy";
+import { Tippy } from 'vue-tippy'
 </script>
 
 <template>

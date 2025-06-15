@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type {HeaderProps} from "@/pageLayouts/artist.id/props/HeaderProps";
-import EntityInfoHeader from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue";
-import EntityInfoHeaderTitle from "@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue";
-import {useI18n} from "vue-i18n";
+import type { HeaderProps } from '@/pageLayouts/artist.id/props/HeaderProps'
+import { useI18n } from 'vue-i18n'
+import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
+import EntityInfoHeaderTitle from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue'
 
-defineProps<HeaderProps>();
+defineProps<HeaderProps>()
 
-const {t} = useI18n();
+const { t } = useI18n()
 </script>
 
 <template>
@@ -16,9 +16,9 @@ const {t} = useI18n();
     :mask="mask"
     type="artist"
   >
-    <EntityInfoHeaderTitle>{{name}}</EntityInfoHeaderTitle>
+    <EntityInfoHeaderTitle>{{ name }}</EntityInfoHeaderTitle>
     <span class="artist-listeners-quantity">
-      {{t('social.subscribers', listenersPerMonth)}}
+      {{ t('social.subscribers', listenersPerMonth) }}
     </span>
   </EntityInfoHeader>
 </template>

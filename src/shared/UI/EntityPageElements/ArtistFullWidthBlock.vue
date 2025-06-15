@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import EntityAvatar1x1 from "@/shared/UI/Elements/EntityAvatar1x1.vue";
+import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
 
 interface Props {
-  id: string | number;
-  image: string | null;
-  name: string;
+  id: string | number
+  image: string | null
+  name: string
 }
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
@@ -15,7 +15,7 @@ defineProps<Props>();
     <div class="added-at">
       <span class="type">Исполнитель</span>
       <RouterLink class="name" :to="`/artist/${id}`">
-        {{name}}
+        {{ name }}
       </RouterLink>
     </div>
   </RouterLink>
