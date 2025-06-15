@@ -18,7 +18,8 @@ import EntitiesSectionWithHeading from '@/shared/UI/EntityPageElements/EntitiesS
 import { destroyAccentWorker } from '@/shared/utils/colors/accentColorWorker'
 import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
 import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
-import { proxy } from '@/shared/utils/proxy'
+import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe.ts'
+import { proxy } from '@/shared/utils/proxy.ts'
 import setTitle from '@/shared/utils/setTitle'
 
 const { t } = useI18n()
@@ -46,6 +47,7 @@ const { data: categories, suspense } = useQuery({
       maskColors,
     }
   },
+  staleTime: Infinity,
 })
 await suspense()
 
@@ -65,17 +67,14 @@ async function nextPage() {
     maskColors.push(color)
   }
 
-  queryClient.setQueryData(['categories'], (oldData: Categories['categories']) => {
-    categories.value
-    return {
-      ...oldData,
-      next: data.categories.next,
-      previous: data.categories.previous,
-      items: oldData.items.concat(data.categories.items),
-      // @ts-ignore
-      maskColors: oldData.maskColors.concat(maskColors),
-    }
-  })
+  queryClient.setQueryData(['categories'], (oldData: Categories['categories']) => ({
+    ...oldData,
+    next: data.categories.next,
+    previous: data.categories.previous,
+    items: oldData.items.concat(data.categories.items),
+    // @ts-ignore
+    maskColors: oldData.maskColors.concat(maskColors),
+  }))
 }
 
 onUnmounted(() => {
@@ -91,21 +90,24 @@ onUnmounted(() => {
       :naming="t('search.searchHistory')"
       href="/recent-searches"
     >
-      <CardRemoveWrapper
-        v-for="(entity, index) in history"
-        :key="index"
-        @on-remove="removeFromHistory(index)"
-      >
-        <MusicCard
-          :id="entity.id"
-          :type="entity.type as ItemTypes"
-          :name="entity.name"
-          :image="proxy(entity?.images?.[0]?.url)"
-          class="music-card"
+      <KeepAlive>
+        <CardRemoveWrapper
+          v-for="(entity, index) in history"
+          :key="index"
+          @on-remove="removeFromHistory(index)"
         >
-          <SearchCardDescriptionRenderer :entity="entity" />
-        </MusicCard>
-      </CardRemoveWrapper>
+          <MusicCard
+            :id="entity.id"
+            :type="entity.type as ItemTypes"
+            :name="entity.name"
+            :image="proxy(getImageUrlSafe(entity.images, 'medium') ?? '')"
+            :mask-loader-image="proxy(getImageUrlSafe(entity.images, 'low') ?? '')"
+            class="music-card"
+          >
+            <SearchCardDescriptionRenderer :entity="entity" />
+          </MusicCard>
+        </CardRemoveWrapper>
+      </KeepAlive>
     </EntitiesSectionWithHeading>
 
     <div v-if="isMobile" class="mobile-search-bar" @click="$router.push('/search/recent')">
