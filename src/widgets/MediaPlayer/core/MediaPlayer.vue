@@ -29,9 +29,7 @@ window.addEventListener('keyup', (event: KeyboardEvent) => {
   }
 })
 
-watch(() => currentPlayback.currentTrackId, () => {
-  stream.pause()
-
+watch([() => currentPlayback.currentTrackId, () => currentPlayback.currentPlaybackInfo?.id], () => {
   stream.loadTrack(
     currentPlayback.currentTrack!.name,
     getCommaSeparatedString(currentPlayback.currentTrack!.artists, 'name'),
@@ -45,12 +43,13 @@ onMounted(() => {
   el.volume = stream.volume
 
   el.addEventListener('loadedmetadata', () => {
-    stream.duration = isFinite(el.duration) ? el.duration : 0
+    stream.duration = Number.isFinite(el.duration) ? el.duration : 0
   })
 
   el.addEventListener('ended', () => {
     if (preferences.currentRepeatMode === 'repeatCurrentPlaylist') {
-      controls.nextTrack(); return
+      controls.nextTrack()
+      return
     }
 
     if (preferences.currentRepeatMode === 'repeatCurrentMusic') {

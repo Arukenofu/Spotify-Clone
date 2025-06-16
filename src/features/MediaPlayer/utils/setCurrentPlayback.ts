@@ -1,6 +1,7 @@
 import type { Album, Playlist, Track } from '@spotify/web-api-ts-sdk'
 import type { PlayerTypesStr } from '@/features/MediaPlayer/types/PlayerTypes'
 import { queryClient } from '@/app/lib/VueQuery'
+import { useAudioStream } from '@/features/MediaPlayer'
 import { currentPlaybackStore } from '@/features/MediaPlayer/store/currentPlaybackStore'
 import { sdk } from '@/services/sdk'
 import { fetchAlbum } from '@/services/sdk/entities/album'
@@ -42,6 +43,14 @@ export async function setCurrentPlayback(
   trackId: string,
 ) {
   const currentPlayback = currentPlaybackStore()
+  const stream = useAudioStream()
+
+  if (trackId === currentPlayback.currentTrackId && playbackId === currentPlayback.currentPlaybackInfo?.id) {
+    stream.toggle()
+    return
+  }
+
+  stream.pause()
 
   currentPlayback.currentTrack = await getTrackData(trackId)
   currentPlayback.currentTrackId = trackId

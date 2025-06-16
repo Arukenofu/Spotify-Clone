@@ -46,6 +46,10 @@ export function useAudioStream() {
     audio.value?.pause()
   }
 
+  function toggle() {
+    isPlaying.value ? pause() : play()
+  }
+
   function seek(time: number) {
     if (audio.value) {
       audio.value.currentTime = time
@@ -69,6 +73,7 @@ export function useAudioStream() {
     loadTrack,
     play,
     pause,
+    toggle,
     seek,
     setVolume,
   }
