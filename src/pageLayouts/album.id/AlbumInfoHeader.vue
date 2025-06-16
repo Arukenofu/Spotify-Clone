@@ -25,7 +25,7 @@ function getYear(dateString: string) {
 function formatDate(dateString: string) {
   const date = new Date(dateString)
 
-  if (isNaN(date.getTime())) {
+  if (Number.isNaN(date.getTime())) {
     return ''
   }
 

@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import { computed, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { useAudioStream, usePlaybackStates } from '@/features/MediaPlayer'
+import { setCurrentPlayback, useAudioStream, usePlaybackStates } from '@/features/MediaPlayer'
 import PlaylistControls from '@/pageLayouts/playlist.id/PlaylistControls.vue'
 import PlaylistInfo from '@/pageLayouts/playlist.id/PlaylistInfoHeader.vue'
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue'
@@ -45,6 +45,7 @@ const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
         :title="data.name"
         :mask="data.maskColor"
         :is-playing="isAlbumPlaying"
+        @play-click="setCurrentPlayback('playlist', playlistId, data.tracks.items[0].track.id)"
       />
 
       <PlaylistInfo
@@ -66,6 +67,7 @@ const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
         :mask-color="data.maskColor"
         :is-playing="isAlbumPlaying"
         :is-added="false"
+        @play-click="setCurrentPlayback('playlist', playlistId, data.tracks.items[0].track.id)"
       />
 
       <PlaylistTable

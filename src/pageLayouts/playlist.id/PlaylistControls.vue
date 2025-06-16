@@ -15,6 +15,10 @@ const props = defineProps<{
   isPlaying: boolean
 }>()
 
+const emits = defineEmits<{
+  playClick: []
+}>()
+
 const { t } = useI18n()
 
 const tooltips = reactive({
@@ -31,6 +35,7 @@ const tooltips = reactive({
     :is-playing="isPlaying"
     :tooltip-str="tooltips.options"
     :bg-color="maskColor"
+    @play-click="emits('playClick')"
   >
     <template #main-options>
       <button v-tooltip="tooltips.addButton" class="state">

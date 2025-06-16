@@ -40,6 +40,7 @@ function toggleModal(): void {
           class="img"
           :type="type"
           :image="mediumImageUrl"
+          :loading-color="mask"
         />
       </div>
       <div class="text-info">
@@ -53,7 +54,7 @@ function toggleModal(): void {
     <Modal v-model="isModalOpened">
       <Transition name="appear-animation" appear>
         <div class="modal-inner">
-          <EntityAvatar1x1 class="image" :type="type" :image="getImageUrlSafe(images, 'high')" />
+          <EntityAvatar1x1 class="image" :type="type" :image="getImageUrlSafe(images, 'high')" :loading-color="mask" />
 
           <button class="button" @click="toggleModal">
             Закрыть

@@ -63,6 +63,7 @@ const preferences = userPreferencesStore()
         :passing-height="280"
         :is-playing="isAlbumPlaying"
         :mask="data.maskColor"
+        @play-click="setCurrentPlayback('album', albumId, data.tracks.items[0].id)"
       />
 
       <AlbumInfoHeader
@@ -78,6 +79,7 @@ const preferences = userPreferencesStore()
         :is-playing="isAlbumPlaying"
         :bg-color="data.maskColor"
         :tooltip-str="t('music-actions.moreOptionsFor', [data.name])"
+        @play-click="setCurrentPlayback('album', albumId, data.tracks.items[0].id)"
       >
         <template #main-options>
           <AddToMediaLib
