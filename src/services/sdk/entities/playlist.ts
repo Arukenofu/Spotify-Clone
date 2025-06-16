@@ -29,7 +29,7 @@ export async function fetchPlaylist(playlistId: string) {
     image.url = proxy(image.url)!
   }
 
-  const maskColor = await getMaskColor(data)
+  const maskColor = await getMaskColor(data, 2)
   const owner = await getOwnerData(data.owner.id)
 
   return { ...data, owner, maskColor }

@@ -38,7 +38,7 @@ async function getAccentColor(url: string) {
   if (!url)
     return null
   if (AccentColorCache.has(url))
-    return AccentColorCache.get(url)
+    return AccentColorCache.get(url)!
 
   const colors = await medianCutColors(url)
   const { r, g, b } = getMostSaturatedColor(colors)

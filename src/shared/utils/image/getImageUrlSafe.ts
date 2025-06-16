@@ -1,6 +1,6 @@
 import type { Image } from '@spotify/web-api-ts-sdk'
 
-type Quality = 'low' | 'medium' | 'high'
+export type Quality = 'low' | 'medium' | 'high'
 
 const qualities: Record<Quality, number> = {
   low: 2,

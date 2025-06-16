@@ -16,7 +16,7 @@ async function fetchArtistData(artists: Artist[]) {
 
 export async function fetchAlbum(albumId: string) {
   const data = await fetchAlbumData(albumId)
-  const maskColor = await getMaskColor(data)
+  const maskColor = await getMaskColor(data, 2)
   const artists = await fetchArtistData(data.artists)
 
   return { ...data, artists, maskColor }

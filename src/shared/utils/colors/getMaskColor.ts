@@ -4,7 +4,7 @@ import { findImage } from '../image/findImage'
 
 export type Item = NonNullable<PartialSearchResult[keyof PartialSearchResult]>['items'][number] | User | Album
 
-export function getMaskColor(data: Item, arrayKey: number = 0) {
+export function getMaskColor(data: Item, arrayKey: number = 2) {
   try {
     const image = findImage(data, arrayKey)
     if (!image)

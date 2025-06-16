@@ -1,17 +1,28 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { currentPlaybackStore } from '@/features/MediaPlayer/store/currentPlaybackStore'
 import { currentTrackImage } from '@/features/MediaPlayer/utils/currentTrackImage'
 import Marquee from '@/shared/components/Marquee.vue'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
 import MainTrackInfo from '@/shared/UI/Elements/MainTrackInfo.vue'
+import { getAccentColor } from '@/shared/utils/colors/getAccentColor.ts'
 
 const store = currentPlaybackStore()
 const { currentPlaybackInfo, currentTrack } = storeToRefs(store)
 
 const trackImage = computed(() => {
-  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!)
+  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!, 2) || ''
+})
+
+const maskColor = ref<string>('')
+
+onMounted(async () => {
+  if (!trackImage.value)
+    return
+
+  maskColor.value = await getAccentColor(trackImage.value) || ''
 })
 </script>
 
@@ -19,7 +30,10 @@ const trackImage = computed(() => {
   <div class="track-details">
     <template v-if="currentTrack">
       <div class="track-image-outer">
-        <img :src="trackImage" alt="">
+        <LazyImage
+          :image="trackImage"
+          :color="maskColor"
+        />
       </div>
 
       <MainTrackInfo class="track-info">

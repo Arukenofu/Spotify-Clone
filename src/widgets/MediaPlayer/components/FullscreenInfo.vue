@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
 import { currentPlaybackStore, currentTrackImage } from '@/features/MediaPlayer'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
+import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
 import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
 
 const store = currentPlaybackStore()
 const { currentPlaybackInfo, currentTrack } = storeToRefs(store)
 
-const trackImage = computed(() => {
-  return currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!, 0)
-})
-
-const maskColor = trackImage.value && await getAccentColor(trackImage.value)
+const maskColor = await getAccentColor(
+  currentTrackImage(currentPlaybackInfo.value!, currentTrack.value!, 2) || '',
+)
 </script>
 
 <template>
@@ -32,7 +30,10 @@ const maskColor = trackImage.value && await getAccentColor(trackImage.value)
     </div>
     <div class="current-music">
       <div class="image">
-        <img :src="trackImage ?? ''" alt="">
+        <LazyImage
+          :image="currentTrackImage(currentPlaybackInfo!, currentTrack!, 0) ?? ''"
+          :color="maskColor"
+        />
       </div>
       <div class="added-at">
         <div class="track-name">
