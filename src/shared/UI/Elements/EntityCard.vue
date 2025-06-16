@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Entities } from '@/services/types/Entities'
+import localizeEntities from '@/services/utils/localizeEntities'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
 import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
-import localizeEntities from '../../../services/utils/localizeEntities'
 
 interface Props {
   id: string | number

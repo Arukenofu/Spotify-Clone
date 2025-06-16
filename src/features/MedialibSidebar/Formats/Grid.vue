@@ -123,6 +123,19 @@ const { t } = useI18n()
     background-color: var(--black);
   }
 
+  .picture {
+    position: relative;
+
+    .stateButton {
+      opacity: 0;
+      transition: all 200ms ease;
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      transform: translateY(8px);
+    }
+  }
+
   .added-at {
     display: flex;
     flex-direction: column;

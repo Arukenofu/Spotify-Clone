@@ -25,15 +25,14 @@ const { t } = useI18n()
 
 <template>
   <GeneralGradientSection :bg-color>
-    <Tippy class="play-button-wrapper" :content="isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')">
-      <GreenPlayingButton
-        class="playingButton"
-        :state="isPlaying"
-        @click="$emit('playClick')"
-      />
-    </Tippy>
+    <GreenPlayingButton
+      class="playingButton"
+      :state="isPlaying"
+      :playing-tooltip="t('music-actions.pauseMusic')"
+      :stopped-tooltip="t('music-actions.playMusic')"
+      @click="$emit('playClick')"
+    />
     <slot name="main-options" />
-
     <Tippy class="dots-wrapper" :content="tooltipStr">
       <button
         v-if="!turnoffOptions"
