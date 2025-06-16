@@ -14,8 +14,8 @@ defineProps<Props>()
 </script>
 
 <template>
-  <Tippy class="content" :content="state ? playingTooltip : stoppedTooltip">
-    <button class="button">
+  <Tippy class="v-content" :content="state ? playingTooltip : stoppedTooltip">
+    <button class="v-button">
       <PlayingState
         class="icon"
         :style="innerStyle"
@@ -26,14 +26,16 @@ defineProps<Props>()
 </template>
 
 <style lang="scss" scoped>
-.content {
+.v-content {
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
   background: none;
   border-radius: 50%;
+  height: 48px;
+  width: 48px;
 
-  .button {
-    height: 48px;
-    width: 48px;
+  .v-button {
+    width: 100%;
+    height: 100%;
     background-color: var(--main-color);
     border: none;
     cursor: pointer;
@@ -42,6 +44,7 @@ defineProps<Props>()
     transition-duration: 300ms;
     transition-property: background-color, border-color, color, box-shadow, filter,
     transform, opacity;
+    border-radius: 50%;
 
     &:hover {
       scale: 1.04;

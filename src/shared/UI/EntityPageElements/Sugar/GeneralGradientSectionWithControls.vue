@@ -51,15 +51,12 @@ const { t } = useI18n()
 .general {
   position: relative;
 
-  .play-button-wrapper {
+  .playingButton {
     margin-right: calc(var(--content-spacing) + 8px);
-
-    .playingButton {
-      height: 56px;
-      width: auto;
-      aspect-ratio: 1/1;
-      box-shadow: none;
-    }
+    height: 56px;
+    width: auto;
+    aspect-ratio: 1/1;
+    box-shadow: none;
   }
 
   .dots-wrapper {

@@ -51,7 +51,7 @@ onBeforeMount(async () => {
       <GreenPlayingButton
         class="playingState"
         :state="state ?? false"
-        :playing-tooltip="t('music-actions.stopPlaylist', [name])"
+        :playing-tooltip="t('music-actions.pauseMusic', [name])"
         :stopped-tooltip="t('music-actions.playPlaylist', [name])"
         @click.stop="$emit('onPlayClick')"
         @mousedown.prevent
