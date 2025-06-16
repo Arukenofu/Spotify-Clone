@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import type { UserProfile } from '@spotify/web-api-ts-sdk'
+import type { Page, Playlist, PlaylistedTrack, Track, UserProfile } from '@spotify/web-api-ts-sdk'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LikedSongsImage from '@/assets/images/liked-songs.png'
+import { currentPlaybackStore, useAudioStream } from '@/features/MediaPlayer'
 import PlaylistTable from '@/pageLayouts/playlist.id/PlaylistTable.vue'
 import { sdk } from '@/services/sdk'
+import { getTrackData } from '@/services/sdk/entities/track.ts'
 import FormatLibraryButton from '@/shared/UI/Buttons/FormatLibraryButton.vue'
 import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
 import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
@@ -20,6 +23,9 @@ const maskColor = 'rgb(80, 56, 160)'
 const { t } = useI18n()
 const queryClient = useQueryClient()
 
+const currentPlayback = currentPlaybackStore()
+const stream = reactive(useAudioStream())
+
 const currentUserData = queryClient.getQueryData<UserProfile>(['currentUser'])
 const currentUserAvatar = getImageFromEntity(currentUserData!.images, 1)
 
@@ -28,9 +34,59 @@ const { data: favoriteTracks, isFetching, isError, suspense } = useQuery({
   queryFn: () => {
     return sdk.currentUser.tracks.savedTracks()
   },
+  staleTime: Infinity,
   suspense: true,
 })
 await suspense()
+
+function createPlaylist(tracks: Page<PlaylistedTrack<Track>>): Playlist<Track> {
+  return {
+    tracks,
+    collaborative: false,
+    description: '',
+    external_urls: { spotify: '' },
+    followers: { href: null, total: 0 },
+    href: '',
+    id: 'favorite',
+    images: [{ url: LikedSongsImage, width: 300, height: 300 }],
+    name: 'Любимые треки',
+    owner: {
+      id: '',
+      display_name: '',
+      external_urls: { spotify: '' },
+      href: '',
+      type: '',
+      uri: '',
+    },
+    primary_color: '',
+    public: false,
+    snapshot_id: '',
+    type: 'playlist',
+    uri: '',
+  }
+}
+
+async function setupCurrentPlayback(trackId: string) {
+  const playbackId = currentPlayback.currentPlaybackInfo?.id
+
+  if (trackId === currentPlayback.currentTrackId && playbackId === 'favorite') {
+    stream.toggle()
+    return
+  }
+  stream.pause()
+
+  currentPlayback.currentTrack = await getTrackData(trackId)
+  currentPlayback.currentTrackId = trackId
+  currentPlayback.currentPlaybackType = 'playlist'
+
+  if (playbackId !== 'favorite') {
+    // @ts-expect-error: its the same
+    currentPlayback.currentPlaybackInfo = createPlaylist(favoriteTracks.value!)
+  }
+}
+
+const isCurrentAlbum = computed(() => currentPlayback.currentPlaybackInfo?.id === 'favorite')
+const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
 </script>
 
 <template>
@@ -42,8 +98,9 @@ await suspense()
     <div v-if="favoriteTracks" class="collection">
       <PlayHeaderWithPlayingState
         title="Любимые треки"
-        :is-playing="false"
+        :is-playing="isAlbumPlaying"
         :mask="maskColor"
+        @play-click="setupCurrentPlayback(favoriteTracks.items[0].track.id)"
       />
 
       <EntityInfoHeader
@@ -77,10 +134,11 @@ await suspense()
       </EntityInfoHeader>
 
       <GeneralGradientSectionWithControls
-        :is-playing="false"
+        :is-playing="isAlbumPlaying"
         :bg-color="maskColor"
         tooltip-str=""
         turnoff-options
+        @play-click="setupCurrentPlayback(favoriteTracks.items[0].track.id)"
       >
         <template #additional-options>
           <FormatLibraryButton />
@@ -89,6 +147,10 @@ await suspense()
 
       <PlaylistTable
         :items="favoriteTracks.items"
+        :next-track-link="favoriteTracks.next"
+        playlist-id="favorite"
+        :is-current="false"
+        @set-track="setupCurrentPlayback"
       />
     </div>
   </HandleEntityLayoutStates>

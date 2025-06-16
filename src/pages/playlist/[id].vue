@@ -75,6 +75,7 @@ const isAlbumPlaying = computed(() => isCurrentAlbum.value && stream.isPlaying)
         :next-track-link="data.tracks.next"
         :playlist-id="data.id"
         :is-current="isCurrentAlbum"
+        @set-track="(id) => setCurrentPlayback('playlist', playlistId, id)"
       />
     </div>
   </HandleEntityLayoutStates>

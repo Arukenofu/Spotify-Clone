@@ -2,7 +2,7 @@
 import type { PlaylistedTrack, SavedTrack, Track } from '@spotify/web-api-ts-sdk'
 import { computed, inject, reactive, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { currentPlaybackStore, loadNextPlayback, setCurrentPlayback, useAudioStream } from '@/features/MediaPlayer'
+import { currentPlaybackStore, loadNextPlayback, useAudioStream } from '@/features/MediaPlayer'
 import { userPreferencesStore } from '@/features/UserPreferences'
 import PlaylistTableVar1 from '@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar1.vue'
 import PlaylistTableVar2 from '@/pageLayouts/playlist.id/PlaylistTableItems/PlaylistTableVar2.vue'
@@ -18,6 +18,11 @@ const props = defineProps<{
   playlistId: string
   isCurrent: boolean
 }>()
+
+const emits = defineEmits<{
+  setTrack: [id: string]
+}>()
+
 const { t } = useI18n()
 const layoutContent = inject<Ref<HTMLElement & { content: HTMLElement }>>('layoutContent')
 
@@ -82,7 +87,7 @@ const currentFormatClass = computed(() => {
         :show-artists="true"
         :compact="preferences.tracksFormat === 'Compact'"
         class="row computedGrid"
-        @click="setCurrentPlayback('playlist', playlistId, track.id)"
+        @click="emits('setTrack', track.id)"
       >
         <template #var1>
           <PlaylistTableVar1
