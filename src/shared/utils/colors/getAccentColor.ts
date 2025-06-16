@@ -1,4 +1,5 @@
 import palette from '@jayimbee/palette'
+import { AccentColorCache } from '@/shared/utils/colors/AccentColorCache.ts'
 import { rgbToHsl } from '@/shared/utils/colors/rgbToHsl'
 
 interface RGBA {
@@ -36,6 +37,8 @@ async function medianCutColors(image: string) {
 async function getAccentColor(url: string) {
   if (!url)
     return null
+  if (AccentColorCache.has(url))
+    return AccentColorCache.get(url)
 
   const colors = await medianCutColors(url)
   const { r, g, b } = getMostSaturatedColor(colors)

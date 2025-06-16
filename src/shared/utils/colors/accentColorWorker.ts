@@ -1,7 +1,7 @@
+import { AccentColorCache } from '@/shared/utils/colors/AccentColorCache.ts'
 import AccentColorWorker from './__accentColorWorker.ts?worker'
 
 let worker: Worker | null = null
-const queue = new Map<string, Promise<string>>()
 let handlers: ((value: string) => void)[] = []
 
 function initWorker() {
@@ -16,24 +16,23 @@ function initWorker() {
   }
 }
 
-export function accentColorWorker(url: string): Promise<string> {
-  if (queue.has(url))
-    return queue.get(url)!
+export function accentColorWorker(url: string): Promise<string> | string {
+  if (AccentColorCache.has(url))
+    return AccentColorCache.get(url)!
 
   initWorker()
 
-  const promise = new Promise<string>((resolve) => {
-    handlers.push(resolve)
+  return new Promise<string>((resolve) => {
+    handlers.push((color) => {
+      AccentColorCache.set(url, color)
+      resolve(color)
+    })
     worker!.postMessage(url)
   })
-
-  queue.set(url, promise)
-  return promise
 }
 
 export function destroyAccentWorker() {
   worker?.terminate()
   worker = null
-  queue.clear()
   handlers = []
 }
