@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import { onMounted, provide, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import PageFooter from '@/app/components/PageFooter.vue'
 import SpotifyView from '@/app/components/SpotifyView.vue'
 import { router } from '@/app/router'
-import { sdk } from '@/services/sdk'
+import { getCurrentUserProfile } from '@/services/sdk/entities/user.ts'
 import useResponsive from '@/shared/composables/useResponsive'
 import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
 import { LayoutHeader } from '@/widgets/LayoutHeader'
@@ -46,14 +45,9 @@ onMounted(() => {
   }
 })
 
-const { suspense } = useQuery({
-  queryKey: ['currentUser'],
-  queryFn: async () => {
-    return sdk.currentUser.profile()
-  },
-  staleTime: Infinity,
-})
-await suspense()
+await Promise.all([
+  getCurrentUserProfile(),
+])
 </script>
 
 <template>

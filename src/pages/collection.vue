@@ -30,7 +30,7 @@ const currentUserData = queryClient.getQueryData<UserProfile>(['currentUser'])
 const currentUserAvatar = getImageFromEntity(currentUserData!.images, 1)
 
 const { data: favoriteTracks, isFetching, isError, suspense } = useQuery({
-  queryKey: ['favoriteTracks'],
+  queryKey: ['currentUserCollection'],
   queryFn: () => {
     return sdk.currentUser.tracks.savedTracks()
   },
