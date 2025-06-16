@@ -1,5 +1,5 @@
 .tippy-box {
-  max-width: 40ch;
+  max-width: 50ch;
 
   &[data-theme=context] {
     transition-duration: 0s !important;
@@ -15,7 +15,15 @@
 
   &[data-theme=tooltip] {
     .tippy-content {
-      padding: 5px 7px;
+      max-width: 50ch !important;
+      padding: 4px 8px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.25;
+      font-size: 14px !important;
     }
 
     .tippy-content:has(span:empty) {
@@ -31,6 +39,7 @@
     font-weight: 500;
     border-radius: 4px;
     font-size: 0.85rem;
+    overflow: hidden;
   }
 
   &[data-state=hidden] {

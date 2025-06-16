@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ItemTypes } from '@spotify/web-api-ts-sdk'
 import type { MediaLibEntityProps } from '@/features/MedialibSidebar/types/MediaLibEntityProps'
 import { useI18n } from 'vue-i18n'
 import { Tippy } from 'vue-tippy'
@@ -25,13 +26,16 @@ const { t } = useI18n()
     class="block"
     :class="!minimized && 'unminimized'"
   >
-    <EntityAvatar1x1 class="picture" :type="type!" :image="image">
-      <GreenPlayingButton
-        v-if="!minimized && type !== 'Folder'"
-        v-tooltip="false ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
-        :state="false"
+    <EntityAvatar1x1 class="picture" :type="type as ItemTypes" :image="image">
+      <Tippy
+        :content="false ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
         class="stateButton"
-      />
+      >
+        <GreenPlayingButton
+          v-if="!minimized && type !== 'Folder'"
+          :state="false"
+        />
+      </Tippy>
     </EntityAvatar1x1>
 
     <div v-if="!minimized" class="added-at">

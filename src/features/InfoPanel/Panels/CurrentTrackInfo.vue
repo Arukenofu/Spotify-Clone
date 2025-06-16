@@ -3,6 +3,7 @@ import type { Artist } from '@/services/types/Entities/Artist'
 import { useQuery } from '@tanstack/vue-query'
 import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import { ContextMenu } from '@/features/ContextMenu'
 import AboutArtistCard from '@/features/InfoPanel/components/AboutArtistCard.vue'
 import AboutTrackInfo from '@/features/InfoPanel/components/AboutTrackInfo.vue'
@@ -56,9 +57,11 @@ const nextSongInQueue = computed(() => {
       </template>
       <template #options>
         <ContextMenu trigger="click" placement="bottom-end">
-          <RoundButton v-tooltip="t('music-actions.moreOptionsFor', [currentPlayback.currentTrack.name])">
-            <ThreeDots class="icon" />
-          </RoundButton>
+          <Tippy :content="t('music-actions.moreOptionsFor', [currentPlayback.currentTrack.name])">
+            <RoundButton>
+              <ThreeDots class="icon" />
+            </RoundButton>
+          </Tippy>
 
           <template #menu>
             <NowPlayingOptionsContextMenu />

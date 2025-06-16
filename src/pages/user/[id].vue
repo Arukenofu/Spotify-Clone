@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { Tippy } from 'vue-tippy'
 import { sdk } from '@/services/sdk'
 import PlayHeader from '@/shared/UI/Blocks/PlayHeader.vue'
 import SubscribeToArtistButton from '@/shared/UI/Buttons/SubscribeButton.vue'
@@ -110,9 +111,11 @@ function linkToCurrentUserRoute(push: string) {
           class="subscribe-button"
         />
 
-        <button v-tooltip="t('music-actions.moreOptionsFor', ['Username'])" class="etc">
-          <ThreeDots class="icon" />
-        </button>
+        <Tippy :content="t('music-actions.moreOptionsFor', [user.display_name])">
+          <button class="etc">
+            <ThreeDots class="icon" />
+          </button>
+        </Tippy>
       </GeneralGradientSection>
 
       <div v-if="followedArtists && followedArtists.artists" class="other-info-container">

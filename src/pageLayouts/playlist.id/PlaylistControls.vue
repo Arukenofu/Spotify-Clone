@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import FormatLibraryButton from '@/shared/UI/Buttons/FormatLibraryButton.vue'
 import GeneralGradientSectionWithControls
   from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
@@ -38,10 +39,12 @@ const tooltips = reactive({
     @play-click="emits('playClick')"
   >
     <template #main-options>
-      <button v-tooltip="tooltips.addButton" class="state">
-        <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
-        <RoundPlusIcon v-else class="add" />
-      </button>
+      <Tippy :content="tooltips.addButton.content">
+        <button class="state">
+          <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
+          <RoundPlusIcon v-else class="add" />
+        </button>
+      </Tippy>
     </template>
 
     <template #additional-options>

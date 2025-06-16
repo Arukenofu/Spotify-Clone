@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import { useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
 import { userPreferencesStore } from '@/features/UserPreferences'
 import Range from '@/shared/components/Range.vue'
@@ -10,7 +11,7 @@ import Previous from '@/shared/UI/Icons/Previous.vue'
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue'
 import Repeat from '@/shared/UI/Icons/Repeat.vue'
 import getActiveColor from '@/shared/utils/colors/getActiveColor'
-import formatTime from '@/shared/utils/format/formatTimeMMSS'
+import formatTimeMMSS from '@/shared/utils/format/formatTimeMMSS.ts'
 
 const { t } = useI18n()
 
@@ -35,46 +36,53 @@ const repeatModeTooltip = computed(() => {
 <template>
   <div class="track-controls">
     <div class="options">
-      <RandomOrder
-        v-tooltip="preferences.isShuffle ? t('media-player.shuffleDisable') : t('media-player.shuffleEnable')"
-        class="icon"
-        :style="getActiveColor(preferences.isShuffle, 'fill')"
-        @click="preferences.toggleIsShuffle"
-      />
-      <Previous
-        v-tooltip="t('media-player.previous')"
-        class="icon pointerable"
-        @click="controls.previousTrack"
-      />
-      <button
-        v-tooltip="stream.isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
-        class="icon musicState pointerable"
-        @click="controls.toggleCurrentTrack"
-      >
-        <PlayingState
-          :state="stream.isPlaying"
+      <Tippy :content="preferences.isShuffle ? t('media-player.shuffleDisable') : t('media-player.shuffleEnable')">
+        <RandomOrder
           class="icon"
+          :style="getActiveColor(preferences.isShuffle, 'fill')"
+          @click="preferences.toggleIsShuffle"
         />
-      </button>
-      <Next
-        v-tooltip="t('media-player.next')"
-        class="icon pointerable"
-        @click="controls.nextTrack"
-      />
-      <Repeat
-        v-tooltip="repeatModeTooltip"
-        :style="
-          getActiveColor(preferences.currentRepeatMode !== 'onlyCurrentMusic', 'fill')
-        "
-        :state="preferences.currentRepeatMode === 'repeatCurrentMusic'"
-        class="icon"
-        @click="preferences.toggleRepeatMode()"
-      />
+      </Tippy>
+
+      <Tippy :content="t('media-player.previous')">
+        <Previous
+          class="icon pointerable"
+          @click="controls.previousTrack"
+        />
+      </Tippy>
+
+      <Tippy :content="stream.isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')">
+        <button
+          class="icon musicState pointerable"
+          @click="controls.toggleCurrentTrack"
+        >
+          <PlayingState
+            :state="stream.isPlaying"
+            class="icon"
+          />
+        </button>
+      </Tippy>
+
+      <Tippy :content="t('media-player.next')">
+        <Next
+          class="icon pointerable"
+          @click="controls.nextTrack"
+        />
+      </Tippy>
+
+      <Tippy :content="repeatModeTooltip">
+        <Repeat
+          :style="getActiveColor(preferences.currentRepeatMode !== 'onlyCurrentMusic', 'fill')"
+          :state="preferences.currentRepeatMode === 'repeatCurrentMusic'"
+          class="icon"
+          @click="preferences.toggleRepeatMode()"
+        />
+      </Tippy>
     </div>
 
     <div class="progress">
       <div class="currentTime">
-        {{ formatTime(stream.currentTime) }}
+        {{ formatTimeMMSS(stream.currentTime) }}
       </div>
 
       <Range
@@ -89,7 +97,7 @@ const repeatModeTooltip = computed(() => {
       />
 
       <div class="duration">
-        {{ formatTime(stream.duration) }}
+        {{ formatTimeMMSS(stream.duration) }}
       </div>
     </div>
   </div>

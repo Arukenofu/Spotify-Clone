@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-
 import { useRoute } from 'vue-router'
+import { Tippy } from 'vue-tippy'
+
 import { router } from '@/app/router'
 import useDebounce from '@/shared/composables/useDebounce'
 import CloseIcon from '@/shared/UI/Icons/CloseIcon.vue'
 import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue'
-
 import SearchReviewIcon from '@/shared/UI/Icons/SearchReviewIcon.vue'
 
 const { t } = useI18n()
@@ -76,12 +76,9 @@ router.afterEach((to) => {
       <SearchIcon class="icon" />
     </div>
 
-    <div
+    <Tippy
       v-if="!inputValue?.length"
-      v-tooltip="{
-        content: t('app-header.tooltip.browse'),
-        distance: 5,
-      }"
+      :content="t('app-header.tooltip.browse')"
       class="icon-container-box"
     >
       <SearchReviewIcon
@@ -89,16 +86,16 @@ router.afterEach((to) => {
         :state="route.path === '/search'"
         class="icon"
       />
-    </div>
+    </Tippy>
 
-    <div
+    <Tippy
       v-else
-      v-tooltip="t('app-header.tooltip.clear')"
+      :content="t('app-header.tooltip.clear')"
       class="icon-container-delete"
       @click="clearAll()"
     >
       <CloseIcon class="icon" />
-    </div>
+    </Tippy>
   </div>
 </template>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import ClockIcon from '@/shared/UI/Icons/ClockIcon.vue'
 
 const { t } = useI18n()
@@ -23,9 +24,9 @@ const { t } = useI18n()
       <slot name="var3" />
     </div>
     <div class="time">
-      <div v-tooltip="t('music-table.duration')">
+      <Tippy :content="t('music-table.duration')">
         <ClockIcon class="icon" />
-      </div>
+      </Tippy>
     </div>
   </div>
 </template>

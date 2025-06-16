@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Image, Playlist } from '@spotify/web-api-ts-sdk'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
 import EntityInfoHeaderDot from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderDot.vue'
 import EntityInfoHeaderTitle from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeaderTitle.vue'
@@ -19,6 +20,12 @@ defineProps<{
   savingsAmount: number
 }>()
 
+function decodeHtmlEntities(str: string) {
+  const txt = document.createElement('textarea')
+  txt.innerHTML = str
+  return txt.value
+}
+
 const { t } = useI18n()
 </script>
 
@@ -30,9 +37,9 @@ const { t } = useI18n()
       {{ playlistName }}
     </EntityInfoHeaderTitle>
 
-    <div v-if="playlistDescription" class="description">
-      {{ playlistDescription }}
-    </div>
+    <Tippy v-if="playlistDescription" class="description" :content="decodeHtmlEntities(playlistDescription)">
+      {{ decodeHtmlEntities(playlistDescription) }}
+    </Tippy>
 
     <div class="other-info">
       <div class="creator">
@@ -75,10 +82,17 @@ const { t } = useI18n()
   user-select: none;
 
   .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    max-height: 74px;
+    overflow: hidden;
+    word-break: break-word;
     color: var(--text-soft);
+    line-height: 1.2;
     font-size: .875rem;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .type {

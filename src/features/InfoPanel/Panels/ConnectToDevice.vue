@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type InfoPanel from '@/app/lib/i18n/locales/en/info-panel'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
 import PcAndDynamic from '@/shared/UI/Icons/PcAndDynamic.vue'
 import PCDeviceIcon from '@/shared/UI/Icons/PCDeviceIcon.vue'
@@ -36,12 +37,12 @@ const connectionComponents = [
           <PCDeviceIcon class="icon" />
           <div>{{ t('info-panel.connectToDevice.currentDevice') }}</div>
         </div>
-        <div
-          v-tooltip="t('info-panel.connectToDevice.currentDevice')"
+        <Tippy
+          :content="t('info-panel.connectToDevice.currentDevice')"
           class="line2"
         >
           {{ t('info-panel.connectToDevice.currentDevice') }}
-        </div>
+        </Tippy>
       </div>
 
       <div class="devices-section">
@@ -57,12 +58,9 @@ const connectionComponents = [
               <Component :is="connectionComponents[index]" />
             </div>
             <div class="added-at">
-              <div
-                v-tooltip="connection.title"
-                class="title"
-              >
+              <Tippy :content="connection.title" class="title">
                 {{ connection.title }}
-              </div>
+              </Tippy>
               <div class="description">
                 {{ connection.description }}
               </div>

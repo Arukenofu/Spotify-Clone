@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath'
 import LongRoundButton from '@/shared/UI/Buttons/LongRoundButton.vue'
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
@@ -22,16 +23,17 @@ const { t } = useI18n()
     </div>
 
     <div class="left-side">
-      <RoundButton
-        v-tooltip="t('app-header.tooltip.home')"
-        class="homeButton"
-        @click="$router.push('/')"
-      >
-        <HomeIcon
-          class="icon"
-          :state="currentRoutePath === '/'"
-        />
-      </RoundButton>
+      <Tippy :content="t('app-header.tooltip.home')">
+        <RoundButton
+          class="homeButton"
+          @click="$router.push('/')"
+        >
+          <HomeIcon
+            class="icon"
+            :state="currentRoutePath === '/'"
+          />
+        </RoundButton>
+      </Tippy>
 
       <Search />
     </div>
@@ -53,8 +55,8 @@ const { t } = useI18n()
         <span> {{ t('app-header.download') }} </span>
       </LongRoundButton>
 
-      <div
-        v-tooltip="t('app-header.tooltip.contentFeed')"
+      <Tippy
+        :content="t('app-header.tooltip.contentFeed')"
         class="notification"
         @click="$router.push('/content-feed')"
       >
@@ -63,7 +65,7 @@ const { t } = useI18n()
           :class="currentRoutePath === '/content-feed' && 'active'"
           class="icon"
         />
-      </div>
+      </Tippy>
 
       <User />
     </div>
@@ -94,9 +96,9 @@ header {
     display: flex;
     flex: 1;
     height: 100%;
+    margin-left: 8px;
 
     .homeButton {
-      margin-left: 8px;
       height: 48px;
       width: 48px;
       min-width: 48px;

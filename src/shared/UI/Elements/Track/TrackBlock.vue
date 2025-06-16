@@ -3,6 +3,7 @@ import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
 import type { PlayerTypes } from '@/features/MediaPlayer/types/PlayerTypes'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import { currentTrackImage } from '@/features/MediaPlayer'
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 import getActiveColor from '@/shared/utils/colors/getActiveColor'
@@ -34,8 +35,8 @@ const currentImage = computed(() => {
 
 <template>
   <div class="musicBlock">
-    <div
-      v-tooltip="playingStateTooltip"
+    <Tippy
+      :content="playingStateTooltip"
       class="image-block"
       @click="$emit('onImageBlockClick')"
     >
@@ -48,7 +49,7 @@ const currentImage = computed(() => {
         class="image"
         :style="`background-image: url('${currentImage}')`"
       />
-    </div>
+    </Tippy>
 
     <div class="added-at">
       <div

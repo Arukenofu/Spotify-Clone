@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore'
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
 import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue'
@@ -18,12 +19,11 @@ const { removePanel } = useInfoContentStore()
     <div class="panel-options">
       <slot name="options" />
 
-      <RoundButton
-        v-tooltip="t('info-panel.close')"
-        @click="removePanel()"
-      >
-        <CloseIconRound class="icon" />
-      </RoundButton>
+      <Tippy :content="t('info-panel.close')">
+        <RoundButton @click="removePanel()">
+          <CloseIconRound class="icon" />
+        </RoundButton>
+      </Tippy>
     </div>
   </div>
 </template>

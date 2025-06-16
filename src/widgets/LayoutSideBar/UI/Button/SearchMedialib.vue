@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-
+import { Tippy } from 'vue-tippy'
 import useDebounce from '@/shared/composables/useDebounce'
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
 import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue'
-
 import SearchIcon from '@/shared/UI/Icons/SearchIcon.vue'
 
 const { t } = useI18n()
@@ -75,13 +74,14 @@ onUnmounted(() => {
       />
     </div>
 
-    <RoundButton
-      v-tooltip="t('medialib.search')"
-      class="searchButton"
-      @click="handleToggle()"
-    >
-      <SearchIcon class="searchIcon" />
-    </RoundButton>
+    <Tippy :content="t('medialib.search')">
+      <RoundButton
+        class="searchButton"
+        @click="handleToggle()"
+      >
+        <SearchIcon class="searchIcon" />
+      </RoundButton>
+    </Tippy>
 
     <input
       ref="input"

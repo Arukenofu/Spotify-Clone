@@ -2,6 +2,7 @@
 import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import EqualizerAnimated from '@/assets/images/equalizer-animated.gif'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
@@ -71,9 +72,11 @@ const optionsContextMenu = computed(() => ({
       </div>
 
       <div class="track-info">
-        <RouterLink v-tooltip="track.name" :to="`/track/${track.id}`" :style="getActiveColor(isCurrent)" class="musicName" @click.stop>
-          {{ track.name }}
-        </RouterLink>
+        <Tippy :content="track.name">
+          <RouterLink :to="`/track/${track.id}`" :style="getActiveColor(isCurrent)" class="musicName" @click.stop>
+            {{ track.name }}
+          </RouterLink>
+        </Tippy>
         <span v-if="showArtists && !compact" class="artists" @click.stop>
           <CommaSeparatedArtistsLink class="artist" :artists="track.artists" />
         </span>
@@ -87,14 +90,18 @@ const optionsContextMenu = computed(() => ({
     </template>
 
     <div class="time">
-      <button v-tooltip="isAdded ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')" class="addState show-on-hover" @click.stop>
-        <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
-        <RoundPlusIcon v-else class="add" />
-      </button>
+      <Tippy :content="isAdded ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')">
+        <button class="addState show-on-hover" @click.stop>
+          <CheckedRoundCircleIcon v-if="isAdded" class="remove" />
+          <RoundPlusIcon v-else class="add" />
+        </button>
+      </Tippy>
       <span>{{ formatTime(track.duration_ms / 1000) }}</span>
-      <button v-tooltip="optionsContextMenu" class="contextMenu show-on-hover" @click.stop>
-        <ThreeDots />
-      </button>
+      <Tippy :content="optionsContextMenu.content">
+        <button class="contextMenu show-on-hover" @click.stop>
+          <ThreeDots />
+        </button>
+      </Tippy>
     </div>
   </div>
 </template>

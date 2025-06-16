@@ -2,6 +2,7 @@
 import type { ItemTypes } from '@spotify/web-api-ts-sdk'
 import { onBeforeMount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
 import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
 import { accentColorWorker } from '@/shared/utils/colors/accentColorWorker'
@@ -48,13 +49,14 @@ onBeforeMount(async () => {
       :loading-color="maskColor"
       loading="lazy"
     >
-      <GreenPlayingButton
-        v-tooltip="state ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])"
-        class="playingState"
-        :state="state ?? false"
-        @click.stop="$emit('onPlayClick')"
-        @mousedown.prevent
-      />
+      <Tippy class="state-container" :content="state ? t('music-actions.stopPlaylist', [name]) : t('music-actions.playPlaylist', [name])">
+        <GreenPlayingButton
+          class="playingState"
+          :state="state ?? false"
+          @click.stop="$emit('onPlayClick')"
+          @mousedown.prevent
+        />
+      </Tippy>
     </EntityAvatar1x1>
 
     <span v-if="name" class="b-600">
@@ -93,7 +95,7 @@ onBeforeMount(async () => {
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
-    button {
+    .playingState {
       opacity: 1 !important;
       transform: translateY(0) !important;
     }
@@ -120,12 +122,17 @@ onBeforeMount(async () => {
       fill: var(--white);
     }
 
-    .playingState {
-      opacity: 0;
+    .state-container {
       position: absolute;
       right: 8px;
       bottom: 8px;
       transition: all 0.2s ease-out;
+    }
+
+    .playingState {
+      opacity: 0;
+      right: 8px;
+      bottom: 8px;
       transform: translateY(8px);
     }
   }

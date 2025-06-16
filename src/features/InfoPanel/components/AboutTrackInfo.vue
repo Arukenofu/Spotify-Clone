@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SimplifiedArtist } from '@spotify/web-api-ts-sdk'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import Marquee from '@/shared/components/Marquee.vue'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
@@ -57,23 +58,23 @@ function copyLink() {
       </template>
     </MainTrackInfo>
     <div class="track-controls">
-      <button
-        v-tooltip="t('info-panel.currentTrackInfo.copyLinkToTrack')"
+      <Tippy
+        :content="t('info-panel.currentTrackInfo.copyLinkToTrack')"
         class="copy button"
         @click="copyLink()"
       >
         <ShareIcon class="icon" />
-      </button>
+      </Tippy>
 
-      <button
-        v-tooltip="isAddedToFavorites ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
+      <Tippy
+        :content="isAddedToFavorites ? t('contextmenu-items.addToPlaylist') : t('contextmenu-items.addToFavoriteTracks')"
         class="button"
       >
         <Component
           :is="isAddedToFavorites ? CheckedRoundCircleIcon : RoundPlusIcon"
           class="icon"
         />
-      </button>
+      </Tippy>
     </div>
   </div>
 </template>

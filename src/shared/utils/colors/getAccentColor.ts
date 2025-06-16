@@ -13,17 +13,20 @@ function getMostSaturatedColor(colors: RGBA[]): RGBA {
   let maxSaturation = -1
   let mostSaturated = colors[0]
 
-  for (const color of colors) {
+  colors.forEach((color, index) => {
+    if (index >= 2)
+      return
+
     const [, saturation, lightness] = rgbToHsl(color.r, color.g, color.b)
 
     if (lightness < 0.1)
-      continue
+      return
 
     if (saturation > maxSaturation) {
       maxSaturation = saturation
       mostSaturated = color
     }
-  }
+  })
 
   return mostSaturated
 }

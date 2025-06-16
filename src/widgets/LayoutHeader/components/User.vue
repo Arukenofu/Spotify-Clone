@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { computed } from 'vue'
+import { Tippy } from 'vue-tippy'
 import { ContextMenu } from '@/features/ContextMenu'
 import { sdk } from '@/services/sdk'
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
@@ -19,18 +20,19 @@ const isHasAvatar = computed(() => !!currentUser.value!.images.length)
 
 <template>
   <ContextMenu v-if="currentUser" trigger="click" :offset="[0, 7]">
-    <RoundButton
-      v-tooltip="currentUser?.display_name"
-      v-disable-child
-      class="user-avatar"
-    >
-      <div
-        class="picture"
-        :class="!isHasAvatar && 'no-picture'"
-        :style="isHasAvatar && `background-image: url('${currentUser.images[1].url}')`"
-        :data-char="currentUser?.display_name[0]"
-      />
-    </RoundButton>
+    <Tippy :content="currentUser.display_name">
+      <RoundButton
+        v-disable-child
+        class="user-avatar"
+      >
+        <div
+          class="picture"
+          :class="!isHasAvatar && 'no-picture'"
+          :style="isHasAvatar && `background-image: url('${currentUser.images[1].url}')`"
+          :data-char="currentUser?.display_name[0]"
+        />
+      </RoundButton>
+    </Tippy>
 
     <template #menu>
       <UserProfileMenu :userid="currentUser.id" />

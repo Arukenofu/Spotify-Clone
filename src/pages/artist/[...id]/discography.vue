@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { computed, inject, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { Tippy } from 'vue-tippy'
 import { usePlaybackStates } from '@/features/MediaPlayer'
 import artistService from '@/services/api/artist/apiArtistService'
 import useCachedRef from '@/shared/composables/useCachedRef'
@@ -77,9 +78,9 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
             <div class="additional">
               <span class="type">Альбом</span>
               <span class="dot">•</span>
-              <span v-tooltip="'27 Декабря 2024'" class="year">
+              <Tippy content="27 Декабря 2024" class="year">
                 2024
-              </span>
+              </Tippy>
               <EntityInfoHeaderDot />
               <span class="amount">
                 {{ t('plurable-entities.track', album.info.tracksAmount).toLowerCase() }}
@@ -87,22 +88,27 @@ const format = useCachedRef<'Список' | 'Сетка'>('discographyFormat', 
             </div>
 
             <div class="controls">
-              <button
-                v-tooltip="states.isCurrentPlayback('album', '') ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
-                class="playingState"
-                @click="states.isCurrentPlayback('album', '')"
-              >
-                <PlayingState
-                  class="icon"
-                  :state="states.isCurrentPlayback('album', '')"
-                />
-              </button>
-              <button v-tooltip="'Добавить в медиатеку'" class="addingState">
-                <RoundPlusIcon class="icon" />
-              </button>
-              <button v-tooltip="`Открыть контекстное меню ${album.name}`" class="options">
-                <ThreeDots class="icon" />
-              </button>
+              <Tippy :content="states.isCurrentPlayback('album', '') ? t('music-actions.pauseMusic') : t('music-actions.playMusic')">
+                <button
+                  class="playingState"
+                  @click="states.isCurrentPlayback('album', '')"
+                >
+                  <PlayingState
+                    class="icon"
+                    :state="states.isCurrentPlayback('album', '')"
+                  />
+                </button>
+              </Tippy>
+              <Tippy content="Добавить в медиатеку">
+                <button class="addingState">
+                  <RoundPlusIcon class="icon" />
+                </button>
+              </Tippy>
+              <Tippy :content="`Открыть контекстное меню ${album.name}`">
+                <button class="options">
+                  <ThreeDots class="icon" />
+                </button>
+              </Tippy>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Album, Image } from '@spotify/web-api-ts-sdk'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import getUserLanguage from '@/app/lib/i18n/utils/getUserLanguage'
 import AlbumInfoHeaderArtist from '@/pageLayouts/album.id/AlbumInfoHeaderArtist.vue'
 import EntityInfoHeader from '@/shared/UI/Elements/EntityInfoHeader/EntityInfoHeader.vue'
@@ -49,9 +50,9 @@ function formatDate(dateString: string) {
 
       <EntityInfoHeaderDot />
 
-      <span v-tooltip="formatDate(releaseDate)" class="releaseDate">
+      <Tippy :content="formatDate(releaseDate)" class="releaseDate">
         {{ getYear(releaseDate) }}
-      </span>
+      </Tippy>
 
       <EntityInfoHeaderDot />
 

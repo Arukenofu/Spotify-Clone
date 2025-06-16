@@ -42,7 +42,7 @@ function toggleWidth() {
 }
 
 const tooltip = computed(() => {
-  const placement = isMinimized.value ? 'right' : 'top'
+  const placement: 'right' | 'top' = isMinimized.value ? 'right' : 'top'
   const content = isMinimized.value ? t('medialib.open') : t('medialib.close')
 
   return {
@@ -54,31 +54,34 @@ const tooltip = computed(() => {
 
 <template>
   <div class="medialib">
-    <button
-      v-tooltip="tooltip"
-      class="toggle"
-      @click="toggleSidebar()"
-    >
-      <LibraryIcon :state="!isMinimized" class="icon" />
+    <Tippy :content="tooltip.content" :placement="tooltip.placement">
+      <button
+        class="toggle"
+        @click="toggleSidebar()"
+      >
+        <LibraryIcon :state="!isMinimized" class="icon" />
 
-      <span
-        v-if="!isMinimized"
-        class="added-at"
-      > {{ t('medialib.myMedialib') }} </span>
-    </button>
+        <span
+          v-if="!isMinimized"
+          class="added-at"
+        >
+          {{ t('medialib.myMedialib') }}
+        </span>
+      </button>
+    </Tippy>
 
     <div
       v-if="!isMinimized"
       class="other-controls"
     >
       <Tippy
+        :content="t('medialib.createPlaylistOrFolder')"
         theme="context"
         trigger="click"
         placement="bottom-end"
         interactive
       >
         <RoundButton
-          v-tooltip="t('medialib.createPlaylistOrFolder')"
           class="createPlaylist"
         >
           <PlusIcon class="icon" />
@@ -89,16 +92,17 @@ const tooltip = computed(() => {
         </template>
       </Tippy>
 
-      <RoundButton
-        v-tooltip="widthArrowDirection === 'right' ? t('medialib.showMore') : t('medialib.showLess')"
-        class="toggleWidth"
-        @click="toggleWidth()"
-      >
-        <ArrowIcon
-          class="icon"
-          :direction="widthArrowDirection"
-        />
-      </RoundButton>
+      <Tippy :content="widthArrowDirection === 'right' ? t('medialib.showMore') : t('medialib.showLess')">
+        <RoundButton
+          class="toggleWidth"
+          @click="toggleWidth()"
+        >
+          <ArrowIcon
+            class="icon"
+            :direction="widthArrowDirection"
+          />
+        </RoundButton>
+      </Tippy>
     </div>
   </div>
 </template>

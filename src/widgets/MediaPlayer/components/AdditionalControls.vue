@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import { router } from '@/app/router'
 import { infoPanel } from '@/features/InfoPanel'
 import { useAudioStream } from '@/features/MediaPlayer'
@@ -38,48 +39,51 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc')
 <template>
   <div class="additional-controls">
     <div class="options">
-      <NowPlaying
-        v-tooltip="t('media-player.nowPlaying')"
-        class="icon"
-        :class="currentPanelName === 'CurrentTrackInfo' && 'active'"
-        @click="setNewPanel('CurrentTrackInfo')"
-      />
+      <Tippy class="main-state-container" :content="t('media-player.nowPlaying')">
+        <NowPlaying
+          class="icon"
+          :class="currentPanelName === 'CurrentTrackInfo' && 'active'"
+          @click="setNewPanel('CurrentTrackInfo')"
+        />
+      </Tippy>
 
-      <ShowText
-        v-tooltip="t('media-player.lyrics')"
-        class="icon"
-        :class="currentRoutePath === '/lyrics' && 'active'"
-        @click="toggleLyricsPage"
-      />
+      <Tippy :content="t('media-player.lyrics')">
+        <ShowText
+          class="icon"
+          :class="currentRoutePath === '/lyrics' && 'active'"
+          @click="toggleLyricsPage"
+        />
+      </Tippy>
 
-      <ShowQueue
-        v-tooltip="t('media-player.queue')"
-        :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
-        class="icon"
-        @click="setNewPanel('CurrentPlaylistQueue')"
-      />
+      <Tippy :content="t('media-player.queue')">
+        <ShowQueue
+          :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
+          class="icon"
+          @click="setNewPanel('CurrentPlaylistQueue')"
+        />
+      </Tippy>
 
-      <ConnectToDevice
-        v-tooltip="t('media-player.connect')"
-        :class="currentPanelName === 'ConnectToDevice' && 'active'"
-        class="icon"
-        @click="setNewPanel('ConnectToDevice')"
-      />
+      <Tippy :content="t('media-player.connect')">
+        <ConnectToDevice
+          :class="currentPanelName === 'ConnectToDevice' && 'active'"
+          class="icon"
+          @click="setNewPanel('ConnectToDevice')"
+        />
+      </Tippy>
 
       <div class="volume-option">
-        <Volume
-          v-if="volume !== 0"
-          v-tooltip="t('media-player.disableVoice')"
-          class="icon"
-          @click="toggleVolume(volume, setVolume)"
-        />
-        <VolumeSilent
-          v-else
-          v-tooltip="t('media-player.enableVoice')"
-          class="icon"
-          @click="toggleVolume(volume, setVolume)"
-        />
-
+        <Tippy v-if="volume !== 0" :content="t('media-player.disableVoice')">
+          <Volume
+            class="icon"
+            @click="toggleVolume(volume, setVolume)"
+          />
+        </Tippy>
+        <Tippy v-else :content="t('media-player.enableVoice')">
+          <VolumeSilent
+            class="icon"
+            @click="toggleVolume(volume, setVolume)"
+          />
+        </Tippy>
         <Range
           class="range"
           :max="1"
@@ -90,11 +94,12 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc')
         />
       </div>
 
-      <FullScreen
-        v-tooltip="t('media-player.fullscreen')"
-        class="icon"
-        @click="enableFullScreenFunc!"
-      />
+      <Tippy :content="t('media-player.fullscreen')">
+        <FullScreen
+          class="icon"
+          @click="enableFullScreenFunc!"
+        />
+      </Tippy>
     </div>
   </div>
 </template>
@@ -107,7 +112,7 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc')
   .options {
     display: flex;
 
-    .icon:first-child {
+    .main-state-container:first-child {
       margin-left: auto;
     }
 

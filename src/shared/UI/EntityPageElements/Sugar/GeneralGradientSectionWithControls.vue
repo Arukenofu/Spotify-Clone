@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
 import GeneralGradientSection from '@/shared/UI/EntityPageElements/GeneralGradientSection.vue'
 import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
 
 interface Props {
   isPlaying: boolean
-  tooltipStr: string | object
+  tooltipStr: string
   bgColor: string | null
   turnoffOptions?: boolean
 }
@@ -24,22 +25,25 @@ const { t } = useI18n()
 
 <template>
   <GeneralGradientSection :bg-color>
-    <GreenPlayingButton
-      v-tooltip="isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')"
-      class="playingButton"
-      :state="isPlaying"
-      @click="$emit('playClick')"
-    />
+    <Tippy class="play-button-wrapper" :content="isPlaying ? t('music-actions.pauseMusic') : t('music-actions.playMusic')">
+      <GreenPlayingButton
+        class="playingButton"
+        :state="isPlaying"
+        @click="$emit('playClick')"
+      />
+    </Tippy>
     <slot name="main-options" />
-    <button
-      v-if="!turnoffOptions"
-      v-tooltip="tooltipStr"
-      v-disable-child
-      class="options"
-      @click="$emit('dotsClick')"
-    >
-      <ThreeDots class="icon" />
-    </button>
+
+    <Tippy class="dots-wrapper" :content="tooltipStr">
+      <button
+        v-if="!turnoffOptions"
+        v-disable-child
+        class="options"
+        @click="$emit('dotsClick')"
+      >
+        <ThreeDots class="icon" />
+      </button>
+    </Tippy>
     <slot name="additional-options" />
   </GeneralGradientSection>
 </template>
@@ -48,29 +52,35 @@ const { t } = useI18n()
 .general {
   position: relative;
 
-  .playingButton {
-    height: 56px;
-    width: auto;
-    aspect-ratio: 1/1;
+  .play-button-wrapper {
     margin-right: calc(var(--content-spacing) + 8px);
-    box-shadow: none;
+
+    .playingButton {
+      height: 56px;
+      width: auto;
+      aspect-ratio: 1/1;
+      box-shadow: none;
+    }
   }
 
-  .options {
-    width: 32px;
-    height: 32px;
+  .dots-wrapper {
     margin-right: var(--content-spacing);
-    background: none;
-    border: none;
-    cursor: pointer;
 
-    &:hover .icon {
-      fill: var(--white);
-      scale: 1.05;
-    }
+    .options {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
 
-    .icon {
-      fill: var(--text-soft);
+      &:hover .icon {
+        fill: var(--white);
+        scale: 1.05;
+      }
+
+      .icon {
+        fill: var(--text-soft);
+      }
     }
   }
 
