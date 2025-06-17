@@ -1,7 +1,8 @@
-import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
+import type { Track } from '@spotify/web-api-ts-sdk'
 import type { PlayerTypes, PlayerTypesStr } from '@/features/MediaPlayer/types/PlayerTypes'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { getPlaybackQueue } from '@/features/MediaPlayer/utils/getPlaybackQueue.ts'
 import getSimplifiedTrack from '@/features/MediaPlayer/utils/getSimplifiedTrack'
 import { loadNextPlayback } from '@/features/MediaPlayer/utils/loadNextPlayback'
 
@@ -25,13 +26,8 @@ const currentPlaybackStore = defineStore('currentPlaybackStore', () => {
   const currentTracksQueue = computed(() => {
     if (!currentPlaybackInfo.value)
       return []
-    const queue = currentPlaybackInfo.value.tracks.items
 
-    if ('added_at' in queue[0]) {
-      return queue.map(track => track.track) as SimplifiedTrack[]
-    }
-
-    return queue as SimplifiedTrack[]
+    return getPlaybackQueue(currentPlaybackInfo.value.tracks.items)
   })
 
   async function loadNextTracks() {

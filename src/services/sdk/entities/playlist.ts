@@ -29,6 +29,8 @@ export async function fetchPlaylist(playlistId: string) {
     image.url = proxy(image.url)!
   }
 
+  data.tracks.items = data.tracks.items.filter(value => Boolean(value.track))
+
   const maskColor = await getMaskColor(data, 2)
   const owner = await getOwnerData(data.owner.id)
 
