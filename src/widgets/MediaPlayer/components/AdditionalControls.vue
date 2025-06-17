@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Tippy } from 'vue-tippy'
 import { router } from '@/app/router'
-import { infoPanel } from '@/features/InfoPanel'
+import { useInfoPanel } from '@/features/InfoPanel'
 import { useAudioStream } from '@/features/MediaPlayer'
 import Range from '@/shared/components/Range.vue'
 import useCurrentRoutePath from '@/shared/composables/useCurrentRoutePath'
@@ -20,7 +20,7 @@ const { t } = useI18n()
 
 const { setVolume, volume } = useAudioStream()
 
-const { currentPanelName, setNewPanel } = infoPanel()
+const infoPanel = reactive(useInfoPanel())
 
 const { currentRoutePath } = useCurrentRoutePath('path')
 
@@ -42,8 +42,8 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc')
       <Tippy class="main-state-container" :content="t('media-player.nowPlaying')">
         <NowPlaying
           class="icon"
-          :class="currentPanelName === 'CurrentTrackInfo' && 'active'"
-          @click="setNewPanel('CurrentTrackInfo')"
+          :class="infoPanel.name === 'CurrentTrackInfo' && 'active'"
+          @click="infoPanel.open('CurrentTrackInfo')"
         />
       </Tippy>
 
@@ -57,17 +57,17 @@ const enableFullScreenFunc = inject<void>('enableFullScreenFunc')
 
       <Tippy :content="t('media-player.queue')">
         <ShowQueue
-          :class="currentPanelName === 'CurrentPlaylistQueue' && 'active'"
+          :class="infoPanel.name === 'CurrentPlaylistQueue' && 'active'"
           class="icon"
-          @click="setNewPanel('CurrentPlaylistQueue')"
+          @click="infoPanel.open('CurrentPlaylistQueue')"
         />
       </Tippy>
 
       <Tippy :content="t('media-player.connect')">
         <ConnectToDevice
-          :class="currentPanelName === 'ConnectToDevice' && 'active'"
+          :class="infoPanel.name === 'ConnectToDevice' && 'active'"
           class="icon"
-          @click="setNewPanel('ConnectToDevice')"
+          @click="infoPanel.open('ConnectToDevice')"
         />
       </Tippy>
 

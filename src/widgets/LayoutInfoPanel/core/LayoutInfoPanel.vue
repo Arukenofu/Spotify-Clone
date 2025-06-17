@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { infoPanel, maxInfoPanelWidth, minInfoPanelWidth, useInfoPanelWidth } from '@/features/InfoPanel'
+import { maxWidth, minWidth, useInfoPanel, useInfoPanelWidth } from '@/features/InfoPanel'
 import Resizer from '@/shared/components/Resizer.vue'
 import LoadingComponent from '@/widgets/LayoutInfoPanel/components/LoadingComponent.vue'
 
-const { currentPanelComponent } = infoPanel()
+const { Component: InfoPanelComponent } = useInfoPanel()
 const { currentPanelWidth } = useInfoPanelWidth()
 </script>
 
 <template>
   <Resizer
-    v-if="currentPanelComponent"
+    v-if="InfoPanelComponent"
     v-model:current-width="currentPanelWidth"
-    :min-width="minInfoPanelWidth"
-    :max-width="maxInfoPanelWidth"
+    :min-width="minWidth"
+    :max-width="maxWidth"
     :from-right="true"
   />
 
   <aside
-    v-if="currentPanelComponent"
+    v-if="InfoPanelComponent"
     class="info"
   >
     <Suspense>
@@ -25,7 +25,7 @@ const { currentPanelWidth } = useInfoPanelWidth()
         <LoadingComponent />
       </template>
       <template #default>
-        <Component :is="currentPanelComponent" />
+        <Component :is="InfoPanelComponent" />
       </template>
     </Suspense>
   </aside>

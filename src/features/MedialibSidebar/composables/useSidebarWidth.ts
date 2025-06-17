@@ -1,4 +1,4 @@
-import { computed, onMounted, watch } from 'vue'
+import { computed, watch } from 'vue'
 import useCachedRef from '@/shared/composables/useCachedRef.ts'
 
 const defaultWidth = window.innerWidth * 0.3
@@ -18,11 +18,7 @@ function useSidebarWidth() {
 
   watch(width, (value) => {
     setStyleWidth(value)
-  })
-
-  onMounted(() => {
-    setStyleWidth(width.value)
-  })
+  }, { immediate: true })
 
   return {
     isMinimized,

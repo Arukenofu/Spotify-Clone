@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { Track } from '@/services/types/Entities/Track'
 import { useI18n } from 'vue-i18n'
-import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore'
+import { useInfoPanel } from '@/features/InfoPanel/composables/useInfoPanel.ts'
 import TrackBlock from '@/shared/UI/Elements/Track/TrackBlock.vue'
 
 defineProps<{
   nextSong: Track
 }>()
 
-const { setNewPanel } = useInfoContentStore()
+const { open } = useInfoPanel()
 
 const { t } = useI18n()
 </script>
@@ -19,7 +19,7 @@ const { t } = useI18n()
       <div class="added-at">
         {{ t('info-panel.currentTrackInfo.nextInQueue') }}
       </div>
-      <button class="show-queue" @click="setNewPanel('CurrentPlaylistQueue')">
+      <button class="show-queue" @click="open('CurrentPlaylistQueue')">
         {{ t('info-panel.currentTrackInfo.openQueue') }}
       </button>
     </div>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Tippy } from 'vue-tippy'
-import useInfoContentStore from '@/features/InfoPanel/store/useInfoContentStore'
+import { useInfoPanel } from '@/features/InfoPanel/composables/useInfoPanel.ts'
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
 import CloseIconRound from '@/shared/UI/Icons/CloseIconRound.vue'
 
 const { t } = useI18n()
 
-const { removePanel } = useInfoContentStore()
+const { close } = useInfoPanel()
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const { removePanel } = useInfoContentStore()
       <slot name="options" />
 
       <Tippy :content="t('info-panel.close')">
-        <RoundButton @click="removePanel()">
+        <RoundButton @click="close()">
           <CloseIconRound class="icon" />
         </RoundButton>
       </Tippy>

@@ -1,16 +1,17 @@
 import { onMounted, watch } from 'vue'
-import defaultWidth from '@/features/InfoPanel/constants/defaultWidth'
-import max from '@/features/InfoPanel/constants/max'
-import min from '@/features/InfoPanel/constants/min'
 import useCachedRef from '@/shared/composables/useCachedRef'
+
+const defaultWidth = 380
+export const maxWidth = 420
+export const minWidth = 280
 
 const currentPanelWidth = useCachedRef<number>('infoContentWidth', defaultWidth, {
   expectedTypes: ['number'],
-  min,
-  max,
+  min: minWidth,
+  max: maxWidth,
 })
 
-export default function () {
+export function useInfoPanelWidth() {
   watch(currentPanelWidth, (value) => {
     document.documentElement.style.setProperty('--panel-width', `${value}`)
   })

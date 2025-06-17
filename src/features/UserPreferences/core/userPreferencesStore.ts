@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import useCachedRef from '@/shared/composables/useCachedRef'
 import repeatModes from '@/widgets/MediaPlayer/constants/repeatModes'
 
-const userPreferencesStore = defineStore('useUserSettings', () => {
+const userPreferencesStore = defineStore('userPreferences', () => {
   const currentRepeatMode = useCachedRef<RepeatModes>('repeatMode', 'onlyCurrentMusic', {
     expectedValues: repeatModes,
   })
