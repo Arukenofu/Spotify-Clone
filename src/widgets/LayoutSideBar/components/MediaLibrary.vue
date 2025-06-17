@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { sortOption } from '@/features/MedialibSidebar/constants/sorts'
 import type { MediaLibTypes } from '@/services/api/medialib/types/MediaLibTypes'
 import type { EntityActionContextMenuProps } from '@/widgets/LayoutSideBar/types/EntityActionContextMenuProps'
 import { useQuery } from '@tanstack/vue-query'
-import { computed, defineComponent, h, ref } from 'vue'
+import { computed, defineComponent, h, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useTippy } from 'vue-tippy'
@@ -13,11 +12,12 @@ import {
   handleMedialibClick,
   handleMedialibSortAndSearch,
   type MediaLibEntityProps,
+  type SortOption,
   useGridWidth,
-  useMedialibsSort,
-  usePlaylistFormat,
-  useSidebarWidthStore,
+  useMedialibFormat,
+  useMedialibSort,
 } from '@/features/MedialibSidebar'
+import { useSidebarWidth } from '@/features/MedialibSidebar/composables/useSidebarWidth.ts'
 import apiMedialibService from '@/services/api/medialib/apiMedialibService'
 import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
 import EntityAction from '@/widgets/LayoutSideBar/contextMenu/EntityAction.vue'
@@ -31,17 +31,17 @@ import QueryNotFound from '@/widgets/LayoutSideBar/UI/QueryNotFound.vue'
 const { t } = useI18n()
 
 const search = ref<string>('')
-const { isMinimized } = useSidebarWidthStore()
+const sidebar = reactive(useSidebarWidth())
 
-const { currentComponent, getComponentName, setComponent } = usePlaylistFormat()
-const { gridWidth, setGridWidth } = useGridWidth()
-const { currentSort, setSort } = useMedialibsSort()
+const medialibFormat = reactive(useMedialibFormat())
+const grid = reactive(useGridWidth())
+const sort = reactive(useMedialibSort())
 
 const route = useRoute()
 
 const playlistsComputedClasses = computed(() => ({
-  grid: getComponentName.value === 'Grid',
-  minimized: isMinimized.value,
+  grid: medialibFormat.name === 'Grid',
+  minimized: sidebar.isMinimized,
 }))
 
 const { data: mediaLibs, isSuccess } = useQuery<MediaLibTypes[]>({
@@ -55,7 +55,7 @@ const mediaLibsFiltered = computed(() => {
 
   return handleMedialibSortAndSearch(mediaLibs.value, {
     searchQuery: search.value,
-    sortBy: currentSort.value,
+    sortBy: sort.name,
   })
 })
 
@@ -97,7 +97,7 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
   <div class="media-library">
     <MediaLibButton />
 
-    <div v-if="!isMinimized" class="controls">
+    <div v-if="!sidebar.isMinimized" class="controls">
       <SearchPlaylist v-model="search" />
 
       <ContextMenu
@@ -106,19 +106,19 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
         class="container"
       >
         <FormatButton
-          :sort-name="t(`medialib.sorts.${currentSort.toLowerCase()}`) as sortOption"
-          :format-component-name="getComponentName"
+          :sort-name="t(`medialib.sorts.${sort.name.toLowerCase()}`) as SortOption"
+          :format-component-name="medialibFormat.name"
           class="formats"
         />
 
         <template #menu>
           <FormatContextMenu
-            :component-name="getComponentName"
-            :grid-width="gridWidth"
-            :sort-name="currentSort"
-            @set-component-name="setComponent"
-            @set-grid-width="setGridWidth"
-            @set-sort-name="setSort"
+            :component-name="medialibFormat.name"
+            :grid-width="grid.width"
+            :sort-name="sort.name"
+            @set-component-name="medialibFormat.setComponent"
+            @set-grid-width="grid.setGridWidth"
+            @set-sort-name="sort.setSort"
           />
         </template>
       </ContextMenu>
@@ -127,21 +127,19 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
     <ScrollableBlock
       v-if="isSuccess"
       class="block"
-      :content-padding="isMinimized ? '0' : '0 8px'"
+      :content-padding="sidebar.isMinimized ? '0' : '0 8px'"
     >
-      <NoMediaLib
-        v-if="!mediaLibs || mediaLibs.length === 0"
-      />
+      <NoMediaLib v-if="!mediaLibs || mediaLibs.length === 0" />
 
-      <QueryNotFound v-else-if="search && !isMinimized && !mediaLibsFiltered.length" :query="search" />
+      <QueryNotFound v-else-if="search && !sidebar.isMinimized && !mediaLibsFiltered.length" :query="search" />
 
       <div v-else class="playlists" :class="playlistsComputedClasses">
         <Component
           v-bind="mediaLib"
-          :is="currentComponent"
+          :is="medialibFormat.component"
           v-for="mediaLib in mediaLibsFiltered"
           :key="mediaLib.id"
-          :minimized="gridWidth < 135 || isMinimized"
+          :minimized="grid.width < 135 || sidebar.isMinimized"
           :class="handleIsMedialibActive(mediaLib.id, mediaLib.type, route) && 'active'"
           @click="handleMedialibClick(mediaLib.id, mediaLib.type, () => {})"
           @contextmenu.prevent="onContextMenu($event, mediaLib)"
@@ -214,7 +212,7 @@ function onContextMenu(event: MouseEvent, props: MediaLibEntityProps) {
       display: grid;
       grid-template-columns: repeat(
         auto-fill,
-        minmax(calc(v-bind(gridWidth) * 1px), 1fr)
+        minmax(calc(v-bind('grid.width') * 1px), 1fr)
       );
       grid-auto-rows: min-content;
     }

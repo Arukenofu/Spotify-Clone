@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
-import { useSidebarWidthStore } from '@/features/MedialibSidebar'
+import { onMounted, onUnmounted, reactive } from 'vue'
+import { useSidebarWidth } from '@/features/MedialibSidebar/composables/useSidebarWidth.ts'
 import Resizer from '@/shared/components/Resizer.vue'
 import MediaLibrary from '@/widgets/LayoutSideBar/components/MediaLibrary.vue'
-import { defaultWidth, maximalWidth, minimalWidth } from '@/widgets/LayoutSideBar/constants/layoutWidth'
 
-const { currentWidth } = useSidebarWidthStore()
+const sidebar = reactive(useSidebarWidth())
 
 function onMinimizeTooMany(newWidth: number, _: number, min: number) {
   if (newWidth < min / 2) {
-    currentWidth.value = 72
+    sidebar.width = 72
   }
 }
 
 function resizeEventHandler() {
-  maximalWidth.value = window.innerWidth * 0.45
-  defaultWidth.value = window.innerWidth * 0.3
+  sidebar.maximalWidth = window.innerWidth * 0.45
+  sidebar.defaultWidth = window.innerWidth * 0.3
 
-  if (currentWidth.value > maximalWidth.value) {
-    currentWidth.value = maximalWidth.value
+  if (sidebar.width > sidebar.maximalWidth) {
+    sidebar.width = sidebar.maximalWidth
   }
 
-  if (minimalWidth.value > defaultWidth.value) {
-    currentWidth.value = 72
+  if (sidebar.minimalWidth > sidebar.defaultWidth) {
+    sidebar.width = 72
   }
 }
 onMounted(() => {
@@ -38,9 +37,9 @@ onUnmounted(() => {
     <MediaLibrary />
   </aside>
   <Resizer
-    v-model:current-width="currentWidth"
-    :min-width="minimalWidth"
-    :max-width="maximalWidth"
+    v-model:current-width="sidebar.width"
+    :min-width="sidebar.minimalWidth"
+    :max-width="sidebar.maximalWidth"
     @custom-resize-event="onMinimizeTooMany"
   />
 </template>

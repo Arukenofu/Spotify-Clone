@@ -1,30 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Tippy } from 'vue-tippy'
-import { useSidebarWidthStore } from '@/features/MedialibSidebar'
+import { useSidebarWidth } from '@/features/MedialibSidebar/composables/useSidebarWidth.ts'
 import RoundButton from '@/shared/UI/Buttons/RoundButton.vue'
 import ArrowIcon from '@/shared/UI/Icons/ArrowIcon.vue'
 import LibraryIcon from '@/shared/UI/Icons/LibraryIcon.vue'
 import PlusIcon from '@/shared/UI/Icons/PlusIcon.vue'
-import { defaultWidth, maximalWidth } from '@/widgets/LayoutSideBar/constants/layoutWidth'
 import CreatePlaylistContextMenu from '@/widgets/LayoutSideBar/contextMenu/CreatePlaylistContextMenu.vue'
 
 const { t } = useI18n()
 
-const { isMinimized, currentWidth } = useSidebarWidthStore()
+const sidebar = reactive(useSidebarWidth())
 
 function toggleSidebar() {
-  if (isMinimized.value) {
-    currentWidth.value = defaultWidth.value
+  if (sidebar.isMinimized) {
+    sidebar.width = sidebar.defaultWidth
   }
   else {
-    currentWidth.value = 72
+    sidebar.width = 72
   }
 }
 
 const widthArrowDirection = computed(() => {
-  if (currentWidth.value <= defaultWidth.value) {
+  if (sidebar.width <= sidebar.defaultWidth) {
     return 'right'
   }
   else {
@@ -34,16 +33,16 @@ const widthArrowDirection = computed(() => {
 
 function toggleWidth() {
   if (widthArrowDirection.value === 'left') {
-    currentWidth.value = defaultWidth.value
+    sidebar.width = sidebar.defaultWidth
   }
   else {
-    currentWidth.value = maximalWidth.value
+    sidebar.width = sidebar.maximalWidth
   }
 }
 
 const tooltip = computed(() => {
-  const placement: 'right' | 'top' = isMinimized.value ? 'right' : 'top'
-  const content = isMinimized.value ? t('medialib.open') : t('medialib.close')
+  const placement: 'right' | 'top' = sidebar.isMinimized ? 'right' : 'top'
+  const content = sidebar.isMinimized ? t('medialib.open') : t('medialib.close')
 
   return {
     content,
@@ -59,10 +58,10 @@ const tooltip = computed(() => {
         class="toggle"
         @click="toggleSidebar()"
       >
-        <LibraryIcon :state="!isMinimized" class="icon" />
+        <LibraryIcon :state="!sidebar.isMinimized" class="icon" />
 
         <span
-          v-if="!isMinimized"
+          v-if="!sidebar.isMinimized"
           class="added-at"
         >
           {{ t('medialib.myMedialib') }}
@@ -71,7 +70,7 @@ const tooltip = computed(() => {
     </Tippy>
 
     <div
-      v-if="!isMinimized"
+      v-if="!sidebar.isMinimized"
       class="other-controls"
     >
       <Tippy

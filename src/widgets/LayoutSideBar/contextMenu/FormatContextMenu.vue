@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { FormatTypes } from '#imports'
 import type { Component } from 'vue'
-import type { sortOption } from '@/features/MedialibSidebar/constants/sorts'
 import { useI18n } from 'vue-i18n'
 import { BasicContextMenuItem, BasicContextMenuTitle, BasicContextMenuView } from '@/features/ContextMenu'
-import { gridColumnMaxWidth, gridColumnMinWidth, sorts } from '@/features/MedialibSidebar'
+import { maxGridWidth, minGridWidth, type SortOption, sorts } from '@/features/MedialibSidebar'
 import Range from '@/shared/components/Range.vue'
 import CheckIcon from '@/shared/UI/Icons/CheckIcon.vue'
 import CompactIcon from '@/shared/UI/Icons/CompactIcon.vue'
@@ -14,13 +13,13 @@ import ListIcon from '@/shared/UI/Icons/ListIcon.vue'
 defineProps<{
   componentName: FormatTypes
   gridWidth: number
-  sortName: sortOption
+  sortName: SortOption
 }>()
 
 const emit = defineEmits<{
   setComponentName: [name: FormatTypes]
   setGridWidth: [width: number]
-  setSortName: [newValue: sortOption]
+  setSortName: [newValue: SortOption]
 }>()
 
 const { t } = useI18n()
@@ -33,7 +32,7 @@ function setGridWidth(width: number): void {
   emit('setGridWidth', width)
 }
 
-function setSortName(name: sortOption): void {
+function setSortName(name: SortOption): void {
   emit('setSortName', name)
 }
 
@@ -97,8 +96,8 @@ const formatMap: FormatMap[] = [
     <Range
       v-if="componentName === 'Grid'"
       :current="gridWidth"
-      :min="gridColumnMinWidth"
-      :max="gridColumnMaxWidth"
+      :min="minGridWidth"
+      :max="maxGridWidth"
       style="margin: 9px 12px 12px"
       @on-value-change="setGridWidth"
     />

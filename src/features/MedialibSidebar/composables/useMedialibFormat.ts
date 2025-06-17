@@ -1,7 +1,6 @@
 import type { FormatTypes } from '#imports'
-import { type Component, computed } from 'vue'
-import { useSidebarWidthStore } from '@/features/MedialibSidebar'
-import formats from '@/features/MedialibSidebar/constants/formats'
+import { type Component, computed, reactive } from 'vue'
+import { useSidebarWidth } from '@/features/MedialibSidebar/composables/useSidebarWidth.ts'
 import Compact from '@/features/MedialibSidebar/Formats/Compact.vue'
 import Grid from '@/features/MedialibSidebar/Formats/Grid.vue'
 import List from '@/features/MedialibSidebar/Formats/List.vue'
@@ -9,14 +8,14 @@ import useCachedRef from '@/shared/composables/useCachedRef'
 
 const currentComponentName = useCachedRef<FormatTypes>('format', 'Grid', {
   expectedTypes: ['string'],
-  expectedValues: formats,
+  expectedValues: ['Compact', 'Grid', 'List'],
 })
 
-export default function () {
-  const { isMinimized } = useSidebarWidthStore()
+export function useMedialibFormat() {
+  const sidebar = reactive(useSidebarWidth())
 
-  const currentComponent = computed<Component>(() => {
-    if (isMinimized.value) {
+  const MedialibComponent = computed<Component>(() => {
+    if (sidebar.isMinimized) {
       return Grid
     }
 
@@ -40,8 +39,8 @@ export default function () {
   })
 
   return {
-    currentComponent,
+    component: MedialibComponent,
+    name: getComponentName,
     setComponent,
-    getComponentName,
   }
 }

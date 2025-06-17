@@ -37,14 +37,17 @@ function resize(event: MouseEvent): void {
     return
 
   const mouseX = event.clientX
-  let newWidth = initialWidth.value + (mouseX - initialWidth.value)
+  let newWidth = initialWidth.value + (mouseX - initialWidth.value) - 10
 
   if (props.fromRight) {
     newWidth = window.innerWidth - newWidth
   }
 
   if (newWidth >= props.minWidth && newWidth <= props.maxWidth) {
-    resizableWidth.value = newWidth - 10
+    resizableWidth.value = newWidth
+  }
+  if (newWidth >= props.maxWidth) {
+    resizableWidth.value = props.maxWidth
   }
 
   document.documentElement.style.userSelect = 'none'
