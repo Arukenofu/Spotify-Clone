@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Artist } from '@spotify/web-api-ts-sdk'
 import { useQuery } from '@tanstack/vue-query'
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { usePlaybackStates } from '@/features/MediaPlayer'
+import { setCurrentPlayback, useAudioStream, usePlaybackStates } from '@/features/MediaPlayer'
 import { sdk } from '@/services/sdk'
 import AddToMediaLib from '@/shared/UI/Buttons/AddToMediaLib.vue'
 import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
@@ -28,6 +28,8 @@ const route = useRoute('/track/[id]')
 const trackId = computed(() => {
   return route.params.id
 })
+
+const stream = reactive(useAudioStream())
 
 async function fetchTrackData() {
   const data = await sdk.tracks.get(trackId.value)
@@ -68,7 +70,8 @@ const { isCurrentTrack } = usePlaybackStates()
       <PlayHeaderWithPlayingState
         :title="trackInfo.name"
         :mask="trackInfo.maskColor"
-        :is-playing="isCurrentTrack(trackInfo.id)"
+        :is-playing="stream.isPlaying && isCurrentTrack(trackInfo.id)"
+        @play-click="setCurrentPlayback('album', trackInfo.album.id, trackInfo.id)"
       />
       <EntityInfoHeader
         :images="trackInfo.album.images"
@@ -118,9 +121,10 @@ const { isCurrentTrack } = usePlaybackStates()
       </EntityInfoHeader>
 
       <GeneralGradientSectionWithControls
-        :is-playing="false"
+        :is-playing="stream.isPlaying && isCurrentTrack(trackInfo.id)"
         :bg-color="trackInfo.maskColor"
         :tooltip-str="t('music-actions.moreOptionsFor', [trackInfo.name])"
+        @play-click="setCurrentPlayback('album', trackInfo.album.id, trackInfo.id)"
       >
         <template #main-options>
           <AddToMediaLib

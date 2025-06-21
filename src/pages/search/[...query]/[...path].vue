@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { PartialSearchResult } from '@spotify/web-api-ts-sdk'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import { setCurrentPlayback, useAudioStream, usePlaybackStates } from '@/features/MediaPlayer'
 import SearchCardComponent from '@/pageLayouts/search/SearchCardComponent.vue'
 import SearchCardScroller from '@/pageLayouts/search/SearchCardScroller.vue'
 import SearchError from '@/pageLayouts/search/SearchError.vue'
@@ -12,11 +13,15 @@ import { allSearchEntities } from '@/services/sdk/constants/allSearchEntities'
 import LoadingBlock from '@/shared/UI/Blocks/LoadingBlock.vue'
 import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
 import MusicRowHeader from '@/shared/UI/EntityPageElements/MusicRowHeader.vue'
+import TrackTableWrapper from '@/shared/UI/EntityPageElements/TrackTableWrapper.vue'
 
 const route = useRoute('/search/[...query]/[...path]')
 
 const query = computed(() => route.params.query)
 const path = computed(() => route.params.path)
+
+const stream = reactive(useAudioStream())
+const states = reactive(usePlaybackStates())
 
 const entity = computed(() => {
   const output = allSearchEntities.find((value) => {
@@ -42,21 +47,38 @@ const {
     return sdk.search(query.value, [entity.value!], 'US', 30)
   },
   staleTime: Infinity,
-  maxPages: 10,
+  maxPages: 1,
 })
 
-function nextPage(
-  newData: NonNullable<PartialSearchResult[keyof PartialSearchResult]>,
-) {
-  queryClient.setQueryData(['searchEntity', query, path], (oldData: PartialSearchResult) => {
-    const key: keyof PartialSearchResult = `${entity.value!}s`
+type ItemTypes = 'artists' | 'albums' | 'playlists' | 'shows' | 'episodes' | 'audiobooks' | 'tracks'
 
+async function nextPage() {
+  if (!data.value || !entity.value)
+    return
+
+  const key = `${entity.value}s` as ItemTypes
+
+  if (data.value[key]!.items.length > 200)
+    return
+
+  const nextLink = data.value[key]?.next?.replace('https://api.spotify.com/v1/', '')
+  if (!nextLink)
+    return
+
+  const res = await sdk.makeRequest('GET', nextLink) as PartialSearchResult | undefined
+
+  if (!res)
+    return
+
+  const newData = res[key]!
+
+  queryClient.setQueryData(['searchEntity', query, path], (oldData: PartialSearchResult) => {
     return {
       [key]: {
         ...oldData[key],
         next: newData.next,
         previous: newData.previous,
-        items: newData.items,
+        items: oldData[key]!.items.concat(newData.items),
       },
     }
   })
@@ -74,18 +96,34 @@ function nextPage(
         </template>
       </MusicRowHeader>
 
-      <div class="tracks-wrapper">
+      <TrackTableWrapper
+        v-slot="{ track, index }"
+        :list="data.tracks.items"
+        :size="56"
+        class="tracks-wrapper"
+        @load-more="nextPage()"
+      >
         <MusicRow
-          v-for="(track, index) in data.tracks.items"
           :key="track.id"
           :index="index + 1"
           class="track"
           :track="track"
-          :is-current="false"
-          :is-playing="false"
+          :is-current="states.isCurrentTrack(track.id)"
+          :is-playing="stream.isPlaying"
           :is-added="false"
-        />
-      </div>
+          @click="setCurrentPlayback(
+            'album',
+            track.album.id,
+            track.id,
+          )"
+        >
+          <template #var1>
+            <RouterLink class="album" :to="`/album/${track.album.id}`" @click.stop>
+              {{ track.album.name }}
+            </RouterLink>
+          </template>
+        </MusicRow>
+      </TrackTableWrapper>
     </div>
 
     <div v-else-if="entity === 'episode'" />
@@ -146,7 +184,7 @@ function nextPage(
           text-overflow: ellipsis;
           color: var(--text-soft);
           font-size: .875rem;
-          font-weight: 400;
+          font-weight: 500;
           user-select: none;
           line-height: 1.5;
           width: min-content;

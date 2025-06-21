@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Artist, ItemTypes, PartialSearchResult } from '@spotify/web-api-ts-sdk'
 import { computed } from 'vue'
-import { sdk } from '@/services/sdk'
 import InfiniteScrollSentinel from '@/shared/components/InfiniteScrollSentinel.vue'
 import EntitiesSectionWrapper from '@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue'
 
@@ -13,25 +12,11 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  dataUpdate: [value: NonNullable<PartialSearchResult[keyof PartialSearchResult]>]
+  dataUpdate: []
 }>()
 
 async function nextPage() {
-  const item = props.data[props.type]!
-  const data
-    = (await sdk.makeRequest('GET', item.next?.replace('https://api.spotify.com/v1/', '') || '')) as PartialSearchResult | undefined
-
-  if (!data)
-    return
-  const dataItem = data[props.type]!
-
-  emit('dataUpdate', {
-    ...item,
-    next: dataItem.next,
-    previous: dataItem.previous,
-    // @ts-ignore
-    items: item.items.concat(dataItem.items),
-  })
+  emit('dataUpdate')
 }
 
 const items = computed(() => {
