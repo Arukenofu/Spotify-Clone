@@ -1,3 +1,4 @@
+import type { MediaStreamSources } from '@/features/UserPreferences/types/MediaStreamSources.ts'
 import type { RepeatModes } from '@/features/UserPreferences/types/RepeatModes'
 import type { TrackListFormats } from '@/features/UserPreferences/types/TrackListFormats'
 import { defineStore } from 'pinia'
@@ -35,10 +36,16 @@ const userPreferencesStore = defineStore('userPreferences', () => {
     isShuffle.value = !isShuffle.value
   }
 
+  const mediaStreamSource = useCachedRef<MediaStreamSources>('mediaStreamSource', 'yt-music', {
+    expectedTypes: ['string'],
+    expectedValues: ['yt-music', 'youtube'],
+  })
+
   return {
     tracksFormat,
     currentRepeatMode,
     isShuffle,
+    mediaStreamSource,
     toggleRepeatMode,
     toggleIsShuffle,
   }

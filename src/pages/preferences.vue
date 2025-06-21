@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { MediaStreamSources } from '@/features/UserPreferences/types/MediaStreamSources.ts'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { userPreferencesStore } from '@/features/UserPreferences'
 import PreferencesControl from '@/pageLayouts/preferences/PreferencesControl.vue'
 import PreferencesControlSection from '@/pageLayouts/preferences/PreferencesControlSection.vue'
 import BubbleButton from '@/shared/UI/Buttons/BubbleButton.vue'
@@ -32,6 +34,15 @@ function onLanguageChanged(event: Event) {
   setCookie('locale', value, 365)
 
   isLanguageChanged.value = true
+}
+
+const preferences = userPreferencesStore()
+const mediaSources: MediaStreamSources[] = ['yt-music', 'youtube']
+
+function onPreferenceChanged(event: Event) {
+  const value = (event.target as HTMLSelectElement).value
+
+  preferences.mediaStreamSource = value as MediaStreamSources
 }
 
 function reloadPage() {
@@ -82,14 +93,14 @@ function reloadPage() {
             </template>
 
             <template #action>
-              <select class="change-language" @change="onLanguageChanged($event)">
+              <select class="change-language" @change="onLanguageChanged">
                 <option
                   v-for="(language, index) in languages"
                   :key="index"
                   :value="language.value"
                   :selected="chosenLanguage === language.value"
                 >
-                  {{ language.text }}
+                  {{ language.value }}
                 </option>
               </select>
             </template>
@@ -97,9 +108,8 @@ function reloadPage() {
         </template>
       </PreferencesControl>
 
-      <div>
+      <div v-if="isLanguageChanged">
         <BubbleButton
-          v-if="isLanguageChanged"
           class="reload-button"
           design="border"
           @click="reloadPage()"
@@ -107,6 +117,33 @@ function reloadPage() {
           {{ t('preferences.reload') }}
         </BubbleButton>
       </div>
+
+      <PreferencesControl>
+        <template #name>
+          {{ t('preferences.mediaSource') }}
+        </template>
+
+        <template #section>
+          <PreferencesControlSection>
+            <template #description>
+              {{ t('preferences.mediaSourceDescription') }}
+            </template>
+
+            <template #action>
+              <select class="change-language" @change="onPreferenceChanged">
+                <option
+                  v-for="(source, index) in mediaSources"
+                  :key="index"
+                  :value="source"
+                  :selected="preferences.mediaStreamSource === source"
+                >
+                  {{ source }}
+                </option>
+              </select>
+            </template>
+          </PreferencesControlSection>
+        </template>
+      </PreferencesControl>
 
       <PreferencesControl>
         <template #name>
@@ -187,7 +224,7 @@ function reloadPage() {
 
       & > option {
         color: hsla(0,0%,100%,.7);
-        font-family: Arial;
+        font-family: Arial, 'sans-serif';
         font-size: 14px;
         font-weight: 500;
         line-height: 20px;

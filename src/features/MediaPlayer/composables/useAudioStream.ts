@@ -31,7 +31,11 @@ export function useAudioStream() {
       audio.value!.addEventListener('loadedmetadata', onCanPlay, { once: true })
       audio.value!.addEventListener('error', onError, { once: true })
 
-      audio.value!.src = `/api/track/?name=${encodeURIComponent(name)}&artist=${encodeURIComponent(artist)}`
+      const nameParam = `name=${encodeURIComponent(name)}`
+      const artistParam = `artist=${encodeURIComponent(artist)}`
+      const sourceParam = `source=${encodeURIComponent(localStorage.getItem('mediaStreamSource') ?? '')}`
+
+      audio.value!.src = `/api/track/?${nameParam}&${artistParam}&${sourceParam}`
       audio.value!.load()
     })
 
