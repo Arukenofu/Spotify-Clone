@@ -1,9 +1,8 @@
 <script setup lang="ts" generic="T extends SimplifiedTrack[] | Track[]">
 import type { SimplifiedTrack, Track } from '@spotify/web-api-ts-sdk'
-import { computed } from 'vue'
 import { RecycleScroller } from 'vue-virtual-scroller'
 
-const props = defineProps<{
+defineProps<{
   list: T
   size: 32 | 56
 }>()
@@ -11,8 +10,6 @@ const props = defineProps<{
 const emits = defineEmits<{
   loadMore: []
 }>()
-
-const filtered = computed(() => props.list.filter(Boolean))
 
 function onUpdateVisible() {
   emits('loadMore')
@@ -24,7 +21,7 @@ function onUpdateVisible() {
     <RecycleScroller
       v-slot="{ item, index }"
       class="scroller"
-      :items="filtered"
+      :items="list"
       :item-size="size"
       page-mode
       @scroll-end="onUpdateVisible"

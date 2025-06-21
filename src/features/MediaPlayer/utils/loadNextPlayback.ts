@@ -1,5 +1,6 @@
 import type { PlayerTypes, PlayerTypesStr } from '@/features/MediaPlayer/types/PlayerTypes'
 import { queryClient } from '@/app/lib/VueQuery'
+import { currentPlaybackStore } from '@/features/MediaPlayer'
 import { fetchNextAlbum } from '@/services/sdk/entities/album'
 import { fetchNextPlaylist } from '@/services/sdk/entities/playlist'
 
@@ -26,13 +27,21 @@ async function loadNextPlayback(
     ...playback,
     tracks: {
       ...playback.tracks,
-      // @ts-ignore
+      // @ts-expect-error ignore
       items: [...playback.tracks.items, ...data.items],
       next: data.next,
     },
   }
 
   queryClient.setQueryData([type, playbackId], updatedPlayback)
+
+  const currentPlayback = currentPlaybackStore()
+  if (
+    currentPlayback.currentPlaybackInfo?.id === playbackId
+    && currentPlayback.currentPlaybackType === type
+  ) {
+    currentPlayback.currentPlaybackInfo = updatedPlayback
+  }
 
   return updatedPlayback
 }

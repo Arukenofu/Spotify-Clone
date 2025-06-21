@@ -1,5 +1,9 @@
 <script setup lang="ts" generic="T extends any[]">
-import { onMounted, onUnmounted, useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, type StyleValue, useTemplateRef } from 'vue'
+
+defineProps<{
+  sentinelStyle?: StyleValue
+}>()
 
 const emit = defineEmits<{
   dataUpdate: []
@@ -32,7 +36,7 @@ onUnmounted(() => {
   <div class="v-scroll">
     <slot />
 
-    <div ref="sentinel" class="sentinel" />
+    <div ref="sentinel" class="sentinel" :style="sentinelStyle" />
   </div>
 </template>
 

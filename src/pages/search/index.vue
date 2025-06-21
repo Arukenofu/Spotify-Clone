@@ -10,7 +10,7 @@ import GenreCard from '@/pageLayouts/search/GenreCard.vue'
 import SearchMobileSearchBar from '@/pageLayouts/search/mobile/SearchMobileSearchBar.vue'
 import SearchCardDescriptionRenderer from '@/pageLayouts/search/SearchCardDescriptionRenderer.vue'
 import { sdk } from '@/services/sdk'
-import InfiniteScroll from '@/shared/components/InfiniteScroll.vue'
+import InfiniteScrollSentinel from '@/shared/components/InfiniteScrollSentinel.vue'
 import useResponsive from '@/shared/composables/useResponsive'
 import CardRemoveWrapper from '@/shared/UI/Elements/CardRemoveWrapper.vue'
 import MusicCard from '@/shared/UI/Elements/MusicCard.vue'
@@ -119,7 +119,7 @@ onUnmounted(() => {
         {{ t('search.browseAll') }}
       </h1>
 
-      <InfiniteScroll v-if="categories" class="cards" @data-update="nextPage()">
+      <InfiniteScrollSentinel v-if="categories" class="cards" @data-update="nextPage()">
         <GenreCard
           v-for="(item, index) in categories.items"
           :key="item.id"
@@ -129,7 +129,7 @@ onUnmounted(() => {
         >
           {{ item.name }}
         </GenreCard>
-      </InfiniteScroll>
+      </InfiniteScrollSentinel>
     </div>
   </section>
 </template>

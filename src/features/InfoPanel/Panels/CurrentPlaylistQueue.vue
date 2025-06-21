@@ -2,7 +2,14 @@
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NoQueue from '@/features/InfoPanel/components/NoQueue.vue'
-import { currentPlaybackStore, setCurrentPlayback, useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
+import {
+  currentPlaybackStore,
+  loadNextPlayback,
+  setCurrentPlayback,
+  useAudioStream,
+  usePlaybackControls,
+} from '@/features/MediaPlayer'
+import InfiniteScrollSentinel from '@/shared/components/InfiniteScrollSentinel.vue'
 import ScrollableBlock from '@/shared/UI/Blocks/ScrollableBlock.vue'
 import MusicBlock from '@/shared/UI/Elements/Track/TrackBlock.vue'
 import PanelHeader from '@/widgets/LayoutInfoPanel/components/PanelHeader.vue'
@@ -32,7 +39,7 @@ const nextSongsInQueue = computed(() => {
 function setTrack(id: string) {
   setCurrentPlayback(
     currentPlayback.currentPlaybackType!,
-    currentPlayback.currentPlaybackInfo?.id!,
+    currentPlayback.currentPlaybackInfo!.id,
     id,
   )
 }
@@ -90,7 +97,15 @@ const headTextValue = computed(() => {
           {{ headTextValue }}
         </div>
 
-        <div class="music-wrap">
+        <InfiniteScrollSentinel
+          class="music-wrap"
+          :sentinel-style="{ position: 'absolute', top: `${(nextSongsInQueue.length - 1) * 64}px` }"
+          @data-update="loadNextPlayback(
+            currentPlayback.currentPlaybackInfo!.id,
+            currentPlayback.currentPlaybackType!,
+            currentPlayback.currentPlaybackInfo!.tracks.next,
+          )"
+        >
           <MusicBlock
             v-for="(track, index) in nextSongsInQueue"
             :key="track.id"
@@ -102,7 +117,7 @@ const headTextValue = computed(() => {
             @on-image-block-click="setTrack(track.id)"
             @dblclick="setTrack(track.id)"
           />
-        </div>
+        </InfiniteScrollSentinel>
       </div>
     </ScrollableBlock>
   </div>

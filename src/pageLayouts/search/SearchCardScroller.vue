@@ -2,7 +2,7 @@
 import type { Artist, ItemTypes, PartialSearchResult } from '@spotify/web-api-ts-sdk'
 import { computed } from 'vue'
 import { sdk } from '@/services/sdk'
-import InfiniteScroll from '@/shared/components/InfiniteScroll.vue'
+import InfiniteScrollSentinel from '@/shared/components/InfiniteScrollSentinel.vue'
 import EntitiesSectionWrapper from '@/shared/UI/EntityPageElements/EntitiesSectionWrapper.vue'
 
 type SearchResultKeys = `${Exclude<ItemTypes, 'track'>}s`
@@ -40,7 +40,7 @@ const items = computed(() => {
 </script>
 
 <template>
-  <InfiniteScroll class="wrapper" @data-update="nextPage">
+  <InfiniteScrollSentinel class="wrapper" @data-update="nextPage">
     <EntitiesSectionWrapper>
       <template
         v-for="item in items"
@@ -49,7 +49,7 @@ const items = computed(() => {
         <slot :item="item" />
       </template>
     </EntitiesSectionWrapper>
-  </InfiniteScroll>
+  </InfiniteScrollSentinel>
 </template>
 
 <style scoped lang="scss">
