@@ -41,11 +41,16 @@ const userPreferencesStore = defineStore('userPreferences', () => {
     expectedValues: ['yt-music', 'youtube'],
   })
 
+  const fullscreenVideoShow = useCachedRef<boolean>('fullscreenVideoShow', false, {
+    expectedTypes: ['boolean'],
+  })
+
   return {
     tracksFormat,
     currentRepeatMode,
     isShuffle,
     mediaStreamSource,
+    fullscreenVideoShow,
     toggleRepeatMode,
     toggleIsShuffle,
   }

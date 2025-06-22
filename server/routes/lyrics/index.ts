@@ -21,7 +21,7 @@ async function trackLyricsHandler(request: FastifyRequest, reply: FastifyReply) 
     const tracks = await musixMatchAPI.searchTracks({
       track: name,
       artist,
-      page: 1,
+      page: 0,
     })
 
     const lyrics = await musixMatchAPI.getTrackLyrics(tracks.message.body.track_list[0]?.track?.track_id.toString())
@@ -29,7 +29,7 @@ async function trackLyricsHandler(request: FastifyRequest, reply: FastifyReply) 
     return lyrics.message.body.lyrics.lyrics_body
   }
   catch (error) {
-    console.log(error)
+    console.error(error)
 
     return null
   }

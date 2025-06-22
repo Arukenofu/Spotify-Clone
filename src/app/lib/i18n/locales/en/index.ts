@@ -215,6 +215,8 @@ export default {
     playTrackByArtist: 'Play {0} by {1}',
     pauseTrackByArtist: 'Pause {0} by {1}',
     moreOptionsFor: 'More options for {0}',
+    showVideoLine: 'Show video',
+    closeVideoLine: 'Cloe video',
   },
   'music-table': {
     naming: 'Title',

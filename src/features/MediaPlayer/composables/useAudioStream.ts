@@ -35,7 +35,7 @@ export function useAudioStream() {
       const artistParam = `artist=${encodeURIComponent(artist)}`
       const sourceParam = `source=${encodeURIComponent(localStorage.getItem('mediaStreamSource') ?? '')}`
 
-      audio.value!.src = `/api/track/?${nameParam}&${artistParam}&${sourceParam}`
+      audio.value!.src = `/api/track?${nameParam}&${artistParam}&${sourceParam}`
       audio.value!.load()
     })
 

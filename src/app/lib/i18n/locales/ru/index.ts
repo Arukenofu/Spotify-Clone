@@ -215,6 +215,8 @@ export default {
     playTrackByArtist: 'Включить трек «{0}» исполнителя {1}',
     pauseTrackByArtist: 'Поставить на паузу то, что сейчас играет «{0}» ({1})',
     moreOptionsFor: 'Открыть контекстное меню: {0}',
+    showVideoLine: 'Показать видеодорожку',
+    closeVideoLine: 'Убрать видеодорожку',
   },
   'music-table': {
     naming: 'Название',

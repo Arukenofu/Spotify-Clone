@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { inject, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { Tippy } from 'vue-tippy'
 import { useAudioStream, usePlaybackControls } from '@/features/MediaPlayer'
 import { userPreferencesStore } from '@/features/UserPreferences'
 import Range from '@/shared/components/Range.vue'
 import Next from '@/shared/UI/Icons/Next.vue'
+import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue'
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 import Previous from '@/shared/UI/Icons/Previous.vue'
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue'
 import Repeat from '@/shared/UI/Icons/Repeat.vue'
 import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
-import ShowText from '@/shared/UI/Icons/ShowText.vue'
 import UnFullscreen from '@/shared/UI/Icons/UnFullscreen.vue'
 import Volume from '@/shared/UI/Icons/Volume.vue'
 import VolumeSilent from '@/shared/UI/Icons/VolumeSilent.vue'
 import getActiveColor from '@/shared/utils/colors/getActiveColor'
-import formatTimeMMSS from '@/shared/utils/format/formatTimeMMSS'
+import formatTimeMMSS from '@/shared/utils/format/formatTimeMMSS.ts'
 import { toggleVolume } from '@/widgets/MediaPlayer/shared/toggleVolume'
+
+const { t } = useI18n()
 
 const stream = reactive(useAudioStream())
 const controls = reactive(usePlaybackControls())
@@ -84,7 +88,14 @@ const exitFullScreen = inject<void>('exitFullScreenFunc')
           />
         </div>
         <div class="additional">
-          <ShowText class="showText icon" />
+          <Tippy
+            :content="preferences.fullscreenVideoShow ? t('music-actions.closeVideoLine') : t('music-actions.showVideoLine')"
+          >
+            <NowPlaying
+              class="showText icon"
+              @click="preferences.fullscreenVideoShow = !preferences.fullscreenVideoShow"
+            />
+          </Tippy>
 
           <div class="volume-option">
             <Volume
@@ -116,6 +127,7 @@ const exitFullScreen = inject<void>('exitFullScreenFunc')
         </div>
       </div>
     </div>
+    <div class="shadow-layer-bottom" />
   </div>
 </template>
 
@@ -133,7 +145,22 @@ const exitFullScreen = inject<void>('exitFullScreenFunc')
   z-index: 10;
   opacity: 0;
 
+  .shadow-layer-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    pointer-events: none;
+    background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.65),
+            rgba(0, 0, 0, 0)
+    );
+  }
+
   .controls-layout {
+    z-index: 11;
     bottom: 10.5em;
     display: flex;
     left: 14.5em;
