@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
+import { getAccentColor } from '@/features/AccentColors'
 import { currentPlaybackStore } from '@/features/MediaPlayer/store/currentPlaybackStore'
 import { currentTrackImage } from '@/features/MediaPlayer/utils/currentTrackImage'
 import Marquee from '@/shared/components/Marquee.vue'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
 import MainTrackInfo from '@/shared/UI/Elements/MainTrackInfo.vue'
-import { getAccentColor } from '@/shared/utils/colors/getAccentColor.ts'
 
 const store = currentPlaybackStore()
 const { currentPlaybackInfo, currentTrack } = storeToRefs(store)

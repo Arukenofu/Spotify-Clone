@@ -1,6 +1,6 @@
 import type { Artist, Page, SimplifiedTrack } from '@spotify/web-api-ts-sdk'
+import { getMaskColor } from '@/features/AccentColors'
 import { sdk } from '@/services/sdk'
-import { getMaskColor } from '@/shared/utils/colors/getMaskColor'
 
 async function fetchAlbumData(albumId: string) {
   return sdk.albums.get(albumId)

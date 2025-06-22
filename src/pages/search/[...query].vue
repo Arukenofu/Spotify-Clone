@@ -3,10 +3,10 @@ import type { ItemTypes } from '@spotify/web-api-ts-sdk'
 import { useQuery } from '@tanstack/vue-query'
 import { computed, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { destroyAccentWorker } from '@/features/AccentColors/worker/accentColorWorker.ts'
 import SearchRouterHeader from '@/pageLayouts/search/SearchRouterHeader.vue'
 import { sdk } from '@/services/sdk'
 import { allSearchEntities } from '@/services/sdk/constants/allSearchEntities'
-import { destroyAccentWorker } from '@/shared/utils/colors/accentColorWorker'
 
 const route = useRoute('/search/[...query]/[...path]')
 const q = computed(() => {
@@ -26,8 +26,7 @@ function getAvailableSearchEntities() {
   const output: ItemTypes[] = []
 
   allSearchEntities.forEach((key) => {
-    // @ts-ignore
-    if (data.value![`${key}s`].items.length) {
+    if (data.value![`${key}s`]!.items.length) {
       output.push(key)
     }
   })

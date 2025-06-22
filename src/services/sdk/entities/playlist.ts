@@ -1,7 +1,7 @@
 import type { Page, PlaylistedTrack, Track, User } from '@spotify/web-api-ts-sdk'
 import { queryClient } from '@/app/lib/VueQuery'
+import { getMaskColor } from '@/features/AccentColors'
 import { sdk } from '@/services/sdk'
-import { getMaskColor } from '@/shared/utils/colors/getMaskColor'
 import { proxy } from '@/shared/utils/proxy'
 
 function fetchPlaylistData(albumId: string) {

@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import getCountryCodeA2 from '@/app/lib/i18n/utils/getCountryCodeA2'
+import { getMaskColor } from '@/features/AccentColors'
 import ArtistInfoHeaderNoCover from '@/pageLayouts/artist.id/ArtistInfoHeaderNoCover.vue'
 import { sdk } from '@/services/sdk'
 import TracksSection from '@/shared/UI/Blocks/TracksSection.vue'
@@ -14,7 +15,6 @@ import MusicRow from '@/shared/UI/Elements/Track/TrackRow.vue'
 import GeneralGradientSectionWithControls
   from '@/shared/UI/EntityPageElements/Sugar/GeneralGradientSectionWithControls.vue'
 import PlayHeaderWithPlayingState from '@/shared/UI/EntityPageElements/Sugar/PlayHeaderWithPlayingState.vue'
-import { getMaskColor } from '@/shared/utils/colors/getMaskColor'
 import setTitle from '@/shared/utils/setTitle'
 
 const { t } = useI18n()
@@ -31,7 +31,6 @@ const { data: artistInfo, isFetching, isError } = useQuery({
 
     const maskColor = await getMaskColor(data)
     const isSubscribed = await sdk.currentUser.followsArtistsOrUsers([route.params.id], 'artist')
-    // @ts-ignore
     const topItems = await sdk.artists.topTracks(route.params.id, getCountryCodeA2())
     const discography = await sdk.artists.albums(route.params.id)
 

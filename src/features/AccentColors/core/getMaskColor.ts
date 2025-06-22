@@ -1,6 +1,6 @@
 import type { Album, PartialSearchResult, User } from '@spotify/web-api-ts-sdk'
-import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
-import { findImage } from '../image/findImage'
+import { getAccentColor } from '@/features/AccentColors/core/getAccentColor.ts'
+import { findImage } from '@/shared/utils/image/findImage.ts'
 
 export type Item = NonNullable<PartialSearchResult[keyof PartialSearchResult]>['items'][number] | User | Album
 

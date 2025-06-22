@@ -1,4 +1,4 @@
-import { AccentColorCache } from '@/shared/utils/colors/AccentColorCache.ts'
+import { AccentColorCache } from '@/features/AccentColors/cache'
 import AccentColorWorker from './__accentColorWorker.ts?worker'
 
 let worker: Worker | null = null

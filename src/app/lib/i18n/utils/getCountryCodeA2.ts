@@ -1,5 +1,5 @@
-import type { CountryCodeA2 } from '@spotify/web-api-ts-sdk'
+import type { Market } from '@spotify/web-api-ts-sdk'
 
 export default function () {
-  return new Intl.Locale(navigator.language).region as CountryCodeA2
+  return new Intl.Locale(navigator.language).region as Market
 }

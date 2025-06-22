@@ -1,4 +1,4 @@
-import type { Item } from '../colors/getMaskColor'
+import type { Item } from '@/features/AccentColors/core/getMaskColor.ts'
 import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe.ts'
 
 export function findImage(data: Item, arrayKey: number) {

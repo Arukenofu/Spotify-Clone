@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { getAccentColor } from '@/features/AccentColors'
 import { currentPlaybackStore, currentTrackImage } from '@/features/MediaPlayer'
 import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import LazyImage from '@/shared/UI/Elements/LazyImage.vue'
-import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
 
 const store = currentPlaybackStore()
 const { currentPlaybackInfo, currentTrack } = storeToRefs(store)

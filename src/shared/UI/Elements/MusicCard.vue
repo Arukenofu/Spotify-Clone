@@ -2,9 +2,9 @@
 import type { ItemTypes } from '@spotify/web-api-ts-sdk'
 import { onBeforeMount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { accentColorWorker } from '@/features/AccentColors'
 import GreenPlayingButton from '@/shared/UI/Buttons/GreenPlayingButton.vue'
 import EntityAvatar1x1 from '@/shared/UI/Elements/EntityAvatar1x1.vue'
-import { accentColorWorker } from '@/shared/utils/colors/accentColorWorker'
 
 const props = defineProps<Props>()
 

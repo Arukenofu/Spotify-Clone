@@ -1,5 +1,5 @@
 import palette from '@jayimbee/palette'
-import { getMostSaturatedColor } from './getAccentColor'
+import { getMostSaturatedColor } from '../utils/getMostSaturatedColor'
 
 async function extractImageDataFromWorker(
   src: string,
@@ -23,12 +23,12 @@ async function extractImageDataFromWorker(
   return ctx.getImageData(0, 0, width, height).data
 }
 
-self.onmessage = async (event) => {
+globalThis.onmessage = async (event) => {
   const url = event.data
   const data = await extractImageDataFromWorker(url)
 
   const colors = palette.quantize(data)
 
   const { r, g, b } = getMostSaturatedColor(colors)
-  self.postMessage(`rgb(${r}, ${g}, ${b})`)
+  globalThis.postMessage(`rgb(${r}, ${g}, ${b})`)
 }
