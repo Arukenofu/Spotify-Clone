@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { getAccentColor } from '@/features/AccentColors'
 import { currentPlaybackStore } from '@/features/MediaPlayer/store/currentPlaybackStore'
 import { currentTrackImage } from '@/features/MediaPlayer/utils/currentTrackImage'
@@ -18,12 +18,12 @@ const trackImage = computed(() => {
 
 const maskColor = ref<string>('')
 
-onMounted(async () => {
-  if (!trackImage.value)
+watch(() => trackImage.value, async (value) => {
+  if (!value)
     return
 
   maskColor.value = await getAccentColor(trackImage.value) || ''
-})
+}, { immediate: true })
 </script>
 
 <template>

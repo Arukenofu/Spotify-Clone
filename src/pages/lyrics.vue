@@ -2,10 +2,10 @@
 import { useQuery } from '@tanstack/vue-query'
 import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { getAccentColor } from '@/features/AccentColors'
 import { currentPlaybackStore } from '@/features/MediaPlayer'
 import api from '@/services/api'
 import LoadingBlock from '@/shared/UI/Blocks/LoadingBlock.vue'
-import { getAccentColor } from '@/shared/utils/colors/getAccentColor'
 import { getImageUrlSafe } from '@/shared/utils/image/getImageUrlSafe'
 
 const { t } = useI18n()
