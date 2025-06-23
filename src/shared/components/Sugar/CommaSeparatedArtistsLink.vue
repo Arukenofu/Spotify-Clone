@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <CommaSeparatedEntityLink entity="artist" :entities="artists" />
+  <CommaSeparatedEntityLink v-bind="$attrs" entity="artist" :entities="artists" />
 </template>
 
 <style lang="scss">

@@ -12,7 +12,7 @@ import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
 import ThreeDots from '@/shared/UI/Icons/ThreeDots.vue'
 import getActiveColor from '@/shared/utils/colors/getActiveColor'
-import formatTime from '@/shared/utils/format/formatTimeMMSS'
+import formatTimeMMSS from '@/shared/utils/format/formatTimeMMSS.ts'
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
 import getImageFromEntity from '@/shared/utils/image/getImageFromEntity'
 
@@ -96,7 +96,7 @@ const optionsContextMenu = computed(() => ({
           <RoundPlusIcon v-else class="add" />
         </button>
       </Tippy>
-      <span>{{ formatTime(track.duration_ms / 1000) }}</span>
+      <span>{{ formatTimeMMSS(track.duration_ms / 1000) }}</span>
       <Tippy :content="optionsContextMenu.content">
         <button class="contextMenu show-on-hover" @click.stop>
           <ThreeDots />
@@ -157,8 +157,11 @@ const optionsContextMenu = computed(() => ({
       }
     }
 
-    .artists:deep(a) {
-      color: var(--white) !important;
+    .main .track-info .artists {
+
+      &:deep(.v-link), &:deep(.comma) {
+        color: var(--white) !important;
+      }
     }
   }
 
@@ -183,6 +186,7 @@ const optionsContextMenu = computed(() => ({
       height: 16px;
       background: none;
       border: none;
+      cursor: pointer;
 
       .icon {
         width: 100%;
@@ -251,7 +255,11 @@ const optionsContextMenu = computed(() => ({
       gap: 3px;
       justify-items: center;
 
-      a {
+      .musicName {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 1rem;
+        text-underline-offset: 2px;
         line-height: 1.2;
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -266,13 +274,6 @@ const optionsContextMenu = computed(() => ({
         &:hover {
           text-decoration: underline;
         }
-      }
-
-      .musicName {
-        color: var(--white);
-        text-decoration: none;
-        font-size: 1rem;
-        text-underline-offset: 2px;
       }
 
       .artists {
@@ -293,7 +294,6 @@ const optionsContextMenu = computed(() => ({
 
           &:hover {
             color: var(--white);
-            text-decoration: underline;
           }
         }
       }

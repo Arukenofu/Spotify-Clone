@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import { useImageCache } from '@/shared/composables/useImageCache.ts'
 
 interface Props {
   image: string
@@ -11,6 +12,8 @@ interface Props {
 const { loading = 'lazy', image } = defineProps<Props>()
 
 const imageClasses = ref<string>('')
+
+const cache = reactive(useImageCache())
 
 onMounted(async () => {
   const loadImage = (url: string) => {
@@ -26,12 +29,19 @@ onMounted(async () => {
   const imageLoaded = await loadImage(image)
   const loadTime = performance.now() - startTime
 
+  if (cache.has(image)) {
+    imageClasses.value = 'show'
+    return
+  }
+
   if (imageLoaded && loadTime < 50) {
     imageClasses.value = 'show'
   }
   else {
     imageClasses.value = 'animated-show'
   }
+
+  cache.add(image)
 })
 </script>
 
@@ -51,24 +61,18 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .lazyImage {
-  position: relative;
+  display: block;
+  font-size: 0;
+  line-height: 0;
   background-color: v-bind(color);
+  border-radius: inherit;
 
-  .mask, .image {
+  .image {
+    display: block;
     object-fit: cover;
     object-position: center center;
     width: 100%;
     aspect-ratio: 1/1;
-  }
-
-  .mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: inherit;
-  }
-
-  .image {
     border-radius: inherit;
     opacity: 0;
   }

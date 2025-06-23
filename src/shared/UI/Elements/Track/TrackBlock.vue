@@ -5,6 +5,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Tippy } from 'vue-tippy'
 import { currentTrackImage } from '@/features/MediaPlayer'
+import CommaSeparatedArtistsLink from '@/shared/components/Sugar/CommaSeparatedArtistsLink.vue'
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 import getActiveColor from '@/shared/utils/colors/getActiveColor'
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
@@ -40,38 +41,17 @@ const currentImage = computed(() => {
       class="image-block"
       @click="$emit('onImageBlockClick')"
     >
-      <PlayingState
-        :state="state"
-        class="icon"
-      />
+      <PlayingState :state="state" class="icon" />
 
-      <div
-        class="image"
-        :style="`background-image: url('${currentImage}')`"
-      />
+      <div class="image" :style="`background-image: url('${currentImage}')`" />
     </Tippy>
 
     <div class="added-at">
-      <div
-        class="title"
-        :style="getActiveColor(state, 'color')"
-      >
+      <div class="title" :style="getActiveColor(state, 'color')">
         {{ music.name }}
       </div>
       <div class="artists">
-        <RouterLink
-          v-for="(artist, index) in music.artists"
-          :key="artist.id"
-          class="artist"
-          :to="`/artist/${artist.id}`"
-        >
-          <span>
-            {{ artist.name }}
-          </span>
-          <template v-if="index !== music.artists?.length - 1">
-            ,
-          </template>
-        </RouterLink>
+        <CommaSeparatedArtistsLink class="artist" :artists="music.artists" />
       </div>
     </div>
   </div>
@@ -144,18 +124,34 @@ const currentImage = computed(() => {
 
     .title {
       font-size: 1em;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      white-space: unset;
+      word-break: break-all;
+      overflow: hidden;
     }
 
     .artists {
-      a,
-      span {
-        font-size: 0.9em;
-        color: var(--text-soft);
-      }
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+      white-space: unset;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.9em;
+      color: var(--text-soft) !important;
+      line-height: 1.4;
 
-      span:hover {
-        text-decoration: underline;
-        color: var(--white);
+      &:deep(.artist) {
+        text-decoration-thickness: 1.1px;
+
+        &:hover {
+          color: var(--white);
+        }
       }
     }
   }

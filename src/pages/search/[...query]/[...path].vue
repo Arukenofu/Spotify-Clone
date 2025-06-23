@@ -178,7 +178,6 @@ async function nextPage() {
           -webkit-line-clamp: 1;
           line-clamp: 1;
           -webkit-box-orient: vertical;
-          white-space: nowrap;
           word-break: break-all;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -187,7 +186,6 @@ async function nextPage() {
           font-weight: 500;
           user-select: none;
           line-height: 1.5;
-          width: min-content;
 
           &:hover {
             text-decoration: underline !important;

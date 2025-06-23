@@ -8,29 +8,35 @@ defineProps<{
 </script>
 
 <template>
-  <template
+  <span
     v-for="(artist, index) in entities"
     :key="artist.id"
+    class="comma-separated"
+    v-bind="$attrs"
   >
     <RouterLink
       :to="`/${entity}/${artist.id}`"
       class="v-link"
-      v-bind="$attrs"
     >
       {{ artist.name }}
-    </RouterLink>
-    <template v-if="index !== entities.length - 1">
-      ,&nbsp;
-    </template>
-  </template>
+    </RouterLink><span v-if="index !== entities.length - 1" class="comma">,&nbsp;</span>
+  </span>
 </template>
 
 <style lang="scss">
-.v-link {
+.comma-separated {
   color: currentColor;
 
-  &:hover {
-    text-decoration: underline;
+  .comma {
+    color: currentColor;
+  }
+
+  .v-link {
+    color: currentColor;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>

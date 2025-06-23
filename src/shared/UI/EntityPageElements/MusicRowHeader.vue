@@ -24,7 +24,7 @@ const { t } = useI18n()
       <slot name="var3" />
     </div>
     <div class="time">
-      <Tippy :content="t('music-table.duration')">
+      <Tippy class="wrapper" :content="t('music-table.duration')">
         <ClockIcon class="icon" />
       </Tippy>
     </div>
@@ -41,7 +41,21 @@ const { t } = useI18n()
   display: grid;
   grid-gap: 16px;
   grid-template-rows: auto;
-  z-index: 3  ;
+  z-index: 3;
+
+  .time {
+
+    .wrapper {
+      margin-left: auto;
+      margin-right: 56px;
+
+      .icon {
+        width: 16px;
+        height: 16px;
+        fill: var(--text-soft);
+      }
+    }
+  }
 
   & > div {
     height: 100%;
@@ -54,17 +68,6 @@ const { t } = useI18n()
     &:first-child {
       justify-self: end;
       font-size: 1rem;
-    }
-
-    & > div {
-      margin-left: auto;
-      margin-right: 32px;
-
-      .icon {
-        width: 16px;
-        height: 16px;
-        fill: var(--text-soft);
-      }
     }
   }
 
