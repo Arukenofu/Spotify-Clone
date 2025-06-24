@@ -36,7 +36,7 @@ const userPreferencesStore = defineStore('userPreferences', () => {
     isShuffle.value = !isShuffle.value
   }
 
-  const mediaStreamSource = useCachedRef<MediaStreamSources>('mediaStreamSource', 'yt-music', {
+  const mediaStreamSource = useCachedRef<MediaStreamSources>('mediaStreamSource', 'youtube', {
     expectedTypes: ['string'],
     expectedValues: ['yt-music', 'youtube'],
   })

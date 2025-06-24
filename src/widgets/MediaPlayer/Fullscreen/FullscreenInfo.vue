@@ -28,25 +28,27 @@ defineProps<{
       </div>
     </div>
 
-    <div v-if="showGeneralInfo" class="current-music">
-      <div class="image">
-        <LazyImage
-          :image="currentTrackImage"
-          :color="maskColor"
-        />
-      </div>
-      <div class="added-at">
-        <div class="track-name">
-          {{ currentTrackName }}
-        </div>
-        <div class="track-creators">
-          <CommaSeparatedArtistsLink
-            class="artistLink"
-            :artists="currentTrackArtists"
+    <Transition name="fade-transition">
+      <div v-if="showGeneralInfo" class="current-music">
+        <div class="image">
+          <LazyImage
+            :image="currentTrackImage"
+            :color="maskColor"
           />
         </div>
+        <div class="added-at">
+          <div class="track-name">
+            {{ currentTrackName }}
+          </div>
+          <div class="track-creators">
+            <CommaSeparatedArtistsLink
+              class="artistLink"
+              :artists="currentTrackArtists"
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 

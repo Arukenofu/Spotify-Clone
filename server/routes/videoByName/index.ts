@@ -1,8 +1,9 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import ytdl from '@distube/ytdl-core'
+import { getMediaInfo } from '../../utils/getMediaInfo'
 import { searchMedia } from '../../utils/searchMedia'
 
-async function videoIdHandler(request: FastifyRequest, reply: FastifyReply) {
+async function videoNameHandler(request: FastifyRequest, reply: FastifyReply) {
   const { name, artist } = request.query as {
     name?: string
     artist?: string
@@ -16,7 +17,7 @@ async function videoIdHandler(request: FastifyRequest, reply: FastifyReply) {
   const id = await searchMedia('youtube', `${name} - ${artist}`)
   const videoUrl = `https://www.youtube.com/watch?v=${id}`
 
-  const info = await ytdl.getInfo(videoUrl)
+  const info = await getMediaInfo(videoUrl)
 
   const format = ytdl.chooseFormat(info.formats, {
     quality: 'highestvideo',
@@ -33,4 +34,4 @@ async function videoIdHandler(request: FastifyRequest, reply: FastifyReply) {
   return stream
 }
 
-export default videoIdHandler
+export default videoNameHandler

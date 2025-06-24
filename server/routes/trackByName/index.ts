@@ -1,8 +1,9 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import ytdl from '@distube/ytdl-core'
+import { getMediaInfo } from '../../utils/getMediaInfo'
 import { searchMedia, type SearchSources } from '../../utils/searchMedia'
 
-async function trackIdHandler(request: FastifyRequest, reply: FastifyReply) {
+async function trackNameHandler(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { name, artist, source } = request.query as { name?: string, artist?: string, source?: SearchSources }
 
@@ -14,7 +15,7 @@ async function trackIdHandler(request: FastifyRequest, reply: FastifyReply) {
     const id = await searchMedia(source ?? 'yt-music', `${name} - ${artist}`)
     const videoUrl = `https://www.youtube.com/watch?v=${id}`
 
-    const info = await ytdl.getInfo(videoUrl)
+    const info = await getMediaInfo(videoUrl)
     const format = ytdl.chooseFormat(info.formats, {
       quality: 'highestaudio',
       filter: 'audioonly',
@@ -32,4 +33,4 @@ async function trackIdHandler(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-export default trackIdHandler
+export default trackNameHandler

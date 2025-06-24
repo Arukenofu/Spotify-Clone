@@ -9,15 +9,24 @@ import Next from '@/shared/UI/Icons/Next.vue'
 import NowPlaying from '@/shared/UI/Icons/NowPlaying.vue'
 import PlayingState from '@/shared/UI/Icons/PlayingState.vue'
 import Previous from '@/shared/UI/Icons/Previous.vue'
+import QueueIcon from '@/shared/UI/Icons/QueueIcon.vue'
 import RandomOrder from '@/shared/UI/Icons/RandomOrder.vue'
 import Repeat from '@/shared/UI/Icons/Repeat.vue'
 import RoundPlusIcon from '@/shared/UI/Icons/RoundPlusIcon.vue'
 import UnFullscreen from '@/shared/UI/Icons/UnFullscreen.vue'
 import Volume from '@/shared/UI/Icons/Volume.vue'
 import VolumeSilent from '@/shared/UI/Icons/VolumeSilent.vue'
-import getActiveColor from '@/shared/utils/colors/getActiveColor'
+import getActiveColor from '@/shared/utils/colors/getActiveColor.ts'
 import formatTimeMMSS from '@/shared/utils/format/formatTimeMMSS.ts'
-import { toggleVolume } from '@/widgets/MediaPlayer/shared/toggleVolume'
+import { toggleVolume } from '@/widgets/MediaPlayer/shared/toggleVolume.ts'
+
+defineProps<{
+  isPanel: boolean
+}>()
+
+defineEmits<{
+  togglePanel: []
+}>()
 
 const { t } = useI18n()
 
@@ -93,8 +102,19 @@ const exitFullScreen = inject<void>('exitFullScreenFunc')
           >
             <NowPlaying
               class="showText icon"
+              :class="{ active: preferences.fullscreenVideoShow }"
               @click="preferences.fullscreenVideoShow = !preferences.fullscreenVideoShow"
             />
+          </Tippy>
+
+          <Tippy content="Выбрать другую видеодорожку">
+            <button
+              class="showText icon"
+              :class="{ active: isPanel }"
+              @click="$emit('togglePanel')"
+            >
+              <QueueIcon />
+            </button>
           </Tippy>
 
           <div class="volume-option">
@@ -324,6 +344,14 @@ const exitFullScreen = inject<void>('exitFullScreenFunc')
 
           &:deep(svg) {
             fill: var(--text-soft);
+            width: 24px;
+            height: 24px;
+          }
+        }
+
+        .active {
+          &:deep(svg) {
+            fill: var(--main-color);
             width: 24px;
             height: 24px;
           }

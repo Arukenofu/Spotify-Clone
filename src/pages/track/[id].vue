@@ -183,7 +183,6 @@ const { isCurrentTrack } = usePlaybackStates()
       text-wrap: nowrap;
       margin-bottom: 8px;
       line-height: 1.2;
-      width: min-content;
       font-size: 6rem;
     }
 

@@ -6,11 +6,11 @@ import useScreen from '@/shared/composables/useScreen'
 import getCommaSeparatedString from '@/shared/utils/format/getCommaSeparatedString'
 import AdditionalControls from '@/widgets/MediaPlayer/components/AdditionalControls.vue'
 import AdditionalControlsNone from '@/widgets/MediaPlayer/components/AdditionalControlsNone.vue'
-import FullScreen from '@/widgets/MediaPlayer/components/FullScreen.vue'
 import TrackControls from '@/widgets/MediaPlayer/components/TrackControls.vue'
 import TrackControlsNone from '@/widgets/MediaPlayer/components/TrackControlsNone.vue'
 import TrackDetails from '@/widgets/MediaPlayer/components/TrackDetails.vue'
 import TrackDetailsNone from '@/widgets/MediaPlayer/components/TrackDetailsNone.vue'
+import FullScreen from '@/widgets/MediaPlayer/Fullscreen/FullScreen.vue'
 
 const { isFullscreen, enableFullscreen, exitFullScreen } = useScreen()
 
