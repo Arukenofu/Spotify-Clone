@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ItemTypes } from '@spotify/web-api-ts-sdk'
 import { useQuery } from '@tanstack/vue-query'
-import { computed, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { destroyAccentWorker } from '@/features/AccentColors/worker/accentColorWorker.ts'
 import SearchRouterHeader from '@/pageLayouts/search/SearchRouterHeader.vue'
 import { sdk } from '@/services/sdk'
 import { allSearchEntities } from '@/services/sdk/constants/allSearchEntities'
@@ -33,10 +32,6 @@ function getAvailableSearchEntities() {
 
   return output
 }
-
-onUnmounted(() => {
-  destroyAccentWorker()
-})
 </script>
 
 <template>

@@ -53,12 +53,16 @@ watch(() => trackInfo.value.id, () => {
   refetch()
 }, { immediate: true })
 
-function getInvertedColor(hex: string) {
-  const color = hex.replace('#', '')
-  const r = 255 - Number.parseInt(color.substring(0, 2), 16)
-  const g = 255 - Number.parseInt(color.substring(2, 4), 16)
-  const b = 255 - Number.parseInt(color.substring(4, 6), 16)
-  return `rgb(${r}, ${g}, ${b})`
+function getInvertedColor(rgb: string) {
+  const match = rgb.match(/\d+/g)
+  if (!match || match.length < 3) {
+    throw new Error(`Некорректный формат RGB: ${rgb}`)
+  }
+
+  const [r, g, b] = match.map(Number)
+  const brightness = 0.299 * r + 0.587 * g + 0.114 * b
+
+  return brightness > 127.5 ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)'
 }
 
 const lyricsStructure = computed(() => {
@@ -73,7 +77,7 @@ const lyricsStructure = computed(() => {
     {{ t('lyrics.noLyrics') }}
   </div>
 
-  <div v-else class="container" :style="`--mask: ${lyricsData.maskColor}; --text: ${getInvertedColor(lyricsData.maskColor)}`">
+  <div v-else class="container" :style="`--mask: ${lyricsData.maskColor}; --text: ${getInvertedColor(lyricsData.maskColor!)}`">
     <div class="text">
       <div v-for="(parent, parentIndex) in lyricsStructure" :key="parentIndex" class="parent">
         <p v-for="(text, textIndex) in parent" :key="textIndex" class="child">
@@ -103,7 +107,7 @@ const lyricsStructure = computed(() => {
         color: var(--text);
         line-height: 1.2;
         font-weight: 700;
-        opacity: 0.8;
+        opacity: 0.7;
         cursor: pointer;
         transition: all .1s ease-out;
 

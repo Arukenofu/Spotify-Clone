@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CountryCodeA2 } from '@spotify/web-api-ts-sdk'
 import { useQuery } from '@tanstack/vue-query'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -13,7 +14,7 @@ const genreId = computed(() => route.params.id)
 const { data } = useQuery({
   queryKey: ['genre', genreId],
   queryFn: async () => {
-    return sdk.browse.getCategory(genreId.value, getCountryCodeA2(), getLocale())
+    return sdk.browse.getCategory(genreId.value, getCountryCodeA2<CountryCodeA2>(), getLocale())
   },
   staleTime: Infinity,
 })

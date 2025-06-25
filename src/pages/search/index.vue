@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import type { Categories, ItemTypes } from '@spotify/web-api-ts-sdk'
+import type { Categories, CountryCodeA2, ItemTypes } from '@spotify/web-api-ts-sdk'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
-import { onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import getCountryCodeA2 from '@/app/lib/i18n/utils/getCountryCodeA2'
 import getLocale from '@/app/lib/i18n/utils/getLocale'
 import { getAccentColor } from '@/features/AccentColors'
-import { destroyAccentWorker } from '@/features/AccentColors/worker/accentColorWorker.ts'
 import { history, removeFromHistory } from '@/features/SearchHistory'
 import GenreCard from '@/pageLayouts/search/GenreCard.vue'
 import SearchMobileSearchBar from '@/pageLayouts/search/mobile/SearchMobileSearchBar.vue'
@@ -32,7 +30,7 @@ const queryClient = useQueryClient()
 const { data: categories, suspense } = useQuery({
   queryKey: ['categories'],
   queryFn: async () => {
-    const data = await sdk.browse.getCategories(getCountryCodeA2(), getLocale())
+    const data = await sdk.browse.getCategories(getCountryCodeA2<CountryCodeA2>(), getLocale())
 
     const maskColors: (string | null)[] = []
 
@@ -75,10 +73,6 @@ async function nextPage() {
     maskColors: oldData.maskColors.concat(maskColors),
   }))
 }
-
-onUnmounted(() => {
-  destroyAccentWorker()
-})
 </script>
 
 <template>
